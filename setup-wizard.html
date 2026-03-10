@@ -756,9 +756,13 @@ achievement-engine-wrapped/
       input.classList.remove('input-ok', 'input-err');
       return;
     }
-    // Must be http(s):// + hostname + optional :port
-    const re = /^https?:\/\/[a-zA-Z0-9]([a-zA-Z0-9\-._]*[a-zA-Z0-9])?(:\d+)?(\/[^\s]*)?$/;
-    if (re.test(val)) {
+    // Four valid patterns for a real ABS server address:
+    const ip        = /^https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?(\/.*)?$/;
+    const localhost = /^https?:\/\/localhost(:\d+)?(\/.*)?$/;
+    const domain    = /^https?:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*(\.[a-zA-Z0-9][a-zA-Z0-9\-]*)+(:\d+)?(\/.*)?$/;
+    const hostport  = /^https?:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]+(:\d{2,5})(\/.*)?$/;
+    const valid = ip.test(val) || localhost.test(val) || domain.test(val) || hostport.test(val);
+    if (valid) {
       icon.textContent = '✓';
       icon.style.color = '#5a9a6e';
       input.classList.add('input-ok');
