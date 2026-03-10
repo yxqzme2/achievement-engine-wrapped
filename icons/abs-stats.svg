@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <circle cx="50" cy="50" r="50" fill="#121212"/>
+  <!-- Outer ring -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#b89548" stroke-width="2"/>
+  <!-- Bar chart bars -->
+  <rect x="14" y="60" width="13" height="22" rx="2" fill="#b89548" opacity="0.6"/>
+  <rect x="31" y="45" width="13" height="37" rx="2" fill="#b89548" opacity="0.8"/>
+  <rect x="48" y="33" width="13" height="49" rx="2" fill="#b89548"/>
+  <rect x="65" y="50" width="13" height="32" rx="2" fill="#b89548" opacity="0.7"/>
+  <!-- Baseline -->
+  <line x1="12" y1="84" x2="80" y2="84" stroke="#b89548" stroke-width="2" stroke-linecap="round"/>
+  <!-- Upward trend line -->
+  <polyline points="20,68 37,53 54,40 72,54" fill="none" stroke="#00f2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <!-- Trend dots -->
+  <circle cx="20" cy="68" r="2.5" fill="#00f2ff" opacity="0.7"/>
+  <circle cx="54" cy="40" r="2.5" fill="#00f2ff" opacity="0.7"/>
+  <circle cx="72" cy="54" r="2.5" fill="#00f2ff" opacity="0.7"/>
+</svg>

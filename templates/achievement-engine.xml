@@ -17,14 +17,14 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
   <Category>MediaApp:Other Tools:</Category>
   <WebUI>http://[IP]:[PORT:8000]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/achievement-engine.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/favicon.ico</Icon>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/achievement-engine.svg</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
   <DateInstalled>1772798120</DateInstalled>
   <DonateText/>
   <DonateLink/>
-  <Requires/>
+  <Requires>abs-stats must be installed and placed on the same Docker network as this container. Set the same network name on both containers — if you use a custom network, update both.</Requires>
   <Config Name="data" Target="/data" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/achievement-engine/</Config>
   <Config Name="covers" Target="/data/covers" Default="" Mode="rw" Description="Optional: path to abs-stats covers folder for local serving. If not mapped, cover images proxy through abs-stats API." Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/achievement-engine/covers</Config>
   <Config Name="ABSSTATS_BASE_URL" Target="ABSSTATS_BASE_URL" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">http://abs-stats:3000</Config>

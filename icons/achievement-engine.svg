@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <circle cx="50" cy="50" r="50" fill="#121212"/>
+  <!-- Outer ring -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#b89548" stroke-width="2"/>
+  <!-- Sword blade -->
+  <line x1="50" y1="18" x2="50" y2="68" stroke="#b89548" stroke-width="4" stroke-linecap="round"/>
+  <!-- Sword tip -->
+  <polygon points="50,14 47,22 53,22" fill="#b89548"/>
+  <!-- Crossguard -->
+  <rect x="36" y="60" width="28" height="4" rx="2" fill="#b89548"/>
+  <!-- Grip -->
+  <rect x="47" y="64" width="6" height="14" rx="3" fill="#665243"/>
+  <!-- Pommel -->
+  <circle cx="50" cy="80" r="4" fill="#b89548"/>
+  <!-- Small stars -->
+  <circle cx="28" cy="30" r="2" fill="#b89548" opacity="0.6"/>
+  <circle cx="72" cy="30" r="2" fill="#b89548" opacity="0.6"/>
+  <circle cx="22" cy="55" r="1.5" fill="#b89548" opacity="0.4"/>
+  <circle cx="78" cy="55" r="1.5" fill="#b89548" opacity="0.4"/>
+</svg>

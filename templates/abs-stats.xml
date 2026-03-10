@@ -17,13 +17,13 @@ You will need an Audiobookshelf API token for each user you want to track. Get t
   <Category>MediaApp:Other Tools:</Category>
   <WebUI/>
   <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/abs-stats.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/favicon.ico</Icon>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/abs-stats.svg</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
   <DonateText/>
   <DonateLink/>
-  <Requires>Audiobookshelf must be running and accessible from this server. You need API tokens for each user you want to track.</Requires>
+  <Requires>Audiobookshelf must be running and accessible from this server. You need API tokens for each user you want to track. This container must be on the same Docker network as the achievement-engine container — set the same network name on both.</Requires>
   <Config Name="API Port" Target="3000" Default="3000" Mode="tcp" Description="The port abs-stats listens on. Other containers (like Achievement Engine) connect to this port to fetch listening data. Change the host port if 3000 is already in use." Type="Port" Display="always" Required="true" Mask="false">3000</Config>
   <Config Name="ABS_URL" Target="ABS_URL" Default="http://audiobookshelf:13378" Mode="" Description="The full URL of your Audiobookshelf server, including the port. Example: http://192.168.1.50:13378 or http://audiobookshelf:80 if using Docker networking." Type="Variable" Display="always" Required="true" Mask="false"/>
   <Config Name="ABS_TOKEN" Target="ABS_TOKEN" Default="" Mode="" Description="A single Audiobookshelf API token. Use this for single-user setups. Get it from: Audiobookshelf > Settings > Users > your user > API Token. If you have multiple users, use ABS_TOKENS instead and leave this empty." Type="Variable" Display="always" Required="false" Mask="true"/>
