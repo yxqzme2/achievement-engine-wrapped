@@ -183,11 +183,24 @@ The portal is served on port `8000`. Pages include:
 | Archives | `/archives` | Listening stats, monthly charts, genre analytics |
 | Roster | `/roster` | All active listeners with CP and top gear at a glance |
 | Character Sheet | `/character?userId=xxx` | Stat allocation, equipped gear, Combat Power |
-| Tier List | `/tier` | Subjective tier ranking of books and series |
+| Tier List | `/tier` | Subjective tier ranking of books and series — **cover sync runs from here** |
 | Playlist | `/playlist` | Curated reading orders and thematic collections |
 | Loot Compendium | `/loot` | Searchable database of every item — stats, rarity, flavor text |
 | Quests | `/quests` | Active directives, campaign objectives, and guaranteed drops |
 | Wrapped | `/wrapped` | Year-end animated boss battle experience |
+
+### Cover Sync
+
+Several pages — including the Tier List, Wrapped slides, and other views — display book cover art pulled from your Audiobookshelf library. These pages will appear incomplete or show blank tiles until covers have been synced at least once.
+
+**To run a sync:** Open the Tier List (`/tier`) and click the **Sync Covers** button. The engine connects to your ABS server, downloads cover art for every book in your library, and stores it in `/data/covers`. Progress is shown live on the page.
+
+Cover sync only needs to be re-run when you add new books or want to refresh existing art. It can also be triggered via API:
+
+```
+POST /awards/api/sync-covers
+GET  /awards/api/sync-covers/status
+```
 
 ---
 

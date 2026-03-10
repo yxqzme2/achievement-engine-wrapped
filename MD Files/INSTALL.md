@@ -142,6 +142,21 @@ USER_ALIASES=alice:Alice,bob:Bob
 
 ---
 
+## First Steps After Install
+
+Once both containers are running and you can reach the portal, do a cover sync before exploring the rest of the pages.
+
+1. Open the **Tier List** page — `http://localhost:8000/tier` (or `http://<your-ip>:8000/tier` on Unraid)
+2. Click the **Sync Covers** button
+3. The engine connects to your Audiobookshelf server and downloads cover art for every book in your library
+4. Wait for the progress indicator to finish — it runs in the background
+
+**Why this matters:** Cover art is used across multiple pages — the Tier List, Wrapped slides, and other views pull from the synced covers folder. These screens will appear incomplete or show blank tiles until the first sync is done.
+
+The sync saves covers to your data folder (`/data/covers`) and only needs to be re-run when you add new books or want to refresh existing art.
+
+---
+
 ## Cleanup / Reset (Testing)
 
 Remove containers, images, and the cloned folder completely:
