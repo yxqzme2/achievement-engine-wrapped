@@ -1007,6 +1007,7 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
         }
 
         function constructAbsStatsXML() {
+            const network          = document.getElementById('network').value               || 'bridge';
             const apiPort          = document.getElementById('abs-api-port').value          || '3000';
             const absUrl           = document.getElementById('abs-url').value               || '';
             const absToken         = document.getElementById('abs-token').value             || '';
