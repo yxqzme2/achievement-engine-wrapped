@@ -172,6 +172,18 @@
     input.input-ok  { border-color: #5a9a6e; }
     input.input-err { border-color: #cc4444; }
 
+    /* ── URL validation ── */
+    .url-wrap { position: relative; }
+    .url-wrap input { padding-right: 34px; }
+    .url-icon {
+      position: absolute;
+      right: 10px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      font-weight: 700;
+      pointer-events: none;
+    }
+
     /* ── Toggle group ── */
     .toggle-group {
       display: inline-flex;
@@ -457,7 +469,10 @@
       <div class="field">
         <label>Server URL</label>
         <div class="field-hint">Full address of your ABS instance, including port</div>
-        <input type="url" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()">
+        <div class="url-wrap">
+          <input type="url" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()" onblur="validateUrl()">
+          <span class="url-icon" id="url-icon"></span>
+        </div>
       </div>
 
       <div class="field">
@@ -653,6 +668,9 @@
     <div class="dl-section">
       <button class="btn-dl" onclick="dlOverride()">⬇ &nbsp;docker-compose.override.yml</button>
       <button class="btn-dl" onclick="dlEnv()">⬇ &nbsp;.env</button>
+      <div style="font-size:0.72rem;color:#6e7681;line-height:1.5;padding:2px 2px 0;">
+        ⚠ If your browser saves <code style="color:#a5d6ff;">.env</code> as <code style="color:#a5d6ff;">env</code> (without the dot), rename it before use.
+      </div>
     </div>
 
     <div class="warn-box" id="warn-box" style="display:none;">
@@ -685,7 +703,13 @@ achievement-engine-wrapped/
         <div class="step-badge">2</div>
         <div class="step-item-body">
           <div class="step-item-label">Build and start all services (takes a few minutes the first time)</div>
-          <div class="code-block"><pre><span class="cmd">docker compose up --build -d</span></pre></div>
+          <div class="code-block"><pre><span class="cmd">docker compose up --build -d</span>
+
+<span class="cmt"># On Linux, if you get "permission denied connecting to Docker":</span>
+<span class="cmd">sudo docker compose up --build -d</span>
+
+<span class="cmt"># To avoid needing sudo permanently (log out and back in after):</span>
+<span class="cmd">sudo usermod -aG docker $USER</span></pre></div>
         </div>
       </div>
 
@@ -712,6 +736,32 @@ achievement-engine-wrapped/
     document.getElementById('ptab-override').classList.toggle('active', tab === 'override');
     document.getElementById('ptab-env').classList.toggle('active', tab === 'env');
     render();
+  }
+
+  // ── URL validation ──
+  function validateUrl() {
+    const val  = v('abs-url');
+    const icon = document.getElementById('url-icon');
+    const input = document.getElementById('abs-url');
+    if (!val) {
+      icon.textContent = '';
+      input.classList.remove('input-ok', 'input-err');
+      return;
+    }
+    try {
+      const u = new URL(val);
+      if (u.protocol === 'http:' || u.protocol === 'https:') {
+        icon.textContent = '✓';
+        icon.style.color = '#5a9a6e';
+        input.classList.add('input-ok');
+        input.classList.remove('input-err');
+      } else { throw new Error(); }
+    } catch {
+      icon.textContent = '✗';
+      icon.style.color = '#cc4444';
+      input.classList.add('input-err');
+      input.classList.remove('input-ok');
+    }
   }
 
   // ── Toggle single/multi mode ──
@@ -947,7 +997,7 @@ achievement-engine-wrapped/
 
   // ── Downloads ──
   function dl(filename, content) {
-    const blob = new Blob([content], { type: 'text/plain' });
+    const blob = new Blob([content], { type: 'application/octet-stream' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url; a.download = filename; a.click();

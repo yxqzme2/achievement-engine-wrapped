@@ -1,7 +1,9 @@
 # Runtime data — never commit
 data/
-covers/
-avatars/
+covers/*
+!covers/.gitkeep
+avatars/*
+!avatars/.gitkeep
 
 # Environment secrets
 .env
