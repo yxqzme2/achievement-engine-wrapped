@@ -333,6 +333,17 @@
             background: #2a2a2a;
         }
 
+        /* ── PATH GROUP LABEL (within Path Mappings card) ── */
+        .path-group-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            margin-top: 4px;
+        }
+        .path-group-label.spaced { margin-top: 18px; }
+
         /* ── FOOTER ── */
         .status-footer {
             margin-top: 50px;
@@ -348,27 +359,34 @@
             .admin-card.full-width { grid-column: 1; }
             .two-col, .three-col { grid-template-columns: 1fr; }
         }
+
+        input[readonly] {
+            background: #0a0a0a;
+            color: #555;
+            cursor: not-allowed;
+            border-color: #222;
+        }
+        .locked-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: #444;
+            border: 1px solid #333;
+            border-radius: 3px;
+            padding: 1px 5px;
+            margin-left: 6px;
+            vertical-align: middle;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
     <div class="scanline"></div>
 
-    <nav class="admin-nav">
-        <div class="admin-nav-inner">
-            <a href="/admin" class="brand">System Admin</a>
-            <a href="/admin">Hub</a>
-            <a href="/admin/forge">Forge</a>
-            <a href="/admin/loot">Armory</a>
-            <a href="/admin/quest">Bounties</a>
-            <a href="/admin/template" class="active">Template</a>
-            <a href="/admin/setup">Script</a>
-            <a href="/admin/ops">Ops</a>
-        </div>
-    </nav>
-
     <header>
         <h1>Unraid Template Forge</h1>
-        <a href="/admin" class="nav-back">[ RETURN TO HUB ]</a>
+        <p class="nav-back">// Standalone — no server required. Fill in your settings, download both XML files, install in Unraid.</p>
     </header>
 
     <div class="container">
@@ -392,8 +410,8 @@
                 <input type="text" id="container-name" value="">
             </div>
             <div class="input-group">
-                <label for="repository">Repository</label>
-                <input type="text" id="repository" value="">
+                <label for="repository">Repository <span class="locked-badge">locked</span></label>
+                <input type="text" id="repository" value="ghcr.io/yxqzme2/achievement-engine-wrapped:latest" readonly>
             </div>
             <div class="input-group">
                 <label for="network">Network</label>
@@ -414,6 +432,7 @@
         <!-- Path Mappings -->
         <div class="admin-card">
             <h2 class="section-title">Path Mappings</h2>
+            <div class="path-group-label">// Achievement Engine</div>
             <div class="input-group">
                 <label for="path-data">Data Path (/data)</label>
                 <input type="text" id="path-data" value="">
@@ -421,11 +440,17 @@
             <div class="input-group">
                 <label for="path-covers">Covers Path (/data/covers)</label>
                 <input type="text" id="path-covers" value="">
-                <div class="config-description">Optional: path to abs-stats covers folder for local serving.</div>
+                <div class="config-description">Optional: path for locally-served cover images.</div>
             </div>
             <div class="input-group">
                 <label for="path-static">Static/HTML Path (/static)</label>
                 <input type="text" id="path-static" value="">
+            </div>
+            <div class="path-group-label spaced">// ABS-Stats</div>
+            <div class="input-group">
+                <label for="abs-path-data">AppData Path (/data)</label>
+                <input type="text" id="abs-path-data" value="">
+                <div class="config-description">Creates /mnt/user/appdata/abs-stats in Unraid.</div>
             </div>
         </div>
 
@@ -802,6 +827,9 @@
         }
 
         function populateAbsStatsFromXmlDoc(xmlDoc) {
+            // Path: same getConfigValue pattern as all other fields
+            setFieldValue('abs-path-data', getConfigValue(xmlDoc, 'data', '/data'));
+
             // Port type: find Config where Target="3000"
             const portCfg = Array.from(xmlDoc.querySelectorAll('Config')).find(
                 (c) => c.getAttribute('Type') === 'Port' && c.getAttribute('Target') === '3000'
@@ -915,19 +943,23 @@
             const xml = `<?xml version="1.0"?>
 <Container version="2">
   <Name>${containerName}</Name>
-  <Repository>${repository}</Repository>
-  <Registry/>
+  <Repository>ghcr.io/yxqzme2/achievement-engine-wrapped:latest</Repository>
+  <Registry>https://github.com/yxqzme2/achievement-engine-wrapped/pkgs/container/achievement-engine-wrapped</Registry>
   <Network>${network}</Network>
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support/>
-  <Project/>
-  <Overview/>
-  <Category/>
-  <WebUI/>
-  <TemplateURL/>
-  <Icon/>
+  <Support>https://github.com/yxqzme2/achievement-engine-wrapped/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine-wrapped</Project>
+  <Overview>LitRPG achievement and progression companion for Audiobookshelf. Turns listening activity into XP, levels, gear, quests, leaderboards, and a year-end animated boss battle.&#xD;
+&#xD;
+Requires the abs-stats container to be running on the same Docker network. Install abs-stats first, then this container.&#xD;
+&#xD;
+After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8000 and run a cover sync from the Tier List page before exploring other screens.</Overview>
+  <Category>MediaApp:Other Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8000]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/achievement-engine.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/achievement-engine.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
@@ -996,6 +1028,8 @@
         }
 
         function constructAbsStatsXML() {
+            const network          = document.getElementById('network').value               || 'bridge';
+            const absPathData      = document.getElementById('abs-path-data').value         || '';
             const apiPort          = document.getElementById('abs-api-port').value          || '3000';
             const absUrl           = document.getElementById('abs-url').value               || '';
             const absToken         = document.getElementById('abs-token').value             || '';
@@ -1008,18 +1042,18 @@
 <Container version="2">
   <Name>abs-stats</Name>
   <Repository>ghcr.io/yxqzme2/abs-stats:latest</Repository>
-  <Registry>https://github.com/yxqzme2/achievement-engine/pkgs/container/abs-stats</Registry>
-  <Network>bridge</Network>
+  <Registry>https://github.com/yxqzme2/achievement-engine-wrapped/pkgs/container/abs-stats</Registry>
+  <Network>${network}</Network>
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/yxqzme2/achievement-engine/issues</Support>
-  <Project>https://github.com/yxqzme2/achievement-engine</Project>
+  <Support>https://github.com/yxqzme2/achievement-engine-wrapped/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine-wrapped</Project>
   <Overview>Companion service for Achievement Engine. Connects to your Audiobookshelf server, aggregates listening data, and exposes it as a REST API that Achievement Engine polls.&#xD;&#xA;&#xD;&#xA;This container is REQUIRED for Achievement Engine to function. You will need an Audiobookshelf API token for each user you want to track.</Overview>
   <Category>MediaApp:Other Tools:</Category>
   <WebUI/>
-  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/unraid-docker-templates/main/abs-stats.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine/main/icons/favicon.ico</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/abs-stats.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/abs-stats.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
@@ -1027,6 +1061,7 @@
   <DonateText/>
   <DonateLink/>
   <Requires>Audiobookshelf must be running and accessible from this server. You need API tokens for each user you want to track.</Requires>
+  <Config Name="data" Target="/data" Default="" Mode="rw" Description="Host folder for abs-stats appdata. Creates the /mnt/user/appdata/abs-stats directory in Unraid." Type="Path" Display="always" Required="false" Mask="false">${absPathData}</Config>
   <Config Name="API Port" Target="3000" Default="3000" Mode="tcp" Description="The port abs-stats listens on. Other containers (like Achievement Engine) connect to this port to fetch listening data. Change the host port if 3000 is already in use." Type="Port" Display="always" Required="true" Mask="false">${apiPort}</Config>
   <Config Name="ABS_URL" Target="ABS_URL" Default="http://audiobookshelf:13378" Mode="" Description="The full URL of your Audiobookshelf server, including the port. Example: http://192.168.1.50:13378" Type="Variable" Display="always" Required="true" Mask="false">${absUrl}</Config>
   <Config Name="ABS_TOKEN" Target="ABS_TOKEN" Default="" Mode="" Description="A single Audiobookshelf API token for single-user setups. Get it from: Audiobookshelf &gt; Settings &gt; Users &gt; your user &gt; API Token. Leave empty if using ABS_TOKENS for multiple users." Type="Variable" Display="always" Required="false" Mask="true">${absToken}</Config>
@@ -1072,6 +1107,7 @@
                 'user-aliases': 'Comma-separated username:DisplayName mappings used in UI.',
                 'allowed-users': 'Optional comma-separated ABS usernames to include on filtered pages/APIs. Leave empty to include all users.',
                 // abs-stats fields
+                'abs-path-data': 'Host folder for abs-stats appdata. Unraid will create this directory (e.g. /mnt/user/appdata/abs-stats).',
                 'abs-api-port': 'Host port abs-stats listens on. Change if 3000 is already in use on your server.',
                 'abs-url': 'Full URL of your Audiobookshelf server including port, e.g. http://192.168.1.50:13378.',
                 'abs-engine-url': 'Internal Docker network URL for the Achievement Engine container, e.g. http://achievement-engine:8000.',

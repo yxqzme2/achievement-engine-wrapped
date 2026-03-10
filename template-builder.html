@@ -827,11 +827,8 @@
         }
 
         function populateAbsStatsFromXmlDoc(xmlDoc) {
-            // Path type: find Config where Target="/data" (abs-stats appdata)
-            const dataPathCfg = Array.from(xmlDoc.querySelectorAll('Config')).find(
-                (c) => c.getAttribute('Type') === 'Path' && c.getAttribute('Target') === '/data'
-            );
-            if (dataPathCfg) setFieldValue('abs-path-data', (dataPathCfg.textContent || '').trim());
+            // Path: same getConfigValue pattern as all other fields
+            setFieldValue('abs-path-data', getConfigValue(xmlDoc, 'data', '/data'));
 
             // Port type: find Config where Target="3000"
             const portCfg = Array.from(xmlDoc.querySelectorAll('Config')).find(
