@@ -1976,13 +1976,19 @@ def api_gear_roster(admin: bool = False):
 
 @app.get("/awards/api/usernames")
 def awards_proxy_usernames():
-    import urllib.request
+    import urllib.request, json as _json
     url = cfg.absstats_base_url.rstrip("/") + "/api/usernames"
     try:
         with urllib.request.urlopen(urllib.request.Request(url), timeout=10) as r:
             body = r.read()
-            ct = r.headers.get("Content-Type", "application/json")
-        return Response(content=body, media_type=ct)
+        data = _json.loads(body)
+        # Apply achievement-engine ALLOWED_USERS filter on top of abs-stats ALLOWED_USERNAMES
+        if _ALLOWED_USERS:
+            if "users" in data:
+                data["users"] = [u for u in data["users"] if _user_is_allowed(u.get("username", ""))]
+            if "map" in data:
+                data["map"] = {k: v for k, v in data["map"].items() if _user_is_allowed(v)}
+        return JSONResponse(data)
     except Exception as e:
         raise HTTPException(status_code=502, detail=str(e))
 

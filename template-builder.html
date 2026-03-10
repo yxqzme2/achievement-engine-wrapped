@@ -333,6 +333,17 @@
             background: #2a2a2a;
         }
 
+        /* ── PATH GROUP LABEL (within Path Mappings card) ── */
+        .path-group-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            margin-top: 4px;
+        }
+        .path-group-label.spaced { margin-top: 18px; }
+
         /* ── FOOTER ── */
         .status-footer {
             margin-top: 50px;
@@ -421,6 +432,7 @@
         <!-- Path Mappings -->
         <div class="admin-card">
             <h2 class="section-title">Path Mappings</h2>
+            <div class="path-group-label">// Achievement Engine</div>
             <div class="input-group">
                 <label for="path-data">Data Path (/data)</label>
                 <input type="text" id="path-data" value="">
@@ -428,11 +440,17 @@
             <div class="input-group">
                 <label for="path-covers">Covers Path (/data/covers)</label>
                 <input type="text" id="path-covers" value="">
-                <div class="config-description">Optional: path to abs-stats covers folder for local serving.</div>
+                <div class="config-description">Optional: path for locally-served cover images.</div>
             </div>
             <div class="input-group">
                 <label for="path-static">Static/HTML Path (/static)</label>
                 <input type="text" id="path-static" value="">
+            </div>
+            <div class="path-group-label spaced">// ABS-Stats</div>
+            <div class="input-group">
+                <label for="abs-path-data">AppData Path (/data)</label>
+                <input type="text" id="abs-path-data" value="">
+                <div class="config-description">Creates /mnt/user/appdata/abs-stats in Unraid.</div>
             </div>
         </div>
 
@@ -809,6 +827,12 @@
         }
 
         function populateAbsStatsFromXmlDoc(xmlDoc) {
+            // Path type: find Config where Target="/data" (abs-stats appdata)
+            const dataPathCfg = Array.from(xmlDoc.querySelectorAll('Config')).find(
+                (c) => c.getAttribute('Type') === 'Path' && c.getAttribute('Target') === '/data'
+            );
+            if (dataPathCfg) setFieldValue('abs-path-data', (dataPathCfg.textContent || '').trim());
+
             // Port type: find Config where Target="3000"
             const portCfg = Array.from(xmlDoc.querySelectorAll('Config')).find(
                 (c) => c.getAttribute('Type') === 'Port' && c.getAttribute('Target') === '3000'
@@ -1008,6 +1032,7 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
 
         function constructAbsStatsXML() {
             const network          = document.getElementById('network').value               || 'bridge';
+            const absPathData      = document.getElementById('abs-path-data').value         || '';
             const apiPort          = document.getElementById('abs-api-port').value          || '3000';
             const absUrl           = document.getElementById('abs-url').value               || '';
             const absToken         = document.getElementById('abs-token').value             || '';
@@ -1039,6 +1064,7 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
   <DonateText/>
   <DonateLink/>
   <Requires>Audiobookshelf must be running and accessible from this server. You need API tokens for each user you want to track.</Requires>
+  <Config Name="data" Target="/data" Default="" Mode="rw" Description="Host folder for abs-stats appdata. Creates the /mnt/user/appdata/abs-stats directory in Unraid." Type="Path" Display="always" Required="false" Mask="false">${absPathData}</Config>
   <Config Name="API Port" Target="3000" Default="3000" Mode="tcp" Description="The port abs-stats listens on. Other containers (like Achievement Engine) connect to this port to fetch listening data. Change the host port if 3000 is already in use." Type="Port" Display="always" Required="true" Mask="false">${apiPort}</Config>
   <Config Name="ABS_URL" Target="ABS_URL" Default="http://audiobookshelf:13378" Mode="" Description="The full URL of your Audiobookshelf server, including the port. Example: http://192.168.1.50:13378" Type="Variable" Display="always" Required="true" Mask="false">${absUrl}</Config>
   <Config Name="ABS_TOKEN" Target="ABS_TOKEN" Default="" Mode="" Description="A single Audiobookshelf API token for single-user setups. Get it from: Audiobookshelf &gt; Settings &gt; Users &gt; your user &gt; API Token. Leave empty if using ABS_TOKENS for multiple users." Type="Variable" Display="always" Required="false" Mask="true">${absToken}</Config>
@@ -1084,6 +1110,7 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
                 'user-aliases': 'Comma-separated username:DisplayName mappings used in UI.',
                 'allowed-users': 'Optional comma-separated ABS usernames to include on filtered pages/APIs. Leave empty to include all users.',
                 // abs-stats fields
+                'abs-path-data': 'Host folder for abs-stats appdata. Unraid will create this directory (e.g. /mnt/user/appdata/abs-stats).',
                 'abs-api-port': 'Host port abs-stats listens on. Change if 3000 is already in use on your server.',
                 'abs-url': 'Full URL of your Audiobookshelf server including port, e.g. http://192.168.1.50:13378.',
                 'abs-engine-url': 'Internal Docker network URL for the Achievement Engine container, e.g. http://achievement-engine:8000.',
