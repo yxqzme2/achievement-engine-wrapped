@@ -173,16 +173,23 @@
     input.input-err { border-color: #cc4444; }
 
     /* ── URL validation ── */
-    .url-wrap { position: relative; }
-    .url-wrap input { padding-right: 34px; }
-    .url-icon {
-      position: absolute;
-      right: 10px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 1rem;
-      font-weight: 700;
-      pointer-events: none;
+    .url-wrap { display: flex; gap: 8px; align-items: center; }
+    .url-wrap input { flex: 1; }
+    .btn-check {
+      padding: 9px 14px;
+      background: var(--tab-bg);
+      color: var(--tab-text);
+      border: 1.5px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      white-space: nowrap;
+      transition: all .2s;
+      flex-shrink: 0;
     }
+    .btn-check:hover { background: var(--tab-hover); color: #dccaa5; }
+    .url-icon { font-size: 1rem; font-weight: 700; flex-shrink: 0; min-width: 18px; }
 
     /* ── Toggle group ── */
     .toggle-group {
@@ -470,7 +477,8 @@
         <label>Server URL</label>
         <div class="field-hint">Full address of your ABS instance, including port</div>
         <div class="url-wrap">
-          <input type="text" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()" onblur="validateUrl()">
+          <input type="text" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()">
+          <button class="btn-check" onclick="validateUrl()">Check</button>
           <span class="url-icon" id="url-icon"></span>
         </div>
       </div>
