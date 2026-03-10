@@ -48,27 +48,8 @@
 <div id="picker">
   <div class="picker-title">✦ Sanctum Wrapped 2026 ✦</div>
   <div class="picker-subtitle">Choose your adventurer</div>
-  <div class="picker-grid">
-    <div class="picker-card" id="card-absuser1" onclick="selectUser('absuser1')">
-      <div class="picker-avatar">⚔</div>
-      <div class="picker-username">absuser1</div>
-      <div class="picker-start">Begin →</div>
-    </div>
-    <div class="picker-card" id="card-absuser2" onclick="selectUser('absuser2')">
-      <div class="picker-avatar">🏹</div>
-      <div class="picker-username">absuser2</div>
-      <div class="picker-start">Begin →</div>
-    </div>
-    <div class="picker-card" id="card-absuser3" onclick="selectUser('absuser3')">
-      <div class="picker-avatar">✦</div>
-      <div class="picker-username">absuser3</div>
-      <div class="picker-start">Begin →</div>
-    </div>
-    <div class="picker-card" id="card-absuser4" onclick="selectUser('absuser4')">
-      <div class="picker-avatar">🛡</div>
-      <div class="picker-username">absuser4</div>
-      <div class="picker-start">Begin →</div>
-    </div>
+  <div class="picker-grid" id="picker-grid">
+    <div style="grid-column:1/-1;text-align:center;color:var(--muted);letter-spacing:2px;font-size:.85rem;">Loading adventurers…</div>
   </div>
 </div>
 
@@ -79,6 +60,49 @@
 
 <script>
 const MONTH_NAMES = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+
+const CLASS_ICONS = ['⚔', '🏹', '✦', '🛡', '🗡', '🔮', '🏔', '⚡'];
+
+async function buildPicker() {
+  const grid = document.getElementById('picker-grid');
+  try {
+    const resp = await fetch('/awards/api/usernames');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    const users = Array.isArray(data.users) ? data.users : [];
+
+    if (!users.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);letter-spacing:2px;font-size:.85rem;">No adventurers found.<br>Check ABS_TOKEN / ABS_TOKENS in abs-stats.</div>';
+      return;
+    }
+
+    // Single user — skip picker entirely
+    if (users.length === 1) {
+      selectUser(users[0].username);
+      return;
+    }
+
+    grid.innerHTML = users.map((u, i) => {
+      const icon = CLASS_ICONS[i % CLASS_ICONS.length];
+      const safe = u.username.replace(/'/g, "\\'");
+      return `<div class="picker-card" onclick="selectUser('${safe}')">
+        <div class="picker-avatar">${icon}</div>
+        <div class="picker-username">${u.username}</div>
+        <div class="picker-start">Begin →</div>
+      </div>`;
+    }).join('');
+
+    // Adjust grid columns for user count
+    if (users.length === 1) grid.style.gridTemplateColumns = '1fr';
+    else if (users.length <= 2) grid.style.gridTemplateColumns = 'repeat(2,1fr)';
+    // 3+ uses default 2-col which wraps naturally
+
+  } catch (e) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);letter-spacing:2px;font-size:.85rem;">Could not load users.<br>${e.message}</div>`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', buildPicker);
 
 async function selectUser(userId) {
   // Disable all cards
