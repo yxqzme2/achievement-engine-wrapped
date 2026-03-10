@@ -1,6 +1,6 @@
 # Achievement Engine — Install Reference
 
-Three ways to get up and running. All three produce the same result.
+Four ways to get up and running. Options A and C use browser-based wizards — no prior config knowledge needed.
 
 ---
 
@@ -62,7 +62,34 @@ Open `http://localhost:8000`
 
 ---
 
-## Option C — Unraid Template
+## Option C — Unraid Template Builder (Recommended for Unraid users)
+
+A browser-based form that generates both Unraid XML template files for you.
+
+```bash
+git clone https://github.com/yxqzme2/achievement-engine-wrapped.git
+cd achievement-engine-wrapped
+xdg-open template-builder.html &>/dev/null &   # Linux
+open template-builder.html                      # macOS
+```
+
+1. Fill in your ABS URL, token(s), timezone, and any optional settings
+2. Click **⬇ Download Both Templates** — you'll get:
+   - `my-achievement-engine.xml`
+   - `my-abs-stats.xml`
+3. Copy both XML files into your Unraid user templates folder:
+   ```text
+   /boot/config/plugins/dockerMan/templates-user/
+   ```
+4. In Unraid, go to **Docker → Add Container** — both templates will appear
+5. Install **abs-stats** first, then **achievement-engine**
+6. Put both containers on the same Docker network
+7. Apply and start both containers
+8. Open `http://<unraid-ip>:8000`
+
+### Option C (manual) — Unraid without the builder
+
+If you prefer to configure templates directly in the Unraid UI:
 
 1. In Unraid, go to **Docker → Add Container → Template Repositories**
 2. Add this repo URL to your template list

@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unraid Template Forge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --neon-amber: #ffae42;
+            --neon-green: #2bdc8a;
+            --bg-dark: #050505;
+            --card-bg: #111;
+            --border: #333;
+            --text: #e0e0e0;
+            --text-muted: #888;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── SCANLINE (matches hub exactly) ── */
+        .scanline {
+            width: 100%; height: 100px; z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255,255,255,0.05) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1; position: fixed; bottom: 100%; left: 0; pointer-events: none;
+            animation: scanline 10s linear infinite;
+        }
+        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
+
+        /* ── NAV (matches hub exactly) ── */
+        .admin-nav {
+            width: 100%;
+            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+            border-bottom: 1px solid var(--neon-blue);
+            box-shadow: 0 0 12px rgba(0, 242, 255, 0.16);
+        }
+        .admin-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .admin-nav a {
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #9ad8df;
+            padding: 6px 10px;
+            border: 1px solid #2b4448;
+            transition: all 0.2s ease;
+        }
+        .admin-nav a.brand {
+            color: var(--neon-blue);
+            border-color: transparent;
+            padding-left: 0;
+            margin-right: 4px;
+        }
+        .admin-nav a:hover {
+            color: #001215;
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+        .admin-nav a.active {
+            color: #001215;
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.35);
+        }
+
+        /* ── HEADER (matches hub exactly) ── */
+        header {
+            background: #111;
+            padding: 15px;
+            border-bottom: 2px solid var(--neon-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0;
+            color: var(--neon-blue);
+        }
+        .nav-back {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        /* ── LAYOUT GRID (outer wrapper only, no card styling) ── */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* ── ADMIN CARD (matches hub pattern exactly) ── */
+        .admin-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-card.full-width {
+            grid-column: 1 / -1;
+        }
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue));
+            animation: borderFlow 3s linear infinite;
+        }
+        @keyframes borderFlow {
+            0%   { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* ── SECTION HEADINGS ── */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--neon-pink);
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ── FORM ELEMENTS ── */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .input-group:last-child { margin-bottom: 0; }
+
+        label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select, textarea {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.15);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .three-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .config-description {
+            font-size: 0.72rem;
+            color: #666;
+            margin-top: 2px;
+            font-style: italic;
+        }
+
+        /* ── ACTIONS ROW ── */
+        .actions-card {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px 0;
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 14px 28px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        .btn-gold {
+            border-color: var(--neon-amber);
+            color: var(--neon-amber);
+        }
+        .btn-gold:hover {
+            background: var(--neon-amber);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-amber);
+        }
+
+        /* ── XML PREVIEW ── */
+        #xml-preview {
+            grid-column: 1 / -1;
+            width: 100%;
+            height: 400px;
+            background: #000;
+            color: var(--neon-green);
+            padding: 20px;
+            font-size: 0.85rem;
+            border: 1px solid #222;
+            overflow: auto;
+            white-space: pre;
+            box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.05);
+            display: none;
+        }
+
+        /* ── LOAD SECTION ── */
+        .load-card {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-left: 2px solid var(--neon-blue);
+            padding: 20px 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .load-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue));
+            animation: borderFlow 3s linear infinite;
+        }
+        .load-card-inner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .load-card-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            color: var(--neon-blue);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .load-card-desc {
+            font-size: 0.72rem;
+            color: #666;
+            flex: 1;
+            min-width: 200px;
+        }
+        .load-feedback {
+            grid-column: 1 / -1;
+            font-size: 0.75rem;
+            color: #777;
+            font-style: italic;
+            min-height: 1.2em;
+            padding: 2px 0;
+        }
+        .load-feedback.ok  { color: var(--neon-green); }
+        .load-feedback.err { color: var(--neon-pink); }
+
+        /* ── ABS-STATS DIVIDER ── */
+        .section-divider {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 10px 0 4px;
+        }
+        .section-divider span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--neon-pink);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .section-divider::before, .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2a2a2a;
+        }
+
+        /* ── FOOTER ── */
+        .status-footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #444;
+            border-top: 1px solid #222;
+            padding: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .admin-card.full-width { grid-column: 1; }
+            .two-col, .three-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+
+    <header>
+        <h1>Unraid Template Forge</h1>
+        <p class="nav-back">// Standalone — no server required. Fill in your settings, download both XML files, install in Unraid.</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Load Existing Template -->
+        <div class="load-card">
+            <div class="load-card-inner">
+                <span class="load-card-label">// Import Existing Template</span>
+                <span class="load-card-desc">Load a saved <code style="color:var(--neon-blue)">my-achievement-engine.xml</code> or <code style="color:var(--neon-pink)">my-abs-stats.xml</code> to pre-fill all fields below.</span>
+                <input type="file" id="template-file-input" accept=".xml,text/xml" style="display:none;" onchange="handleTemplateFileSelected(event)">
+                <button class="btn" onclick="promptTemplateFileLoad()">[ CHOOSE FILE ]</button>
+            </div>
+            <div id="template-load-status" class="load-feedback"></div>
+        </div>
+
+        <!-- General Configuration -->
+        <div class="admin-card">
+            <h2 class="section-title">General Config</h2>
+            <div class="input-group">
+                <label for="container-name">Container Name</label>
+                <input type="text" id="container-name" value="">
+            </div>
+            <div class="input-group">
+                <label for="repository">Repository</label>
+                <input type="text" id="repository" value="">
+            </div>
+            <div class="input-group">
+                <label for="network">Network</label>
+                <input type="text" id="network" value="">
+            </div>
+            <div class="input-group">
+                <label for="dashboard-port">Dashboard Port (Host)</label>
+                <input type="number" id="dashboard-port" value="">
+            </div>
+            <div class="input-group">
+                <label for="var-tz">Timezone (TZ)</label>
+                <select id="var-tz">
+                    <option value="">-- Select Timezone --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Path Mappings -->
+        <div class="admin-card">
+            <h2 class="section-title">Path Mappings</h2>
+            <div class="input-group">
+                <label for="path-data">Data Path (/data)</label>
+                <input type="text" id="path-data" value="">
+            </div>
+            <div class="input-group">
+                <label for="path-covers">Covers Path (/data/covers)</label>
+                <input type="text" id="path-covers" value="">
+                <div class="config-description">Optional: path to abs-stats covers folder for local serving.</div>
+            </div>
+            <div class="input-group">
+                <label for="path-static">Static/HTML Path (/static)</label>
+                <input type="text" id="path-static" value="">
+            </div>
+        </div>
+
+        <!-- Core System Variables -->
+        <div class="admin-card full-width">
+            <h2 class="section-title">Core System Variables</h2>
+            <div class="two-col">
+                <div class="input-group">
+                    <label for="var-absstats-url">ABSSTATS_BASE_URL</label>
+                    <input type="text" id="var-absstats-url" value="">
+                </div>
+                <div class="input-group">
+                    <label for="var-poll-seconds">POLL_SECONDS</label>
+                    <input type="number" id="var-poll-seconds" value="">
+                </div>
+                <div class="input-group">
+                    <label for="var-xp-start-date">XP Start Date</label>
+                    <input type="date" id="var-xp-start-date">
+                    <div class="config-description">Converted to Unix timestamp at 00:01 on the selected day.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logic & Thresholds -->
+        <div class="admin-card">
+            <h2 class="section-title">Logic &amp; Thresholds</h2>
+            <div class="input-group">
+                <label for="var-verify-threshold">Verify Listen Threshold (0.0 - 1.0)</label>
+                <input type="text" id="var-verify-threshold" value="">
+            </div>
+            <div class="input-group">
+                <label for="var-strict-verification">Strict Verification</label>
+                <select id="var-strict-verification">
+                    <option value="" selected>-- Select --</option>
+                    <option value="false">False</option>
+                    <option value="true">True</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="var-require-duration">Require Duration for Credit</label>
+                <select id="var-require-duration">
+                    <option value="" selected>-- Select --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="var-require-session">Require In-Scope Session</label>
+                <select id="var-require-session">
+                    <option value="" selected>-- Select --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="var-boss-hp">Wrapped Boss HP</label>
+                <input type="number" id="var-boss-hp" value="">
+            </div>
+            <div class="input-group">
+                <label for="var-wrapped-enabled">Wrapped Enabled</label>
+                <select id="var-wrapped-enabled">
+                    <option value="" selected>-- Select --</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+                <div class="config-description">Show or hide Wrapped pages and links.</div>
+            </div>
+            <div class="input-group">
+                <label for="var-wrapped-year">Wrapped Year (admin only)</label>
+                <input type="number" id="var-wrapped-year" value="">
+                <div class="config-description">Admin-only reporting year for Wrapped.</div>
+            </div>
+        </div>
+
+        <!-- Maintenance -->
+        <div class="admin-card">
+            <h2 class="section-title">Maintenance</h2>
+            <div class="input-group">
+                <label for="var-backfill">Run Achievement Backfill</label>
+                <select id="var-backfill">
+                    <option value="" selected>-- Select --</option>
+                    <option value="false">False</option>
+                    <option value="true">True</option>
+                </select>
+                <div class="config-description">Set true for one boot, then false.</div>
+            </div>
+            <div class="input-group">
+                <label for="var-backfill-key">Backfill Once Key</label>
+                <input type="text" id="var-backfill-key" value="">
+            </div>
+        </div>
+
+        <!-- SMTP Settings -->
+        <div class="admin-card full-width">
+            <h2 class="section-title">Notification Settings (SMTP)</h2>
+            <div class="three-col">
+                <div class="input-group">
+                    <label for="smtp-host">SMTP Host</label>
+                    <input type="text" id="smtp-host" value="">
+                </div>
+                <div class="input-group">
+                    <label for="smtp-port">SMTP Port</label>
+                    <input type="number" id="smtp-port" value="">
+                </div>
+                <div class="input-group">
+                    <label for="smtp-username">SMTP Username</label>
+                    <input type="text" id="smtp-username" value="">
+                </div>
+                <div class="input-group">
+                    <label for="smtp-password">SMTP Password</label>
+                    <input type="password" id="smtp-password" value="">
+                </div>
+                <div class="input-group">
+                    <label for="smtp-from">SMTP From</label>
+                    <input type="text" id="smtp-from" value="">
+                </div>
+                <div class="input-group">
+                    <label for="smtp-override">SMTP To Override</label>
+                    <input type="text" id="smtp-override" value="">
+                </div>
+            </div>
+        </div>
+
+        <!-- User & Dashboard Customization -->
+        <div class="admin-card full-width">
+            <h2 class="section-title">User &amp; Dashboard Customization</h2>
+            <div class="input-group">
+                <label for="user-icons">User Icons Mapping</label>
+                <input type="text" id="user-icons" value="">
+                <div class="config-description">Format: absuser1:/icons/avatar1.png,absuser2:/icons/avatar2.png</div>
+            </div>
+            <div class="input-group">
+                <label for="user-aliases">User Aliases Mapping</label>
+                <input type="text" id="user-aliases" value="">
+                <div class="config-description">Format: username:Alias,username2:Alias2</div>
+            </div>
+            <div class="input-group">
+                <label for="allowed-users">Allowed Users (optional)</label>
+                <input type="text" id="allowed-users" value="">
+                <div class="config-description">Comma-separated ABS usernames to include.</div>
+            </div>
+        </div>
+
+        <!-- ABS-Stats Divider -->
+        <div class="section-divider">
+            <span>ABS-Stats Container</span>
+        </div>
+
+        <!-- ABS-Stats: Connection -->
+        <div class="admin-card">
+            <h2 class="section-title">ABS-Stats Connection</h2>
+            <div class="input-group">
+                <label for="abs-api-port">API Port (Host)</label>
+                <input type="number" id="abs-api-port" value="">
+                <div class="config-description">Host port abs-stats listens on (container always uses 3000). Change if 3000 is already in use.</div>
+            </div>
+            <div class="input-group">
+                <label for="abs-url">Audiobookshelf URL</label>
+                <input type="text" id="abs-url" value="">
+                <div class="config-description">Full URL of your ABS server, e.g. http://192.168.1.50:13378</div>
+            </div>
+            <div class="input-group">
+                <label for="abs-engine-url">Engine URL (internal)</label>
+                <input type="text" id="abs-engine-url" value="">
+                <div class="config-description">Internal URL for Achievement Engine container, e.g. http://achievement-engine:8000</div>
+            </div>
+        </div>
+
+        <!-- ABS-Stats: Auth & Users -->
+        <div class="admin-card">
+            <h2 class="section-title">ABS-Stats Auth &amp; Users</h2>
+            <div class="input-group">
+                <label for="abs-token">ABS Token (single user)</label>
+                <input type="password" id="abs-token" value="">
+                <div class="config-description">Single-user API token from ABS Settings &gt; Users &gt; API Token. Leave empty if using per-user tokens.</div>
+            </div>
+            <div class="input-group">
+                <label for="abs-tokens">ABS Tokens (per-user)</label>
+                <input type="text" id="abs-tokens" value="">
+                <div class="config-description">Format: username1:token1,username2:token2. Leave empty if using single token above.</div>
+            </div>
+            <div class="input-group">
+                <label for="abs-allowed-usernames">Allowed Usernames</label>
+                <input type="text" id="abs-allowed-usernames" value="">
+                <div class="config-description">Comma-separated ABS usernames to track, or * for all users.</div>
+            </div>
+            <div class="input-group">
+                <label for="abs-discord-webhook">Discord Webhook URL</label>
+                <input type="password" id="abs-discord-webhook" value="">
+                <div class="config-description">Optional. Discord webhook for achievement notifications.</div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions-card">
+            <button class="btn" onclick="generateXML()">[ PREVIEW AE XML ]</button>
+            <button class="btn btn-gold" onclick="downloadBothTemplates()">[ DOWNLOAD BOTH TEMPLATES ]</button>
+        </div>
+
+        <pre id="xml-preview"></pre>
+
+    </div>
+
+    <div class="status-footer">
+        PROJECT: ACHIEVEMENT ENGINE // VERSION: 2.0.0-PROTOTYPE // AUTH: UNRESTRICTED
+    </div>
+
+    <script>
+        function getXpStartTimestamp() {
+            const dateVal = document.getElementById('var-xp-start-date').value.trim();
+            if (!dateVal) return '';
+            const dt = new Date(`${dateVal}T00:01:00`);
+            if (Number.isNaN(dt.getTime())) return '';
+            return String(Math.floor(dt.getTime() / 1000));
+        }
+
+        function setXpDateFromTimestamp(ts) {
+            const el = document.getElementById('var-xp-start-date');
+            if (!el) return;
+            if (!ts) {
+                el.value = '';
+                return;
+            }
+            const n = Number(ts);
+            if (!Number.isFinite(n) || n <= 0) {
+                el.value = '';
+                return;
+            }
+            const d = new Date(n * 1000);
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            el.value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        function ensureTimezoneOption(tz) {
+            const tzSelect = document.getElementById('var-tz');
+            if (!tzSelect || !tz) return;
+            const exists = Array.from(tzSelect.options).some((opt) => opt.value === tz);
+            if (!exists) {
+                const opt = document.createElement('option');
+                opt.value = tz;
+                opt.textContent = tz;
+                tzSelect.appendChild(opt);
+            }
+        }
+
+        function populateTimezoneDropdown() {
+            const tzSelect = document.getElementById('var-tz');
+            if (!tzSelect) return;
+
+            const current = tzSelect.value;
+            const placeholder = '<option value="">-- Select Timezone --</option>';
+            let zones = [];
+
+            if (typeof Intl !== 'undefined' && typeof Intl.supportedValuesOf === 'function') {
+                try {
+                    zones = Intl.supportedValuesOf('timeZone');
+                } catch (_) {
+                    zones = [];
+                }
+            }
+
+            if (!zones.length) {
+                zones = [
+                    'UTC',
+                    'America/New_York',
+                    'America/Chicago',
+                    'America/Denver',
+                    'America/Los_Angeles',
+                    'America/Phoenix',
+                    'America/Anchorage',
+                    'Pacific/Honolulu',
+                    'Europe/London',
+                    'Europe/Berlin',
+                    'Asia/Tokyo',
+                    'Australia/Sydney'
+                ];
+            }
+
+            tzSelect.innerHTML = placeholder + zones.map((z) => `<option value="${z}">${z}</option>`).join('');
+            if (current) {
+                ensureTimezoneOption(current);
+                tzSelect.value = current;
+            }
+        }
+
+        function clearFormForBlankStart() {
+            document.querySelectorAll('input, textarea').forEach((el) => {
+                if (el.id === 'xml-preview') return;
+                el.value = '';
+            });
+
+            document.querySelectorAll('select').forEach((el) => {
+                if (el.options.length) {
+                    const blank = Array.from(el.options).find((o) => o.value === '');
+                    if (blank) {
+                        el.value = '';
+                    } else {
+                        el.selectedIndex = -1;
+                    }
+                }
+            });
+        }
+
+        function getConfigValue(xmlDoc, name, target) {
+            const configs = Array.from(xmlDoc.querySelectorAll('Config'));
+            const byName = new Map();
+            const byTarget = new Map();
+
+            configs.forEach((cfg) => {
+                const n = cfg.getAttribute('Name') || '';
+                const t = cfg.getAttribute('Target') || '';
+                const v = (cfg.textContent || '').trim();
+                if (n) byName.set(n, v);
+                if (t) byTarget.set(t, v);
+            });
+
+            if (target && byTarget.has(target)) return byTarget.get(target);
+            if (name && byName.has(name)) return byName.get(name);
+            return '';
+        }
+
+        function setFieldValue(id, value) {
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            if (el.tagName === 'SELECT') {
+                ensureTimezoneOption(value);
+                const hasOption = Array.from(el.options).some((opt) => opt.value === value);
+                el.value = hasOption ? value : '';
+                return;
+            }
+
+            el.value = value || '';
+        }
+
+        function populateAeFromXmlDoc(xmlDoc) {
+            setFieldValue('container-name', (xmlDoc.querySelector('Container > Name')?.textContent || '').trim());
+            setFieldValue('repository', (xmlDoc.querySelector('Container > Repository')?.textContent || '').trim());
+            setFieldValue('network', (xmlDoc.querySelector('Container > Network')?.textContent || '').trim());
+
+            setFieldValue('dashboard-port', getConfigValue(xmlDoc, 'Dashboard Port', '8000'));
+            setFieldValue('path-data', getConfigValue(xmlDoc, 'data', '/data'));
+            setFieldValue('path-covers', getConfigValue(xmlDoc, 'covers', '/data/covers'));
+            setFieldValue('path-static', getConfigValue(xmlDoc, 'HTML Files', '/static'));
+
+            setFieldValue('var-absstats-url', getConfigValue(xmlDoc, 'ABSSTATS_BASE_URL', 'ABSSTATS_BASE_URL'));
+            setFieldValue('var-poll-seconds', getConfigValue(xmlDoc, 'POLL_SECONDS', 'POLL_SECONDS'));
+            setFieldValue('var-tz', getConfigValue(xmlDoc, 'TZ', 'TZ'));
+            setXpDateFromTimestamp(getConfigValue(xmlDoc, 'XP_START_TIMESTAMP', 'XP_START_TIMESTAMP'));
+
+            setFieldValue('var-verify-threshold', getConfigValue(xmlDoc, 'VERIFY_LISTEN_THRESHOLD', 'VERIFY_LISTEN_THRESHOLD'));
+            setFieldValue('var-strict-verification', getConfigValue(xmlDoc, 'STRICT_VERIFICATION', 'STRICT_VERIFICATION'));
+            setFieldValue('var-require-duration', getConfigValue(xmlDoc, 'REQUIRE_DURATION_FOR_CREDIT', 'REQUIRE_DURATION_FOR_CREDIT'));
+            setFieldValue('var-require-session', getConfigValue(xmlDoc, 'REQUIRE_2026_SESSION_FOR_CREDIT', 'REQUIRE_2026_SESSION_FOR_CREDIT'));
+            setFieldValue('var-boss-hp', getConfigValue(xmlDoc, 'WRAPPED_BOSS_HP', 'WRAPPED_BOSS_HP'));
+            setFieldValue('var-wrapped-enabled', getConfigValue(xmlDoc, 'WRAPPED_ENABLED', 'WRAPPED_ENABLED'));
+            setFieldValue('var-wrapped-year', getConfigValue(xmlDoc, 'WRAPPED_YEAR', 'WRAPPED_YEAR'));
+
+            setFieldValue('var-backfill', getConfigValue(xmlDoc, 'RUN_ACHIEVEMENT_BACKFILL', 'RUN_ACHIEVEMENT_BACKFILL'));
+            setFieldValue('var-backfill-key', getConfigValue(xmlDoc, 'BACKFILL_ONCE_KEY', 'BACKFILL_ONCE_KEY'));
+
+            setFieldValue('smtp-host', getConfigValue(xmlDoc, 'SMTP_HOST', 'SMTP_HOST'));
+            setFieldValue('smtp-port', getConfigValue(xmlDoc, 'SMTP_PORT', 'SMTP_PORT'));
+            setFieldValue('smtp-username', getConfigValue(xmlDoc, 'SMTP_USERNAME', 'SMTP_USERNAME'));
+            setFieldValue('smtp-password', getConfigValue(xmlDoc, 'SMTP_PASSWORD', 'SMTP_PASSWORD'));
+            setFieldValue('smtp-from', getConfigValue(xmlDoc, 'SMTP_FROM', 'SMTP_FROM'));
+            setFieldValue('smtp-override', getConfigValue(xmlDoc, 'SMTP_TO_OVERRIDE', 'SMTP_TO_OVERRIDE'));
+
+            setFieldValue('user-icons', getConfigValue(xmlDoc, 'USER_ICONS', 'USER_ICONS'));
+            setFieldValue('user-aliases', getConfigValue(xmlDoc, 'USER_ALIASES', 'USER_ALIASES'));
+            setFieldValue('allowed-users', getConfigValue(xmlDoc, 'ALLOWED_USERS', 'ALLOWED_USERS'));
+        }
+
+        function populateAbsStatsFromXmlDoc(xmlDoc) {
+            // Port type: find Config where Target="3000"
+            const portCfg = Array.from(xmlDoc.querySelectorAll('Config')).find(
+                (c) => c.getAttribute('Type') === 'Port' && c.getAttribute('Target') === '3000'
+            );
+            if (portCfg) setFieldValue('abs-api-port', (portCfg.textContent || '').trim());
+
+            setFieldValue('abs-url',               getConfigValue(xmlDoc, 'ABS_URL',              'ABS_URL'));
+            setFieldValue('abs-token',             getConfigValue(xmlDoc, 'ABS_TOKEN',            'ABS_TOKEN'));
+            setFieldValue('abs-tokens',            getConfigValue(xmlDoc, 'ABS_TOKENS',           'ABS_TOKENS'));
+            setFieldValue('abs-engine-url',        getConfigValue(xmlDoc, 'ENGINE_URL',           'ENGINE_URL'));
+            setFieldValue('abs-allowed-usernames', getConfigValue(xmlDoc, 'ALLOWED_USERNAMES',    'ALLOWED_USERNAMES'));
+            setFieldValue('abs-discord-webhook',   getConfigValue(xmlDoc, 'DISCORD_WEBHOOK_URL',  'DISCORD_WEBHOOK_URL'));
+        }
+
+        function parseAndPopulateTemplateXml(xmlText) {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+            if (xmlDoc.querySelector('parsererror')) {
+                throw new Error('Invalid XML format.');
+            }
+            const containerName = (xmlDoc.querySelector('Container > Name')?.textContent || '').trim().toLowerCase();
+            if (containerName === 'abs-stats') {
+                populateAbsStatsFromXmlDoc(xmlDoc);
+                return 'abs-stats';
+            } else {
+                populateAeFromXmlDoc(xmlDoc);
+                return 'achievement-engine';
+            }
+        }
+
+        async function loadTemplateFromLocalXmlIfPresent() {
+            try {
+                const resp = await fetch('./my-achievement-engine.xml', { cache: 'no-store' });
+                if (!resp.ok) return;
+                const xmlText = await resp.text();
+                parseAndPopulateTemplateXml(xmlText);
+
+                const statusEl = document.getElementById('template-load-status');
+                if (statusEl) statusEl.textContent = 'Loaded ./my-achievement-engine.xml';
+            } catch (_) {
+                // If file doesn't exist or browser blocks access, stay with blank form.
+            }
+        }
+
+        function promptTemplateFileLoad() {
+            const input = document.getElementById('template-file-input');
+            if (input) input.click();
+        }
+
+        async function handleTemplateFileSelected(event) {
+            const file = event?.target?.files?.[0];
+            const statusEl = document.getElementById('template-load-status');
+            if (!file) return;
+
+            try {
+                const xmlText = await file.text();
+                const detected = parseAndPopulateTemplateXml(xmlText);
+                if (statusEl) {
+                    statusEl.className = 'load-feedback ok';
+                    statusEl.textContent = detected === 'abs-stats'
+                        ? `✓ Loaded ${file.name} — ABS-Stats fields populated.`
+                        : `✓ Loaded ${file.name} — Achievement Engine fields populated.`;
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.className = 'load-feedback err';
+                    statusEl.textContent = `✗ Failed to load ${file.name}: ${err.message}`;
+                }
+            }
+            // Reset file input so the same file can be re-loaded if needed
+            event.target.value = '';
+        }
+
+        function constructXML() {
+            const containerName = document.getElementById('container-name').value;
+            const repository = document.getElementById('repository').value;
+            const network = document.getElementById('network').value;
+            const dashboardPort = document.getElementById('dashboard-port').value;
+
+            const pathData = document.getElementById('path-data').value;
+            const pathCovers = document.getElementById('path-covers').value;
+            const pathStatic = document.getElementById('path-static').value;
+
+            const absStatsUrl = document.getElementById('var-absstats-url').value;
+            const pollSeconds = document.getElementById('var-poll-seconds').value;
+            const tz = document.getElementById('var-tz').value;
+            const xpStart = getXpStartTimestamp();
+
+            const verifyThreshold = document.getElementById('var-verify-threshold').value;
+            const strictVerification = document.getElementById('var-strict-verification').value;
+            const requireDuration = document.getElementById('var-require-duration').value;
+            const requireSession = document.getElementById('var-require-session').value;
+            const bossHp = document.getElementById('var-boss-hp').value;
+            const wrappedEnabled = document.getElementById('var-wrapped-enabled').value;
+            const wrappedYear = document.getElementById('var-wrapped-year').value;
+
+            const backfill = document.getElementById('var-backfill').value;
+            const backfillKey = document.getElementById('var-backfill-key').value;
+
+            const smtpHost = document.getElementById('smtp-host').value;
+            const smtpPort = document.getElementById('smtp-port').value;
+            const smtpUser = document.getElementById('smtp-username').value;
+            const smtpPass = document.getElementById('smtp-password').value;
+            const smtpFrom = document.getElementById('smtp-from').value;
+            const smtpOverride = document.getElementById('smtp-override').value;
+
+            const userIcons = document.getElementById('user-icons').value;
+            const userAliases = document.getElementById('user-aliases').value;
+            const allowedUsers = document.getElementById('allowed-users').value;
+
+            const xml = `<?xml version="1.0"?>
+<Container version="2">
+  <Name>${containerName}</Name>
+  <Repository>${repository}</Repository>
+  <Registry/>
+  <Network>${network}</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project/>
+  <Overview/>
+  <Category/>
+  <WebUI/>
+  <TemplateURL/>
+  <Icon/>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>${Math.floor(Date.now() / 1000)}</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="data" Target="/data" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">${pathData}</Config>
+  <Config Name="covers" Target="/data/covers" Default="" Mode="rw" Description="Optional: path to abs-stats covers folder for local serving. If not mapped, cover images proxy through abs-stats API." Type="Path" Display="always" Required="false" Mask="false">${pathCovers}</Config>
+  <Config Name="ABSSTATS_BASE_URL" Target="ABSSTATS_BASE_URL" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${absStatsUrl}</Config>
+  <Config Name="POLL_SECONDS" Target="POLL_SECONDS" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${pollSeconds}</Config>
+  <Config Name="STATE_DB_PATH" Target="STATE_DB_PATH" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">/data/state.db</Config>
+  <Config Name="TZ" Target="TZ" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${tz}</Config>
+  <Config Name="XP_START_TIMESTAMP" Target="XP_START_TIMESTAMP" Default="" Mode="" Description="Unix timestamp (seconds) when progression economy starts. XP/loot/levels use this boundary." Type="Variable" Display="always" Required="false" Mask="false">${xpStart}</Config>
+  <Config Name="VERIFY_LISTEN_THRESHOLD" Target="VERIFY_LISTEN_THRESHOLD" Default="" Mode="" Description="Completion verification ratio (timeListening / duration). Used only when STRICT_VERIFICATION=true." Type="Variable" Display="always" Required="false" Mask="false">${verifyThreshold}</Config>
+  <Config Name="STRICT_VERIFICATION" Target="STRICT_VERIFICATION" Default="" Mode="" Description="If true, progression requires verification rules. If false, progression uses completion timestamps only." Type="Variable" Display="always" Required="false" Mask="false">${strictVerification}</Config>
+  <Config Name="REQUIRE_DURATION_FOR_CREDIT" Target="REQUIRE_DURATION_FOR_CREDIT" Default="" Mode="" Description="If true, books with unknown duration are excluded from progression credit." Type="Variable" Display="always" Required="false" Mask="false">${requireDuration}</Config>
+  <Config Name="REQUIRE_2026_SESSION_FOR_CREDIT" Target="REQUIRE_2026_SESSION_FOR_CREDIT" Default="" Mode="" Description="If true, requires at least one session at/after XP_START_TIMESTAMP for progression credit (when STRICT_VERIFICATION=true)." Type="Variable" Display="always" Required="false" Mask="false">${requireSession}</Config>
+  <Config Name="WRAPPED_BOSS_HP" Target="WRAPPED_BOSS_HP" Default="" Mode="" Description="Boss HP used by wrapped combat and picker state." Type="Variable" Display="always" Required="false" Mask="false">${bossHp}</Config>
+  <Config Name="WRAPPED_ENABLED" Target="WRAPPED_ENABLED" Default="" Mode="" Description="Enable or disable Wrapped pages and links." Type="Variable" Display="always" Required="false" Mask="false">${wrappedEnabled}</Config>
+  <Config Name="WRAPPED_YEAR" Target="WRAPPED_YEAR" Default="" Mode="" Description="Admin-only override for Wrapped report year (e.g., 2026, 2027)." Type="Variable" Display="always" Required="false" Mask="false">${wrappedYear}</Config>
+  <Config Name="RUN_ACHIEVEMENT_BACKFILL" Target="RUN_ACHIEVEMENT_BACKFILL" Default="" Mode="" Description="One-shot startup backfill for all-time achievements. Set true for one boot, then false." Type="Variable" Display="always" Required="false" Mask="false">${backfill}</Config>
+  <Config Name="BACKFILL_ONCE_KEY" Target="BACKFILL_ONCE_KEY" Default="" Mode="" Description="Marker ID stored in DB so backfill only runs once per key." Type="Variable" Display="always" Required="false" Mask="false">${backfillKey}</Config>
+  <Config Name="SMTP_HOST" Target="SMTP_HOST" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${smtpHost}</Config>
+  <Config Name="SMTP_PORT" Target="SMTP_PORT" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${smtpPort}</Config>
+  <Config Name="SMTP_USERNAME" Target="SMTP_USERNAME" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${smtpUser}</Config>
+  <Config Name="SMTP_PASSWORD" Target="SMTP_PASSWORD" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${smtpPass}</Config>
+  <Config Name="SMTP_FROM" Target="SMTP_FROM" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${smtpFrom}</Config>
+  <Config Name="SEND_TEST_EMAIL" Target="SEND_TEST_EMAIL" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="SMTP_DEBUG" Target="SMTP_DEBUG" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">0</Config>
+  <Config Name="Dashboard Port" Target="8000" Default="" Mode="tcp" Description="" Type="Port" Display="always" Required="false" Mask="false">${dashboardPort}</Config>
+  <Config Name="SMTP_TO_OVERRIDE" Target="SMTP_TO_OVERRIDE" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${smtpOverride}</Config>
+  <Config Name="USER_EMAILS" Target="USER_EMAILS" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="USER_ICONS" Target="USER_ICONS" Default="" Mode="" Description="Custom avatar images for each user on the dashboard. Place avatar PNG files in your appdata icons folder, then map them here." Type="Variable" Display="always" Required="false" Mask="false">${userIcons}</Config>
+  <Config Name="USER_ALIASES" Target="USER_ALIASES" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${userAliases}</Config>
+  <Config Name="ALLOWED_USERS" Target="ALLOWED_USERS" Default="" Mode="" Description="Optional comma-separated ABS usernames to include on filtered pages/APIs. Leave empty to include all users." Type="Variable" Display="always" Required="false" Mask="false">${allowedUsers}</Config>
+  <Config Name="HTML Files" Target="/static" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">${pathStatic}</Config>
+  <TailscaleStateDir/>
+</Container>`;
+            return xml;
+        }
+
+        function generateXML() {
+            const xml = constructXML();
+            const preview = document.getElementById('xml-preview');
+            preview.textContent = xml;
+            preview.style.display = 'block';
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function triggerDownload(content, filename) {
+            const blob = new Blob([content], { type: 'text/xml' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function downloadBothTemplates() {
+            triggerDownload(constructXML(), 'my-achievement-engine.xml');
+            setTimeout(() => triggerDownload(constructAbsStatsXML(), 'my-abs-stats.xml'), 300);
+        }
+
+        function constructAbsStatsXML() {
+            const apiPort          = document.getElementById('abs-api-port').value          || '3000';
+            const absUrl           = document.getElementById('abs-url').value               || '';
+            const absToken         = document.getElementById('abs-token').value             || '';
+            const absTokens        = document.getElementById('abs-tokens').value            || '';
+            const engineUrl        = document.getElementById('abs-engine-url').value        || 'http://achievement-engine:8000';
+            const allowedUsernames = document.getElementById('abs-allowed-usernames').value || '*';
+            const discordWebhook   = document.getElementById('abs-discord-webhook').value   || '';
+
+            return `<?xml version="1.0"?>
+<Container version="2">
+  <Name>abs-stats</Name>
+  <Repository>ghcr.io/yxqzme2/abs-stats:latest</Repository>
+  <Registry>https://github.com/yxqzme2/achievement-engine/pkgs/container/abs-stats</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/yxqzme2/achievement-engine/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine</Project>
+  <Overview>Companion service for Achievement Engine. Connects to your Audiobookshelf server, aggregates listening data, and exposes it as a REST API that Achievement Engine polls.&#xD;&#xA;&#xD;&#xA;This container is REQUIRED for Achievement Engine to function. You will need an Audiobookshelf API token for each user you want to track.</Overview>
+  <Category>MediaApp:Other Tools:</Category>
+  <WebUI/>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/unraid-docker-templates/main/abs-stats.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine/main/icons/favicon.ico</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>${Math.floor(Date.now() / 1000)}</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>Audiobookshelf must be running and accessible from this server. You need API tokens for each user you want to track.</Requires>
+  <Config Name="API Port" Target="3000" Default="3000" Mode="tcp" Description="The port abs-stats listens on. Other containers (like Achievement Engine) connect to this port to fetch listening data. Change the host port if 3000 is already in use." Type="Port" Display="always" Required="true" Mask="false">${apiPort}</Config>
+  <Config Name="ABS_URL" Target="ABS_URL" Default="http://audiobookshelf:13378" Mode="" Description="The full URL of your Audiobookshelf server, including the port. Example: http://192.168.1.50:13378" Type="Variable" Display="always" Required="true" Mask="false">${absUrl}</Config>
+  <Config Name="ABS_TOKEN" Target="ABS_TOKEN" Default="" Mode="" Description="A single Audiobookshelf API token for single-user setups. Get it from: Audiobookshelf &gt; Settings &gt; Users &gt; your user &gt; API Token. Leave empty if using ABS_TOKENS for multiple users." Type="Variable" Display="always" Required="false" Mask="true">${absToken}</Config>
+  <Config Name="ABS_TOKENS" Target="ABS_TOKENS" Default="" Mode="" Description="Multi-user API tokens. Format: username1:token1,username2:token2 — one entry per user. Leave empty if using ABS_TOKEN for single-user mode." Type="Variable" Display="always" Required="false" Mask="true">${absTokens}</Config>
+  <Config Name="ENGINE_URL" Target="ENGINE_URL" Default="http://achievement-engine:8000" Mode="" Description="Internal URL of the Achievement Engine container. If both containers are on the same Docker network, use the container name (e.g. http://achievement-engine:8000)." Type="Variable" Display="always" Required="true" Mask="false">${engineUrl}</Config>
+  <Config Name="ALLOWED_USERNAMES" Target="ALLOWED_USERNAMES" Default="*" Mode="" Description="Comma-separated list of Audiobookshelf usernames to track. Set to * or leave empty to track all users." Type="Variable" Display="always" Required="false" Mask="false">${allowedUsernames}</Config>
+  <Config Name="DISCORD_WEBHOOK_URL" Target="DISCORD_WEBHOOK_URL" Default="" Mode="" Description="Discord webhook URL for posting achievement notifications. Leave empty to disable Discord notifications." Type="Variable" Display="always" Required="false" Mask="true">${discordWebhook}</Config>
+</Container>`;
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            populateTimezoneDropdown();
+            clearFormForBlankStart();
+
+            const tips = {
+                'container-name': 'Docker container name shown in Unraid.',
+                'repository': 'Docker image repository name or path.',
+                'network': 'Docker network to attach this container to.',
+                'dashboard-port': 'Host port exposed for the web UI (maps to container 8000).',
+                'path-data': 'Host folder mounted to /data for database and runtime files.',
+                'path-covers': 'Optional host folder mapped to /data/covers for local cover files.',
+                'path-static': 'Host folder mounted to /static for HTML/CSS/JS overrides.',
+                'var-absstats-url': 'Base URL for your ABS Stats service reachable by this container.',
+                'var-poll-seconds': 'How often the engine polls ABS Stats (seconds).',
+                'var-tz': 'Container timezone selected from IANA timezone list.',
+                'var-xp-start-date': 'Pick the progression start date. Timestamp is generated at 00:01 for that day.',
+                'var-verify-threshold': 'Listen % required per book when strict verification is enabled.',
+                'var-strict-verification': 'Enable or disable strict session/duration verification for progression credit.',
+                'var-require-duration': 'If true, books with unknown duration fail strict verification.',
+                'var-require-session': 'If true, strict verification requires at least one session at/after XP_START_TIMESTAMP for each credited book.',
+                'var-boss-hp': 'Boss HP used in Wrapped combat calculations.',
+                'var-wrapped-enabled': 'Enable or disable Wrapped pages and links in the UI and API.',
+                'var-wrapped-year': 'Admin-only Wrapped report year.',
+                'var-backfill': 'Set true for one deployment to run achievement backfill, then set false.',
+                'var-backfill-key': 'Unique marker key so backfill runs only once per key.',
+                'smtp-host': 'SMTP server hostname for email notifications.',
+                'smtp-port': 'SMTP server port, typically 587 or 465.',
+                'smtp-username': 'SMTP account username/login.',
+                'smtp-password': 'SMTP account password or app password.',
+                'smtp-from': 'From header for outgoing emails.',
+                'smtp-override': 'Force all email notifications to this address for testing.',
+                'user-icons': 'Comma-separated username:/icons/file.png mappings for avatar icons.',
+                'user-aliases': 'Comma-separated username:DisplayName mappings used in UI.',
+                'allowed-users': 'Optional comma-separated ABS usernames to include on filtered pages/APIs. Leave empty to include all users.',
+                // abs-stats fields
+                'abs-api-port': 'Host port abs-stats listens on. Change if 3000 is already in use on your server.',
+                'abs-url': 'Full URL of your Audiobookshelf server including port, e.g. http://192.168.1.50:13378.',
+                'abs-engine-url': 'Internal Docker network URL for the Achievement Engine container, e.g. http://achievement-engine:8000.',
+                'abs-token': 'Single-user ABS API token from ABS Settings > Users > API Token. Leave empty if using per-user tokens.',
+                'abs-tokens': 'Per-user ABS API tokens. Format: username1:token1,username2:token2.',
+                'abs-allowed-usernames': 'Comma-separated ABS usernames to track, or * to track all users.',
+                'abs-discord-webhook': 'Discord webhook URL for achievement notifications. Leave empty to disable.',
+            };
+
+            document.querySelectorAll('input, select, textarea').forEach((el) => {
+                const id = el.id;
+                if (!id || id === 'xml-preview') return;
+                const tip = tips[id] || 'Fill in the value for this configuration field.';
+                el.setAttribute('title', tip);
+            });
+
+            await loadTemplateFromLocalXmlIfPresent();
+        });
+    </script>
+</body>
+</html>

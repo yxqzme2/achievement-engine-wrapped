@@ -6,7 +6,9 @@ A LitRPG achievement and progression companion for [Audiobookshelf](https://www.
 
 ## Quick Start
 
-Three install options — see **[INSTALL.md](MD%20Files/INSTALL.md)** for full details. The fastest:
+See **[INSTALL.md](MD%20Files/INSTALL.md)** for full details. Two browser-based wizards are included — no prior config knowledge needed.
+
+### Docker Compose — Web Wizard
 
 ```bash
 git clone https://github.com/yxqzme2/achievement-engine-wrapped.git
@@ -22,6 +24,17 @@ sudo docker compose up --build -d
 ```
 
 Open `http://localhost:8000`
+
+### Unraid — Template Builder
+
+```bash
+git clone https://github.com/yxqzme2/achievement-engine-wrapped.git
+cd achievement-engine-wrapped
+open template-builder.html          # macOS
+xdg-open template-builder.html &   # Linux
+```
+
+Fill in your settings, download both XML files, and install them as Unraid container templates.
 
 ---
 
