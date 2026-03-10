@@ -173,23 +173,22 @@
     input.input-err { border-color: #cc4444; }
 
     /* ── URL validation ── */
-    .url-wrap { display: flex; gap: 8px; align-items: center; }
-    .url-wrap input { flex: 1; }
-    .btn-check {
-      padding: 9px 14px;
-      background: var(--tab-bg);
-      color: var(--tab-text);
-      border: 1.5px solid var(--border-color);
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      white-space: nowrap;
-      transition: all .2s;
-      flex-shrink: 0;
+    .url-wrap { position: relative; }
+    .url-wrap input { padding-right: 34px; }
+    .url-icon {
+      position: absolute;
+      right: 10px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem; font-weight: 700;
+      pointer-events: none;
     }
-    .btn-check:hover { background: var(--tab-hover); color: #dccaa5; }
-    .url-icon { font-size: 1rem; font-weight: 700; flex-shrink: 0; min-width: 18px; }
+    .url-msg {
+      font-size: 0.78rem;
+      margin-top: 5px;
+      display: none;
+    }
+    .url-msg.ok  { color: #5a9a6e; display: block; }
+    .url-msg.err { color: #cc4444; display: block; }
 
     /* ── Toggle group ── */
     .toggle-group {
@@ -477,10 +476,10 @@
         <label>Server URL</label>
         <div class="field-hint">Full address of your ABS instance, including port</div>
         <div class="url-wrap">
-          <input type="text" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()">
-          <button class="btn-check" onclick="validateUrl()">Check</button>
+          <input type="text" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()" onblur="validateUrl()">
           <span class="url-icon" id="url-icon"></span>
         </div>
+        <div class="url-msg" id="url-msg"></div>
       </div>
 
       <div class="field">
@@ -750,13 +749,15 @@ achievement-engine-wrapped/
   function validateUrl() {
     const val   = v('abs-url');
     const icon  = document.getElementById('url-icon');
+    const msg   = document.getElementById('url-msg');
     const input = document.getElementById('abs-url');
     if (!val) {
       icon.textContent = '';
+      msg.textContent = '';
+      msg.className = 'url-msg';
       input.classList.remove('input-ok', 'input-err');
       return;
     }
-    // Four valid patterns for a real ABS server address:
     const ip        = /^https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?(\/.*)?$/;
     const localhost = /^https?:\/\/localhost(:\d+)?(\/.*)?$/;
     const domain    = /^https?:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*(\.[a-zA-Z0-9][a-zA-Z0-9\-]*)+(:\d+)?(\/.*)?$/;
@@ -767,11 +768,15 @@ achievement-engine-wrapped/
       icon.style.color = '#5a9a6e';
       input.classList.add('input-ok');
       input.classList.remove('input-err');
+      msg.textContent = 'Format looks good — server not tested';
+      msg.className = 'url-msg ok';
     } else {
       icon.textContent = '✗';
       icon.style.color = '#cc4444';
       input.classList.add('input-err');
       input.classList.remove('input-ok');
+      msg.textContent = 'Must be http:// or https:// followed by an IP, domain, or hostname:port';
+      msg.className = 'url-msg err';
     }
   }
 
