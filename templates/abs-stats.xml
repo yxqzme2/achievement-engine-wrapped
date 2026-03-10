@@ -17,7 +17,7 @@ You will need an Audiobookshelf API token for each user you want to track. Get t
   <Category>MediaApp:Other Tools:</Category>
   <WebUI/>
   <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/abs-stats.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/abs-stats.svg</Icon>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/abs-stats.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>

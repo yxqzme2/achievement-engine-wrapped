@@ -17,7 +17,7 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
   <Category>MediaApp:Other Tools:</Category>
   <WebUI>http://[IP]:[PORT:8000]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/achievement-engine.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/achievement-engine.svg</Icon>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/achievement-engine.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
