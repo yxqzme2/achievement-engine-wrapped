@@ -674,9 +674,9 @@
 
     <div class="dl-section">
       <button class="btn-dl" onclick="dlOverride()">⬇ &nbsp;docker-compose.override.yml</button>
-      <button class="btn-dl" onclick="dlEnv()">⬇ &nbsp;.env</button>
-      <div style="font-size:0.72rem;color:#6e7681;line-height:1.5;padding:2px 2px 0;">
-        ⚠ If your browser saves <code style="color:#a5d6ff;">.env</code> as <code style="color:#a5d6ff;">env</code> (without the dot), rename it before use.
+      <button class="btn-dl" onclick="dlEnv()">⬇ &nbsp;env.txt</button>
+      <div style="font-size:0.72rem;color:#6e7681;line-height:1.5;padding:4px 2px 0;">
+        Move both files into your project folder using the commands in the final steps below.
       </div>
     </div>
 
@@ -709,10 +709,17 @@ achievement-engine-wrapped/
       <div class="step-item">
         <div class="step-badge">2</div>
         <div class="step-item-body">
-          <div class="step-item-label">Build and start all services (takes a few minutes the first time)</div>
-          <div class="code-block"><pre><span class="cmd">docker compose up --build -d</span>
+          <div class="step-item-label">Move the downloaded files into your project folder and rename env.txt</div>
+          <div class="code-block"><pre><span class="cmd">mv ~/Downloads/env.txt ~/achievement-engine-wrapped/.env</span>
+<span class="cmd">mv ~/Downloads/docker-compose.override.yml ~/achievement-engine-wrapped/docker-compose.override.yml</span></pre></div>
+        </div>
+      </div>
 
-<span class="cmt"># On Linux, if you get "permission denied connecting to Docker":</span>
+      <div class="step-item">
+        <div class="step-badge">3</div>
+        <div class="step-item-body">
+          <div class="step-item-label">Build and start all services (takes a few minutes the first time)</div>
+          <div class="code-block"><pre><span class="cmd">cd ~/achievement-engine-wrapped</span>
 <span class="cmd">sudo docker compose up --build -d</span>
 
 <span class="cmt"># To avoid needing sudo permanently (log out and back in after):</span>
@@ -721,7 +728,7 @@ achievement-engine-wrapped/
       </div>
 
       <div class="step-item">
-        <div class="step-badge">3</div>
+        <div class="step-badge">4</div>
         <div class="step-item-body">
           <div class="step-item-label">Open in your browser</div>
           <div class="code-block"><pre><span class="url">http://localhost:8000</span></pre></div>
@@ -1021,7 +1028,7 @@ achievement-engine-wrapped/
   }
 
   function dlOverride() { dl('docker-compose.override.yml', _override); }
-  function dlEnv()      { dl('.env', _env); }
+  function dlEnv()      { dl('env.txt', _env); }
 
   // Init
   update();
