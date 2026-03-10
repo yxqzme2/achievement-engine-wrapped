@@ -7,8 +7,8 @@
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/yxqzme2/achievement-engine/issues</Support>
-  <Project>https://github.com/yxqzme2/achievement-engine</Project>
+  <Support>https://github.com/yxqzme2/achievement-engine-wrapped/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine-wrapped</Project>
   <Overview>Companion service for Achievement Engine. Connects to your Audiobookshelf server, aggregates listening data (completions, sessions, series, listening time), and exposes it as a simplified REST API that the Achievement Engine polls.&#xD;
 &#xD;
 This container is REQUIRED for the Achievement Engine to function. It acts as a bridge between your Audiobookshelf instance and the achievement system.&#xD;
@@ -16,8 +16,8 @@ This container is REQUIRED for the Achievement Engine to function. It acts as a 
 You will need an Audiobookshelf API token for each user you want to track. Get tokens from: Audiobookshelf &gt; Settings &gt; Users &gt; [user] &gt; API Token.</Overview>
   <Category>MediaApp:Other Tools:</Category>
   <WebUI/>
-  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/unraid-docker-templates/main/abs-stats.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine/main/icons/favicon.ico</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/abs-stats.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/favicon.ico</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>

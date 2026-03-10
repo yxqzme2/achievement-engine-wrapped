@@ -1,19 +1,23 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>achievement-engine</Name>
-  <Repository>achievement-engine</Repository>
-  <Registry/>
+  <Repository>ghcr.io/yxqzme2/achievement-engine-wrapped:latest</Repository>
+  <Registry>https://github.com/yxqzme2/achievement-engine-wrapped/pkgs/container/achievement-engine-wrapped</Registry>
   <Network>bridge</Network>
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support/>
-  <Project/>
-  <Overview/>
-  <Category/>
-  <WebUI/>
-  <TemplateURL/>
-  <Icon/>
+  <Support>https://github.com/yxqzme2/achievement-engine-wrapped/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine-wrapped</Project>
+  <Overview>LitRPG achievement and progression companion for Audiobookshelf. Turns listening activity into XP, levels, gear, quests, leaderboards, and a year-end animated boss battle.&#xD;
+&#xD;
+Requires the abs-stats container to be running on the same Docker network. Install abs-stats first, then this container.&#xD;
+&#xD;
+After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8000 and run a cover sync from the Tier List page before exploring other screens.</Overview>
+  <Category>MediaApp:Other Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8000]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/achievement-engine.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/favicon.ico</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>

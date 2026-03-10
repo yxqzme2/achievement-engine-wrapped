@@ -348,6 +348,26 @@
             .admin-card.full-width { grid-column: 1; }
             .two-col, .three-col { grid-template-columns: 1fr; }
         }
+
+        input[readonly] {
+            background: #0a0a0a;
+            color: #555;
+            cursor: not-allowed;
+            border-color: #222;
+        }
+        .locked-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: #444;
+            border: 1px solid #333;
+            border-radius: 3px;
+            padding: 1px 5px;
+            margin-left: 6px;
+            vertical-align: middle;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -379,8 +399,8 @@
                 <input type="text" id="container-name" value="">
             </div>
             <div class="input-group">
-                <label for="repository">Repository</label>
-                <input type="text" id="repository" value="">
+                <label for="repository">Repository <span class="locked-badge">locked</span></label>
+                <input type="text" id="repository" value="ghcr.io/yxqzme2/achievement-engine-wrapped:latest" readonly>
             </div>
             <div class="input-group">
                 <label for="network">Network</label>
@@ -902,19 +922,23 @@
             const xml = `<?xml version="1.0"?>
 <Container version="2">
   <Name>${containerName}</Name>
-  <Repository>${repository}</Repository>
-  <Registry/>
+  <Repository>ghcr.io/yxqzme2/achievement-engine-wrapped:latest</Repository>
+  <Registry>https://github.com/yxqzme2/achievement-engine-wrapped/pkgs/container/achievement-engine-wrapped</Registry>
   <Network>${network}</Network>
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support/>
-  <Project/>
-  <Overview/>
-  <Category/>
-  <WebUI/>
-  <TemplateURL/>
-  <Icon/>
+  <Support>https://github.com/yxqzme2/achievement-engine-wrapped/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine-wrapped</Project>
+  <Overview>LitRPG achievement and progression companion for Audiobookshelf. Turns listening activity into XP, levels, gear, quests, leaderboards, and a year-end animated boss battle.&#xD;
+&#xD;
+Requires the abs-stats container to be running on the same Docker network. Install abs-stats first, then this container.&#xD;
+&#xD;
+After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8000 and run a cover sync from the Tier List page before exploring other screens.</Overview>
+  <Category>MediaApp:Other Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8000]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/achievement-engine.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/favicon.ico</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
@@ -995,18 +1019,18 @@
 <Container version="2">
   <Name>abs-stats</Name>
   <Repository>ghcr.io/yxqzme2/abs-stats:latest</Repository>
-  <Registry>https://github.com/yxqzme2/achievement-engine/pkgs/container/abs-stats</Registry>
+  <Registry>https://github.com/yxqzme2/achievement-engine-wrapped/pkgs/container/abs-stats</Registry>
   <Network>bridge</Network>
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/yxqzme2/achievement-engine/issues</Support>
-  <Project>https://github.com/yxqzme2/achievement-engine</Project>
+  <Support>https://github.com/yxqzme2/achievement-engine-wrapped/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine-wrapped</Project>
   <Overview>Companion service for Achievement Engine. Connects to your Audiobookshelf server, aggregates listening data, and exposes it as a REST API that Achievement Engine polls.&#xD;&#xA;&#xD;&#xA;This container is REQUIRED for Achievement Engine to function. You will need an Audiobookshelf API token for each user you want to track.</Overview>
   <Category>MediaApp:Other Tools:</Category>
   <WebUI/>
-  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/unraid-docker-templates/main/abs-stats.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine/main/icons/favicon.ico</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/abs-stats.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/favicon.ico</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>

@@ -13,8 +13,9 @@ See **[INSTALL.md](MD%20Files/INSTALL.md)** for full details. Two browser-based 
 ```bash
 git clone https://github.com/yxqzme2/achievement-engine-wrapped.git
 cd achievement-engine-wrapped
-open setup-wizard.html          # macOS
-xdg-open setup-wizard.html &   # Linux
+open setup-wizard.html            # macOS
+xdg-open setup-wizard.html &     # Linux
+start setup-wizard.html           # Windows
 ```
 
 Fill in your ABS URL and token(s), download the two config files, then:
@@ -27,14 +28,17 @@ Open `http://localhost:8000`
 
 ### Unraid — Template Builder
 
+On Windows, you can also [download template-builder.html directly](https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/template-builder.html) — no git needed.
+
 ```bash
 git clone https://github.com/yxqzme2/achievement-engine-wrapped.git
 cd achievement-engine-wrapped
-open template-builder.html          # macOS
-xdg-open template-builder.html &   # Linux
+open template-builder.html        # macOS
+xdg-open template-builder.html & # Linux
+start template-builder.html       # Windows
 ```
 
-Fill in your settings, download both XML files, and install them as Unraid container templates.
+Fill in your settings, download both XML files, and drop them onto your Unraid flash drive to install as container templates. See **[INSTALL.md](MD%20Files/INSTALL.md)** for the full Windows path.
 
 ---
 

@@ -64,7 +64,9 @@ Open `http://localhost:8000`
 
 ## Option C — Unraid Template Builder (Recommended for Unraid users)
 
-A browser-based form that generates both Unraid XML template files for you.
+A browser-based form that generates both Unraid XML template files for you. No Docker needed on your local machine — your Unraid server handles everything.
+
+### On Linux or macOS
 
 ```bash
 git clone https://github.com/yxqzme2/achievement-engine-wrapped.git
@@ -73,19 +75,37 @@ xdg-open template-builder.html &>/dev/null &   # Linux
 open template-builder.html                      # macOS
 ```
 
+### On Windows
+
+No terminal needed. Download the builder directly and open it:
+
+1. Download **[template-builder.html](https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/template-builder.html)** — right-click the link → Save As
+2. Double-click the saved file to open it in your browser
+
+Or from PowerShell if you have Git installed:
+
+```powershell
+git clone https://github.com/yxqzme2/achievement-engine-wrapped.git
+cd achievement-engine-wrapped
+start template-builder.html
+```
+
+### After opening the builder (all platforms)
+
 1. Fill in your ABS URL, token(s), timezone, and any optional settings
 2. Click **⬇ Download Both Templates** — you'll get:
    - `my-achievement-engine.xml`
    - `my-abs-stats.xml`
-3. Copy both XML files into your Unraid user templates folder:
-   ```text
-   /boot/config/plugins/dockerMan/templates-user/
-   ```
+3. Copy both XML files to your Unraid flash drive's user templates folder:
+   - **Windows:** open `\\<unraid-ip>\flash\config\plugins\dockerMan\templates-user\` in Explorer and drop the files in
+   - **Linux/macOS:** `scp my-*.xml root@<unraid-ip>:/boot/config/plugins/dockerMan/templates-user/`
 4. In Unraid, go to **Docker → Add Container** — both templates will appear
 5. Install **abs-stats** first, then **achievement-engine**
 6. Put both containers on the same Docker network
 7. Apply and start both containers
 8. Open `http://<unraid-ip>:8000`
+
+> **No git or terminal at all?** Skip the builder entirely — see Option C (manual) below. You only need the Unraid web UI.
 
 ### Option C (manual) — Unraid without the builder
 
