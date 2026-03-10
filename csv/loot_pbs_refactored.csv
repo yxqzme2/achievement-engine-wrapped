@@ -1,0 +1,445 @@
+item_id,item_name,slot,str,mag,def,hp,special_ability,rarity,flavor_text,series_tag,icon
+loot_001,Spare-Parts Plate of the War Cry,Chest,9,1,9,5,None,Common,A mysterious item.,The Ten Realms,/icons/chest_plate_109.png
+loot_002,Standard-Issue Plastron of the Bulwark Prime,Chest,4,7,8,5,None,Common,A mysterious item.,The Dresden Files,/icons/chest_plate_008.png
+loot_003,Scamp's Brigandine of the Sentinel,Chest,5,2,11,10,None,Common,A mysterious item.,The Bad Guys,/icons/chest_cloth_005.png
+loot_004,Drill-Grade Tabard Vest of the Citadel,Chest,1,8,11,0,None,Common,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_222.png
+loot_005,Ration-Issue Gambeson of the Siege Hold,Chest,10,0,9,5,None,Common,A mysterious item.,A Soldier's Life,/icons/chest_cloth_071.png
+loot_006,Bent-Nail Brigandine of the Black Bastion,Chest,9,0,11,0,None,Common,A mysterious item.,Red Rising,/icons/chest_cloth_073.png
+loot_007,Barracks-Issue Brigandine of the Parapet,Chest,0,11,9,0,None,Common,A mysterious item.,A Soldier's Life,/icons/chest_cloth_119.png
+loot_008,Ooze-Stained Aegis Coat of the Black Bastion,Chest,0,8,11,5,None,Common,A mysterious item.,Netherdei,/icons/icons_quest_misc_150.png
+loot_009,Dan's Plate of the Bear,Chest,11,4,1,20,None,Common,A mysterious item.,The Bad Guys,/icons/chest_plate_120.png
+loot_010,Gleaming Void Mantle of Impact,Chest,8,7,1,20,None,Common,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_174.png
+loot_011,Budget-Line Doublet of the Red Banner,Chest,11,0,9,0,None,Common,A mysterious item.,The Stargazer's War,/icons/chest_cloth_077.png
+loot_012,Dust-Caked Bracers of Final Impact,Chest,12,3,1,20,None,Common,A mysterious item.,Red Rising,/icons/chest_cloth_021.png
+loot_013,Scamp's Scaleshirt of the Phalanx,Chest,0,6,8,30,None,Common,A mysterious item.,The Bad Guys,/icons/icons_quest_misc_273.png
+loot_014,Surplus Brigandine of the Deep Spell,Chest,0,8,6,30,None,Common,A mysterious item.,The Ten Realms,/icons/chest_cloth_028.png
+loot_015,Ration-Issue Bracers of the Ether Crown,Chest,4,8,3,25,None,Common,A mysterious item.,A Soldier's Life,/icons/chest_cloth_147.png
+loot_016,Factory-Stamped Hauberk of the Parapet,Chest,22,0,18,0,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/chest_mail_052.png
+loot_017,Montana's Vambraces of the Iron Reign,Chest,20,0,20,0,None,Uncommon,A mysterious item.,The Good Guys,/icons/chest_plate_094.png
+loot_018,Stamped-Alloy Exosuit of the Battle Saint,Chest,23,1,10,30,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_037.png
+loot_019,Ration-Issue Doublet of the Rift,Chest,9,23,5,15,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/chest_cloth_172.png
+loot_020,Dan's Mail of the Anchor,Chest,7,11,20,10,None,Uncommon,A mysterious item.,The Bad Guys,/icons/chest_mail_042.png
+loot_021,Storm-Forged Tunic of the Sentinel,Chest,0,17,22,5,None,Uncommon,A mysterious item.,The Dresden Files,/icons/chest_cloth_013.png
+loot_022,Barracks-Issue Kevlar Vest of the Berserker,Chest,24,2,14,0,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_124.png
+loot_023,Misprinted Brigandine of the Rune Storm,Chest,5,22,12,5,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/chest_cloth_154.png
+loot_024,Trash-Tier Plastron of the Comet,Chest,8,23,2,35,None,Uncommon,A mysterious item.,The Dresden Files,/icons/chest_plate_109.png
+loot_025,Knockoff Kevlar Vest of Crushing,Chest,20,1,19,0,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_031.png
+loot_026,Rune-Laced Tabard of the Tortoise,Chest,9,4,17,50,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/chest_cloth_031.png
+loot_027,Montana's Brigandine of the Last Shield,Chest,2,11,19,40,None,Uncommon,A mysterious item.,The Good Guys,/icons/chest_cloth_084.png
+loot_028,Drill-Grade Battle Jacket of the Warlord,Chest,19,0,21,0,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_126.png
+loot_029,Riverstone Brigandine of Unbroken Lines,Chest,9,9,21,5,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/chest_cloth_097.png
+loot_030,Barracks-Issue Hauberk of the Gorilla,Chest,22,6,10,10,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/chest_mail_098.png
+loot_031,Off-Brand Scaleshirt of the Bulwark Prime,Chest,13,4,21,10,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_206.png
+loot_032,Dan's Battle Jacket of the Eldritch Gale,Chest,10,24,2,20,None,Uncommon,A mysterious item.,The Bad Guys,/icons/icons_quest_misc_081.png
+loot_033,Cursed-ish Pauldrons of the Siege Horn,Chest,22,3,14,5,None,Uncommon,A mysterious item.,Netherdei,/icons/chest_plate_174.png
+loot_034,Training-Yard Carapace of the Great Hunt,Chest,18,8,1,65,None,Uncommon,A mysterious item.,Red Rising,/icons/icons_quest_misc_076.png
+loot_035,Surplus Tabard of the Rampart Breaker,Chest,21,1,18,0,None,Uncommon,A mysterious item.,The Dresden Files,/icons/chest_cloth_114.png
+loot_036,Warspun Jerkin of the Stronghold,Chest,10,16,29,25,None,Rare,A mysterious item.,A Soldier's Life,/icons/chest_cloth_010.png
+loot_037,Mordecai's Void Mantle of Bonebreaker Oaths,Chest,35,0,24,5,None,Rare,A mysterious item.,Netherdei,/icons/icons_quest_misc_276.png
+loot_038,Corin's Tunic of the Arc-Light,Chest,2,35,17,30,None,Rare,A mysterious item.,Ajax's Ascension,/icons/chest_cloth_018.png
+loot_039,Corin's Tabard of the Bear,Chest,33,26,0,5,None,Rare,A mysterious item.,The Stargazer's War,/icons/chest_cloth_046.png
+loot_040,Scamp's Pauldrons of the Sage,Chest,9,35,2,70,None,Rare,A mysterious item.,Ajax's Ascension,/icons/chest_plate_171.png
+loot_041,Dan's Plate of the Deep Keep,Chest,1,27,32,0,None,Rare,A mysterious item.,The Bad Guys,/icons/chest_plate_069.png
+loot_042,Clyde's Tabard Vest of the Crushing Tide,Chest,27,7,23,15,None,Rare,A mysterious item.,The Bad Guys,/icons/icons_quest_misc_168.png
+loot_043,Nightveil Doublet of the Comet,Chest,19,29,5,35,None,Rare,A mysterious item.,The Stargazer's War,/icons/chest_cloth_174.png
+loot_044,Clyde's Bracers of the Iron Wall,Chest,0,5,33,110,None,Rare,A mysterious item.,The Bad Guys,/icons/chest_cloth_160.png
+loot_045,Steelbloom Battle Jacket of the Parapet,Chest,0,8,33,95,None,Rare,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_194.png
+loot_046,Glitchy Lamellar of the Arc-Light,Chest,18,27,10,25,None,Rare,A mysterious item.,The Dresden Files,/icons/icons_quest_misc_136.png
+loot_047,Barracks-Issue Breastplate of the Luminous Veil,Chest,13,33,13,5,None,Rare,A mysterious item.,A Soldier's Life,/icons/chest_plate_182.png
+loot_048,Chicken-Sage Tabard Vest of Bonebreaker Oaths,Chest,32,0,26,10,None,Rare,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_245.png
+loot_049,Masterwork Hauberk of the Mountain,Chest,1,17,28,70,None,Rare,A mysterious item.,Apocalypse Parenting,/icons/chest_mail_124.png
+loot_050,Titanthread Carapace of the Moon Script,Chest,3,35,16,30,None,Rare,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_169.png
+loot_051,Crownsworn Brigandine of the Iron Wall,Chest,7,6,31,80,None,Rare,A mysterious item.,Apocalypse Parenting,/icons/chest_cloth_140.png
+loot_052,Carl's Jerkin of the Comet,Chest,10,35,14,5,None,Rare,A mysterious item.,Ajax's Ascension,/icons/chest_cloth_107.png
+loot_053,Spare-Parts Tabard Vest of the Titan Guard,Chest,22,6,32,0,None,Rare,A mysterious item.,The Ten Realms,/icons/icons_quest_misc_243.png
+loot_054,Dreamforged Breastplate of the Phalanx,Chest,2,8,32,90,None,Rare,A mysterious item.,The Ten Realms,/icons/chest_plate_005.png
+loot_055,Warspun Carapace of Brilliance,Chest,21,42,2,75,None,Epic,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_095.png
+loot_056,Scamp's Shell Armor of the Colossus March,Chest,35,24,2,95,None,Epic,A mysterious item.,The Bad Guys,/icons/icons_quest_misc_245.png
+loot_057,Stamped-Alloy Plate of the Stormbreak,Chest,0,15,45,100,None,Epic,A mysterious item.,Apocalypse Parenting,/icons/chest_plate_142.png
+loot_058,Masterwork Brigandine of the Furnace Heart,Chest,43,13,13,55,None,Epic,A mysterious item.,Netherdei,/icons/chest_cloth_072.png
+loot_059,Shadow-Sect Bracers of the Aegis Crown,Chest,3,35,41,5,None,Epic,A mysterious item.,Apocalypse Parenting,/icons/chest_cloth_129.png
+loot_060,Boilerplate Carapace of the Ether Crown,Chest,30,44,6,0,None,Epic,A mysterious item.,The Ten Realms,/icons/icons_quest_misc_143.png
+loot_061,Mab's Plastron of Whispers,Chest,20,33,17,50,None,Epic,A mysterious item.,The Ten Realms,/icons/chest_plate_079.png
+loot_062,Crownsworn Shell Armor of the Ether Crown,Chest,2,45,27,30,None,Epic,A mysterious item.,Netherdei,/icons/icons_quest_misc_208.png
+loot_063,Starbreaker Gambeson of Whispers,Chest,32,33,8,35,None,Epic,A mysterious item.,Red Rising,/icons/chest_cloth_104.png
+loot_064,Pristine Brigandine of the Owl,Chest,38,35,4,15,None,Epic,A mysterious item.,The Dresden Files,/icons/chest_cloth_076.png
+loot_065,Tavi's Doublet of the Brass Tyrant,Chest,36,37,2,25,None,Epic,A mysterious item.,Netherdei,/icons/chest_cloth_187.png
+loot_066,Starbreaker Duster of the Adamant Crown,Chest,33,7,12,140,None,Epic,A mysterious item.,Red Rising,/icons/chest_cloth_036.png
+loot_067,Labyrinthine Lamellar of the Crushing Tide,Chest,52,4,31,65,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_254.png
+loot_068,Eldritch Surcoat of Ripping,Chest,48,36,13,15,None,Legendary,A mysterious item.,Netherdei,/icons/chest_cloth_070.png
+loot_069,Warspun Tabard Vest of the Cosmic Thread,Chest,37,53,2,40,None,Legendary,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_262.png
+loot_070,Jason's Aegis Coat of the Black Bastion,Chest,5,43,52,0,None,Legendary,A mysterious item.,The Ten Realms,/icons/icons_quest_misc_128.png
+loot_071,Dan's Scaleshirt of the Void Walker,Chest,4,52,5,195,None,Legendary,A mysterious item.,The Bad Guys,/icons/icons_quest_misc_120.png
+loot_072,Dan's Jerkin of the Glass Horizon,Chest,25,56,1,90,None,Legendary,A mysterious item.,The Bad Guys,/icons/chest_cloth_172.png
+loot_073,Gravebound Battle Jacket of the Red Banner,Chest,40,16,43,5,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_273.png
+loot_074,Ooze-Stained Jerkin of the Aegis Crown,Chest,1,7,10,10,None,Common,A mysterious item.,The Good Guys,/icons/chest_cloth_025.png
+loot_075,Standard-Issue Skullcap of Crushing,Head,12,1,6,5,None,Common,A mysterious item.,The Dresden Files,/icons/head_cloth_135.png
+loot_076,Dan's War Bonnet of the Last Charge,Head,8,4,6,10,None,Common,A mysterious item.,The Bad Guys,/icons/head_cloth_018.png
+loot_077,Standard-Issue Greathelm of Manifesting,Head,4,11,4,5,None,Common,A mysterious item.,The Ten Realms,/icons/head_plate_083.png
+loot_078,Barracks-Issue Armet of the Gatekeeper,Head,4,4,8,20,None,Common,A mysterious item.,A Soldier's Life,/icons/head_plate_100.png
+loot_079,Shopworn Armet of the Bulwark Prime,Head,1,5,12,10,None,Common,A mysterious item.,Netherdei,/icons/head_plate_016.png
+loot_080,Salvaged Wreath of the Shellback,Head,0,7,12,5,None,Common,A mysterious item.,Red Rising,/icons/icons_quest_misc_022.png
+loot_081,Misprinted Helm of the Anvil Fist,Head,10,2,7,5,None,Common,A mysterious item.,The Stargazer's War,/icons/head_plate_099.png
+loot_082,Battle-Worn Faceplate of the Rune Storm,Head,4,9,6,5,None,Common,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_128.png
+loot_083,Battle-Worn Diadem of the Bastioned Heart,Head,6,5,9,0,None,Common,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_189.png
+loot_084,Tinplate Helm of Final Impact,Head,12,5,1,10,None,Common,A mysterious item.,The Good Guys,/icons/head_plate_056.png
+loot_085,Barracks-Issue Sallet of the Tower,Head,3,2,12,15,None,Common,A mysterious item.,A Soldier's Life,/icons/head_plate_070.png
+loot_086,Barracks-Issue Battle Visor of the Bulwark,Head,0,2,12,30,None,Common,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_099.png
+loot_087,Stamped-Alloy Deathmask of the Blood Ram,Head,10,4,1,25,None,Common,A mysterious item.,Netherdei,/icons/icons_quest_misc_035.png
+loot_088,Scamp's Skullcap of Iron,Head,0,7,12,5,None,Common,A mysterious item.,The Dresden Files,/icons/head_cloth_012.png
+loot_089,Standard-Issue Greathelm of the Citadel,Head,0,7,11,10,None,Common,A mysterious item.,The Ten Realms,/icons/head_plate_108.png
+loot_090,Dust-Caked Observer Goggles of Whispers,Head,4,23,13,0,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_008.png
+loot_091,Discounted Helm of the Stone Choir,Head,5,10,17,40,None,Uncommon,A mysterious item.,Netherdei,/icons/head_plate_066.png
+loot_092,Glowing Bascinet of the Siege Horn,Head,18,17,4,5,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/head_plate_078.png
+loot_093,Discounted Greathelm of the Mauler,Head,18,17,3,10,None,Uncommon,A mysterious item.,Red Rising,/icons/head_plate_002.png
+loot_094,Stamped-Alloy Helm of Ripping,Head,21,0,9,50,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/head_plate_128.png
+loot_095,Field-Repaired Crown of the Night Lens,Head,0,18,19,15,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_003.png
+loot_096,Drill-Grade Visage of Unbroken Lines,Head,13,4,16,35,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_170.png
+loot_097,Carl's Armet of the Granite March,Head,0,11,21,40,None,Uncommon,A mysterious item.,Red Rising,/icons/head_plate_025.png
+loot_098,Dust-Caked Sallet of the Iron Avalanche,Head,20,15,2,15,None,Uncommon,A mysterious item.,The Ten Realms,/icons/head_plate_114.png
+loot_099,Ooze-Stained Bascinet of the Granite March,Head,2,5,22,55,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/head_plate_115.png
+loot_100,Shattered Coif of the Stone Choir,Head,18,4,18,0,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/head_mail_067.png
+loot_101,Riverstone Cerebral Halo of Impact,Head,24,14,1,5,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_219.png
+loot_102,Riverstone Greathelm of the Glass Horizon,Head,4,18,2,80,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/head_plate_057.png
+loot_103,Patch-Note Hood of the Wall,Head,11,9,19,5,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/head_cloth_055.png
+loot_104,Drill-Grade Wreath of Manifesting,Head,2,22,5,55,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_015.png
+loot_105,Blackflame Visage of the Warded Step,Head,25,6,29,0,None,Rare,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_101.png
+loot_106,Trash-Tier Deathmask of the Prism Mind,Head,0,31,29,0,None,Rare,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_140.png
+loot_107,Gearbound Cowl of Sorcery,Head,28,28,3,5,None,Rare,A mysterious item.,The Dresden Files,/icons/head_cloth_115.png
+loot_108,Runed Diadem of the Citadel,Head,9,17,25,45,None,Rare,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_037.png
+loot_109,Discounted Mindcage of the Tower,Head,13,3,34,50,None,Rare,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_123.png
+loot_110,Scamp's Cerebral Halo of the Iron Avalanche,Head,27,10,9,70,None,Rare,A mysterious item.,Netherdei,/icons/icons_quest_misc_089.png
+loot_111,Drill-Grade Coif of Arcane Power,Head,7,30,6,85,None,Rare,A mysterious item.,A Soldier's Life,/icons/head_mail_133.png
+loot_112,Mass-Forged Armet of Unbroken Lines,Head,17,4,35,20,None,Rare,A mysterious item.,Netherdei,/icons/head_plate_100.png
+loot_113,Darrow's Cerebral Halo of the Sentinel,Head,0,15,31,70,None,Rare,A mysterious item.,Red Rising,/icons/icons_quest_misc_055.png
+loot_114,Ration-Issue Horned Casque of the Archmage,Head,0,33,26,5,None,Rare,A mysterious item.,A Soldier's Life,/icons/head_plate_005.png
+loot_115,Ashwood Observer Goggles of the Aegis Crown,Head,5,24,30,5,None,Rare,A mysterious item.,Netherdei,/icons/icons_quest_misc_083.png
+loot_116,Forgotten Crown of the Wolf General,Head,35,12,13,0,None,Rare,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_200.png
+loot_117,Darrow's Coif of Cleaving,Head,26,7,16,55,None,Rare,A mysterious item.,Red Rising,/icons/head_mail_114.png
+loot_118,Sevro's Sallet of the Rune Storm,Head,19,40,2,95,None,Epic,A mysterious item.,The Ten Realms,/icons/head_plate_076.png
+loot_119,Archon-Blessed Circlet of the Owl,Head,0,45,11,120,None,Epic,A mysterious item.,Netherdei,/icons/icons_quest_misc_206.png
+loot_120,Carl's Visage of the Battle Saint,Head,42,4,22,60,None,Epic,A mysterious item.,The Ten Realms,/icons/icons_quest_misc_094.png
+loot_121,Off-Brand Armet of the Juggernaut,Head,44,21,4,55,None,Epic,A mysterious item.,Ajax's Ascension,/icons/head_plate_145.png
+loot_122,Lanternlit Faceplate of the Tower,Head,18,6,43,65,None,Epic,A mysterious item.,Netherdei,/icons/icons_quest_misc_189.png
+loot_123,Spare-Parts Hood of the Sky Furnace,Head,4,34,33,45,None,Epic,A mysterious item.,The Dresden Files,/icons/head_cloth_100.png
+loot_124,Waymarked Sallet of Iron,Head,2,34,44,0,None,Epic,A mysterious item.,Ajax's Ascension,/icons/head_plate_105.png
+loot_125,Soulharrow Circlet of the Fortress Oath,Head,9,28,41,10,None,Epic,A mysterious item.,The Ten Realms,/icons/icons_quest_misc_266.png
+loot_126,Drill-Grade Hood of the Rune Storm,Head,50,42,1,35,None,Legendary,A mysterious item.,A Soldier's Life,/icons/head_cloth_096.png
+loot_127,Thousandfold Laurel of Shielding,Head,12,23,54,55,None,Legendary,A mysterious item.,Netherdei,/icons/icons_quest_misc_134.png
+loot_128,Zev's Crown of the Arc-Light,Head,16,43,34,35,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_028.png
+loot_129,Bastion Circlet of the Bastioned Heart,Head,47,0,46,35,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_142.png
+loot_130,First-Dawn Mindcage of the Glass Horizon,Head,34,47,0,95,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_153.png
+loot_131,Rune-Laced Targeter of Crushing,Head,55,27,6,60,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_208.png
+loot_132,Rusty Faceplate of the Glass Horizon,Head,47,48,4,5,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_002.png
+loot_133,Dan's Horned Casque of the Aegis Crown,Head,1,5,10,20,None,Common,A mysterious item.,The Bad Guys,/icons/head_plate_001.png
+loot_134,Off-Brand Observer Goggles of the Mauler,Head,12,7,0,5,None,Common,A mysterious item.,Red Rising,/icons/icons_quest_misc_016.png
+loot_135,Ooze-Stained Laurel of the Black Bastion,Head,5,2,9,20,None,Common,A mysterious item.,Red Rising,/icons/icons_quest_misc_213.png
+loot_136,Spare-Parts Helm of Brutality,Head,11,0,5,20,None,Common,A mysterious item.,Ajax's Ascension,/icons/head_plate_060.png
+loot_137,Budget-Line Visor of the Wardstone,Head,11,1,8,0,None,Common,A mysterious item.,Netherdei,/icons/head_plate_083.png
+loot_138,Drill-Grade Armet of the Parapet,Head,24,22,50,20,None,Legendary,A mysterious item.,A Soldier's Life,/icons/head_plate_089.png
+loot_139,Forgotten Battle Visor of Brilliance,Head,14,58,18,50,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_227.png
+loot_140,Fitchner's Horned Casque of the Gorilla,Head,41,44,0,75,None,Legendary,A mysterious item.,Red Rising,/icons/head_plate_096.png
+loot_141,Soulplated Wreath of the Void Walker,Head,29,48,11,60,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_154.png
+loot_142,Barracks-Issue Coif of the Granite March,Head,14,27,56,15,None,Legendary,A mysterious item.,A Soldier's Life,/icons/head_mail_001.png
+loot_143,Dan's Diadem of the Red Banner,Head,51,15,1,165,None,Legendary,A mysterious item.,The Bad Guys,/icons/icons_quest_misc_207.png
+loot_144,Wyrmshard Circlet of Arcane Power,Head,24,44,23,45,None,Legendary,A mysterious item.,Netherdei,/icons/icons_quest_misc_229.png
+loot_145,Fitchner's Bascinet of the Aether Throne,Head,22,49,6,115,None,Legendary,A mysterious item.,The Dresden Files,/icons/head_plate_086.png
+loot_146,Factory-Stamped Greathelm of the Dream Current,Head,1,8,10,5,None,Common,A mysterious item.,The Ten Realms,/icons/head_plate_123.png
+loot_147,Moonlit Helm of the Deep Spell,Head,40,59,1,0,None,Legendary,A mysterious item.,The Stargazer's War,/icons/head_plate_043.png
+loot_148,Drill-Grade Mindcage of the Rune Storm,Head,2,11,0,35,None,Common,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_169.png
+loot_149,Spare-Parts Oathcord of Arcane Power,Neck,1,9,4,30,None,Common,A mysterious item.,The Ten Realms,/icons/acc_neck_015.png
+loot_150,Barracks-Issue Necklace of Impact,Neck,10,2,8,0,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_neck_021.png
+loot_151,Salvaged Charmstring of the Gorilla,Neck,11,3,0,30,None,Common,A mysterious item.,Red Rising,/icons/acc_necklace_011.png
+loot_152,Stamped-Alloy Rune Torque of the Winter Keep,Neck,0,5,9,30,None,Common,A mysterious item.,The Good Guys,/icons/acc_neck_028.png
+loot_153,Ration-Issue Monolith Shard of the Last Charge,Neck,11,0,5,20,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_neck_027.png
+loot_154,Salvaged Charm of the Bear,Neck,11,0,0,45,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_necklace_012.png
+loot_155,Scamp's Oathcord of the Bear,Neck,9,5,0,30,None,Common,A mysterious item.,The Good Guys,/icons/acc_necklace_004.png
+loot_156,Cracked-Core Torque of the Rune Storm,Neck,3,9,2,30,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_necklace_010.png
+loot_157,Barracks-Issue Data Lanyard of the Void,Neck,2,9,9,0,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_neck_024.png
+loot_158,Stamped-Alloy Charm of the Deep Keep,Neck,3,1,11,25,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_neck_004.png
+loot_159,Tinplate Torque of the Glass Horizon,Neck,5,10,5,0,None,Common,A mysterious item.,Red Rising,/icons/acc_neck_021.png
+loot_160,Barracks-Issue Medallion of Warding,Neck,2,2,10,30,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_neck_023.png
+loot_161,Scamp's Collar of the Blood Ram,Neck,11,1,8,0,None,Common,A mysterious item.,The Bad Guys,/icons/acc_necklace_011.png
+loot_162,Mass-Forged Charmstring of the Adamant Crown,Neck,8,11,1,0,None,Common,A mysterious item.,The Dresden Files,/icons/acc_neck_012.png
+loot_163,Ration-Issue Lifesignet of the Sentinel,Neck,1,4,12,15,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_neck_018.png
+loot_164,Scamp's Locket of the Iron Avalanche,Neck,20,5,7,40,None,Uncommon,A mysterious item.,The Bad Guys,/icons/acc_neck_008.png
+loot_165,Moonlit Gorget of the Warded Step,Neck,4,16,20,0,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/acc_necklace_007.png
+loot_166,Beta-Tested Grav Pendant of the Stronghold,Neck,10,5,23,10,None,Uncommon,A mysterious item.,Netherdei,/icons/acc_necklace_010.png
+loot_167,Pristine Monolith Shard of the Wardstone,Neck,12,0,18,50,None,Uncommon,A mysterious item.,Red Rising,/icons/acc_neck_018.png
+loot_168,Scamp's Rune Torque of the Goliath Brand,Neck,23,0,4,65,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/acc_neck_035.png
+loot_169,Pristine Gorget of the Titan,Neck,23,9,5,15,None,Uncommon,A mysterious item.,The Dresden Files,/icons/acc_neck_026.png
+loot_170,Dawn-Touched Grav Pendant of the Bulwark,Neck,8,5,24,15,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/acc_neck_006.png
+loot_171,Standard-Issue Gorget of the Mountain,Neck,13,1,24,10,None,Uncommon,A mysterious item.,Red Rising,/icons/acc_necklace_011.png
+loot_172,Gearbound Charmstring of the Oracle's Wake,Neck,11,19,8,10,None,Uncommon,A mysterious item.,The Ten Realms,/icons/acc_neck_003.png
+loot_173,Cracked-Core Torque of the Bastioned Heart,Neck,3,20,17,0,None,Uncommon,A mysterious item.,Red Rising,/icons/acc_neck_028.png
+loot_174,Dawn-Touched Charmstring of the Citadel,Neck,0,16,24,0,None,Uncommon,A mysterious item.,Netherdei,/icons/acc_neck_033.png
+loot_175,Nerfed Oathcord of Stone,Neck,0,15,24,5,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/acc_necklace_009.png
+loot_176,Montana's Collar of the Ether Crown,Neck,0,21,13,30,None,Uncommon,A mysterious item.,The Good Guys,/icons/acc_neck_007.png
+loot_177,Steelbloom Gorget of the Titan Guard,Neck,10,4,23,15,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/acc_neck_016.png
+loot_178,Goldvein Charmstring of Ripping,Neck,17,20,2,5,None,Uncommon,A mysterious item.,Red Rising,/icons/acc_neck_032.png
+loot_179,Barracks-Issue Locket of the Luminous Veil,Neck,12,16,8,20,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/acc_neck_022.png
+loot_180,Dawn-Touched Charmstring of the Archmage,Neck,18,22,0,0,None,Uncommon,A mysterious item.,Red Rising,/icons/acc_neck_014.png
+loot_181,Riverstone Collar of the Tower,Neck,9,5,24,10,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/acc_neck_023.png
+loot_182,Frost-Bitten Beads of the Oracle's Wake,Neck,0,16,21,15,None,Uncommon,A mysterious item.,The Dresden Files,/icons/acc_neck_021.png
+loot_183,Montana's Necklace of Shielding,Neck,15,6,19,0,None,Uncommon,A mysterious item.,The Good Guys,/icons/acc_neck_001.png
+loot_184,Drill-Grade Grav Pendant of the Thunder Maul,Neck,29,1,28,10,None,Rare,A mysterious item.,Apocalypse Parenting,/icons/acc_necklace_012.png
+loot_185,Moonlit Rosary of the Rune Storm,Neck,10,31,10,45,None,Rare,A mysterious item.,The Dresden Files,/icons/acc_neck_005.png
+loot_186,Masterwork Oathcord of the Shellback,Neck,3,18,35,20,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_neck_018.png
+loot_187,Dresden's Rune Torque of Whispers,Neck,24,31,1,20,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_neck_007.png
+loot_188,Drill-Grade Pendant of the Phalanx,Neck,0,25,25,50,None,Rare,A mysterious item.,The Dresden Files,/icons/acc_necklace_006.png
+loot_189,Wolfsworn Choker of the Void,Neck,6,33,3,90,None,Rare,A mysterious item.,Apocalypse Parenting,/icons/acc_neck_005.png
+loot_190,Mustang's Locket of the Iron Avalanche,Neck,36,6,17,5,None,Rare,A mysterious item.,Red Rising,/icons/acc_neck_013.png
+loot_191,Montana's Torque of Astral Fire,Neck,24,30,0,30,None,Rare,A mysterious item.,The Good Guys,/icons/acc_neck_022.png
+loot_192,Second-Hand Rune Torque of the Mountain,Neck,23,7,25,25,None,Rare,A mysterious item.,Netherdei,/icons/acc_neck_005.png
+loot_193,Tinplate Pectoral of Shielding,Neck,6,2,33,95,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_necklace_003.png
+loot_194,Clyde's Charmstring of the Luminous Veil,Neck,0,33,0,135,None,Rare,A mysterious item.,The Bad Guys,/icons/acc_necklace_006.png
+loot_195,Mordecai's Rune Torque of the Battle Saint,Neck,30,27,0,15,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_neck_017.png
+loot_196,Lindon's Data Lanyard of the Eldritch Gale,Neck,5,28,22,25,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_neck_005.png
+loot_197,Warspun Rosary of the Black Bastion,Neck,7,13,28,60,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_neck_019.png
+loot_198,Scamp's Oathcord of the Iron Avalanche,Neck,25,28,2,25,None,Rare,A mysterious item.,The Bad Guys,/icons/acc_necklace_009.png
+loot_199,Wolfsworn Pectoral of the Spellweaver,Neck,22,25,5,40,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_neck_019.png
+loot_200,Riverstone Charmstring of the Warded Step,Neck,23,3,33,5,None,Rare,A mysterious item.,Apocalypse Parenting,/icons/acc_neck_030.png
+loot_201,Beta-Tested Lifesignet of the Sky Furnace,Neck,4,33,23,0,None,Rare,A mysterious item.,The Ten Realms,/icons/acc_neck_015.png
+loot_202,Dungeon-Bred Lifesignet of the Glass Horizon,Neck,5,48,10,85,None,Epic,A mysterious item.,Netherdei,/icons/acc_necklace_011.png
+loot_203,Dawn-Touched Pendant of Manifesting,Neck,31,33,7,45,None,Epic,A mysterious item.,Netherdei,/icons/acc_necklace_012.png
+loot_204,Steelbloom Choker of the Fortress Oath,Neck,11,1,43,125,None,Epic,A mysterious item.,The Stargazer's War,/icons/acc_neck_002.png
+loot_205,Eldritch Beads of the Dream Current,Neck,5,45,28,10,None,Epic,A mysterious item.,Ajax's Ascension,/icons/acc_neck_007.png
+loot_206,Surplus Lifesignet of the Thunder Maul,Neck,32,22,16,50,None,Epic,A mysterious item.,Netherdei,/icons/acc_neck_028.png
+loot_207,Barracks-Issue Gorget of the Star Choir,Neck,38,38,4,0,None,Epic,A mysterious item.,A Soldier's Life,/icons/acc_neck_017.png
+loot_208,Barracks-Issue Locket of the Rampart Breaker,Neck,41,0,39,0,None,Epic,A mysterious item.,A Soldier's Life,/icons/acc_neck_017.png
+loot_209,Scamp's Gorget of the Eldritch Gale,Neck,28,41,10,5,None,Epic,A mysterious item.,The Ten Realms,/icons/acc_neck_036.png
+loot_210,Dan's Necklace of the Wall,Neck,21,8,47,20,None,Epic,A mysterious item.,The Bad Guys,/icons/acc_necklace_007.png
+loot_211,Budget-Line Data Lanyard of Stars,Neck,18,44,0,90,None,Epic,A mysterious item.,The Dresden Files,/icons/acc_neck_007.png
+loot_212,Dresden's Soul Prism of the Deep Keep,Neck,10,2,44,120,None,Epic,A mysterious item.,Ajax's Ascension,/icons/acc_neck_014.png
+loot_213,Dresden's Dog Tags of Shielding,Neck,2,18,40,100,None,Epic,A mysterious item.,Ajax's Ascension,/icons/acc_neck_034.png
+loot_214,Ration-Issue Rune Torque of Brilliance,Neck,3,57,5,175,None,Legendary,A mysterious item.,A Soldier's Life,/icons/acc_neck_027.png
+loot_215,Misprinted Pectoral of the Goliath Brand,Neck,44,53,1,10,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/acc_necklace_002.png
+loot_216,Starbreaker Locket of the Blood Ram,Neck,60,1,23,80,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/acc_neck_035.png
+loot_217,Worldwalker Rosary of Warding,Neck,18,13,46,115,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/acc_neck_030.png
+loot_218,Hugh's Gorget of Cleaving,Neck,43,24,1,160,None,Legendary,A mysterious item.,The Dresden Files,/icons/acc_neck_029.png
+loot_219,Drill-Grade Grav Pendant of the Iron Wall,Neck,31,23,45,5,None,Legendary,A mysterious item.,A Soldier's Life,/icons/acc_necklace_008.png
+loot_220,Cracked-Core Grav Pendant of Whispers,Neck,17,57,22,20,None,Legendary,A mysterious item.,Netherdei,/icons/acc_neck_016.png
+loot_221,Montana's Medallion of Stars,Neck,55,45,0,0,None,Legendary,A mysterious item.,The Good Guys,/icons/acc_necklace_008.png
+loot_222,Montana's Lifesignet of the Ember Champion,Neck,52,3,38,35,None,Legendary,A mysterious item.,The Good Guys,/icons/acc_neck_001.png
+loot_223,Shopworn Null Ring of the Crushing Tide,Ring,9,5,5,5,None,Common,A mysterious item.,The Stargazer's War,/icons/acc_ringwod_001.png
+loot_224,Mass-Forged Signet of the Siege Hold,Ring,2,6,8,20,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_ringwod_021.png
+loot_225,Misprinted Null Ring of Relentless Force,Ring,11,9,0,0,None,Common,A mysterious item.,Apocalypse Parenting,/icons/acc_ring_005.png
+loot_226,Dan's Band of Channeling,Ring,6,9,5,0,None,Common,A mysterious item.,The Bad Guys,/icons/acc_ring_075.png
+loot_227,Battle-Worn Vowband of the Mountain,Ring,4,4,12,0,None,Common,A mysterious item.,The Good Guys,/icons/acc_ring_046.png
+loot_228,Barracks-Issue Hexband of the Sentinel,Ring,0,9,11,0,None,Common,A mysterious item.,Red Rising,/icons/acc_ring_022.png
+loot_229,Barracks-Issue Ring of the Thunder Maul,Ring,12,0,3,25,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_ring_016.png
+loot_230,Second-Hand Circuit Ring of the Battle Saint,Ring,8,7,3,10,None,Common,A mysterious item.,The Dresden Files,/icons/acc_ring_094.png
+loot_231,Shopworn Thumb Ring of the Berserker,Ring,11,2,6,5,None,Common,A mysterious item.,The Good Guys,/icons/acc_ring_071.png
+loot_232,Scuffed Blood Ring of the Ember Champion,Ring,8,0,10,10,None,Common,A mysterious item.,Netherdei,/icons/acc_ring_010.png
+loot_233,Discounted Thumb Ring of the Void Walker,Ring,6,10,2,10,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_ring_014.png
+loot_234,Shattered Knuckleband of the Iron Avalanche,Ring,11,0,4,25,None,Common,A mysterious item.,Netherdei,/icons/acc_ringwod_027.png
+loot_235,Mass-Forged Seal Ring of the Deep Spell,Ring,8,9,3,0,None,Common,A mysterious item.,Red Rising,/icons/acc_ring_030.png
+loot_236,Scamp's Ring of the Archmage,Ring,6,8,2,20,None,Common,A mysterious item.,The Dresden Files,/icons/acc_ring_092.png
+loot_237,Knockoff Shard Ring of Stone,Ring,1,6,12,5,None,Common,A mysterious item.,Red Rising,/icons/acc_ringwod_004.png
+loot_238,Drill-Grade Halo Ring of the Glass Horizon,Ring,0,21,15,20,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/acc_ring_045.png
+loot_239,Gravebound Knuckleband of the Glass Horizon,Ring,3,22,14,5,None,Uncommon,A mysterious item.,The Ten Realms,/icons/acc_ringwod_034.png
+loot_240,Clyde's Loopband of the Bulwark,Ring,3,6,24,35,None,Uncommon,A mysterious item.,The Bad Guys,/icons/acc_ring_057.png
+loot_241,Gleaming Signet of the Titan,Ring,18,21,1,0,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/acc_ring_099.png
+loot_242,Montana's Knuckleband of Unbroken Lines,Ring,6,11,21,10,None,Uncommon,A mysterious item.,The Good Guys,/icons/acc_ring_061.png
+loot_243,Factory-Stamped Seal of the Bulwark,Ring,2,6,20,60,None,Uncommon,A mysterious item.,Netherdei,/icons/acc_ringwod_015.png
+loot_244,Scamp's Seal of the Rampart,Ring,3,7,24,30,None,Uncommon,A mysterious item.,The Bad Guys,/icons/acc_ring_011.png
+loot_245,Ration-Issue Loopband of the Phalanx,Ring,0,5,16,95,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/acc_ringwod_019.png
+loot_246,Field-Repaired Warden Band of Unbroken Lines,Ring,5,12,22,5,None,Uncommon,A mysterious item.,Netherdei,/icons/acc_ringwod_033.png
+loot_247,Training-Yard Warden Band of the Mauler,Ring,22,17,0,5,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/acc_ring_026.png
+loot_248,Barracks-Issue Loop of the Sunken Sigil,Ring,9,19,7,25,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/acc_ring_044.png
+loot_249,Ogre's Seal of the Rift,Ring,12,17,0,55,None,Uncommon,A mysterious item.,The Dresden Files,/icons/acc_ring_015.png
+loot_250,Ironroot Signet of the Arc-Light,Ring,4,24,4,40,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/acc_ring_086.png
+loot_251,Dan's Coil Ring of the Wall,Ring,10,7,21,10,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/acc_ring_056.png
+loot_252,Mossgrown Loop of Final Impact,Ring,18,3,9,50,None,Uncommon,A mysterious item.,Red Rising,/icons/acc_ring_042.png
+loot_253,Barracks-Issue Signet of Final Impact,Ring,33,9,11,35,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_ring_075.png
+loot_254,Barracks-Issue Null Ring of Whispers,Ring,11,27,8,70,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_ring_037.png
+loot_255,Flea-Market Halo Ring of the Fortress Oath,Ring,14,3,36,35,None,Rare,A mysterious item.,Netherdei,/icons/acc_ringwod_018.png
+loot_256,Dust-Caked Null Ring of the Deep Keep,Ring,21,1,36,10,None,Rare,A mysterious item.,Netherdei,/icons/acc_ring_080.png
+loot_257,Sigilborne Blood Ring of the Rift,Ring,22,31,7,0,None,Rare,A mysterious item.,Netherdei,/icons/acc_ringwod_023.png
+loot_258,Drill-Grade Starloop of the Arc-Light,Ring,1,33,20,30,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_ring_081.png
+loot_259,Montana's Loop of the Owl,Ring,0,25,26,45,None,Rare,A mysterious item.,The Good Guys,/icons/acc_ring_082.png
+loot_260,Archmagus Loopband of the Wardstone,Ring,11,2,32,75,None,Rare,A mysterious item.,The Ten Realms,/icons/acc_ringwod_017.png
+loot_261,Mustang's Seal Ring of Arcane Power,Ring,11,34,2,65,None,Rare,A mysterious item.,The Dresden Files,/icons/acc_ringwod_038.png
+loot_262,Montana's Starloop of the Phalanx,Ring,23,2,32,15,None,Rare,A mysterious item.,The Good Guys,/icons/acc_ring_033.png
+loot_263,Dan's Circle of the Glass Horizon,Ring,34,26,0,0,None,Rare,A mysterious item.,The Stargazer's War,/icons/acc_ring_053.png
+loot_264,Bloodwrought Loop of the Siege Horn,Ring,34,2,17,35,None,Rare,A mysterious item.,Red Rising,/icons/acc_ring_012.png
+loot_265,Donut's Coil of Fortitude,Ring,13,18,28,5,None,Rare,A mysterious item.,The Dresden Files,/icons/acc_ring_067.png
+loot_266,Montana's Circle of the Great Hunt,Ring,24,21,10,25,None,Rare,A mysterious item.,The Good Guys,/icons/acc_ringwod_015.png
+loot_267,Barracks-Issue Hexband of the Shellback,Ring,13,11,28,40,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_ring_095.png
+loot_268,Drill-Grade Signet of the Mauler,Ring,28,22,3,35,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_ringwod_003.png
+loot_269,Misprinted Vowband of the Deep Spell,Ring,35,41,1,15,None,Epic,A mysterious item.,Netherdei,/icons/acc_ringwod_018.png
+loot_270,Warspun Circle of the Ember Champion,Ring,39,39,2,0,None,Epic,A mysterious item.,A Soldier's Life,/icons/acc_ring_052.png
+loot_271,Dan's Seal of Shielding,Ring,29,3,40,40,None,Epic,A mysterious item.,The Bad Guys,/icons/acc_ring_013.png
+loot_272,Chrysaline Knuckleband of Sorcery,Ring,0,48,32,0,None,Epic,A mysterious item.,Netherdei,/icons/acc_ringwod_045.png
+loot_273,Labyrinthine Circle of the Wall,Ring,4,2,37,185,None,Epic,A mysterious item.,Netherdei,/icons/acc_ring_036.png
+loot_274,Stamped-Alloy Seal Ring of the Gatekeeper,Ring,16,3,36,125,None,Epic,A mysterious item.,The Ten Realms,/icons/acc_ringwod_033.png
+loot_275,Scamp's Loop of Arcane Power,Ring,5,33,11,155,None,Epic,A mysterious item.,Netherdei,/icons/acc_ring_079.png
+loot_276,Bloodwrought Warden Band of the Iron Wall,Ring,9,10,36,125,None,Epic,A mysterious item.,Red Rising,/icons/acc_ring_072.png
+loot_277,Jake's Coil Ring of the Prism Mind,Ring,7,41,3,145,None,Epic,A mysterious item.,Netherdei,/icons/acc_ring_094.png
+loot_278,Ghostwater Loopband of the Nebula,Ring,40,36,4,0,None,Epic,A mysterious item.,Netherdei,/icons/acc_ringwod_027.png
+loot_279,Donut's Halo Ring of the Rampart,Ring,7,11,42,100,None,Epic,A mysterious item.,Netherdei,/icons/acc_ringwod_048.png
+loot_280,Blackflame Starloop of the Arc-Light,Ring,7,45,13,175,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/acc_ringwod_033.png
+loot_281,Bent-Nail Starloop of the Iron Wall,Ring,2,25,56,85,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/acc_ring_058.png
+loot_282,Darrow's Coil Ring of the Tortoise,Ring,6,5,56,165,None,Legendary,A mysterious item.,Red Rising,/icons/acc_ring_059.png
+loot_283,Anomander's Shank of the Aether Throne,Ring,58,41,1,0,None,Legendary,A mysterious item.,Netherdei,/icons/acc_ringwod_012.png
+loot_284,Fitchner's Thumb Ring of the Sage,Ring,35,43,14,40,None,Legendary,A mysterious item.,Red Rising,/icons/acc_ring_023.png
+loot_285,Monarchforged Ring of the Oracle's Wake,Ring,22,47,11,100,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/acc_ringwod_015.png
+loot_286,Hard-Coded Loop of Unbroken Lines,Ring,3,32,60,25,None,Legendary,A mysterious item.,The Ten Realms,/icons/acc_ring_098.png
+loot_287,Dan's Shard Ring of the Deep Keep,Ring,37,8,52,15,None,Legendary,A mysterious item.,The Bad Guys,/icons/acc_ringwod_024.png
+loot_288,Drill-Grade Ring of the Siege Hold,Ring,0,11,9,0,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_ring_009.png
+loot_289,Warspun Shard Ring of Iron,Ring,50,0,46,20,None,Legendary,A mysterious item.,A Soldier's Life,/icons/acc_ring_030.png
+loot_290,Heavenfall Knuckleband of the Mauler,Ring,52,41,6,5,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/acc_ringwod_047.png
+loot_291,Warspun Loopband of the Winter Keep,Ring,31,19,41,45,None,Legendary,A mysterious item.,The Ten Realms,/icons/acc_ring_052.png
+loot_292,Cassius's Blood Ring of the Iron Wall,Ring,4,37,59,0,None,Legendary,A mysterious item.,Red Rising,/icons/acc_ring_047.png
+loot_293,Ration-Issue Loop of the Dream Current,Ring,0,10,5,25,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_ring_047.png
+loot_294,Drill-Grade Starloop of the Wolf General,Ring,11,3,4,10,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_ring_072.png
+loot_295,Field-Repaired Signet of the Siege Hold,Ring,3,30,56,55,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/acc_ringwod_049.png
+loot_296,Spare-Parts Coil Ring of the Deep Spell,Ring,5,10,0,25,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_ring_087.png
+loot_297,Dan's Cogwheel of the Juggernaut,Trinket,12,3,0,25,None,Common,A mysterious item.,Apocalypse Parenting,/icons/acc_trinket_081.png
+loot_298,Off-Brand Beacon of the Anchor,Trinket,5,2,11,10,None,Common,A mysterious item.,Apocalypse Parenting,/icons/acc_trinket_003.png
+loot_299,Gleaming Votive of Might,Trinket,11,3,1,25,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_040.png
+loot_300,Rattletrap Bauble of Stone,Trinket,4,1,10,25,None,Common,A mysterious item.,Netherdei,/icons/acc_trinket_095.png
+loot_301,Boilerplate Phylactery of Brutality,Trinket,8,2,2,40,None,Common,A mysterious item.,The Good Guys,/icons/acc_trinket_001.png
+loot_302,Scamp's Lantern Core of the Siege Horn,Trinket,10,10,0,0,None,Common,A mysterious item.,The Bad Guys,/icons/acc_trinket_046.png
+loot_303,Dan's Soul Vial of the Iron Reign,Trinket,11,5,0,20,None,Common,A mysterious item.,Apocalypse Parenting,/icons/acc_trinket_111.png
+loot_304,Barracks-Issue Cogwheel of the Warded Step,Trinket,2,3,9,30,None,Common,A mysterious item.,A Soldier's Life,/icons/acc_trinket_097.png
+loot_305,Dan's Orb of the War Cry,Trinket,11,6,3,0,None,Common,A mysterious item.,The Bad Guys,/icons/acc_trinket_089.png
+loot_306,Rusty Token of the Siege Hold,Trinket,9,0,10,5,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_069.png
+loot_307,Scamp's Lucky Bone of Shielding,Trinket,8,0,10,10,None,Common,A mysterious item.,The Bad Guys,/icons/acc_trinket_054.png
+loot_308,Standard-Issue Memory Crystal of the Anchor,Trinket,2,1,11,30,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_045.png
+loot_309,Standard-Issue Icon of Astral Fire,Trinket,8,9,2,5,None,Common,A mysterious item.,The Stargazer's War,/icons/acc_trinket_034.png
+loot_310,Dan's Phylactery Shard of Fortitude,Trinket,1,3,12,20,None,Common,A mysterious item.,The Good Guys,/icons/acc_trinket_069.png
+loot_311,Training-Yard Figurine of the Ember Champion,Trinket,9,4,3,20,None,Common,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_101.png
+loot_312,Ooze-Stained Lucky Bone of the Granite March,Trinket,7,6,16,55,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_078.png
+loot_313,Montana's Votive of Crushing,Trinket,16,14,1,45,None,Uncommon,A mysterious item.,The Good Guys,/icons/acc_trinket_022.png
+loot_314,Montana's Cogwheel of the Gatekeeper,Trinket,0,11,23,30,None,Uncommon,A mysterious item.,The Good Guys,/icons/acc_trinket_075.png
+loot_315,Goldvein Token of the Gorilla,Trinket,18,21,0,5,None,Uncommon,A mysterious item.,Netherdei,/icons/acc_trinket_067.png
+loot_316,Scamp's Phylactery Shard of Iron,Trinket,7,12,19,10,None,Uncommon,A mysterious item.,The Bad Guys,/icons/acc_trinket_076.png
+loot_317,Scamp's Data Cube of the Citadel,Trinket,2,5,17,80,None,Uncommon,A mysterious item.,The Bad Guys,/icons/acc_trinket_057.png
+loot_318,Mass-Forged Microdrone of the Adamant Crown,Trinket,24,2,1,65,None,Uncommon,A mysterious item.,The Ten Realms,/icons/acc_trinket_059.png
+loot_319,Waymarked Talisman of the Iron Avalanche,Trinket,21,0,18,5,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/acc_trinket_003.png
+loot_320,Circuit-Blessed Bauble of the Gatekeeper,Trinket,12,2,24,10,None,Uncommon,A mysterious item.,The Ten Realms,/icons/acc_trinket_050.png
+loot_321,Gearbound Memory Crystal of the Wall,Trinket,7,3,21,45,None,Uncommon,A mysterious item.,Netherdei,/icons/acc_trinket_107.png
+loot_322,Scamp's Microdrone of the Crushing Tide,Trinket,22,3,14,5,None,Uncommon,A mysterious item.,The Bad Guys,/icons/acc_trinket_030.png
+loot_323,Patch-Note Cogwheel of the Ember Champion,Trinket,16,15,9,0,None,Uncommon,A mysterious item.,The Ten Realms,/icons/acc_trinket_036.png
+loot_324,Drill-Grade Cogwheel of Manifesting,Trinket,17,18,0,25,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/acc_trinket_050.png
+loot_325,Off-Brand Reliquary of Final Impact,Trinket,18,21,0,5,None,Uncommon,A mysterious item.,The Dresden Files,/icons/acc_trinket_025.png
+loot_326,Scamp's Token of the Anchor,Trinket,0,24,16,0,None,Uncommon,A mysterious item.,The Bad Guys,/icons/acc_trinket_021.png
+loot_327,Lanternlit Memory Crystal of Deflection,Trinket,1,20,16,15,None,Uncommon,A mysterious item.,Red Rising,/icons/acc_trinket_082.png
+loot_328,Flea-Market Icon of Ripping,Trinket,29,19,12,0,None,Rare,A mysterious item.,Netherdei,/icons/acc_trinket_044.png
+loot_329,Zorian's Rune Tablet of Unbroken Lines,Trinket,2,19,35,20,None,Rare,A mysterious item.,Netherdei,/icons/acc_trinket_044.png
+loot_330,Montana's Fetish of the Anvil Fist,Trinket,33,0,24,15,None,Rare,A mysterious item.,The Good Guys,/icons/acc_trinket_112.png
+loot_331,Lanternlit Phylactery Shard of the Siege Hold,Trinket,0,33,25,10,None,Rare,A mysterious item.,Netherdei,/icons/acc_trinket_053.png
+loot_332,Cursed-ish Cogwheel of the Blood Ram,Trinket,24,12,18,30,None,Rare,A mysterious item.,Netherdei,/icons/acc_trinket_049.png
+loot_333,Drill-Grade Talisman of the Chainbreaker,Trinket,34,4,15,35,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_trinket_130.png
+loot_334,Second-Hand Data Cube of the Anchor,Trinket,1,31,26,10,None,Rare,A mysterious item.,The Dresden Files,/icons/acc_trinket_105.png
+loot_335,Drill-Grade Data Cube of the Siege Horn,Trinket,29,5,17,45,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_trinket_020.png
+loot_336,Beta-Tested Microdrone of Fortitude,Trinket,6,14,32,40,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_031.png
+loot_337,Clyde's Icon of the Dream Current,Trinket,33,24,2,5,None,Rare,A mysterious item.,The Bad Guys,/icons/acc_trinket_029.png
+loot_338,Mossgrown Lantern Core of Astral Fire,Trinket,16,31,11,10,None,Rare,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_046.png
+loot_339,Ooze-Stained Holo Projector of the Mystic,Trinket,5,31,12,60,None,Rare,A mysterious item.,Netherdei,/icons/acc_trinket_100.png
+loot_340,Drill-Grade Soul Vial of the Rampart,Trinket,7,18,30,25,None,Rare,A mysterious item.,A Soldier's Life,/icons/acc_trinket_058.png
+loot_341,Wolfsworn Artifact of the Thunder Maul,Trinket,27,28,3,10,None,Rare,A mysterious item.,Netherdei,/icons/acc_trinket_110.png
+loot_342,Blackflame Votive of the Prism Mind,Trinket,28,41,10,5,None,Epic,A mysterious item.,The Ten Realms,/icons/acc_trinket_136.png
+loot_343,Gleaming Lantern Core of Brilliance,Trinket,25,39,0,80,None,Epic,A mysterious item.,Apocalypse Parenting,/icons/acc_trinket_089.png
+loot_344,Drill-Grade Totem of Crushing,Trinket,36,15,9,100,None,Epic,A mysterious item.,A Soldier's Life,/icons/acc_trinket_027.png
+loot_345,Battleborn Talisman of the Titan,Trinket,39,2,21,90,None,Epic,A mysterious item.,The Dresden Files,/icons/acc_trinket_043.png
+loot_346,Scamp's Totem of the Bulwark,Trinket,27,6,39,40,None,Epic,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_033.png
+loot_347,Spare-Parts Lantern Core of the Wolf General,Trinket,48,10,19,15,None,Epic,A mysterious item.,The Stargazer's War,/icons/acc_trinket_109.png
+loot_348,Cracked-Core Bauble of the Red Banner,Trinket,44,20,13,15,None,Epic,A mysterious item.,Apocalypse Parenting,/icons/acc_trinket_078.png
+loot_349,Scamp's Phylactery Shard of the Deep Keep,Trinket,26,5,46,15,None,Epic,A mysterious item.,The Stargazer's War,/icons/acc_trinket_119.png
+loot_350,Frost-Bitten Microdrone of the Chronomancer,Trinket,22,32,22,20,None,Epic,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_075.png
+loot_351,Glowing Lantern Core of the Mountain,Trinket,33,3,41,15,None,Epic,A mysterious item.,Ajax's Ascension,/icons/acc_trinket_073.png
+loot_352,Dan's Data Cube of the Red Banner,Trinket,32,30,14,20,None,Epic,A mysterious item.,The Bad Guys,/icons/acc_trinket_072.png
+loot_353,Legacy Icon of the Cosmic Thread,Trinket,13,43,5,95,None,Epic,A mysterious item.,Netherdei,/icons/acc_trinket_012.png
+loot_354,Star-Eater Artifact of the Ether Crown,Trinket,24,51,15,50,None,Legendary,A mysterious item.,Red Rising,/icons/acc_trinket_019.png
+loot_355,Montana's Talisman of the Dream Current,Trinket,26,56,10,40,None,Legendary,A mysterious item.,The Good Guys,/icons/acc_trinket_109.png
+loot_356,Montana's Fetish of the Shellback,Trinket,6,4,57,165,None,Legendary,A mysterious item.,The Good Guys,/icons/acc_trinket_138.png
+loot_357,Drill-Grade Phaser Relic of the Rampart Breaker,Trinket,50,8,9,165,None,Legendary,A mysterious item.,A Soldier's Life,/icons/acc_trinket_106.png
+loot_358,Trash-Tier Reliquary of the Stone Choir,Trinket,3,46,45,30,None,Legendary,A mysterious item.,Apocalypse Parenting,/icons/acc_trinket_022.png
+loot_359,Grand-Design Data Cube of Brilliance,Trinket,10,55,31,20,None,Legendary,A mysterious item.,The Stargazer's War,/icons/acc_trinket_138.png
+loot_360,Warspun Idol of the Brass Tyrant,Trinket,46,29,2,115,None,Legendary,A mysterious item.,A Soldier's Life,/icons/acc_trinket_029.png
+loot_361,Barracks-Issue Orb of Impact,Trinket,59,2,14,125,None,Legendary,A mysterious item.,The Stargazer's War,/icons/acc_trinket_024.png
+loot_362,Barracks-Issue Lantern Core of the Moon Script,Trinket,38,47,3,60,None,Legendary,A mysterious item.,A Soldier's Life,/icons/acc_trinket_018.png
+loot_363,Mustang's Figurine of Deflection,Trinket,44,2,48,30,None,Legendary,A mysterious item.,The Dresden Files,/icons/acc_trinket_040.png
+loot_364,Sevro's Talisman of the Owl,Trinket,10,49,31,50,None,Legendary,A mysterious item.,Red Rising,/icons/acc_trinket_119.png
+loot_365,Montana's Pocket Shrine of the Blue Nova,Trinket,12,57,29,10,None,Legendary,A mysterious item.,The Good Guys,/icons/acc_trinket_139.png
+loot_366,Dan's Data Cube of the Ember Champion,Trinket,43,2,31,120,None,Legendary,A mysterious item.,The Bad Guys,/icons/acc_trinket_097.png
+loot_367,Scamp's Memory Crystal of the Sentinel,Trinket,1,34,40,25,None,Epic,A mysterious item.,The Bad Guys,/icons/acc_trinket_122.png
+loot_368,Clyde's Talisman of the Citadel,Trinket,20,27,51,10,None,Legendary,A mysterious item.,The Bad Guys,/icons/acc_trinket_018.png
+loot_369,Gleaming Pocket Shrine of the Mauler,Trinket,48,15,16,5,None,Epic,A mysterious item.,Netherdei,/icons/acc_trinket_019.png
+loot_370,Stamped-Alloy Reliquary of the Blue Nova,Trinket,24,56,8,60,None,Legendary,A mysterious item.,Netherdei,/icons/acc_trinket_106.png
+loot_371,Misprinted Pulse Rifle of Stars,Weapon,2,8,9,5,None,Common,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_270.png
+loot_372,Knockoff Falchion of the Star Choir,Weapon,0,12,8,0,None,Common,A mysterious item.,The Ten Realms,/icons/weapon_sword_507.png
+loot_373,Scuffed Sledge of the Last Charge,Weapon,12,3,1,20,None,Common,A mysterious item.,Ajax's Ascension,/icons/weapon_mace_038.png
+loot_374,Drill-Grade Claymore of the Brass Tyrant,Weapon,11,6,0,15,None,Common,A mysterious item.,A Soldier's Life,/icons/weapon_sword_095.png
+loot_375,Gleaming Scimitar of the Battle Saint,Weapon,12,1,6,5,None,Common,A mysterious item.,The Dresden Files,/icons/weapon_sword_483.png
+loot_376,Mass-Forged Sledge of the Arc-Light,Weapon,7,10,1,10,None,Common,A mysterious item.,Ajax's Ascension,/icons/weapon_mace_095.png
+loot_377,Ration-Issue Warstaff of the Black Bastion,Weapon,7,2,9,10,None,Common,A mysterious item.,A Soldier's Life,/icons/weapon_mace_194.png
+loot_378,Barracks-Issue Repeater of the Black Bastion,Weapon,2,6,12,0,None,Common,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_191.png
+loot_379,Scamp's Crossbow of the Siege Horn,Weapon,11,7,0,10,None,Common,A mysterious item.,The Bad Guys,/icons/weapon_bow_130.png
+loot_380,Ration-Issue Longbow of the Deep Spell,Weapon,1,12,5,10,None,Common,A mysterious item.,Red Rising,/icons/weapon_bow_129.png
+loot_381,Rattletrap Spatha of the Moon Script,Weapon,4,10,3,15,None,Common,A mysterious item.,The Ten Realms,/icons/weapon_sword_515.png
+loot_382,Cracked-Core Halberd of the Rampart Breaker,Weapon,8,3,5,20,None,Common,A mysterious item.,Netherdei,/icons/weapon_mace_276.png
+loot_383,Ration-Issue Arc Pistol of the Gorilla,Weapon,12,1,5,10,None,Common,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_223.png
+loot_384,Rusty Claymore of the Wardstone,Weapon,6,2,12,0,None,Common,A mysterious item.,Red Rising,/icons/weapon_sword_552.png
+loot_385,Surplus Hand-Cannon of Might,Weapon,11,0,5,20,None,Common,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_251.png
+loot_386,Bent-Nail Falchion of the Void Walker,Weapon,13,19,6,10,None,Uncommon,A mysterious item.,Red Rising,/icons/weapon_sword_295.png
+loot_387,Riverstone Scepter of the Bulwark,Weapon,4,12,24,0,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_222.png
+loot_388,Salvaged Hand-Cannon of the Dream Current,Weapon,22,17,0,5,None,Uncommon,A mysterious item.,Netherdei,/icons/icons_quest_misc_050.png
+loot_389,Montana's Katana of Manifesting,Weapon,6,21,13,0,None,Uncommon,A mysterious item.,The Good Guys,/icons/icons_quest_misc_178.png
+loot_390,Rattletrap Gladius of the Gatekeeper,Weapon,6,1,20,65,None,Uncommon,A mysterious item.,Netherdei,/icons/weapon_sword_390.png
+loot_391,Dan's Railgun of the Spellweaver,Weapon,1,23,15,5,None,Uncommon,A mysterious item.,Red Rising,/icons/icons_quest_misc_080.png
+loot_392,Riverstone Arc Pistol of the Blood Ram,Weapon,18,3,17,10,None,Uncommon,A mysterious item.,Red Rising,/icons/icons_quest_misc_175.png
+loot_393,Dawn-Touched Repeater of the Sunken Sigil,Weapon,0,20,8,60,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_191.png
+loot_394,Gearbound Katana of the Chronomancer,Weapon,2,21,13,20,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_197.png
+loot_395,Dan's Crossbow of the Nebula,Weapon,1,23,16,0,None,Uncommon,A mysterious item.,The Bad Guys,/icons/weapon_bow_017.png
+loot_396,Barracks-Issue Maul of the Rampart,Weapon,15,5,20,0,None,Uncommon,A mysterious item.,A Soldier's Life,/icons/weapon_mace_099.png
+loot_397,Glowing Maul of the Iron Wall,Weapon,1,11,20,40,None,Uncommon,A mysterious item.,Apocalypse Parenting,/icons/weapon_mace_155.png
+loot_398,Beta-Tested Dagger of the Warded Step,Weapon,9,3,20,40,None,Uncommon,A mysterious item.,Red Rising,/icons/weapon_shortblade_086.png
+loot_399,Training-Yard Scepter of the Titan,Weapon,16,21,3,0,None,Uncommon,A mysterious item.,Red Rising,/icons/icons_quest_misc_242.png
+loot_400,Crow-Marked Whip of Cleaving,Weapon,19,5,7,45,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/icons_quest_misc_001.png
+loot_401,Dust-Caked Spear of the Stormbreak,Weapon,2,7,16,75,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/weapon_mace_206.png
+loot_402,Montana's Dirk of Slaying,Weapon,23,4,7,30,None,Uncommon,A mysterious item.,The Good Guys,/icons/weapon_shortblade_107.png
+loot_403,Dawn-Touched Spatha of Might,Weapon,16,0,12,60,None,Uncommon,A mysterious item.,Ajax's Ascension,/icons/weapon_sword_570.png
+loot_404,Montana's Chakram of the Berserker,Weapon,17,23,0,0,None,Uncommon,A mysterious item.,The Good Guys,/icons/icons_quest_misc_116.png
+loot_405,Ration-Issue Mace of the Black Bastion,Weapon,1,18,20,5,None,Uncommon,A mysterious item.,The Stargazer's War,/icons/weapon_mace_273.png
+loot_406,Donut's Repeater of the Star Choir,Weapon,28,26,1,25,None,Rare,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_027.png
+loot_407,Mustang's Mace of the Stronghold,Weapon,15,14,27,20,None,Rare,A mysterious item.,Red Rising,/icons/weapon_mace_241.png
+loot_408,Glitchy Shortsword of the Stone Choir,Weapon,11,13,36,0,None,Rare,A mysterious item.,The Ten Realms,/icons/weapon_sword_124.png
+loot_409,Montana's Glaive of Crushing,Weapon,25,20,11,20,None,Rare,A mysterious item.,The Good Guys,/icons/weapon_mace_055.png
+loot_410,Montana's Warstaff of the Void Walker,Weapon,7,34,1,90,None,Rare,A mysterious item.,The Good Guys,/icons/weapon_mace_187.png
+loot_411,Trash-Tier Dagger of the Rampart,Weapon,1,22,35,10,None,Rare,A mysterious item.,Netherdei,/icons/weapon_shortblade_007.png
+loot_412,Scamp's Maul of Arcane Power,Weapon,7,36,5,60,None,Rare,A mysterious item.,The Bad Guys,/icons/weapon_mace_346.png
+loot_413,Nightveil Halberd of the Rune Storm,Weapon,6,27,19,40,None,Rare,A mysterious item.,Ajax's Ascension,/icons/weapon_mace_338.png
+loot_414,Mustang's Scepter of the Siege Hold,Weapon,7,0,27,130,None,Rare,A mysterious item.,Red Rising,/icons/icons_quest_misc_053.png
+loot_415,Mustang's Maul of Warding,Weapon,31,1,27,5,None,Rare,A mysterious item.,Red Rising,/icons/weapon_mace_067.png
+loot_416,Zac's Dagger of the Last Shield,Weapon,11,7,28,70,None,Rare,A mysterious item.,Ajax's Ascension,/icons/weapon_shortblade_020.png
+loot_417,Cassius's Dirk of Bonebreaker Oaths,Weapon,24,22,2,60,None,Rare,A mysterious item.,Red Rising,/icons/weapon_shortblade_017.png
+loot_418,Hugh's Rapier of the Brass Tyrant,Weapon,46,0,5,145,None,Epic,A mysterious item.,The Stargazer's War,/icons/weapon_sword_265.png
+loot_419,Clyde's Rapier of the Void Walker,Weapon,6,41,19,70,None,Epic,A mysterious item.,The Bad Guys,/icons/weapon_sword_567.png
+loot_420,Ration-Issue Claymore of the Phalanx,Weapon,32,0,38,50,None,Epic,A mysterious item.,A Soldier's Life,/icons/weapon_sword_147.png
+loot_421,Stamped-Alloy Longbow of the Last Shield,Weapon,3,19,47,55,None,Epic,A mysterious item.,The Dresden Files,/icons/weapon_bow_160.png
+loot_422,Stamped-Alloy Scepter of the Star Choir,Weapon,21,47,5,35,None,Epic,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_201.png
+loot_423,Ration-Issue Lance of Brutality,Weapon,34,29,10,35,None,Epic,A mysterious item.,A Soldier's Life,/icons/weapon_mace_354.png
+loot_424,Soulharrow Railgun of the Bastion,Weapon,34,11,34,5,None,Epic,A mysterious item.,Apocalypse Parenting,/icons/icons_quest_misc_017.png
+loot_425,Clyde's Claymore of the Tortoise,Weapon,16,7,40,85,None,Epic,A mysterious item.,The Bad Guys,/icons/weapon_sword_438.png
+loot_426,Frost-Bitten Boomstick of the Granite March,Weapon,12,29,35,20,None,Epic,A mysterious item.,The Dresden Files,/icons/icons_quest_misc_160.png
+loot_427,Fitchner's Halberd of the Void Walker,Weapon,13,40,20,35,None,Epic,A mysterious item.,Red Rising,/icons/weapon_mace_130.png
+loot_428,Cursed-ish Spatha of the Archmage,Weapon,0,45,29,30,None,Epic,A mysterious item.,The Stargazer's War,/icons/weapon_sword_317.png
+loot_429,Warspun Boomstick of the Mystic,Weapon,6,33,24,85,None,Epic,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_005.png
+loot_430,Chicken-Sage Hand-Cannon of the Berserker,Weapon,42,10,33,75,None,Legendary,A mysterious item.,Netherdei,/icons/icons_quest_misc_046.png
+loot_431,Anomander's Maul of the Gorilla,Weapon,42,29,29,0,None,Legendary,A mysterious item.,Netherdei,/icons/weapon_mace_172.png
+loot_432,Barracks-Issue Recurve of Iron,Weapon,3,32,52,65,None,Legendary,A mysterious item.,A Soldier's Life,/icons/weapon_bow_135.png
+loot_433,Ration-Issue Chakram of the Celestial Circuit,Weapon,5,41,7,235,None,Legendary,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_251.png
+loot_434,Sevro's Sunblade of the Rampart Breaker,Weapon,50,31,13,30,None,Legendary,A mysterious item.,Red Rising,/icons/weapon_sword_167.png
+loot_435,Salvaged Falchion of the Void,Weapon,4,44,30,110,None,Legendary,A mysterious item.,The Stargazer's War,/icons/weapon_sword_305.png
+loot_436,Drill-Grade Longbow of the Spellweaver,Weapon,14,48,20,90,None,Legendary,A mysterious item.,A Soldier's Life,/icons/weapon_bow_134.png
+loot_437,Aethercrowned Spellbook of the Mauler,Weapon,49,49,2,0,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/icons_quest_misc_154.png
+loot_438,Ashwood Crossbow of Deflection,Weapon,17,26,52,25,None,Legendary,A mysterious item.,Ajax's Ascension,/icons/weapon_bow_030.png
+loot_439,Clyde's Spear of the Crushing Tide,Weapon,49,1,40,50,None,Legendary,A mysterious item.,The Bad Guys,/icons/weapon_mace_247.png
+loot_440,Warspun Pulse Rifle of the Deep Keep,Weapon,9,29,46,80,None,Legendary,A mysterious item.,A Soldier's Life,/icons/icons_quest_misc_076.png
+loot_441,Nerfed Dirk of the Celestial Circuit,Weapon,7,48,15,150,None,Legendary,A mysterious item.,The Ten Realms,/icons/weapon_shortblade_010.png
+loot_442,Ghostwater Mace of Deflection,Weapon,1,30,34,75,None,Epic,A mysterious item.,Netherdei,/icons/weapon_mace_410.png
+loot_443,Sevro's Falchion of the Sky Furnace,Weapon,41,42,12,25,None,Legendary,A mysterious item.,Red Rising,/icons/weapon_sword_200.png
+loot_444,Sevro's Spatha of the Citadel,Weapon,43,13,44,0,None,Legendary,A mysterious item.,Red Rising,/icons/weapon_sword_097.png

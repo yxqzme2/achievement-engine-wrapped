@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="/static/Wrapped/w-shared.css?v=4">
+  <link rel="stylesheet" href="/static/Wrapped/w-gear.css?v=16">
+</head>
+<body>
+<div id="screen-fx"></div>
+<div id="progress-bar-row"></div>
+<canvas id="fireworks-canvas"></canvas>
+
+<div id="slide-content">
+  <div id="win-card">
+
+    <!-- Banner -->
+    <div class="wc-banner">
+     <span class="wc-yearL">2026</span>
+      <span class="wc-verdict">⚔&nbsp;&nbsp;PURGE COMPLETE&nbsp;&nbsp;⚔</span>
+      <span class="wc-yearR">2026</span>
+    </div>
+
+    <!-- Hero: large rectangular avatar, name bottom-left, level bottom-right -->
+    <div class="wc-hero">
+      <img id="wc-avatar" class="wc-avatar-img" src="" alt="">
+      <div class="wc-hero-bg" id="wc-hero-bg"></div>
+      <div class="wc-hero-overlay">
+        <span class="wc-hero-name" id="wc-username">—</span>
+        <span class="wc-hero-level-block">
+          <span class="wc-hero-level-lbl">LEVEL</span>
+          <span class="wc-hero-level-val" id="wc-level">—</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Combat Power + stat chips -->
+    <div class="wc-stats-bar">
+      <div class="wc-cp-inline">
+        <span class="wc-cp-label">COMBAT POWER</span>
+        <span class="wc-cp-val" id="wc-cp">0</span>
+      </div>
+      <div class="wc-stat-chips" id="wc-stat-grid"></div>
+    </div>
+
+    <!-- Equipped Loadout (above chronicle) -->
+    <div class="wc-section">
+      <div class="wc-section-title">EQUIPPED LOADOUT</div>
+      <div id="wc-gear-slots" class="wc-gear-grid"></div>
+    </div>
+
+    <div class="wc-hr"></div>
+
+    <!-- Year Chronicle -->
+    <div class="wc-section">
+      <div class="wc-section-title">2026 CHRONICLE</div>
+      <div id="wc-chronicle" class="wc-chronicle"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="wc-footer">
+      <div class="wc-personality" id="wc-personality">—</div>
+      <div class="wc-boss-tag">💀 SYSTEM ADMINISTRATOR NEUTRALIZED</div>
+    </div>
+
+  </div>
+
+  <!-- Actions — outside card, won't be in screenshot -->
+  <div class="wc-actions" id="wc-actions" style="opacity:0;transition:opacity 0.8s;">
+    <a id="gear-char-link" href="/character" class="wc-btn wc-btn-primary">VIEW CHARACTER SHEET</a>
+    <button class="wc-btn wc-btn-primary" id="wc-screenshot-btn">📸 SCREENSHOT</button>
+    <button class="wc-btn wc-btn-secondary" id="wc-continue-btn">CONTINUE →</button>
+  </div>
+</div>
+
+<div id="wc-tooltip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="/static/Wrapped/w-shared.js?v=4"></script>
+<script src="/static/Wrapped/w-gear.js?v=10"></script>
+</body>
+</html>

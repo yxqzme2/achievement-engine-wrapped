@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="/static/Wrapped/w-shared.css?v=4">
+  <link rel="stylesheet" href="/static/Wrapped/w-personality.css?v=8">
+</head>
+<body>
+<div id="screen-fx"></div>
+<div id="progress-bar-row"></div>
+<div class="toxic-miasma"></div>
+<canvas id="web"></canvas>
+<div id="web-words" aria-hidden="true">
+  <div class="web-word web-word-binge" id="web-word-binge">BINGE 0</div>
+  <div class="web-word web-word-streak" id="web-word-streak">STREAK 0</div>
+  <div class="web-word web-word-streak-side" id="web-word-streak-side">0 DAY STREAK</div>
+</div>
+
+<div id="combat-ui">
+  <div class="hp-bar-container" id="boss-hp-container">
+    <div class="hp-label">💀💀 SYSTEM ADMINISTRATOR [ELITE✚✚]</div>
+    <div class="hp-fill" id="boss-hp-fill"></div>
+    <div class="hp-text" id="boss-hp-text">0 / 15,000</div>
+  </div>
+  <div id="user-stats-bar"></div>
+  <div class="hp-bar-container" id="user-hp-container">
+    <div id="user-shield"></div>
+    <div class="hp-label" id="hp-user-label">LISTENER</div>
+    <div class="hp-fill" id="user-hp-fill"></div>
+    <div class="hp-text" id="user-hp-text">0 / 1,500</div>
+  </div>
+</div>
+
+<canvas id="fireworks-canvas"></canvas>
+
+<div class="s6-split-container">
+  <div class="glass s6-box-base s6-box-left">
+    <div class="s6-hide" id="s6-l1">
+      <div class="lbl" style="color:#00ff00;letter-spacing:5px;text-shadow:0 0 10px rgba(0,255,0,0.4);">Venom Protocol Online</div>
+      <div class="s6-kicker">Spider telemetry locked. Internal toxin routines are active.</div>
+    </div>
+
+    <div class="s6-hide" id="s6-l4">
+      <div class="s6-metric-grid">
+        <div class="s6-metric-card poison">
+          <div class="s6-metric-label">Binge Sessions</div>
+          <div class="s6-metric-value" id="s6-binge-count">0</div>
+          <div class="s6-metric-formula">Poison = MAG x 15 + Binge x 1000</div>
+          <div class="s6-metric-cap">Damage Cap: 25,000</div>
+        </div>
+        <div class="s6-metric-card leech">
+          <div class="s6-metric-label">Longest Streak</div>
+          <div class="s6-metric-value" id="s6-streak-days">0 days</div>
+          <div class="s6-metric-formula">Leech = MAG x 2 + Streak x 180</div>
+          <div class="s6-metric-cap">Heal limited by max HP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass s6-box-base s6-box-right">
+    <div class="leechlord-text s6-hide" id="s6-l2"><center>Venom Leech Archetype</center></div>
+    <div class="sub-text s6-hide" id="s6-l3" style="font-size:1.1rem;line-height:1.65;">
+      <div class="s6-narrative poison">Every binge session saturated the target's internals with escalating venom.</div>
+      <div class="s6-narrative leech">Your streak acts as a tether in chaos, pulling health back every cycle.</div>
+      <div class="s6-preview-row">
+        <span>Poison Output: <strong id="s6-poison-preview">0</strong></span>
+        <span>Leech Restore: <strong id="s6-heal-preview">0</strong></span>
+      </div>
+    </div>
+    <div class="toxic-drip" style="left:20%;animation-delay:0s;"></div>
+    <div class="toxic-puddle" style="left:20%;animation-delay:0s;"></div>
+    <div class="toxic-drip" style="left:55%;animation-delay:0.9s;"></div>
+    <div class="toxic-puddle" style="left:55%;animation-delay:0.9s;"></div>
+    <div class="toxic-drip" style="left:85%;animation-delay:1.6s;"></div>
+    <div class="toxic-puddle" style="left:85%;animation-delay:1.6s;"></div>
+  </div>
+</div>
+
+<div id="tap-cue">tap anywhere to continue →</div>
+
+<script src="/static/Wrapped/w-shared.js?v=4"></script>
+<script src="/static/Wrapped/w-personality.js?v=7"></script>
+</body>
+</html>

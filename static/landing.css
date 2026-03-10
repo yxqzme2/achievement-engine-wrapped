@@ -1,0 +1,223 @@
+/* ===================================================
+   Landing Page — Styles
+   The Listener's Sanctum
+=================================================== */
+
+:root {
+    --bg-dark: #121212;
+    --window-bg: #e8dbc3;
+    --border-color: #4a3b2a;
+    --gold-accent: #b89548;
+    --ink: #2b2018;
+    --ink-muted: #665243;
+    --tab-bg: #3d2f24;
+    --tab-text: #a89582;
+    --tab-hover: #4f3d2f;
+    --font-title: "Cinzel", serif;
+    --font-body: "Lato", sans-serif;
+
+    /* Rarity Colors */
+    --r-common: #a0a0a0;
+    --r-uncommon: #3bd26f;
+    --r-rare: #0070dd;
+    --r-epic: #a335ee;
+    --r-legendary: #ff8000;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg-dark);
+    background-image: radial-gradient(circle at center, #1f1f1f 0%, #050505 100%);
+    color: var(--tab-text);
+    font-family: var(--font-body);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- NAV BAR --- */
+.nav-bar { display:flex; justify-content:space-between; align-items:center; padding:12px 40px; background:var(--tab-bg); border-bottom:3px solid #2a2118; background-image:linear-gradient(to bottom,rgba(255,255,255,.05),rgba(0,0,0,.2)); flex-wrap:wrap; gap:6px; width:100%; box-sizing:border-box; }
+.nav-bar a { color:var(--tab-text); text-decoration:none; font-family:var(--font-title); font-size:.95rem; padding:6px 16px; border-radius:4px; transition:all .2s; }
+.nav-bar a:hover { background:#4f3d2f; color:#dccaa5; }
+.nav-bar a.active { color:var(--gold-accent); font-weight:700; }
+.nav-bar a.nav-title { color:var(--gold-accent); font-size:1.1rem; font-weight:700; letter-spacing:1px; padding:0; background:none; }
+.nav-bar a.nav-title:hover { background:none; color:#dccaa5; }
+@media(max-width:768px){ .nav-bar{ padding:10px 15px; } .nav-bar a{ font-size:.8rem; padding:4px 10px; } .nav-bar a.nav-title{ font-size:.9rem; } }
+
+/* --- HEADER --- */
+.sanctum-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.sanctum-title {
+    font-family: var(--font-title);
+    font-size: 3.5rem;
+    color: var(--gold-accent);
+    margin: 0;
+    text-shadow: 0 4px 20px rgba(184, 149, 72, 0.3);
+    letter-spacing: 2px;
+}
+
+.sanctum-subtitle {
+    font-size: 1.1rem;
+    color: var(--tab-text);
+    opacity: 0.8;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* --- PORTAL GRID --- */
+.portal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    width: 90%;
+    padding: 20px;
+}
+
+/* --- CARDS --- */
+.portal-card {
+    background: var(--tab-bg);
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(0,0,0,0.3));
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--tab-text);
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.portal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(184, 149, 72, 0.1) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    transition: all 0.7s ease;
+}
+
+.portal-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold-accent);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 15px rgba(184, 149, 72, 0.3);
+    color: #dccaa5;
+}
+
+.portal-card:hover::before { left: 200%; }
+
+.portal-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+    transition: transform 0.3s;
+}
+
+.portal-card:hover .portal-icon { transform: scale(1.1); }
+
+.portal-name {
+    font-family: var(--font-title);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold-accent);
+    margin-bottom: 10px;
+}
+
+.portal-desc {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0.8;
+}
+
+/* --- SPECIFIC CARD STYLING --- */
+.card-admin {
+    border-style: dashed;
+    background-image: linear-gradient(to bottom, rgba(255, 128, 0, 0.05), rgba(0,0,0,0.4));
+}
+
+/* --- GLITCH TILE --- */
+.card-glitch {
+    background: rgba(40, 0, 0, 0.6) !important;
+    border: 2px solid #ff0000 !important;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4) !important;
+    animation: glitch-shake 0.5s infinite alternate;
+    cursor: not-allowed !important;
+}
+
+.card-glitch:hover {
+    transform: none !important;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.8) !important;
+}
+
+.glitch-icon {
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000;
+    animation: flicker 0.1s infinite;
+}
+
+.glitch-name {
+    color: #ff0000 !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    animation: glitch-text 0.2s infinite;
+}
+
+.glitch-desc {
+    color: #ffaaaa !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 0.85rem !important;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+/* --- NEW FEATURE GLOW --- */
+.card-new-feature {
+    border-color: #00e5ff !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(0, 229, 255, 0.1) !important;
+    animation: system-pulse 2s infinite ease-in-out;
+}
+
+.card-new-feature:hover {
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.2) !important;
+    border-color: #fff !important;
+}
+
+.new-feature-icon { color: #00e5ff; text-shadow: 0 0 15px rgba(0, 229, 255, 0.6); }
+
+.new-tag {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: #00e5ff;
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .portal-grid { grid-template-columns: repeat(2, 1fr); }
+    .sanctum-title { font-size: 2.8rem; }
+}
+
+@media (max-width: 600px) {
+    .portal-grid { grid-template-columns: 1fr; }
+    .sanctum-title { font-size: 2.2rem; }
+}
