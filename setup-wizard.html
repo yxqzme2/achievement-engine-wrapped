@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achievement Engine — Setup Wizard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --window-bg: #e8dbc3;
+      --border-color: #4a3b2a;
+      --gold-accent: #b89548;
+      --ink: #2b2018;
+      --ink-muted: #665243;
+      --tab-bg: #3d2f24;
+      --tab-text: #a89582;
+      --tab-hover: #4f3d2f;
+      --font-title: 'Cinzel', serif;
+      --font-body: 'Lato', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--ink);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    .nav-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 40px; background: var(--tab-bg);
+      border-bottom: 3px solid #2a2118;
+      background-image: linear-gradient(to bottom, rgba(255,255,255,.05), rgba(0,0,0,.2));
+      width: 100%; box-sizing: border-box;
+    }
+    .nav-bar a {
+      color: var(--tab-text); text-decoration: none;
+      font-family: var(--font-title); font-size: .95rem;
+      padding: 6px 16px; border-radius: 4px; transition: all .2s;
+    }
+    .nav-bar a:hover { background: var(--tab-hover); color: #dccaa5; }
+    .nav-bar a.nav-title {
+      color: var(--gold-accent); font-size: 1.1rem; font-weight: 700;
+      letter-spacing: 1px; padding: 0; background: none;
+    }
+    .nav-bar a.nav-title:hover { background: none; color: #dccaa5; }
+
+    /* ── Layout ── */
+    .wizard-wrap {
+      max-width: 1380px;
+      margin: 24px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ── Form panel ── */
+    .form-panel {
+      background: var(--window-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 36px 40px;
+    }
+
+    .panel-title {
+      font-family: var(--font-title);
+      color: var(--gold-accent);
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+    .panel-subtitle {
+      color: var(--ink-muted);
+      font-size: 0.88rem;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    /* ── Steps ── */
+    .step {
+      padding-bottom: 32px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid #c4af93;
+    }
+    .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .step-num {
+      width: 34px; height: 34px; flex-shrink: 0;
+      background: var(--tab-bg);
+      color: var(--gold-accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-title);
+      font-size: 0.9rem; font-weight: 700;
+    }
+    .step-title {
+      font-family: var(--font-title);
+      color: var(--gold-accent);
+      font-size: 1.05rem;
+    }
+    .badge-optional {
+      font-size: 0.72rem;
+      background: var(--tab-bg);
+      color: var(--tab-text);
+      padding: 2px 9px;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      letter-spacing: 0.5px;
+    }
+    .badge-required {
+      font-size: 0.72rem;
+      background: #5a2020;
+      color: #e88;
+      padding: 2px 9px;
+      border-radius: 10px;
+      font-family: var(--font-body);
+    }
+
+    /* ── Fields ── */
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 5px;
+    }
+    .field-hint {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      margin-bottom: 7px;
+      line-height: 1.4;
+    }
+    .field-hint a { color: var(--gold-accent); }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="password"],
+    input[type="number"] {
+      width: 100%;
+      padding: 9px 12px;
+      background: #f5ede0;
+      border: 1.5px solid #c4af93;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    input:focus {
+      border-color: var(--gold-accent);
+      background: #fff;
+    }
+    input.input-ok  { border-color: #5a9a6e; }
+    input.input-err { border-color: #cc4444; }
+
+    /* ── Toggle group ── */
+    .toggle-group {
+      display: inline-flex;
+      border: 1.5px solid var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .toggle-group input[type="radio"] { display: none; }
+    .toggle-group label {
+      margin: 0;
+      padding: 7px 22px;
+      cursor: pointer;
+      background: #f5ede0;
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 400;
+      border-right: 1px solid var(--border-color);
+      transition: all .2s;
+      user-select: none;
+    }
+    .toggle-group label:last-of-type { border-right: none; }
+    .toggle-group input:checked + label {
+      background: var(--tab-bg);
+      color: var(--gold-accent);
+      font-weight: 700;
+    }
+
+    /* ── Dynamic rows ── */
+    .dyn-row {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    .dyn-row.two-col { grid-template-columns: 1fr 1.6fr auto; }
+    .dyn-row.one-col { grid-template-columns: 1fr auto; }
+
+    .btn-remove {
+      width: 30px; height: 30px;
+      background: #7a2828;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: background .2s;
+    }
+    .btn-remove:hover { background: #9e3333; }
+
+    .btn-add {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      margin-top: 4px;
+      background: var(--tab-bg);
+      color: var(--gold-accent);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.83rem;
+      transition: background .2s;
+    }
+    .btn-add:hover { background: var(--tab-hover); }
+
+    /* ── Collapsible ── */
+    .collapsible-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px 0;
+      border-top: 1px dashed #c4af93;
+      margin-top: 18px;
+    }
+    .collapsible-trigger .c-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--ink);
+    }
+    .c-arrow { color: var(--gold-accent); font-size: 0.75rem; transition: transform .2s; }
+    .c-arrow.open { transform: rotate(180deg); }
+    .collapsible-body { display: none; padding-top: 16px; }
+    .collapsible-body.open { display: block; }
+
+    .two-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ── Right panel ── */
+    .preview-panel {
+      position: sticky;
+      top: 20px;
+      background: #0d1117;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .preview-tabs {
+      display: flex;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .ptab {
+      flex: 1;
+      padding: 10px 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 0.73rem;
+      color: #8b949e;
+      transition: all .2s;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ptab.active {
+      color: var(--gold-accent);
+      border-bottom-color: var(--gold-accent);
+      background: #0d1117;
+    }
+
+    .preview-code {
+      padding: 16px;
+      max-height: 440px;
+      overflow-y: auto;
+    }
+    .preview-code pre {
+      font-family: 'Courier New', monospace;
+      font-size: 0.74rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: #c9d1d9;
+    }
+
+    /* Syntax colors */
+    .sc { color: #6e7681; }          /* comment */
+    .sk { color: #79c0ff; }          /* env key */
+    .sv { color: #a5d6ff; }          /* env value */
+    .se { color: #484f58; font-style: italic; } /* empty value */
+    .yk { color: #7ee787; }          /* yaml key */
+    .yv { color: #a5d6ff; }          /* yaml value */
+    .yd { color: #ff7b72; }          /* yaml dash */
+
+    /* Downloads */
+    .dl-section {
+      padding: 14px 16px;
+      border-top: 1px solid #30363d;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-dl {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid #238636;
+      background: #0f2d1a;
+      color: #3fb950;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      transition: all .2s;
+      width: 100%;
+    }
+    .btn-dl:hover { background: #1a4228; }
+
+    .warn-box {
+      padding: 10px 14px;
+      background: #2d1b00;
+      border-top: 1px solid #30363d;
+      color: #e3a54e;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    /* ── Final commands ── */
+    .commands-wrap {
+      max-width: 1380px;
+      margin: 0 auto 32px;
+      padding: 0 24px;
+    }
+    .commands-panel {
+      background: #161b22;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 28px 36px;
+    }
+    .commands-panel h3 {
+      font-family: var(--font-title);
+      color: var(--gold-accent);
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+    }
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .step-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .step-badge {
+      width: 26px; height: 26px; flex-shrink: 0;
+      background: var(--tab-bg);
+      color: var(--gold-accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-title);
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .step-item-body { flex: 1; }
+    .step-item-label {
+      color: #8b949e;
+      font-size: 0.83rem;
+      margin-bottom: 7px;
+    }
+    .code-block {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 5px;
+      padding: 12px 16px;
+    }
+    .code-block pre {
+      font-family: 'Courier New', monospace;
+      font-size: 0.86rem;
+      line-height: 1.8;
+      color: #c9d1d9;
+    }
+    .code-block .cmd { color: #7ee787; }
+    .code-block .cmt { color: #6e7681; }
+    .code-block .url { color: #a5d6ff; }
+
+    /* ── Responsive ── */
+    @media (max-width: 960px) {
+      .wizard-wrap { grid-template-columns: 1fr; }
+      .preview-panel { position: static; }
+      .nav-bar { padding: 10px 16px; }
+      .form-panel { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+  <a href="#" class="nav-title">⚔ Achievement Engine</a>
+  <span style="font-family:var(--font-title);color:var(--tab-text);font-size:.85rem;letter-spacing:1px;">SETUP WIZARD</span>
+</nav>
+
+<div class="wizard-wrap">
+
+  <!-- ══ FORM PANEL ══ -->
+  <div class="form-panel">
+    <div class="panel-title">Setup Wizard</div>
+    <div class="panel-subtitle">
+      Fill in your settings below — your config files are generated live in the preview panel.
+      Download both files, drop them in your project folder, then run one command.
+    </div>
+
+    <!-- ① ABS Connection -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div class="step-title">Audiobookshelf Connection</div>
+        <span class="badge-required">required</span>
+      </div>
+
+      <div class="field">
+        <label>Server URL</label>
+        <div class="field-hint">Full address of your ABS instance, including port</div>
+        <input type="url" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()">
+      </div>
+
+      <div class="field">
+        <label>User Mode</label>
+        <div class="field-hint">Track one account or multiple separate ABS users?</div>
+        <div class="toggle-group">
+          <input type="radio" name="umode" id="mode-single" value="single" checked onchange="toggleMode()">
+          <label for="mode-single">Single User</label>
+          <input type="radio" name="umode" id="mode-multi" value="multi" onchange="toggleMode()">
+          <label for="mode-multi">Multiple Users</label>
+        </div>
+      </div>
+
+      <div id="section-single" class="field">
+        <label>API Token</label>
+        <div class="field-hint">
+          ABS → Settings → Users → [your username] → API Token
+        </div>
+        <input type="text" id="abs-token" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." oninput="update()">
+      </div>
+
+      <div id="section-multi" style="display:none;">
+        <div class="field-hint" style="margin-bottom:10px;">
+          Add one row per ABS user. Token location: ABS → Settings → Users → [username] → API Token
+        </div>
+        <div class="field">
+          <div style="display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;margin-bottom:6px;">
+            <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Username</span>
+            <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">API Token</span>
+            <span></span>
+          </div>
+          <div id="user-rows">
+            <div class="dyn-row two-col">
+              <input type="text" placeholder="alice" class="u-name" oninput="update()">
+              <input type="text" placeholder="token..." class="u-token" oninput="update()">
+              <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>
+            </div>
+          </div>
+          <button class="btn-add" onclick="addUser()">+ Add User</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② Settings -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div class="step-title">Your Settings</div>
+      </div>
+
+      <div class="field">
+        <label>Timezone</label>
+        <div class="field-hint">Used for date display across all pages</div>
+        <input type="text" id="timezone" value="America/New_York" list="tz-list" oninput="update()">
+        <datalist id="tz-list">
+          <option value="America/New_York">
+          <option value="America/Chicago">
+          <option value="America/Denver">
+          <option value="America/Los_Angeles">
+          <option value="America/Anchorage">
+          <option value="Pacific/Honolulu">
+          <option value="America/Toronto">
+          <option value="America/Vancouver">
+          <option value="America/Sao_Paulo">
+          <option value="America/Mexico_City">
+          <option value="Europe/London">
+          <option value="Europe/Paris">
+          <option value="Europe/Berlin">
+          <option value="Europe/Rome">
+          <option value="Europe/Madrid">
+          <option value="Europe/Amsterdam">
+          <option value="Europe/Stockholm">
+          <option value="Europe/Warsaw">
+          <option value="Europe/Moscow">
+          <option value="Asia/Dubai">
+          <option value="Asia/Kolkata">
+          <option value="Asia/Bangkok">
+          <option value="Asia/Singapore">
+          <option value="Asia/Tokyo">
+          <option value="Asia/Seoul">
+          <option value="Asia/Shanghai">
+          <option value="Australia/Sydney">
+          <option value="Australia/Perth">
+          <option value="Pacific/Auckland">
+        </datalist>
+      </div>
+
+      <div class="field">
+        <label>Poll Interval</label>
+        <div class="field-hint">How often to check ABS for new listening data (seconds). 300 = every 5 minutes.</div>
+        <input type="number" id="poll-seconds" value="300" min="60" max="3600" oninput="update()">
+      </div>
+    </div>
+
+    <!-- ③ Users -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div class="step-title">User Display</div>
+        <span class="badge-optional">optional</span>
+      </div>
+
+      <div class="field">
+        <label>Allowed Users</label>
+        <div class="field-hint">
+          Comma-separated ABS usernames to track. Leave blank to include all users on your server.
+        </div>
+        <input type="text" id="allowed-users" placeholder="alice,bob,carol" oninput="update()">
+      </div>
+
+      <div class="field">
+        <label>Display Name Aliases</label>
+        <div class="field-hint">Map ABS usernames to friendlier names shown on the dashboard and leaderboard</div>
+        <div style="display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;margin-bottom:6px;" id="alias-header" style="display:none;">
+          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">ABS Username</span>
+          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Display Name</span>
+          <span></span>
+        </div>
+        <div id="alias-rows"></div>
+        <button class="btn-add" onclick="addAlias()">+ Add Alias</button>
+      </div>
+    </div>
+
+    <!-- ④ Notifications -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">4</div>
+        <div class="step-title">Notifications</div>
+        <span class="badge-optional">optional</span>
+      </div>
+
+      <div class="field">
+        <label>Discord Webhook URL</label>
+        <div class="field-hint">
+          Post achievement unlocks to a Discord channel.
+          <a href="https://support.discord.com/hc/en-us/articles/228383668" target="_blank">How to create a webhook ↗</a>
+        </div>
+        <input type="url" id="discord-webhook" placeholder="https://discord.com/api/webhooks/..." oninput="update()">
+      </div>
+
+      <!-- SMTP collapsible -->
+      <div class="collapsible-trigger" onclick="toggleC('smtp-body','smtp-arrow')">
+        <span class="c-label">Email (SMTP) Notifications</span>
+        <span class="c-arrow" id="smtp-arrow">▼</span>
+      </div>
+      <div class="collapsible-body" id="smtp-body">
+        <div class="field-hint" style="margin-bottom:16px;">
+          Send email notifications when achievements are earned. Leave all fields blank to skip.
+        </div>
+        <div class="field">
+          <label>SMTP Host</label>
+          <input type="text" id="smtp-host" placeholder="smtp.gmail.com" oninput="update()">
+        </div>
+        <div class="two-grid">
+          <div class="field">
+            <label>Port</label>
+            <input type="number" id="smtp-port" value="587" oninput="update()">
+          </div>
+          <div class="field">
+            <label>Username</label>
+            <input type="text" id="smtp-user" placeholder="you@example.com" oninput="update()">
+          </div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="smtp-pass" placeholder="••••••••" oninput="update()">
+        </div>
+        <div class="field">
+          <label>From Address</label>
+          <input type="text" id="smtp-from" placeholder="Achievement Engine &lt;noreply@yourdomain.com&gt;" oninput="update()">
+        </div>
+        <div class="field">
+          <label>Override — Send All Emails To</label>
+          <div class="field-hint">Route all notifications to one address (useful for testing)</div>
+          <input type="text" id="smtp-override" placeholder="you@example.com" oninput="update()">
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /form-panel -->
+
+  <!-- ══ PREVIEW PANEL ══ -->
+  <div class="preview-panel">
+    <div class="preview-tabs">
+      <button class="ptab active" id="ptab-override" onclick="switchTab('override')">docker-compose.override.yml</button>
+      <button class="ptab" id="ptab-env" onclick="switchTab('env')">.env</button>
+    </div>
+
+    <div class="preview-code">
+      <pre id="preview-pre"></pre>
+    </div>
+
+    <div class="dl-section">
+      <button class="btn-dl" onclick="dlOverride()">⬇ &nbsp;docker-compose.override.yml</button>
+      <button class="btn-dl" onclick="dlEnv()">⬇ &nbsp;.env</button>
+    </div>
+
+    <div class="warn-box" id="warn-box" style="display:none;">
+      ⚠ &nbsp;Enter your ABS URL and at least one token to enable downloads
+    </div>
+  </div>
+
+</div><!-- /wizard-wrap -->
+
+<!-- ══ FINAL STEPS ══ -->
+<div class="commands-wrap">
+  <div class="commands-panel">
+    <h3>After Downloading Both Files</h3>
+    <div class="step-list">
+
+      <div class="step-item">
+        <div class="step-badge">1</div>
+        <div class="step-item-body">
+          <div class="step-item-label">Move the downloaded files into your project folder (where you cloned the repo)</div>
+          <div class="code-block"><pre><span class="cmt"># Both files go here:</span>
+achievement-engine-wrapped/
+  ├── <span class="cmd">.env</span>                             ← downloaded
+  ├── <span class="cmd">docker-compose.override.yml</span>      ← downloaded
+  ├── docker-compose.yml
+  └── ...</pre></div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">2</div>
+        <div class="step-item-body">
+          <div class="step-item-label">Build and start all services (takes a few minutes the first time)</div>
+          <div class="code-block"><pre><span class="cmd">docker compose up --build -d</span></pre></div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-badge">3</div>
+        <div class="step-item-body">
+          <div class="step-item-label">Open in your browser</div>
+          <div class="code-block"><pre><span class="url">http://localhost:8000</span></pre></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let activeTab = 'override';
+  let _override = '';
+  let _env = '';
+
+  // ── Tab switching ──
+  function switchTab(tab) {
+    activeTab = tab;
+    document.getElementById('ptab-override').classList.toggle('active', tab === 'override');
+    document.getElementById('ptab-env').classList.toggle('active', tab === 'env');
+    render();
+  }
+
+  // ── Toggle single/multi mode ──
+  function toggleMode() {
+    const multi = document.getElementById('mode-multi').checked;
+    document.getElementById('section-single').style.display = multi ? 'none' : 'block';
+    document.getElementById('section-multi').style.display = multi ? 'block' : 'none';
+    update();
+  }
+
+  // ── Dynamic rows ──
+  function addUser() {
+    const row = document.createElement('div');
+    row.className = 'dyn-row two-col';
+    row.innerHTML = `
+      <input type="text" placeholder="username" class="u-name" oninput="update()">
+      <input type="text" placeholder="token..." class="u-token" oninput="update()">
+      <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>`;
+    document.getElementById('user-rows').appendChild(row);
+    update();
+  }
+
+  function addAlias() {
+    const rows = document.getElementById('alias-rows');
+    if (!rows.children.length) {
+      // show header
+      document.getElementById('alias-header').style.display = 'grid';
+    }
+    const row = document.createElement('div');
+    row.className = 'dyn-row two-col';
+    row.innerHTML = `
+      <input type="text" placeholder="absusername" class="a-user" oninput="update()">
+      <input type="text" placeholder="Display Name" class="a-disp" oninput="update()">
+      <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>`;
+    rows.appendChild(row);
+    update();
+  }
+
+  function removeRow(btn) {
+    btn.closest('.dyn-row').remove();
+    update();
+  }
+
+  // ── Collapsible ──
+  function toggleC(bodyId, arrowId) {
+    const body = document.getElementById(bodyId);
+    const arrow = document.getElementById(arrowId);
+    body.classList.toggle('open');
+    arrow.classList.toggle('open', body.classList.contains('open'));
+    arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+  }
+
+  // ── Helpers ──
+  function v(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+  function isReady() {
+    if (!v('abs-url')) return false;
+    const multi = document.getElementById('mode-multi').checked;
+    if (multi) {
+      const pairs = getMultiPairs();
+      return pairs.length > 0;
+    }
+    return !!v('abs-token');
+  }
+
+  function getMultiPairs() {
+    return [...document.querySelectorAll('#user-rows .dyn-row')].map(r => {
+      const u = r.querySelector('.u-name')?.value.trim();
+      const t = r.querySelector('.u-token')?.value.trim();
+      return (u && t) ? `${u}:${t}` : null;
+    }).filter(Boolean);
+  }
+
+  function getAliases() {
+    return [...document.querySelectorAll('#alias-rows .dyn-row')].map(r => {
+      const u = r.querySelector('.a-user')?.value.trim();
+      const d = r.querySelector('.a-disp')?.value.trim();
+      return (u && d) ? `${u}:${d}` : null;
+    }).filter(Boolean).join(',');
+  }
+
+  // ── File generators ──
+  function genOverride() {
+    const url   = v('abs-url')  || 'http://your-audiobookshelf:13378';
+    const multi = document.getElementById('mode-multi').checked;
+    const disc  = v('discord-webhook');
+    const lines = [
+      'services:',
+      '  abs-stats:',
+      '    environment:'
+    ];
+    lines.push(`      - ABS_URL=${url}`);
+    if (multi) {
+      const pairs = getMultiPairs();
+      lines.push(`      - ABS_TOKENS=${pairs.length ? pairs.join(',') : 'username:your-token'}`);
+    } else {
+      lines.push(`      - ABS_TOKEN=${v('abs-token') || 'your-abs-api-token'}`);
+    }
+    lines.push('      - ENGINE_URL=http://achievement-engine:8000');
+    if (disc) lines.push(`      - DISCORD_WEBHOOK_URL=${disc}`);
+    return lines.join('\n');
+  }
+
+  function genEnv() {
+    const tz        = v('timezone')      || 'America/New_York';
+    const poll      = v('poll-seconds')  || '300';
+    const allowed   = v('allowed-users');
+    const aliases   = getAliases();
+    const smtpHost  = v('smtp-host');
+    const smtpPort  = v('smtp-port')    || '587';
+    const smtpUser  = v('smtp-user');
+    const smtpPass  = v('smtp-pass');
+    const smtpFrom  = v('smtp-from');
+    const smtpOver  = v('smtp-override');
+
+    const L = [];
+    L.push('# Achievement Engine — Environment Configuration');
+    L.push('# Generated by Setup Wizard');
+    L.push('');
+    L.push('# Internal companion service URL — do not change');
+    L.push('ABSSTATS_BASE_URL=http://abs-stats:3000');
+    L.push('');
+    L.push('# Poll interval in seconds (how often to check ABS for new data)');
+    L.push(`POLL_SECONDS=${poll}`);
+    L.push('');
+    L.push('# Database path inside container — do not change');
+    L.push('STATE_DB_PATH=/data/state.db');
+    L.push('');
+    L.push('# Timezone for date display');
+    L.push(`TZ=${tz}`);
+    L.push('');
+    L.push('# Unix timestamp: XP/loot economy start date');
+    L.push('XP_START_TIMESTAMP=1767225600');
+    L.push('');
+    L.push('# ── Completion Verification ──────────────────────────');
+    L.push('STRICT_VERIFICATION=false');
+    L.push('VERIFY_LISTEN_THRESHOLD=0.80');
+    L.push('REQUIRE_DURATION_FOR_CREDIT=true');
+    L.push('REQUIRE_2026_SESSION_FOR_CREDIT=true');
+    L.push('');
+    L.push('# ── Users ───────────────────────────────────────────');
+    L.push(`ALLOWED_USERS=${allowed}`);
+    L.push(`USER_ALIASES=${aliases}`);
+    L.push('USER_ICONS=');
+    L.push('');
+    L.push('# ── Wrapped Year-End Experience ──────────────────────');
+    L.push('WRAPPED_YEAR=2026');
+    L.push('WRAPPED_BOSS_HP=250000');
+    L.push('');
+    L.push('# ── Achievement Backfill ─────────────────────────────');
+    L.push('RUN_ACHIEVEMENT_BACKFILL=false');
+    L.push('BACKFILL_ONCE_KEY=ach_backfill_v1');
+    L.push('');
+    if (smtpHost) {
+      L.push('# ── Email Notifications ──────────────────────────────');
+      L.push(`SMTP_HOST=${smtpHost}`);
+      L.push(`SMTP_PORT=${smtpPort}`);
+      L.push(`SMTP_USERNAME=${smtpUser}`);
+      L.push(`SMTP_PASSWORD=${smtpPass}`);
+      L.push(`SMTP_FROM=${smtpFrom}`);
+      L.push(`SMTP_TO_OVERRIDE=${smtpOver}`);
+      L.push('SEND_TEST_EMAIL=false');
+      L.push('SMTP_DEBUG=0');
+    } else {
+      L.push('# ── Email Notifications (uncomment to enable) ────────');
+      L.push('# SMTP_HOST=smtp.gmail.com');
+      L.push('# SMTP_PORT=587');
+      L.push('# SMTP_USERNAME=you@example.com');
+      L.push('# SMTP_PASSWORD=your-password');
+      L.push('# SMTP_FROM=Achievement Engine <noreply@yourdomain.com>');
+      L.push('# SMTP_TO_OVERRIDE=');
+    }
+    return L.join('\n');
+  }
+
+  // ── Syntax highlight ──
+  function esc(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function highlight(content, type) {
+    return content.split('\n').map(line => {
+      if (type === 'env') {
+        if (line.startsWith('#'))  return `<span class="sc">${esc(line)}</span>`;
+        if (!line.trim())          return '';
+        const eq = line.indexOf('=');
+        if (eq > -1) {
+          const k = esc(line.slice(0, eq));
+          const val = esc(line.slice(eq + 1));
+          return `<span class="sk">${k}</span><span style="color:#555">=</span>${val
+            ? `<span class="sv">${val}</span>`
+            : `<span class="se">(empty)</span>`}`;
+        }
+        return esc(line);
+      } else {
+        // YAML
+        if (line.startsWith('#')) return `<span class="sc">${esc(line)}</span>`;
+        if (!line.trim())         return '';
+        const trimmed = line.trim();
+        if (trimmed.startsWith('-')) {
+          const indent = line.match(/^\s*/)[0];
+          const rest   = trimmed.slice(1).trim();
+          const eq     = rest.indexOf('=');
+          if (eq > -1) {
+            return `${indent}<span class="yd">-</span> <span class="yk">${esc(rest.slice(0,eq))}</span><span style="color:#555">=</span><span class="yv">${esc(rest.slice(eq+1))}</span>`;
+          }
+          return `${indent}<span class="yd">-</span> <span class="yv">${esc(rest)}</span>`;
+        }
+        const colon = line.indexOf(':');
+        if (colon > -1) {
+          return `<span class="yk">${esc(line.slice(0,colon+1))}</span><span class="yv">${esc(line.slice(colon+1))}</span>`;
+        }
+        return esc(line);
+      }
+    }).join('\n');
+  }
+
+  // ── Render preview ──
+  function render() {
+    const content = activeTab === 'override' ? _override : _env;
+    const type    = activeTab === 'override' ? 'yaml'    : 'env';
+    document.getElementById('preview-pre').innerHTML = highlight(content, type);
+  }
+
+  // ── Main update ──
+  function update() {
+    _override = genOverride();
+    _env      = genEnv();
+    render();
+    const ready = isReady();
+    document.getElementById('warn-box').style.display = ready ? 'none' : 'block';
+  }
+
+  // ── Downloads ──
+  function dl(filename, content) {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function dlOverride() { dl('docker-compose.override.yml', _override); }
+  function dlEnv()      { dl('.env', _env); }
+
+  // Init
+  update();
+</script>
+</body>
+</html>
