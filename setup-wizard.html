@@ -470,7 +470,7 @@
         <label>Server URL</label>
         <div class="field-hint">Full address of your ABS instance, including port</div>
         <div class="url-wrap">
-          <input type="url" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()" onblur="validateUrl()">
+          <input type="text" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()" onblur="validateUrl()">
           <span class="url-icon" id="url-icon"></span>
         </div>
       </div>
@@ -740,23 +740,22 @@ achievement-engine-wrapped/
 
   // ── URL validation ──
   function validateUrl() {
-    const val  = v('abs-url');
-    const icon = document.getElementById('url-icon');
+    const val   = v('abs-url');
+    const icon  = document.getElementById('url-icon');
     const input = document.getElementById('abs-url');
     if (!val) {
       icon.textContent = '';
       input.classList.remove('input-ok', 'input-err');
       return;
     }
-    try {
-      const u = new URL(val);
-      if (u.protocol === 'http:' || u.protocol === 'https:') {
-        icon.textContent = '✓';
-        icon.style.color = '#5a9a6e';
-        input.classList.add('input-ok');
-        input.classList.remove('input-err');
-      } else { throw new Error(); }
-    } catch {
+    // Must be http(s):// + hostname + optional :port
+    const re = /^https?:\/\/[a-zA-Z0-9]([a-zA-Z0-9\-._]*[a-zA-Z0-9])?(:\d+)?(\/[^\s]*)?$/;
+    if (re.test(val)) {
+      icon.textContent = '✓';
+      icon.style.color = '#5a9a6e';
+      input.classList.add('input-ok');
+      input.classList.remove('input-err');
+    } else {
       icon.textContent = '✗';
       icon.style.color = '#cc4444';
       input.classList.add('input-err');
