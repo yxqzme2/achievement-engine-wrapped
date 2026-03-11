@@ -792,6 +792,10 @@ def read_achievement_tester_root():
 def read_template_root():
     return FileResponse(_get_static_path("admin/template.html"))
 
+@app.get("/admin/template-builder")
+def read_template_builder_root():
+    return FileResponse(_get_static_path("admin/template-builder.html"))
+
 @app.get("/wrapped")
 def read_wrapped_root():
     if not _wrapped_is_enabled():

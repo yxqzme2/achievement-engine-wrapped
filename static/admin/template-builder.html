@@ -360,6 +360,82 @@
             .two-col, .three-col { grid-template-columns: 1fr; }
         }
 
+        /* ── USER ICON BUILDER ── */
+        .user-icon-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .user-icon-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #0a0a0a; border: 1px solid #222; padding: 10px; border-radius: 4px; }
+        .user-icon-row input[type="text"] { flex: 1; min-width: 120px; max-width: 200px; }
+        .user-icon-preview { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #444; object-fit: cover; background: #1a1a1a; flex-shrink: 0; }
+        .user-icon-preview.empty { visibility: hidden; }
+        .pick-icon-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: #1a1a1a; border: 1px solid var(--neon-blue); color: var(--neon-blue); cursor: pointer; white-space: nowrap; }
+        .pick-icon-btn:hover { background: var(--neon-blue); color: #000; }
+        .remove-user-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: #1a1a1a; border: 1px solid #ff3333; color: #ff3333; cursor: pointer; }
+        .remove-user-btn:hover { background: #ff3333; color: #000; }
+        .icon-picker-panel { display: none; width: 100%; margin-top: 8px; background: #0d0d0d; border: 1px solid #333; padding: 10px; max-height: 260px; overflow-y: auto; }
+        .icon-picker-panel.open { display: block; }
+        .icon-group-label { font-size: 0.65rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 6px; margin-top: 10px; }
+        .icon-group-label:first-child { margin-top: 0; }
+        .icon-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+        .icon-thumb { width: 40px; height: 40px; object-fit: cover; border: 2px solid #333; border-radius: 4px; cursor: pointer; transition: border-color 0.15s; }
+        .icon-thumb:hover { border-color: var(--neon-blue); }
+        .icon-thumb.selected { border-color: var(--neon-blue); box-shadow: 0 0 8px rgba(0,242,255,0.5); }
+        .add-user-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; padding: 8px 16px; background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); cursor: pointer; transition: all 0.2s; }
+        .add-user-btn:hover { background: var(--neon-green); color: #000; }
+
+        /* ── XP START DATE ROWS ── */
+        .xp-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .btn-xp-remove {
+            background: #3a0a0a;
+            border: 1px solid #7a2828;
+            color: #e88;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+        .btn-xp-remove:hover { background: #5a1010; border-color: #cc4444; }
+        .btn-xp-add {
+            background: transparent;
+            border: 1px dashed #444;
+            color: var(--neon-blue);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            transition: all 0.2s;
+        }
+        .btn-xp-add:hover { border-color: var(--neon-blue); background: rgba(0,242,255,0.05); }
+        .xp-col-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .xp-placement-box {
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-left: 2px solid var(--neon-amber);
+            font-size: 0.78rem;
+            color: #888;
+            line-height: 1.6;
+        }
+        .xp-placement-box code {
+            color: var(--neon-amber);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
         input[readonly] {
             background: #0a0a0a;
             color: #555;
@@ -391,8 +467,8 @@
             <a href="/admin/forge">Forge</a>
             <a href="/admin/loot">Armory</a>
             <a href="/admin/quest">Bounties</a>
-            <a href="/admin/template" class="active">Template</a>
-            <a href="/admin/template-builder">Builder</a>
+            <a href="/admin/template">Template</a>
+            <a href="/admin/template-builder" class="active">Builder</a>
             <a href="/admin/setup">Script</a>
             <a href="/admin/ops">Ops</a>
         </div>
@@ -449,7 +525,7 @@
             <div class="path-group-label">// Achievement Engine</div>
             <div class="input-group">
                 <label for="path-data">Data Path (/data)</label>
-                <input type="text" id="path-data" value="">
+                <input type="text" id="path-data" value="" oninput="updateXpPathHint()">
             </div>
             <div class="input-group">
                 <label for="path-covers">Covers Path (/data/covers)</label>
@@ -592,9 +668,9 @@
         <div class="admin-card full-width">
             <h2 class="section-title">User &amp; Dashboard Customization</h2>
             <div class="input-group">
-                <label for="user-icons">User Icons Mapping</label>
-                <input type="text" id="user-icons" value="">
-                <div class="config-description">Format: absuser1:/icons/avatar1.png,absuser2:/icons/avatar2.png</div>
+                <label>User Icons</label>
+                <div class="user-icon-rows" id="user-icon-rows"></div>
+                <button class="add-user-btn" onclick="addUserIconRow()">[ + ADD USER ]</button>
             </div>
             <div class="input-group">
                 <label for="user-aliases">User Aliases Mapping</label>
@@ -605,6 +681,25 @@
                 <label for="allowed-users">Allowed Users (optional)</label>
                 <input type="text" id="allowed-users" value="">
                 <div class="config-description">Comma-separated ABS usernames to include.</div>
+            </div>
+        </div>
+
+        <!-- Per-User XP Start Dates -->
+        <div class="admin-card">
+            <h2 class="section-title">Per-User XP Start Dates</h2>
+            <div class="config-description" style="margin-bottom:14px;">
+                Optional. Set an individual XP start date per username. Listening before this date won't count toward that user's levels. Leave blank to use the global XP Start Date for all users.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:6px;">
+                <div class="xp-col-label">Username</div>
+                <div class="xp-col-label">Start Date</div>
+                <div></div>
+            </div>
+            <div id="xp-rows"></div>
+            <button class="btn-xp-add" onclick="addXpRow()">+ Add User</button>
+            <div class="xp-placement-box">
+                Place the downloaded <code>user_xp_start.json</code> into:<br>
+                <code id="xp-path-hint">[your data path]/json/user_xp_start.json</code>
             </div>
         </div>
 
@@ -662,6 +757,7 @@
         <div class="actions-card">
             <button class="btn" onclick="generateXML()">[ PREVIEW AE XML ]</button>
             <button class="btn btn-gold" onclick="downloadBothTemplates()">[ DOWNLOAD BOTH TEMPLATES ]</button>
+            <button class="btn" onclick="dlXp()">[ DOWNLOAD user_xp_start.json ]</button>
         </div>
 
         <pre id="xml-preview"></pre>
@@ -673,6 +769,124 @@
     </div>
 
     <script>
+        // ── User Icon Builder ──
+        const GITHUB_BASE     = 'https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/users/';
+        const ICON_LOCAL_BASE = '/icons/users/';
+        const MALE_ICONS   = ['user_male_001.png','user_male_002.png','user_male_003.png','user_male_004.png','user_male_005.png','user_male_006.png','user_male_007.png','user_male_008.png','user_male_009.png','user_male_010.png','user_male_011.png','user_male_012.png','user_male_013.png','user_male_014.png','user_male_015.png','user_male_016.png','user_male_017.png','user_male_018.png','user_male_019.png','user_male_020.png','user_male_021.png','user_male_022.png','user_male_023.png','user_male_024.png','user_male_025.png','user_male_026.png','user_male_027.png','user_male_028.png','user_male_029.png'];
+        const FEMALE_ICONS = ['user_female_001.png','user_female_002.png','user_female_003.png','user_female_004.png','user_female_005.png','user_female_006.png','user_female_007.png','user_female_008.png','user_female_009.png','user_female_010.png','user_female_011.png','user_female_012.png','user_female_013.png','user_female_014.png','user_female_015.png','user_female_016.png','user_female_017.png','user_female_018.png','user_female_019.png','user_female_020.png','user_female_021.png','user_female_022.png','user_female_023.png','user_female_024.png','user_female_025.png','user_female_026.png','user_female_027.png','user_female_028.png','user_female_029.png'];
+        let _rowCounter = 0;
+        function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+        function addUserIconRow(username = '', iconPath = '') {
+            const id = ++_rowCounter;
+            const selectedFile = iconPath ? iconPath.replace(ICON_LOCAL_BASE, '') : '';
+            const row = document.createElement('div');
+            row.className = 'user-icon-row'; row.id = `urow-${id}`;
+            row.innerHTML = `
+                <input type="text" placeholder="username" value="${escapeHtml(username)}" id="uname-${id}">
+                <img class="user-icon-preview${selectedFile ? '' : ' empty'}" id="upreview-${id}"
+                     src="${selectedFile ? GITHUB_BASE + selectedFile : ''}"
+                     data-file="${escapeHtml(selectedFile)}"
+                     onerror="this.style.visibility='hidden'">
+                <button class="pick-icon-btn" onclick="toggleIconPicker(${id})">[ PICK ICON ]</button>
+                <button class="remove-user-btn" onclick="removeUserRow(${id})">[ REMOVE ]</button>
+                <div class="icon-picker-panel" id="icon-panel-${id}">
+                    <div class="icon-group-label">— MALE —</div>
+                    <div class="icon-grid">
+                        ${MALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id}, '${f}')" title="${f}" loading="lazy">`).join('')}
+                    </div>
+                    <div class="icon-group-label">— FEMALE —</div>
+                    <div class="icon-grid">
+                        ${FEMALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id}, '${f}')" title="${f}" loading="lazy">`).join('')}
+                    </div>
+                </div>`;
+            document.getElementById('user-icon-rows').appendChild(row);
+        }
+
+        function toggleIconPicker(id) {
+            document.getElementById(`icon-panel-${id}`).classList.toggle('open');
+        }
+
+        function selectIcon(id, filename) {
+            document.getElementById(`icon-panel-${id}`).querySelectorAll('.icon-thumb').forEach(t => t.classList.remove('selected'));
+            document.getElementById(`icon-panel-${id}`).querySelector(`[data-file="${filename}"]`).classList.add('selected');
+            const preview = document.getElementById(`upreview-${id}`);
+            preview.src = GITHUB_BASE + filename;
+            preview.style.visibility = 'visible';
+            preview.dataset.file = filename;
+            document.getElementById(`icon-panel-${id}`).classList.remove('open');
+        }
+
+        function removeUserRow(id) { const r = document.getElementById(`urow-${id}`); if (r) r.remove(); }
+
+        function getUserIconsValue() {
+            const parts = [];
+            document.querySelectorAll('.user-icon-row').forEach(row => {
+                const id = row.id.replace('urow-','');
+                const username = (document.getElementById(`uname-${id}`)?.value || '').trim();
+                const file = document.getElementById(`upreview-${id}`)?.dataset?.file || '';
+                if (username && file) parts.push(`${username}:${ICON_LOCAL_BASE}${file}`);
+            });
+            return parts.join(',');
+        }
+
+        function loadUserIconsFromValue(val) {
+            document.getElementById('user-icon-rows').innerHTML = '';
+            _rowCounter = 0;
+            if (!val) return;
+            val.split(',').forEach(entry => {
+                const colonIdx = entry.indexOf(':');
+                if (colonIdx < 0) return;
+                const username = entry.slice(0, colonIdx).trim();
+                const iconPath = entry.slice(colonIdx + 1).trim();
+                if (username) addUserIconRow(username, iconPath);
+            });
+        }
+
+        // ── Per-user XP start dates ──
+        function addXpRow() {
+            const row = document.createElement('div');
+            row.className = 'xp-row';
+            row.innerHTML = `
+                <input type="text" placeholder="username" class="xp-name" oninput="updateXpPathHint()">
+                <input type="date" class="xp-date">
+                <button class="btn-xp-remove" onclick="this.closest('.xp-row').remove()">×</button>`;
+            document.getElementById('xp-rows').appendChild(row);
+        }
+
+        function getXpPairs() {
+            return [...document.querySelectorAll('#xp-rows .xp-row')].map(r => {
+                const u = r.querySelector('.xp-name')?.value.trim();
+                const d = r.querySelector('.xp-date')?.value.trim();
+                return (u && d) ? { user: u, date: d } : null;
+            }).filter(Boolean);
+        }
+
+        function genXpJson() {
+            const obj = {};
+            getXpPairs().forEach(p => { obj[p.user] = p.date; });
+            return JSON.stringify(obj, null, 2);
+        }
+
+        function dlXp() {
+            const content = genXpJson();
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'user_xp_start.json'; a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function updateXpPathHint() {
+            const dataPath = (document.getElementById('path-data')?.value || '').trim();
+            const hint = document.getElementById('xp-path-hint');
+            if (hint) {
+                hint.textContent = dataPath
+                    ? `${dataPath}/json/user_xp_start.json`
+                    : '[your data path]/json/user_xp_start.json';
+            }
+        }
+
         function getXpStartTimestamp() {
             const dateVal = document.getElementById('var-xp-start-date').value.trim();
             if (!dateVal) return '';
@@ -835,7 +1049,7 @@
             setFieldValue('smtp-from', getConfigValue(xmlDoc, 'SMTP_FROM', 'SMTP_FROM'));
             setFieldValue('smtp-override', getConfigValue(xmlDoc, 'SMTP_TO_OVERRIDE', 'SMTP_TO_OVERRIDE'));
 
-            setFieldValue('user-icons', getConfigValue(xmlDoc, 'USER_ICONS', 'USER_ICONS'));
+            loadUserIconsFromValue(getConfigValue(xmlDoc, 'USER_ICONS', 'USER_ICONS'));
             setFieldValue('user-aliases', getConfigValue(xmlDoc, 'USER_ALIASES', 'USER_ALIASES'));
             setFieldValue('allowed-users', getConfigValue(xmlDoc, 'ALLOWED_USERS', 'ALLOWED_USERS'));
         }
@@ -950,7 +1164,7 @@
             const smtpFrom = document.getElementById('smtp-from').value;
             const smtpOverride = document.getElementById('smtp-override').value;
 
-            const userIcons = document.getElementById('user-icons').value;
+            const userIcons = getUserIconsValue();
             const userAliases = document.getElementById('user-aliases').value;
             const allowedUsers = document.getElementById('allowed-users').value;
 
@@ -1117,8 +1331,7 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
                 'smtp-password': 'SMTP account password or app password.',
                 'smtp-from': 'From header for outgoing emails.',
                 'smtp-override': 'Force all email notifications to this address for testing.',
-                'user-icons': 'Comma-separated username:/icons/file.png mappings for avatar icons.',
-                'user-aliases': 'Comma-separated username:DisplayName mappings used in UI.',
+'user-aliases': 'Comma-separated username:DisplayName mappings used in UI.',
                 'allowed-users': 'Optional comma-separated ABS usernames to include on filtered pages/APIs. Leave empty to include all users.',
                 // abs-stats fields
                 'abs-path-data': 'Host folder for abs-stats appdata. Unraid will create this directory (e.g. /mnt/user/appdata/abs-stats).',
