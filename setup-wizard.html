@@ -153,7 +153,8 @@
     input[type="text"],
     input[type="url"],
     input[type="password"],
-    input[type="number"] {
+    input[type="number"],
+    input[type="date"] {
       width: 100%;
       padding: 9px 12px;
       background: #f5ede0;
@@ -603,10 +604,34 @@
       </div>
     </div>
 
-    <!-- ④ Notifications -->
+    <!-- ④ XP Start Dates -->
     <div class="step">
       <div class="step-header">
         <div class="step-num">4</div>
+        <div class="step-title">XP Start Dates</div>
+        <span class="badge-optional">optional</span>
+      </div>
+
+      <div class="field-hint" style="margin-bottom:14px;">
+        Set a per-user start date for XP accumulation. Listening before this date won't count toward levels.
+        Useful when users joined at different times. Leave blank to use the global XP start date for everyone.
+      </div>
+
+      <div class="field">
+        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:6px;">
+          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Username</span>
+          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Start Date</span>
+          <span></span>
+        </div>
+        <div id="xp-rows"></div>
+        <button class="btn-add" onclick="addXpRow()">+ Add User</button>
+      </div>
+    </div>
+
+    <!-- ⑤ Notifications -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">5</div>
         <div class="step-title">Notifications</div>
         <span class="badge-optional">optional</span>
       </div>
@@ -666,6 +691,7 @@
     <div class="preview-tabs">
       <button class="ptab active" id="ptab-override" onclick="switchTab('override')">docker-compose.override.yml</button>
       <button class="ptab" id="ptab-env" onclick="switchTab('env')">.env</button>
+      <button class="ptab" id="ptab-xp" onclick="switchTab('xp')">user_xp_start.json</button>
     </div>
 
     <div class="preview-code">
@@ -675,8 +701,9 @@
     <div class="dl-section">
       <button class="btn-dl" onclick="dlOverride()">⬇ &nbsp;docker-compose.override.yml</button>
       <button class="btn-dl" onclick="dlEnv()">⬇ &nbsp;env.txt</button>
+      <button class="btn-dl" onclick="dlXp()">⬇ &nbsp;user_xp_start.json</button>
       <div style="font-size:0.72rem;color:#6e7681;line-height:1.5;padding:4px 2px 0;">
-        Move both files into your project folder using the commands in the final steps below.
+        Move all files into your project folder using the commands in the final steps below.
       </div>
     </div>
 
@@ -711,7 +738,8 @@ achievement-engine-wrapped/
         <div class="step-item-body">
           <div class="step-item-label">Move the downloaded files into your project folder and rename env.txt</div>
           <div class="code-block"><pre><span class="cmd">mv ~/Downloads/env.txt ~/achievement-engine-wrapped/.env</span>
-<span class="cmd">mv ~/Downloads/docker-compose.override.yml ~/achievement-engine-wrapped/docker-compose.override.yml</span></pre></div>
+<span class="cmd">mv ~/Downloads/docker-compose.override.yml ~/achievement-engine-wrapped/docker-compose.override.yml</span>
+<span class="cmd">mv ~/Downloads/user_xp_start.json ~/achievement-engine-wrapped/data/json/user_xp_start.json</span></pre></div>
         </div>
       </div>
 
@@ -743,12 +771,14 @@ achievement-engine-wrapped/
   let activeTab = 'override';
   let _override = '';
   let _env = '';
+  let _xp = '';
 
   // ── Tab switching ──
   function switchTab(tab) {
     activeTab = tab;
     document.getElementById('ptab-override').classList.toggle('active', tab === 'override');
     document.getElementById('ptab-env').classList.toggle('active', tab === 'env');
+    document.getElementById('ptab-xp').classList.toggle('active', tab === 'xp');
     render();
   }
 
@@ -826,6 +856,33 @@ achievement-engine-wrapped/
   function removeRow(btn) {
     btn.closest('.dyn-row').remove();
     update();
+  }
+
+  function addXpRow() {
+    const row = document.createElement('div');
+    row.className = 'dyn-row';
+    row.style.gridTemplateColumns = '1fr 1fr auto';
+    row.innerHTML = `
+      <input type="text" placeholder="username" class="xp-name" oninput="update()">
+      <input type="date" class="xp-date" oninput="update()">
+      <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>`;
+    document.getElementById('xp-rows').appendChild(row);
+    update();
+  }
+
+  function getXpPairs() {
+    return [...document.querySelectorAll('#xp-rows .dyn-row')].map(r => {
+      const u = r.querySelector('.xp-name')?.value.trim();
+      const d = r.querySelector('.xp-date')?.value.trim();
+      return (u && d) ? { user: u, date: d } : null;
+    }).filter(Boolean);
+  }
+
+  function genXpJson() {
+    const pairs = getXpPairs();
+    const obj = {};
+    pairs.forEach(p => { obj[p.user] = p.date; });
+    return JSON.stringify(obj, null, 2);
   }
 
   // ── Collapsible ──
@@ -1004,15 +1061,29 @@ achievement-engine-wrapped/
 
   // ── Render preview ──
   function render() {
-    const content = activeTab === 'override' ? _override : _env;
-    const type    = activeTab === 'override' ? 'yaml'    : 'env';
-    document.getElementById('preview-pre').innerHTML = highlight(content, type);
+    let content, type;
+    if (activeTab === 'xp') {
+      content = _xp;
+      type = 'json';
+    } else if (activeTab === 'env') {
+      content = _env;
+      type = 'env';
+    } else {
+      content = _override;
+      type = 'yaml';
+    }
+    if (type === 'json') {
+      document.getElementById('preview-pre').innerHTML = esc(content);
+    } else {
+      document.getElementById('preview-pre').innerHTML = highlight(content, type);
+    }
   }
 
   // ── Main update ──
   function update() {
     _override = genOverride();
     _env      = genEnv();
+    _xp       = genXpJson();
     render();
     const ready = isReady();
     document.getElementById('warn-box').style.display = ready ? 'none' : 'block';
@@ -1029,6 +1100,7 @@ achievement-engine-wrapped/
 
   function dlOverride() { dl('docker-compose.override.yml', _override); }
   function dlEnv()      { dl('env.txt', _env); }
+  function dlXp()       { dl('user_xp_start.json', _xp); }
 
   // Init
   update();
