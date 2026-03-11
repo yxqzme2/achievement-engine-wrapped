@@ -107,15 +107,6 @@ def _seed_user_xp_start_overrides_file():
 # -----------------------------------------
 
 
-def _save_xp_ledger(ledger_data: dict):
-    """Save XP ledger snapshot."""
-    path = os.path.join("/data/json", "xp_ledger.json")
-    try:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(ledger_data, f, indent=2)
-    except Exception as e:
-        print(f"[ledger] Failed to save XP ledger to {path}: {e}")
 
 def _fetch_abs_series_index(fallback: Optional[List[Dict]] = None, timeout: int = 30) -> List[Dict]:
     """Fetch fresh series index from ABS Stats; fallback when unavailable."""
@@ -161,8 +152,6 @@ def achievement_engine_worker():
                 completed_endpoint=cfg.completed_endpoint,
                 allow_playlist_fallback=cfg.allow_playlist_fallback,
             )
-            if ledger:
-                _save_xp_ledger(ledger)
         except Exception as e:
             print(f"Engine Loop Error: {e}")
         time.sleep(cfg.poll_seconds)
@@ -2924,7 +2913,6 @@ def run_once(
     sessions_payload = None
     listening_time_payload = None
     run_started = int(time.time())
-    xp_ledger = {"updated_at": run_started, "users": {}}
 
     achievements_scope = (achievements_scope or cfg.achievements_scope or "all_time").strip().lower()
 
@@ -3145,22 +3133,6 @@ def run_once(
                     current_level = level_from_xp(total_xp, gc["xp_per_level"])[0]
                     shadow_level_with_ai = level_from_xp(shadow_total_with_ai, gc["xp_per_level"])[0]
                      
-                    # Add to ledger
-                    xp_ledger["users"][str(user_id)] = {
-                        "username": username,
-                        "level": current_level,
-                        "total_xp": total_xp,
-                        "breakdown": {
-                            "hours_xp": xp_time,
-                            "quest_xp": xp_books,
-                            "achievement_xp": xp_achievements,
-                            "ai_xp": xp_ai,
-                        },
-                        "shadow_total_with_ai": int(shadow_total_with_ai),
-                        "shadow_level_with_ai": int(shadow_level_with_ai),
-                        "books_2026": sorted(list(snap_prog.finished_ids))
-                    }
-
                     new_items = evaluate_gear_for_user(
                         snap_prog, series_index, gc["quests_by_series"], gc["gear"], store,
                         current_level=current_level,
@@ -3242,7 +3214,6 @@ def run_once(
         except Exception as e:
             print(f"Email failed: {e}")
 
-    return xp_ledger
 
 def run_achievement_backfill_once():
     """One-time admin action: backfill all-time achievements without progression or notifications."""
@@ -3302,8 +3273,6 @@ def trigger_manual_poll():
             completed_endpoint=cfg.completed_endpoint,
             allow_playlist_fallback=cfg.allow_playlist_fallback,
         )
-        if ledger:
-            _save_xp_ledger(ledger)
         print("[manual-poll] Manual sync pass complete.")
     except Exception as e:
         print(f"[manual-poll] Error during manual sync: {e}")
