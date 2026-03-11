@@ -360,6 +360,61 @@
             .two-col, .three-col { grid-template-columns: 1fr; }
         }
 
+        /* ── XP START DATE ROWS ── */
+        .xp-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .btn-xp-remove {
+            background: #3a0a0a;
+            border: 1px solid #7a2828;
+            color: #e88;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+        .btn-xp-remove:hover { background: #5a1010; border-color: #cc4444; }
+        .btn-xp-add {
+            background: transparent;
+            border: 1px dashed #444;
+            color: var(--neon-blue);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            transition: all 0.2s;
+        }
+        .btn-xp-add:hover { border-color: var(--neon-blue); background: rgba(0,242,255,0.05); }
+        .xp-col-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .xp-placement-box {
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-left: 2px solid var(--neon-amber);
+            font-size: 0.78rem;
+            color: #888;
+            line-height: 1.6;
+        }
+        .xp-placement-box code {
+            color: var(--neon-amber);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
         input[readonly] {
             background: #0a0a0a;
             color: #555;
@@ -435,7 +490,7 @@
             <div class="path-group-label">// Achievement Engine</div>
             <div class="input-group">
                 <label for="path-data">Data Path (/data)</label>
-                <input type="text" id="path-data" value="">
+                <input type="text" id="path-data" value="" oninput="updateXpPathHint()">
             </div>
             <div class="input-group">
                 <label for="path-covers">Covers Path (/data/covers)</label>
@@ -594,6 +649,25 @@
             </div>
         </div>
 
+        <!-- Per-User XP Start Dates -->
+        <div class="admin-card">
+            <h2 class="section-title">Per-User XP Start Dates</h2>
+            <div class="config-description" style="margin-bottom:14px;">
+                Optional. Set an individual XP start date per username. Listening before this date won't count toward that user's levels. Leave blank to use the global XP Start Date for all users.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:6px;">
+                <div class="xp-col-label">Username</div>
+                <div class="xp-col-label">Start Date</div>
+                <div></div>
+            </div>
+            <div id="xp-rows"></div>
+            <button class="btn-xp-add" onclick="addXpRow()">+ Add User</button>
+            <div class="xp-placement-box">
+                Place the downloaded <code>user_xp_start.json</code> into:<br>
+                <code id="xp-path-hint">[your data path]/json/user_xp_start.json</code>
+            </div>
+        </div>
+
         <!-- ABS-Stats Divider -->
         <div class="section-divider">
             <span>ABS-Stats Container</span>
@@ -648,6 +722,7 @@
         <div class="actions-card">
             <button class="btn" onclick="generateXML()">[ PREVIEW AE XML ]</button>
             <button class="btn btn-gold" onclick="downloadBothTemplates()">[ DOWNLOAD BOTH TEMPLATES ]</button>
+            <button class="btn" onclick="dlXp()">[ DOWNLOAD user_xp_start.json ]</button>
         </div>
 
         <pre id="xml-preview"></pre>
@@ -659,6 +734,50 @@
     </div>
 
     <script>
+        // ── Per-user XP start dates ──
+        function addXpRow() {
+            const row = document.createElement('div');
+            row.className = 'xp-row';
+            row.innerHTML = `
+                <input type="text" placeholder="username" class="xp-name" oninput="updateXpPathHint()">
+                <input type="date" class="xp-date">
+                <button class="btn-xp-remove" onclick="this.closest('.xp-row').remove()">×</button>`;
+            document.getElementById('xp-rows').appendChild(row);
+        }
+
+        function getXpPairs() {
+            return [...document.querySelectorAll('#xp-rows .xp-row')].map(r => {
+                const u = r.querySelector('.xp-name')?.value.trim();
+                const d = r.querySelector('.xp-date')?.value.trim();
+                return (u && d) ? { user: u, date: d } : null;
+            }).filter(Boolean);
+        }
+
+        function genXpJson() {
+            const obj = {};
+            getXpPairs().forEach(p => { obj[p.user] = p.date; });
+            return JSON.stringify(obj, null, 2);
+        }
+
+        function dlXp() {
+            const content = genXpJson();
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'user_xp_start.json'; a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function updateXpPathHint() {
+            const dataPath = (document.getElementById('path-data')?.value || '').trim();
+            const hint = document.getElementById('xp-path-hint');
+            if (hint) {
+                hint.textContent = dataPath
+                    ? `${dataPath}/json/user_xp_start.json`
+                    : '[your data path]/json/user_xp_start.json';
+            }
+        }
+
         function getXpStartTimestamp() {
             const dateVal = document.getElementById('var-xp-start-date').value.trim();
             if (!dateVal) return '';
