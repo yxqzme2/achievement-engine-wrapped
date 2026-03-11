@@ -35,21 +35,12 @@
 
     /* ── SCANLINE ── */
     .scanline {
-      width: 100%;
-      height: 100px;
-      z-index: 10;
+      width: 100%; height: 100px; z-index: 10;
       background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255,255,255,.05) 50%, rgba(0,0,0,0) 100%);
-      opacity: 0.1;
-      position: fixed;
-      bottom: 100%;
-      left: 0;
-      pointer-events: none;
-      animation: scanline 10s linear infinite;
+      opacity: 0.1; position: fixed; bottom: 100%; left: 0;
+      pointer-events: none; animation: scanline 10s linear infinite;
     }
-    @keyframes scanline {
-      0%   { bottom: 100%; }
-      100% { bottom: -100px; }
-    }
+    @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
 
     /* ── NAV ── */
     .admin-nav {
@@ -59,590 +50,269 @@
       box-shadow: 0 0 12px rgba(0,242,255,.16);
     }
     .admin-nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
+      max-width: 1200px; margin: 0 auto; padding: 10px 14px;
+      display: flex; justify-content: center; gap: 8px; align-items: center; flex-wrap: wrap;
     }
     .admin-nav a {
-      text-decoration: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #9ad8df;
-      padding: 6px 10px;
-      border: 1px solid #2b4448;
-      transition: all 0.2s ease;
+      text-decoration: none; font-family: 'Orbitron', sans-serif;
+      font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+      color: #9ad8df; padding: 6px 10px; border: 1px solid #2b4448; transition: all 0.2s ease;
     }
-    .admin-nav a.brand {
-      color: var(--neon-blue);
-      border-color: transparent;
-      padding-left: 0;
-      margin-right: 4px;
-    }
-    .admin-nav a:hover {
-      color: #001215;
-      background: var(--neon-blue);
-      border-color: var(--neon-blue);
-    }
-    .admin-nav a.active {
-      color: #001215;
-      background: var(--neon-blue);
-      border-color: var(--neon-blue);
-      box-shadow: 0 0 10px rgba(0,242,255,.35);
-    }
+    .admin-nav a.brand { color: var(--neon-blue); border-color: transparent; padding-left: 0; margin-right: 4px; }
+    .admin-nav a:hover { color: #001215; background: var(--neon-blue); border-color: var(--neon-blue); }
+    .admin-nav a.active { color: #001215; background: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0,242,255,.35); }
 
     /* ── HEADER ── */
     header {
-        background: #111;
-        padding: 15px;
-        border-bottom: 2px solid var(--neon-blue);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        box-sizing: border-box;
+      background: #111; padding: 15px; border-bottom: 2px solid var(--neon-blue);
+      display: flex; justify-content: space-between; align-items: center;
+      width: 100%; box-sizing: border-box;
     }
-    header h1 {
-      font-family: 'Orbitron', sans-serif;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-  
-      color: var(--neon-blue);
-    }
-    .header-status {
-      color: var(--neon-blue);
-      text-decoration: none;
-      font-size: 0.8rem;
+    header h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 5px; text-transform: uppercase; color: var(--neon-blue); }
+    .header-status { color: var(--neon-blue); text-decoration: none; font-size: 0.8rem; }
+
+    /* ── TWO-COLUMN LAYOUT ── */
+    .wizard-wrap {
+      max-width: 1420px; margin: 0 auto; padding: 0 20px 100px;
+      display: grid; grid-template-columns: 1fr 400px; gap: 20px; align-items: start;
     }
 
-    /* ── MAIN CONTAINER ── */
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px 20px;
-    }
+    /* ── MAIN CONTAINER (left column) ── */
+    .container { padding: 20px 0 0; }
 
     .page-desc {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 28px;
-      padding: 12px 16px;
-      border-left: 2px solid var(--neon-blue);
-      background: rgba(0,242,255,.04);
-      letter-spacing: 0.5px;
-      line-height: 1.7;
+      font-size: 0.8rem; color: var(--text-muted); margin-bottom: 28px;
+      padding: 12px 16px; border-left: 2px solid var(--neon-blue);
+      background: rgba(0,242,255,.04); letter-spacing: 0.5px; line-height: 1.7;
     }
     .page-desc span { color: var(--neon-blue); }
 
     /* ── SECTION CARDS ── */
     .section-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-mid);
-      margin-bottom: 16px;
-      transition: border-color 0.2s;
-      position: relative;
-      overflow: hidden;
+      background: var(--card-bg); border: 1px solid var(--border-mid);
+      margin-bottom: 16px; transition: border-color 0.2s; position: relative; overflow: hidden;
     }
     .section-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
+      content: ''; position: absolute; top: 0; left: -100%;
       width: 100%; height: 1px;
       background: linear-gradient(90deg, transparent, var(--neon-blue));
       animation: borderFlow 4s linear infinite;
     }
-    @keyframes borderFlow {
-      0%   { left: -100%; }
-      100% { left: 100%; }
-    }
+    @keyframes borderFlow { 0% { left: -100%; } 100% { left: 100%; } }
     .section-card:hover { border-color: var(--neon-blue); }
 
     .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 18px;
-      background: #0d0d0d;
-      border-bottom: 1px solid var(--border-mid);
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.15s;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 18px; background: #0d0d0d; border-bottom: 1px solid var(--border-mid);
+      cursor: pointer; user-select: none; transition: background 0.15s;
     }
     .section-header:hover { background: #131313; }
 
     .section-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--neon-blue);
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 700;
+      color: var(--neon-blue); letter-spacing: 2px; text-transform: uppercase;
     }
-    .section-chevron {
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      transition: transform 0.25s ease;
-      font-family: 'Share Tech Mono', monospace;
-    }
+    .section-chevron { color: var(--text-muted); font-size: 0.7rem; transition: transform 0.25s ease; font-family: 'Share Tech Mono', monospace; }
     .section-card.collapsed .section-chevron { transform: rotate(-90deg); }
 
     .section-body {
-      padding: 20px 20px 22px;
-      overflow: hidden;
-      transition: max-height 0.35s ease, padding 0.25s ease;
-      max-height: 2000px;
+      padding: 20px 20px 22px; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.25s ease; max-height: 4000px;
     }
-    .section-card.collapsed .section-body {
-      max-height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-    }
+    .section-card.collapsed .section-body { max-height: 0; padding-top: 0; padding-bottom: 0; }
 
     /* ── FIELDS ── */
     .field-row { margin-bottom: 18px; }
     .field-row:last-child { margin-bottom: 0; }
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 
     .field-label {
-      display: block;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: #aaa;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 5px;
+      display: block; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700;
+      color: #aaa; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px;
     }
-    .field-label .optional {
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: 400;
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      text-transform: none;
-      letter-spacing: 0;
-      margin-left: 6px;
-    }
-    .field-desc {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-bottom: 7px;
-      line-height: 1.5;
-      letter-spacing: 0.3px;
-    }
+    .field-label .optional { font-family: 'Share Tech Mono', monospace; font-weight: 400; font-size: 0.65rem; color: var(--text-muted); text-transform: none; letter-spacing: 0; margin-left: 6px; }
+    .field-desc { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 7px; line-height: 1.5; letter-spacing: 0.3px; }
 
     input[type="text"],
     input[type="number"],
-    input[type="password"] {
-      width: 100%;
-      padding: 8px 12px;
-      background: var(--input-bg);
-      border: 1px solid var(--border-mid);
-      color: var(--text);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.82rem;
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+    input[type="password"],
+    input[type="date"] {
+      width: 100%; padding: 8px 12px; background: var(--input-bg);
+      border: 1px solid var(--border-mid); color: var(--text);
+      font-family: 'Share Tech Mono', monospace; font-size: 0.82rem;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
     }
-    input:focus {
-      border-color: var(--neon-blue);
-      box-shadow: 0 0 8px rgba(0,242,255,.2);
-    }
+    input[type="date"] { color-scheme: dark; }
+    input:focus { border-color: var(--neon-blue); box-shadow: 0 0 8px rgba(0,242,255,.2); }
     input::placeholder { color: #3a3a3a; }
 
     /* Checkbox grid */
-    .check-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 4px;
-    }
+    .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
     .check-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 12px;
-      background: var(--input-bg);
-      border: 1px solid var(--border-mid);
-      cursor: pointer;
-      transition: border-color 0.15s;
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+      background: var(--input-bg); border: 1px solid var(--border-mid);
+      cursor: pointer; transition: border-color 0.15s;
     }
     .check-item:hover { border-color: var(--neon-blue); }
-    .check-item input[type="checkbox"] {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
-      margin-top: 2px;
-      accent-color: var(--neon-blue);
-      cursor: pointer;
-    }
-    .check-label {
-      display: block;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.62rem;
-      font-weight: 700;
-      color: #bbb;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 3px;
-    }
-    .check-desc {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
+    .check-item input[type="checkbox"] { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; accent-color: var(--neon-blue); cursor: pointer; }
+    .check-label { display: block; font-family: 'Orbitron', sans-serif; font-size: 0.62rem; font-weight: 700; color: #bbb; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+    .check-desc { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
 
-    /* Info / warning box */
+    /* Info box */
     .info-box {
-      background: rgba(0,242,255,.04);
-      border: 1px solid rgba(0,242,255,.2);
-      border-left: 2px solid var(--neon-blue);
-      padding: 10px 14px;
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 18px;
-      letter-spacing: 0.3px;
+      background: rgba(0,242,255,.04); border: 1px solid rgba(0,242,255,.2);
+      border-left: 2px solid var(--neon-blue); padding: 10px 14px;
+      font-size: 0.76rem; color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 18px; letter-spacing: 0.3px;
     }
     .info-box strong { color: var(--text); }
-    .info-box code {
-      color: var(--neon-blue);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.82em;
-    }
+    .info-box code { color: var(--neon-blue); font-family: 'Share Tech Mono', monospace; font-size: 0.82em; }
+
+    /* ── USER ICON BUILDER ── */
+    .user-icon-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+    .user-icon-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #0a0a0a; border: 1px solid #222; padding: 10px; }
+    .user-icon-row input[type="text"] { flex: 1; min-width: 120px; max-width: 200px; }
+    .user-icon-preview { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #444; object-fit: cover; background: #1a1a1a; flex-shrink: 0; }
+    .user-icon-preview.empty { visibility: hidden; }
+    .pick-icon-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: #1a1a1a; border: 1px solid var(--neon-blue); color: var(--neon-blue); cursor: pointer; white-space: nowrap; }
+    .pick-icon-btn:hover { background: var(--neon-blue); color: #000; }
+    .remove-user-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: #1a1a1a; border: 1px solid #ff3333; color: #ff3333; cursor: pointer; }
+    .remove-user-btn:hover { background: #ff3333; color: #000; }
+    .icon-picker-panel { display: none; width: 100%; margin-top: 8px; background: #0d0d0d; border: 1px solid #333; padding: 10px; max-height: 260px; overflow-y: auto; }
+    .icon-picker-panel.open { display: block; }
+    .icon-group-label { font-size: 0.65rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 6px; margin-top: 10px; }
+    .icon-group-label:first-child { margin-top: 0; }
+    .icon-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .icon-thumb { width: 40px; height: 40px; object-fit: cover; border: 2px solid #333; border-radius: 4px; cursor: pointer; transition: border-color 0.15s; }
+    .icon-thumb:hover { border-color: var(--neon-blue); }
+    .icon-thumb.selected { border-color: var(--neon-blue); box-shadow: 0 0 8px rgba(0,242,255,0.5); }
+    .add-user-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; padding: 8px 16px; background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+    .add-user-btn:hover { background: var(--neon-green); color: #000; }
+
+    /* ── PER-USER XP DATES ── */
+    .xp-col-labels { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-bottom: 6px; }
+    .xp-col-label { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+    .xp-user-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+    .xp-user-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center; }
+    .btn-xp-remove { background: #3a0a0a; border: 1px solid #7a2828; color: #e88; padding: 8px 10px; cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 1rem; line-height: 1; transition: all 0.2s; }
+    .btn-xp-remove:hover { background: #5a1010; border-color: #cc4444; }
+    .btn-xp-add { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; padding: 7px 14px; background: transparent; border: 1px dashed var(--border-mid); color: var(--neon-blue); cursor: pointer; margin-top: 2px; transition: all 0.2s; }
+    .btn-xp-add:hover { border-color: var(--neon-blue); background: rgba(0,242,255,.05); }
 
     /* ── STICKY GENERATE BAR ── */
     .generate-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 40;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
       background: linear-gradient(180deg, #0e0e0e 0%, #080808 100%);
       border-top: 1px solid var(--neon-blue);
       box-shadow: 0 0 20px rgba(0,242,255,.15), 0 -4px 20px rgba(0,0,0,.6);
-      padding: 13px 24px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
+      padding: 13px 24px; display: flex; justify-content: center; align-items: center; gap: 20px;
     }
-    .generate-bar p {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+    .generate-bar p { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
     .btn-generate {
-      background: transparent;
-      border: 1px solid var(--neon-blue);
-      color: var(--neon-blue);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 11px 32px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);
+      font-family: 'Orbitron', sans-serif; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; padding: 11px 32px;
+      cursor: pointer; transition: all 0.2s ease;
     }
-    .btn-generate:hover {
-      background: var(--neon-blue);
-      color: #000;
-      box-shadow: 0 0 18px rgba(0,242,255,.5);
-    }
+    .btn-generate:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 18px rgba(0,242,255,.5); }
     .btn-generate:active { transform: translateY(1px); }
+
+    /* ── LIVE PREVIEW PANEL (right column) ── */
+    .preview-panel {
+      position: sticky; top: 20px;
+      background: #0d0d0d; border: 1px solid var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0,242,255,.1);
+    }
+    .preview-tabs { display: flex; background: #080808; border-bottom: 1px solid var(--border-mid); }
+    .ptab {
+      flex: 1; padding: 10px 6px; background: none; border: none; cursor: pointer;
+      font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--text-muted);
+      transition: all .2s; border-bottom: 2px solid transparent;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ptab.active { color: var(--neon-blue); border-bottom-color: var(--neon-blue); background: #0d0d0d; }
+    .preview-code { padding: 14px; max-height: 440px; overflow-y: auto; }
+    .preview-code pre {
+      font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; line-height: 1.65;
+      white-space: pre-wrap; word-break: break-all; color: #00ff88;
+    }
+    .preview-dl-section {
+      padding: 12px 14px; border-top: 1px solid var(--border-mid);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .btn-dl-preview {
+      display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px;
+      border: 1px solid var(--neon-blue); background: rgba(0,242,255,.04);
+      color: var(--neon-blue); cursor: pointer; font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem; transition: all .2s; width: 100%;
+    }
+    .btn-dl-preview:hover { background: rgba(0,242,255,.15); box-shadow: 0 0 10px rgba(0,242,255,.2); }
 
     /* ── MODAL ── */
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.88);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 200;
+      display: none; align-items: center; justify-content: center; padding: 20px;
     }
     .modal-overlay.open { display: flex; }
-
     .modal-box {
-      background: var(--card-bg);
-      border: 1px solid var(--neon-blue);
+      background: var(--card-bg); border: 1px solid var(--neon-blue);
       box-shadow: 0 0 40px rgba(0,242,255,.2), 0 0 80px rgba(0,242,255,.08);
-      width: 100%;
-      max-width: 800px;
-      max-height: 92vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      width: 100%; max-width: 800px; max-height: 92vh;
+      display: flex; flex-direction: column; overflow: hidden;
       animation: modalIn 0.2s ease;
     }
-    @keyframes modalIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: #0d0d0d;
-      border-bottom: 1px solid var(--border-mid);
-      flex-shrink: 0;
-    }
-    .modal-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--neon-blue);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-    .modal-close {
-      background: none;
-      border: 1px solid var(--border-mid);
-      color: var(--text-muted);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.9rem;
-      cursor: pointer;
-      padding: 3px 9px;
-      transition: all 0.15s;
-    }
-    .modal-close:hover {
-      border-color: var(--neon-pink);
-      color: var(--neon-pink);
-      box-shadow: 0 0 8px rgba(255,0,255,.3);
-    }
-
-    .modal-tabs {
-      display: flex;
-      background: #0a0a0a;
-      border-bottom: 1px solid var(--border-mid);
-      flex-shrink: 0;
-    }
-    .modal-tab {
-      padding: 9px 20px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-right: 1px solid var(--border-dim);
-      transition: all 0.15s;
-      user-select: none;
-    }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: #0d0d0d; border-bottom: 1px solid var(--border-mid); flex-shrink: 0; }
+    .modal-title { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--neon-blue); letter-spacing: 3px; text-transform: uppercase; }
+    .modal-close { background: none; border: 1px solid var(--border-mid); color: var(--text-muted); font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; cursor: pointer; padding: 3px 9px; transition: all 0.15s; }
+    .modal-close:hover { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 8px rgba(255,0,255,.3); }
+    .modal-tabs { display: flex; background: #0a0a0a; border-bottom: 1px solid var(--border-mid); flex-shrink: 0; }
+    .modal-tab { padding: 9px 20px; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); cursor: pointer; border-right: 1px solid var(--border-dim); transition: all 0.15s; user-select: none; }
     .modal-tab:hover { color: var(--neon-blue); background: rgba(0,242,255,.04); }
-    .modal-tab.active {
-      color: #000;
-      background: var(--neon-blue);
-      box-shadow: 0 0 12px rgba(0,242,255,.3);
-    }
-
-    .modal-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 18px 20px 20px;
-      background: var(--card-bg2);
-    }
-
+    .modal-tab.active { color: #000; background: var(--neon-blue); box-shadow: 0 0 12px rgba(0,242,255,.3); }
+    .modal-content { flex: 1; overflow-y: auto; padding: 18px 20px 20px; background: var(--card-bg2); }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-
-    .output-area {
-      width: 100%;
-      height: 310px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.78rem;
-      line-height: 1.7;
-      background: #000;
-      color: #00ff88;
-      border: 1px solid var(--border-mid);
-      padding: 14px;
-      resize: vertical;
-      outline: none;
-      box-shadow: inset 0 0 20px rgba(0,255,136,.05);
-    }
+    .output-area { width: 100%; height: 310px; font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; line-height: 1.7; background: #000; color: #00ff88; border: 1px solid var(--border-mid); padding: 14px; resize: vertical; outline: none; box-shadow: inset 0 0 20px rgba(0,255,136,.05); }
     .output-area:focus { border-color: var(--neon-blue); }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    .copy-feedback {
-      flex: 1;
-      font-size: 0.72rem;
-      color: var(--neon-green);
-      letter-spacing: 1px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    .modal-actions { display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end; align-items: center; }
+    .copy-feedback { flex: 1; font-size: 0.72rem; color: var(--neon-green); letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; }
     .copy-feedback.show { opacity: 1; }
-
-    .btn-action {
-      padding: 8px 20px;
-      background: transparent;
-      cursor: pointer;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      transition: all 0.2s ease;
-    }
-    .btn-copy {
-      border: 1px solid var(--border-mid);
-      color: var(--text-muted);
-    }
-    .btn-copy:hover {
-      border-color: var(--text-muted);
-      color: var(--text);
-    }
-    .btn-download {
-      border: 1px solid var(--neon-blue);
-      color: var(--neon-blue);
-    }
-    .btn-download:hover {
-      background: var(--neon-blue);
-      color: #000;
-      box-shadow: 0 0 12px rgba(0,242,255,.4);
-    }
+    .btn-action { padding: 8px 20px; background: transparent; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.2s ease; }
+    .btn-copy { border: 1px solid var(--border-mid); color: var(--text-muted); }
+    .btn-copy:hover { border-color: var(--text-muted); color: var(--text); }
+    .btn-download { border: 1px solid var(--neon-blue); color: var(--neon-blue); }
+    .btn-download:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 12px rgba(0,242,255,.4); }
 
     /* Instructions tab */
-    .instructions-body h3 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      color: var(--neon-blue);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border-mid);
-    }
-    .instructions-body ol {
-      padding-left: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .instructions-body li {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
+    .instructions-body h3 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--neon-blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border-mid); }
+    .instructions-body ol { padding-left: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .instructions-body li { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
     .instructions-body li strong { color: var(--text); }
-    .instructions-body code {
-      color: var(--neon-blue);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.9em;
-      background: rgba(0,242,255,.06);
-      padding: 1px 6px;
-    }
-    .instructions-body .note {
-      margin-top: 22px;
-      padding: 12px 16px;
-      background: rgba(0,242,255,.04);
-      border: 1px solid rgba(0,242,255,.2);
-      border-left: 2px solid var(--neon-blue);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
+    .instructions-body code { color: var(--neon-blue); font-family: 'Share Tech Mono', monospace; font-size: 0.9em; background: rgba(0,242,255,.06); padding: 1px 6px; }
+    .instructions-body .note { margin-top: 22px; padding: 12px 16px; background: rgba(0,242,255,.04); border: 1px solid rgba(0,242,255,.2); border-left: 2px solid var(--neon-blue); font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
 
     /* ── LOAD CONFIG ── */
-    .load-file-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-    .btn-file-pick {
-      background: transparent;
-      border: 1px solid var(--neon-blue);
-      color: var(--neon-blue);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-    .btn-file-pick:hover {
-      background: var(--neon-blue);
-      color: #000;
-    }
-    .load-file-name {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .btn-load-config {
-      background: transparent;
-      border: 1px solid var(--neon-green);
-      color: var(--neon-green);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-    .btn-load-config:hover {
-      background: var(--neon-green);
-      color: #000;
-      box-shadow: 0 0 12px rgba(0,255,136,.4);
-    }
-    .load-feedback {
-      background: rgba(0,255,136,.04);
-      border: 1px solid rgba(0,255,136,.2);
-      border-left: 2px solid var(--neon-green);
-      padding: 12px 16px;
-      font-size: 0.75rem;
-      line-height: 1.7;
-      margin-top: 14px;
-      display: none;
-    }
-    .load-feedback .lf-heading {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.65rem;
-      color: var(--text);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
+    .load-file-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+    .btn-file-pick { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); font-family: 'Orbitron', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+    .btn-file-pick:hover { background: var(--neon-blue); color: #000; }
+    .load-file-name { font-size: 0.74rem; color: var(--text-muted); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-load-config { background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); font-family: 'Orbitron', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+    .btn-load-config:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 12px rgba(0,255,136,.4); }
+    .load-feedback { background: rgba(0,255,136,.04); border: 1px solid rgba(0,255,136,.2); border-left: 2px solid var(--neon-green); padding: 12px 16px; font-size: 0.75rem; line-height: 1.7; margin-top: 14px; display: none; }
+    .load-feedback .lf-heading { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; color: var(--text); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
     .load-feedback .lf-heading + .lf-heading { margin-top: 10px; }
     .load-feedback .lf-ok   { color: var(--neon-green); }
     .load-feedback .lf-skip { color: var(--text-dim); }
 
+    @media (max-width: 1060px) {
+      .wizard-wrap { grid-template-columns: 1fr; }
+      .preview-panel { position: static; }
+    }
     @media (max-width: 620px) {
-      .two-col, .check-grid { grid-template-columns: 1fr; }
+      .two-col, .check-grid, .xp-col-labels, .xp-user-row { grid-template-columns: 1fr; }
       .admin-nav-inner { padding: 8px; }
-      .container { padding: 0 14px 20px; }
       .load-file-row { flex-direction: column; align-items: stretch; }
     }
   </style>
@@ -652,18 +322,18 @@
 <div class="scanline"></div>
 
 <!-- NAV -->
-    <nav class="admin-nav">
-        <div class="admin-nav-inner">
-            <a href="/admin" class="brand">System Admin</a>
-            <a href="/admin">Hub</a>
-            <a href="/admin/forge">Forge</a>
-            <a href="/admin/loot">Armory</a>
-            <a href="/admin/quest">Bounties</a>
-            <a href="/admin/template">Template</a>
-            <a href="/admin/template-builder">Builder</a>
-            <a href="/admin/setup" class="active">Script</a>
-            <a href="/admin/ops">Ops</a>
-        </div>
+<nav class="admin-nav">
+  <div class="admin-nav-inner">
+    <a href="/admin" class="brand">System Admin</a>
+    <a href="/admin">Hub</a>
+    <a href="/admin/forge">Forge</a>
+    <a href="/admin/loot">Armory</a>
+    <a href="/admin/quest">Bounties</a>
+    <a href="/admin/template">Template</a>
+    <a href="/admin/template-builder">Builder</a>
+    <a href="/admin/setup" class="active">Script</a>
+    <a href="/admin/ops">Ops</a>
+  </div>
 </nav>
 
 <!-- HEADER -->
@@ -672,303 +342,329 @@
   <a href="/admin" class="header-status">[ RETURN TO HUB ]</a>
 </header>
 
-<!-- MAIN -->
-<div class="container">
+<!-- TWO-COLUMN LAYOUT -->
+<div class="wizard-wrap">
 
-  <p class="page-desc">
-    Fill in your environment below and click <span>[ GENERATE CONFIG FILES ]</span> to download your
-    <span>.env</span> and <span>docker-compose.override.yml</span>. Place both files alongside
-    <span>docker-compose.yml</span> and run <span>docker compose up -d</span>.
-  </p>
+  <!-- ══ LEFT: FORM ══ -->
+  <div class="container">
 
-  <!-- ── SECTION 0: LOAD CONFIG ── -->
-  <div class="section-card" id="sec0">
-    <div class="section-header" onclick="toggleSection('sec0')">
-      <span class="section-title">⚡ // Load Existing Config</span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="info-box">
-        Already have a config? Load a previously generated <code>.env</code>, a shell script with
-        <code>export KEY=VALUE</code> lines, a <code>docker-compose.override.yml</code>, or an
-        <code>Unraid template (.xml)</code> to auto-populate all matching fields below.<br><br>
-        <strong>Unraid users:</strong> you can load both templates in sequence — load
-        <code>my-achievement-engine.xml</code> to fill the progression/SMTP/user sections, then load
-        <code>my-abs-stats.xml</code> to fill the Audiobookshelf connection section. Neither import
-        overwrites fields the other file doesn't know about.
+    <p class="page-desc">
+      Fill in your environment below. Config files update live in the panel on the right —
+      download <span>.env</span> and <span>docker-compose.override.yml</span> then run
+      <span>docker compose up -d</span>. Use <span>[ ⚙ Generate ]</span> for copy/paste access.
+    </p>
+
+    <!-- ── SECTION 0: LOAD CONFIG ── -->
+    <div class="section-card" id="sec0">
+      <div class="section-header" onclick="toggleSection('sec0')">
+        <span class="section-title">⚡ // Load Existing Config</span>
+        <span class="section-chevron">[ ▼ ]</span>
       </div>
-      <div class="field-row">
-        <label class="field-label">Config File</label>
-        <p class="field-desc">
-          Supported: <code>.env</code> &nbsp;·&nbsp; <code>.sh</code> (export KEY=VALUE)
-          &nbsp;·&nbsp; <code>docker-compose.override.yml</code>
-          &nbsp;·&nbsp; <code>Unraid template .xml</code>
-        </p>
-        <div class="load-file-row">
-          <label class="btn-file-pick" for="config-file-input">[ Choose File ]</label>
-          <input type="file" id="config-file-input" accept=".env,.sh,.yml,.yaml,.xml,text/plain" style="display:none">
-          <span id="config-file-name" class="load-file-name">No file selected</span>
-          <button class="btn-load-config" onclick="loadConfigFile()">[ Load &amp; Populate ]</button>
+      <div class="section-body">
+        <div class="info-box">
+          Already have a config? Load a previously generated <code>.env</code>, a shell script with
+          <code>export KEY=VALUE</code> lines, a <code>docker-compose.override.yml</code>, or an
+          <code>Unraid template (.xml)</code> to auto-populate all matching fields below.<br><br>
+          <strong>Unraid users:</strong> load <code>my-achievement-engine.xml</code> to fill
+          progression/SMTP/user sections, then load <code>my-abs-stats.xml</code> to fill the
+          Audiobookshelf connection section.
+        </div>
+        <div class="field-row">
+          <label class="field-label">Config File</label>
+          <p class="field-desc">Supported: <code>.env</code> &nbsp;·&nbsp; <code>.sh</code> (export KEY=VALUE) &nbsp;·&nbsp; <code>docker-compose.override.yml</code> &nbsp;·&nbsp; <code>Unraid template .xml</code></p>
+          <div class="load-file-row">
+            <label class="btn-file-pick" for="config-file-input">[ Choose File ]</label>
+            <input type="file" id="config-file-input" accept=".env,.sh,.yml,.yaml,.xml,text/plain" style="display:none">
+            <span id="config-file-name" class="load-file-name">No file selected</span>
+            <button class="btn-load-config" onclick="loadConfigFile()">[ Load &amp; Populate ]</button>
+          </div>
+        </div>
+        <div id="load-feedback" class="load-feedback"></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 1: PATHS & PORTS ── -->
+    <div class="section-card" id="sec1">
+      <div class="section-header" onclick="toggleSection('sec1')">
+        <span class="section-title">01 // Paths &amp; Ports</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="path_data">Data Directory</label>
+            <p class="field-desc">Host path for persistent data (database, JSON files, icons)</p>
+            <input type="text" id="path_data" value="./data" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="port_dashboard">Dashboard Port</label>
+            <p class="field-desc">Host port to access the web UI</p>
+            <input type="number" id="port_dashboard" value="8000" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="path_static">Static Files Directory <span class="optional">// optional</span></label>
+          <p class="field-desc">Map this to edit HTML/CSS/JS live without rebuilding the Docker image. Leave blank to skip.</p>
+          <input type="text" id="path_static" placeholder="./static  (optional)" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="path_covers">Covers Directory <span class="optional">// optional</span></label>
+          <p class="field-desc">Host path for synced book cover images. Leave blank to store inside the data directory.</p>
+          <input type="text" id="path_covers" placeholder="./data/covers  (optional)" oninput="liveUpdate()" />
         </div>
       </div>
-      <div id="load-feedback" class="load-feedback"></div>
+    </div>
+
+    <!-- ── SECTION 2: AUDIOBOOKSHELF ── -->
+    <div class="section-card" id="sec2">
+      <div class="section-header" onclick="toggleSection('sec2')">
+        <span class="section-title">02 // Audiobookshelf Connection</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="abs_url">ABS URL</label>
+            <p class="field-desc">Your Audiobookshelf instance URL</p>
+            <input type="text" id="abs_url" placeholder="http://192.168.1.100:13378" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="abs_token">Global ABS Token</label>
+            <p class="field-desc">Admin API token — ABS Settings → API</p>
+            <input type="password" id="abs_token" placeholder="your-abs-api-token" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="abs_tokens">Per-User Tokens <span class="optional">// optional</span></label>
+          <p class="field-desc">One token per ABS user for per-user session data. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:token,absusername2:token2</code></p>
+          <input type="text" id="abs_tokens" placeholder="user1:token1,user2:token2" oninput="liveUpdate()" />
+        </div>
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="abs_allowed_usernames">Allowed Usernames <span class="optional">// optional</span></label>
+            <p class="field-desc">Filter which ABS users abs-stats reports on</p>
+            <input type="text" id="abs_allowed_usernames" placeholder="*  (blank or * for all)" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="discord_webhook">Discord Webhook <span class="optional">// optional</span></label>
+            <p class="field-desc">Post achievement notifications to Discord</p>
+            <input type="text" id="discord_webhook" placeholder="https://discord.com/api/webhooks/..." oninput="liveUpdate()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: USERS ── -->
+    <div class="section-card" id="sec3">
+      <div class="section-header" onclick="toggleSection('sec3')">
+        <span class="section-title">03 // Users</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="field-row">
+          <label class="field-label" for="allowed_users">Allowed Users <span class="optional">// optional</span></label>
+          <p class="field-desc">Comma-separated ABS usernames to include on dashboard/leaderboard. Leave blank to include all.</p>
+          <input type="text" id="allowed_users" placeholder="absuser1,absuser2  (blank = all users)" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="user_aliases">User Aliases <span class="optional">// optional</span></label>
+          <p class="field-desc">Display names shown in the UI. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:Display Name</code></p>
+          <input type="text" id="user_aliases" placeholder="absuser1:Display Name,absuser2:Display Name" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">User Icons <span class="optional">// optional</span></label>
+          <p class="field-desc">Select an avatar icon for each user. Icons are pre-installed in the container at <code>/icons/users/</code>.</p>
+          <div class="user-icon-rows" id="user-icon-rows"></div>
+          <button class="add-user-btn" onclick="addUserIconRow()">[ + ADD USER ]</button>
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="user_emails">User Emails <span class="optional">// optional</span></label>
+          <p class="field-desc">Per-user email addresses for notifications. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:email@example.com</code></p>
+          <input type="text" id="user_emails" placeholder="absuser1:user@example.com,absuser2:other@example.com" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">Per-User XP Start Dates <span class="optional">// optional</span></label>
+          <p class="field-desc">Override the global XP start date for specific users. Listening before this date won't count toward their levels.</p>
+          <div class="xp-col-labels">
+            <span class="xp-col-label">Username</span>
+            <span class="xp-col-label">Start Date</span>
+            <span></span>
+          </div>
+          <div class="xp-user-rows" id="xp-user-rows"></div>
+          <button class="btn-xp-add" onclick="addXpUserRow()">+ Add User</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: PROGRESSION ── -->
+    <div class="section-card" id="sec4">
+      <div class="section-header" onclick="toggleSection('sec4')">
+        <span class="section-title">04 // Progression</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="tz">Timezone</label>
+            <p class="field-desc">IANA timezone string (e.g. America/New_York)</p>
+            <input type="text" id="tz" value="America/New_York" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="poll_seconds">Poll Interval (seconds)</label>
+            <p class="field-desc">How often the engine polls abs-stats for new data</p>
+            <input type="number" id="poll_seconds" value="300" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="xp_start">XP Start Timestamp</label>
+            <p class="field-desc">Unix seconds when XP/loot economy begins. Books before this are "legacy".</p>
+            <input type="number" id="xp_start" value="1767225600" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="verify_threshold">Listen Threshold</label>
+            <p class="field-desc">Required listen ratio for strict verification (0.0–1.0)</p>
+            <input type="text" id="verify_threshold" value="0.80" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field-label">Verification Rules</label>
+          <div class="check-grid">
+            <label class="check-item">
+              <input type="checkbox" id="strict_verification" onchange="liveUpdate()" />
+              <span>
+                <span class="check-label">Strict Verification</span>
+                <span class="check-desc">Require listen ratio proof for progression credit</span>
+              </span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="require_duration" checked onchange="liveUpdate()" />
+              <span>
+                <span class="check-label">Require Duration</span>
+                <span class="check-desc">Exclude books with unknown duration from credit</span>
+              </span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="require_2026_session" checked onchange="liveUpdate()" />
+              <span>
+                <span class="check-label">Require In-Scope Session</span>
+                <span class="check-desc">Book must have a session on/after the XP start timestamp</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: WRAPPED ── -->
+    <div class="section-card" id="sec5">
+      <div class="section-header" onclick="toggleSection('sec5')">
+        <span class="section-title">05 // Wrapped</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="wrapped_year">Wrapped Year</label>
+            <p class="field-desc">Reporting year for the Wrapped year-end experience</p>
+            <input type="number" id="wrapped_year" value="2026" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="wrapped_boss_hp">Boss HP</label>
+            <p class="field-desc">Max HP for the year-end boss battle in Wrapped</p>
+            <input type="number" id="wrapped_boss_hp" value="250000" oninput="liveUpdate()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 6: SMTP ── -->
+    <div class="section-card" id="sec6">
+      <div class="section-header" onclick="toggleSection('sec6')">
+        <span class="section-title">06 // Email / SMTP <span style="font-size:.7em;color:var(--text-muted);letter-spacing:0;font-family:'Share Tech Mono',monospace;text-transform:none"> // optional</span></span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="info-box">Leave <strong>SMTP Host</strong> blank to disable email notifications entirely.</div>
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="smtp_host">SMTP Host</label>
+            <p class="field-desc">Your SMTP server hostname</p>
+            <input type="text" id="smtp_host" placeholder="smtp.mailgun.org" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="smtp_port">SMTP Port</label>
+            <p class="field-desc">Usually 587 (TLS) or 465 (SSL)</p>
+            <input type="number" id="smtp_port" value="587" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="smtp_username">SMTP Username</label>
+            <p class="field-desc">Your SMTP login / email address</p>
+            <input type="text" id="smtp_username" placeholder="noreply@yourdomain.com" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="smtp_password">SMTP Password</label>
+            <p class="field-desc">Your SMTP password or API key</p>
+            <input type="password" id="smtp_password" placeholder="••••••••" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="smtp_from">From Address</label>
+          <p class="field-desc">Display name and address shown in the "From" field</p>
+          <input type="text" id="smtp_from" placeholder="The System noreply@yourdomain.com" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="smtp_to_override">Override To Address <span class="optional">// optional</span></label>
+          <p class="field-desc">Send all emails here instead of per-user addresses. Useful for testing.</p>
+          <input type="text" id="smtp_to_override" placeholder="youremail@gmail.com  (optional)" oninput="liveUpdate()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 7: ADVANCED ── -->
+    <div class="section-card" id="sec7">
+      <div class="section-header" onclick="toggleSection('sec7')">
+        <span class="section-title">07 // Advanced</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="info-box">
+          To run a one-time <strong>achievement backfill</strong>, manually set
+          <code>RUN_ACHIEVEMENT_BACKFILL=true</code> in your generated <code>.env</code>,
+          start the container, then set it back to <code>false</code> and restart.
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="backfill_key">Backfill Once Key</label>
+          <p class="field-desc">Change this value to trigger a fresh backfill run on the next container startup.</p>
+          <input type="text" id="backfill_key" value="ach_backfill_v1" oninput="liveUpdate()" />
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- ══ RIGHT: LIVE PREVIEW PANEL ══ -->
+  <div class="preview-panel">
+    <div class="preview-tabs">
+      <button class="ptab active" id="ptab-env"      onclick="switchPreviewTab('env')">.env</button>
+      <button class="ptab"        id="ptab-override" onclick="switchPreviewTab('override')">override.yml</button>
+      <button class="ptab"        id="ptab-xp"       onclick="switchPreviewTab('xp')">xp_start.json</button>
+    </div>
+    <div class="preview-code">
+      <pre id="preview-pre"></pre>
+    </div>
+    <div class="preview-dl-section">
+      <button class="btn-dl-preview" onclick="dlFile('env')">⬇ &nbsp;.env</button>
+      <button class="btn-dl-preview" onclick="dlFile('override')">⬇ &nbsp;docker-compose.override.yml</button>
+      <button class="btn-dl-preview" onclick="dlFile('xp')">⬇ &nbsp;user_xp_start.json</button>
     </div>
   </div>
 
-  <!-- ── SECTION 1: PATHS & PORTS ── -->
-  <div class="section-card" id="sec1">
-    <div class="section-header" onclick="toggleSection('sec1')">
-      <span class="section-title">01 // Paths &amp; Ports</span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="path_data">Data Directory</label>
-          <p class="field-desc">Host path for persistent data (database, JSON files, icons)</p>
-          <input type="text" id="path_data" value="./data" />
-        </div>
-        <div>
-          <label class="field-label" for="port_dashboard">Dashboard Port</label>
-          <p class="field-desc">Host port to access the web UI</p>
-          <input type="number" id="port_dashboard" value="8000" />
-        </div>
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="path_static">Static Files Directory <span class="optional">// optional</span></label>
-        <p class="field-desc">Map this to edit HTML/CSS/JS live without rebuilding the Docker image. Leave blank to skip.</p>
-        <input type="text" id="path_static" placeholder="./static  (optional — edit HTML/CSS without rebuilding)" />
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="path_covers">Covers Directory <span class="optional">// optional</span></label>
-        <p class="field-desc">Host path for synced book cover images. Leave blank to store inside the data directory.</p>
-        <input type="text" id="path_covers" placeholder="./data/covers  (optional)" />
-      </div>
-    </div>
-  </div>
+</div><!-- /wizard-wrap -->
 
-  <!-- ── SECTION 2: AUDIOBOOKSHELF ── -->
-  <div class="section-card" id="sec2">
-    <div class="section-header" onclick="toggleSection('sec2')">
-      <span class="section-title">02 // Audiobookshelf Connection</span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="abs_url">ABS URL</label>
-          <p class="field-desc">Your Audiobookshelf instance URL</p>
-          <input type="text" id="abs_url" placeholder="http://192.168.1.100:13378" />
-        </div>
-        <div>
-          <label class="field-label" for="abs_token">Global ABS Token</label>
-          <p class="field-desc">Admin API token — ABS Settings → API</p>
-          <input type="password" id="abs_token" placeholder="your-abs-api-token" />
-        </div>
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="abs_tokens">Per-User Tokens <span class="optional">// optional</span></label>
-        <p class="field-desc">One token per ABS user for per-user session data. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:token,absusername2:token2</code></p>
-        <input type="text" id="abs_tokens" placeholder="user1:token1,user2:token2" />
-      </div>
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="abs_allowed_usernames">Allowed Usernames <span class="optional">// optional</span></label>
-          <p class="field-desc">Filter which ABS users abs-stats reports on</p>
-          <input type="text" id="abs_allowed_usernames" placeholder="*  (blank or * for all)" />
-        </div>
-        <div>
-          <label class="field-label" for="discord_webhook">Discord Webhook <span class="optional">// optional</span></label>
-          <p class="field-desc">Post achievement notifications to Discord</p>
-          <input type="text" id="discord_webhook" placeholder="https://discord.com/api/webhooks/..." />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECTION 3: USERS ── -->
-  <div class="section-card" id="sec3">
-    <div class="section-header" onclick="toggleSection('sec3')">
-      <span class="section-title">03 // Users</span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="field-row">
-        <label class="field-label" for="allowed_users">Allowed Users <span class="optional">// optional</span></label>
-        <p class="field-desc">Comma-separated ABS usernames to include on dashboard/leaderboard. Leave blank to include all.</p>
-        <input type="text" id="allowed_users" placeholder="absuser1,absuser2  (blank = all users)" />
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="user_aliases">User Aliases <span class="optional">// optional</span></label>
-        <p class="field-desc">Display names shown in the UI. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:Display Name</code></p>
-        <input type="text" id="user_aliases" placeholder="absuser1:Display Name,absuser2:Display Name" />
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="user_icons">User Icons <span class="optional">// optional</span></label>
-        <p class="field-desc">Custom avatar images. Place PNG files in your data/icons folder, then map them here.</p>
-        <input type="text" id="user_icons" placeholder="absuser1:/icons/avatar1.png,absuser2:/icons/avatar2.png" />
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="user_emails">User Emails <span class="optional">// optional</span></label>
-        <p class="field-desc">Per-user email addresses for notifications. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:email@example.com</code></p>
-        <input type="text" id="user_emails" placeholder="absuser1:user@example.com,absuser2:other@example.com" />
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECTION 4: PROGRESSION ── -->
-  <div class="section-card" id="sec4">
-    <div class="section-header" onclick="toggleSection('sec4')">
-      <span class="section-title">04 // Progression</span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="tz">Timezone</label>
-          <p class="field-desc">IANA timezone string (e.g. America/New_York)</p>
-          <input type="text" id="tz" value="America/New_York" />
-        </div>
-        <div>
-          <label class="field-label" for="poll_seconds">Poll Interval (seconds)</label>
-          <p class="field-desc">How often the engine polls abs-stats for new data</p>
-          <input type="number" id="poll_seconds" value="300" />
-        </div>
-      </div>
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="xp_start">XP Start Timestamp</label>
-          <p class="field-desc">Unix seconds when XP/loot economy begins. Books before this are "legacy".</p>
-          <input type="number" id="xp_start" value="1767225600" />
-        </div>
-        <div>
-          <label class="field-label" for="verify_threshold">Listen Threshold</label>
-          <p class="field-desc">Required listen ratio for strict verification (0.0–1.0)</p>
-          <input type="text" id="verify_threshold" value="0.80" />
-        </div>
-      </div>
-      <div class="field-row">
-        <label class="field-label">Verification Rules</label>
-        <div class="check-grid">
-          <label class="check-item">
-            <input type="checkbox" id="strict_verification" />
-            <span>
-              <span class="check-label">Strict Verification</span>
-              <span class="check-desc">Require listen ratio proof for progression credit</span>
-            </span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" id="require_duration" checked />
-            <span>
-              <span class="check-label">Require Duration</span>
-              <span class="check-desc">Exclude books with unknown duration from credit</span>
-            </span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" id="require_2026_session" checked />
-            <span>
-              <span class="check-label">Require In-Scope Session</span>
-              <span class="check-desc">Book must have a session on/after the XP start timestamp</span>
-            </span>
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECTION 5: WRAPPED ── -->
-  <div class="section-card" id="sec5">
-    <div class="section-header" onclick="toggleSection('sec5')">
-      <span class="section-title">05 // Wrapped</span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="wrapped_year">Wrapped Year</label>
-          <p class="field-desc">Reporting year for the Wrapped year-end experience</p>
-          <input type="number" id="wrapped_year" value="2026" />
-        </div>
-        <div>
-          <label class="field-label" for="wrapped_boss_hp">Boss HP</label>
-          <p class="field-desc">Max HP for the year-end boss battle in Wrapped</p>
-          <input type="number" id="wrapped_boss_hp" value="250000" />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECTION 6: SMTP ── -->
-  <div class="section-card" id="sec6">
-    <div class="section-header" onclick="toggleSection('sec6')">
-      <span class="section-title">06 // Email / SMTP <span style="font-size:.7em;color:var(--text-muted);letter-spacing:0;font-family:'Share Tech Mono',monospace;text-transform:none"> // optional</span></span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="info-box">
-        Leave <strong>SMTP Host</strong> blank to disable email notifications entirely.
-        Only configure this section if you want the engine to send achievement emails.
-      </div>
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="smtp_host">SMTP Host</label>
-          <p class="field-desc">Your SMTP server hostname</p>
-          <input type="text" id="smtp_host" placeholder="smtp.mailgun.org" />
-        </div>
-        <div>
-          <label class="field-label" for="smtp_port">SMTP Port</label>
-          <p class="field-desc">Usually 587 (TLS) or 465 (SSL)</p>
-          <input type="number" id="smtp_port" value="587" />
-        </div>
-      </div>
-      <div class="two-col field-row">
-        <div>
-          <label class="field-label" for="smtp_username">SMTP Username</label>
-          <p class="field-desc">Your SMTP login / email address</p>
-          <input type="text" id="smtp_username" placeholder="noreply@yourdomain.com" />
-        </div>
-        <div>
-          <label class="field-label" for="smtp_password">SMTP Password</label>
-          <p class="field-desc">Your SMTP password or API key</p>
-          <input type="password" id="smtp_password" placeholder="••••••••" />
-        </div>
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="smtp_from">From Address</label>
-        <p class="field-desc">Display name and address shown in the "From" field</p>
-        <input type="text" id="smtp_from" placeholder="The System noreply@yourdomain.com" />
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="smtp_to_override">Override To Address <span class="optional">// optional</span></label>
-        <p class="field-desc">Send all emails here instead of per-user addresses. Useful for testing.</p>
-        <input type="text" id="smtp_to_override" placeholder="youremail@gmail.com  (optional)" />
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECTION 7: ADVANCED ── -->
-  <div class="section-card" id="sec7">
-    <div class="section-header" onclick="toggleSection('sec7')">
-      <span class="section-title">07 // Advanced</span>
-      <span class="section-chevron">[ ▼ ]</span>
-    </div>
-    <div class="section-body">
-      <div class="info-box">
-        To run a one-time <strong>achievement backfill</strong>, manually set
-        <code>RUN_ACHIEVEMENT_BACKFILL=true</code> in your generated <code>.env</code>,
-        start the container, then set it back to <code>false</code> and restart.
-      </div>
-      <div class="field-row">
-        <label class="field-label" for="backfill_key">Backfill Once Key</label>
-        <p class="field-desc">Change this value to trigger a fresh backfill run on the next container startup. The engine stores which key it last ran.</p>
-        <input type="text" id="backfill_key" value="ach_backfill_v1" />
-      </div>
-    </div>
-  </div>
-
-</div><!-- /container -->
-
-<!-- ── STICKY BAR ── -->
+<!-- ── STICKY GENERATE BAR ── -->
 <div class="generate-bar">
   <p>// Fill in settings above, then generate //</p>
   <button class="btn-generate" onclick="generate()">[ ⚙ Generate Config Files ]</button>
@@ -982,9 +678,10 @@
       <button class="modal-close" onclick="closeModal()">[ X ]</button>
     </div>
     <div class="modal-tabs">
-      <div class="modal-tab active" id="tab-btn-env" onclick="switchTab('env')">.env</div>
-      <div class="modal-tab" id="tab-btn-override" onclick="switchTab('override')">docker-compose.override.yml</div>
-      <div class="modal-tab" id="tab-btn-instructions" onclick="switchTab('instructions')">Instructions</div>
+      <div class="modal-tab active" id="tab-btn-env"          onclick="switchTab('env')">.env</div>
+      <div class="modal-tab"        id="tab-btn-override"     onclick="switchTab('override')">docker-compose.override.yml</div>
+      <div class="modal-tab"        id="tab-btn-xp"           onclick="switchTab('xp')">user_xp_start.json</div>
+      <div class="modal-tab"        id="tab-btn-instructions" onclick="switchTab('instructions')">Instructions</div>
     </div>
     <div class="modal-content">
 
@@ -992,7 +689,7 @@
         <textarea class="output-area" id="out-env" readonly spellcheck="false"></textarea>
         <div class="modal-actions">
           <span class="copy-feedback" id="fb-env"></span>
-          <button class="btn-action btn-copy" onclick="copyOutput('out-env','fb-env')">[ Copy ]</button>
+          <button class="btn-action btn-copy"     onclick="copyOutput('out-env','fb-env')">[ Copy ]</button>
           <button class="btn-action btn-download" onclick="downloadOutput('out-env','.env')">[ Download .env ]</button>
         </div>
       </div>
@@ -1001,8 +698,17 @@
         <textarea class="output-area" id="out-override" readonly spellcheck="false"></textarea>
         <div class="modal-actions">
           <span class="copy-feedback" id="fb-override"></span>
-          <button class="btn-action btn-copy" onclick="copyOutput('out-override','fb-override')">[ Copy ]</button>
+          <button class="btn-action btn-copy"     onclick="copyOutput('out-override','fb-override')">[ Copy ]</button>
           <button class="btn-action btn-download" onclick="downloadOutput('out-override','docker-compose.override.yml')">[ Download Override ]</button>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-xp">
+        <textarea class="output-area" id="out-xp" readonly spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <span class="copy-feedback" id="fb-xp"></span>
+          <button class="btn-action btn-copy"     onclick="copyOutput('out-xp','fb-xp')">[ Copy ]</button>
+          <button class="btn-action btn-download" onclick="downloadOutput('out-xp','user_xp_start.json')">[ Download JSON ]</button>
         </div>
       </div>
 
@@ -1010,14 +716,15 @@
         <div class="instructions-body">
           <h3>// Setup Instructions //</h3>
           <ol>
-            <li>Download both <strong>.env</strong> and <strong>docker-compose.override.yml</strong> using the buttons above.</li>
-            <li>Place both files in the same directory as the project's <code>docker-compose.yml</code>.</li>
+            <li>Download <strong>.env</strong>, <strong>docker-compose.override.yml</strong>, and optionally <strong>user_xp_start.json</strong> using the buttons above.</li>
+            <li>Place all files in the same directory as the project's <code>docker-compose.yml</code>.</li>
+            <li>If using per-user XP start dates: <code>mv user_xp_start.json ./data/json/user_xp_start.json</code></li>
             <li>Start the stack: <code>docker compose up -d</code></li>
-            <li>Open <code>http://your-server-ip:<span id="instr-port">8000</span></code> in your browser to reach the Achievement Engine landing page.</li>
-            <li>The engine polls abs-stats every <strong><span id="instr-poll">300</span>s</strong> — navigate to <code>/journal</code> after the first poll completes to see your data.</li>
+            <li>Open <code>http://your-server-ip:<span id="instr-port">8000</span></code> in your browser.</li>
+            <li>The engine polls abs-stats every <strong><span id="instr-poll">300</span>s</strong> — navigate to <code>/journal</code> after the first poll to see data.</li>
           </ol>
           <div class="note">
-            <strong>Unraid users:</strong> Use the <a href="/admin/template" style="color:var(--neon-blue)">Template Forge</a> page to generate and download both Unraid templates (<code>my-achievement-engine.xml</code> and <code>my-abs-stats.xml</code>). Import them in Unraid's Community Applications to configure both containers through the Unraid UI instead of docker compose.
+            <strong>Unraid users:</strong> Use the <a href="/admin/template-builder" style="color:var(--neon-blue)">Template Builder</a> page to generate Unraid templates instead of docker-compose files.
           </div>
         </div>
       </div>
@@ -1027,23 +734,149 @@
 </div>
 
 <script>
-  function toggleSection(id) {
-    document.getElementById(id).classList.toggle('collapsed');
+  // ── USER ICON BUILDER ──────────────────────────────────────────────────────
+  const GITHUB_BASE     = 'https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/users/';
+  const ICON_LOCAL_BASE = '/icons/users/';
+  const MALE_ICONS   = ['user_male_001.png','user_male_002.png','user_male_003.png','user_male_004.png','user_male_005.png','user_male_006.png','user_male_007.png','user_male_008.png','user_male_009.png','user_male_010.png','user_male_011.png','user_male_012.png','user_male_013.png','user_male_014.png','user_male_015.png','user_male_016.png','user_male_017.png','user_male_018.png','user_male_019.png','user_male_020.png','user_male_021.png','user_male_022.png','user_male_023.png','user_male_024.png','user_male_025.png','user_male_026.png','user_male_027.png','user_male_028.png','user_male_029.png'];
+  const FEMALE_ICONS = ['user_female_001.png','user_female_002.png','user_female_003.png','user_female_004.png','user_female_005.png','user_female_006.png','user_female_007.png','user_female_008.png','user_female_009.png','user_female_010.png','user_female_011.png','user_female_012.png','user_female_013.png','user_female_014.png','user_female_015.png','user_female_016.png','user_female_017.png','user_female_018.png','user_female_019.png','user_female_020.png','user_female_021.png','user_female_022.png','user_female_023.png','user_female_024.png','user_female_025.png','user_female_026.png','user_female_027.png','user_female_028.png','user_female_029.png'];
+  let _rowCounter = 0;
+
+  function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function addUserIconRow(username = '', iconPath = '') {
+    const id = ++_rowCounter;
+    const selectedFile = iconPath ? iconPath.replace(ICON_LOCAL_BASE, '') : '';
+    const row = document.createElement('div');
+    row.className = 'user-icon-row'; row.id = `urow-${id}`;
+    row.innerHTML = `
+      <input type="text" placeholder="username" value="${escapeHtml(username)}" id="uname-${id}" oninput="liveUpdate()">
+      <img class="user-icon-preview${selectedFile ? '' : ' empty'}" id="upreview-${id}"
+           src="${selectedFile ? GITHUB_BASE + selectedFile : ''}"
+           data-file="${escapeHtml(selectedFile)}"
+           onerror="this.style.visibility='hidden'">
+      <button class="pick-icon-btn" onclick="toggleIconPicker(${id})">[ PICK ICON ]</button>
+      <button class="remove-user-btn" onclick="removeUserRow(${id})">[ REMOVE ]</button>
+      <div class="icon-picker-panel" id="icon-panel-${id}">
+        <div class="icon-group-label">— MALE —</div>
+        <div class="icon-grid">
+          ${MALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id},'${f}')" title="${f}" loading="lazy">`).join('')}
+        </div>
+        <div class="icon-group-label">— FEMALE —</div>
+        <div class="icon-grid">
+          ${FEMALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id},'${f}')" title="${f}" loading="lazy">`).join('')}
+        </div>
+      </div>`;
+    document.getElementById('user-icon-rows').appendChild(row);
+    liveUpdate();
   }
 
+  function toggleIconPicker(id) { document.getElementById(`icon-panel-${id}`).classList.toggle('open'); }
+
+  function selectIcon(id, filename) {
+    document.getElementById(`icon-panel-${id}`).querySelectorAll('.icon-thumb').forEach(t => t.classList.remove('selected'));
+    document.getElementById(`icon-panel-${id}`).querySelector(`[data-file="${filename}"]`).classList.add('selected');
+    const preview = document.getElementById(`upreview-${id}`);
+    preview.src = GITHUB_BASE + filename;
+    preview.style.visibility = 'visible';
+    preview.dataset.file = filename;
+    document.getElementById(`icon-panel-${id}`).classList.remove('open');
+    liveUpdate();
+  }
+
+  function removeUserRow(id) { const r = document.getElementById(`urow-${id}`); if (r) r.remove(); liveUpdate(); }
+
+  function getUserIconsValue() {
+    const parts = [];
+    document.querySelectorAll('.user-icon-row').forEach(row => {
+      const id = row.id.replace('urow-','');
+      const username = (document.getElementById(`uname-${id}`)?.value || '').trim();
+      const file = document.getElementById(`upreview-${id}`)?.dataset?.file || '';
+      if (username && file) parts.push(`${username}:${ICON_LOCAL_BASE}${file}`);
+    });
+    return parts.join(',');
+  }
+
+  function loadUserIconsFromValue(val) {
+    document.getElementById('user-icon-rows').innerHTML = '';
+    _rowCounter = 0;
+    if (!val) return;
+    val.split(',').forEach(entry => {
+      const colonIdx = entry.indexOf(':');
+      if (colonIdx < 0) return;
+      const username = entry.slice(0, colonIdx).trim();
+      const iconPath = entry.slice(colonIdx + 1).trim();
+      if (username) addUserIconRow(username, iconPath);
+    });
+  }
+
+  // ── PER-USER XP DATES ─────────────────────────────────────────────────────
+  function addXpUserRow(username = '', date = '') {
+    const row = document.createElement('div');
+    row.className = 'xp-user-row';
+    row.innerHTML = `
+      <input type="text" placeholder="username" class="xp-name" value="${escapeHtml(username)}" oninput="liveUpdate()">
+      <input type="date" class="xp-date" value="${escapeHtml(date)}" oninput="liveUpdate()">
+      <button class="btn-xp-remove" onclick="this.closest('.xp-user-row').remove();liveUpdate()">×</button>`;
+    document.getElementById('xp-user-rows').appendChild(row);
+    liveUpdate();
+  }
+
+  function getXpPairs() {
+    return [...document.querySelectorAll('#xp-user-rows .xp-user-row')].map(r => {
+      const u = r.querySelector('.xp-name')?.value.trim();
+      const d = r.querySelector('.xp-date')?.value.trim();
+      return (u && d) ? { user: u, date: d } : null;
+    }).filter(Boolean);
+  }
+
+  function genXpJson() {
+    const pairs = getXpPairs();
+    const obj = {};
+    pairs.forEach(p => { obj[p.user] = p.date; });
+    return JSON.stringify(obj, null, 2);
+  }
+
+  // ── LIVE PREVIEW PANEL ────────────────────────────────────────────────────
+  let _activePreviewTab = 'env';
+  let _previewEnv = '', _previewOverride = '', _previewXp = '';
+
+  function switchPreviewTab(name) {
+    _activePreviewTab = name;
+    ['env','override','xp'].forEach(t => {
+      document.getElementById(`ptab-${t}`).classList.toggle('active', t === name);
+    });
+    renderPreview();
+  }
+
+  function renderPreview() {
+    const content = _activePreviewTab === 'env' ? _previewEnv
+                  : _activePreviewTab === 'override' ? _previewOverride
+                  : _previewXp;
+    document.getElementById('preview-pre').textContent = content;
+  }
+
+  function liveUpdate() {
+    _previewEnv      = buildEnv();
+    _previewOverride = buildOverride();
+    _previewXp       = genXpJson();
+    renderPreview();
+  }
+
+  function dlFile(type) {
+    const content  = type === 'env' ? _previewEnv : type === 'override' ? _previewOverride : _previewXp;
+    const filename = type === 'env' ? '.env' : type === 'override' ? 'docker-compose.override.yml' : 'user_xp_start.json';
+    _download(filename, content);
+  }
+
+  // ── SECTION TOGGLE ────────────────────────────────────────────────────────
+  function toggleSection(id) { document.getElementById(id).classList.toggle('collapsed'); }
+
+  // ── HELPERS ───────────────────────────────────────────────────────────────
   function val(id)  { return (document.getElementById(id)?.value || '').trim(); }
   function chk(id)  { return document.getElementById(id)?.checked ? 'true' : 'false'; }
   function line(key, value) { return `${key}=${value}`; }
 
-  function generate() {
-    document.getElementById('out-env').value      = buildEnv();
-    document.getElementById('out-override').value = buildOverride();
-    document.getElementById('instr-port').textContent = val('port_dashboard') || '8000';
-    document.getElementById('instr-poll').textContent = val('poll_seconds')   || '300';
-    openModal();
-    switchTab('env');
-  }
-
+  // ── FILE GENERATORS ───────────────────────────────────────────────────────
   function buildEnv() {
     const smtpHost = val('smtp_host');
     const lines = [
@@ -1059,13 +892,13 @@
       '# ─── Users ─────────────────────────────────────────────',
       line('ALLOWED_USERS', val('allowed_users')),
       line('USER_ALIASES',  val('user_aliases')),
-      line('USER_ICONS',    val('user_icons')),
+      line('USER_ICONS',    getUserIconsValue()),
       line('USER_EMAILS',   val('user_emails')),
       '',
       '# ─── Progression ───────────────────────────────────────',
-      line('XP_START_TIMESTAMP',              val('xp_start')        || '1767225600'),
+      line('XP_START_TIMESTAMP',              val('xp_start')         || '1767225600'),
       line('STRICT_VERIFICATION',             chk('strict_verification')),
-      line('VERIFY_LISTEN_THRESHOLD',         val('verify_threshold') || '0.80'),
+      line('VERIFY_LISTEN_THRESHOLD',         val('verify_threshold')  || '0.80'),
       line('REQUIRE_DURATION_FOR_CREDIT',     chk('require_duration')),
       line('REQUIRE_2026_SESSION_FOR_CREDIT', chk('require_2026_session')),
       '',
@@ -1118,13 +951,13 @@
       `      - ${pathData}:/data`,
     ];
 
-    if (pathStatic) lines.push(`      - ${pathStatic}:/static`);
+    if (pathStatic) lines.push(`      - ${pathStatic}:/app/static`);
     if (pathCovers) lines.push(`      - ${pathCovers}:/data/covers`);
 
     lines.push('');
     lines.push('  abs-stats:');
     lines.push('    environment:');
-    lines.push(`      - ENGINE_URL=http://achievement-engine:8000`);
+    lines.push('      - ENGINE_URL=http://achievement-engine:8000');
     if (absUrl)    lines.push(`      - ABS_URL=${absUrl}`);
     if (absToken)  lines.push(`      - ABS_TOKEN=${absToken}`);
     if (absTokens) lines.push(`      - ABS_TOKENS=${absTokens}`);
@@ -1134,14 +967,24 @@
     return lines.join('\n');
   }
 
-  function openModal()  { document.getElementById('outputModal').classList.add('open'); }
-  function closeModal() { document.getElementById('outputModal').classList.remove('open'); }
-  function handleOverlayClick(e) {
-    if (e.target === document.getElementById('outputModal')) closeModal();
+  // ── GENERATE BUTTON (opens modal with copy/download) ─────────────────────
+  function generate() {
+    liveUpdate();
+    document.getElementById('out-env').value      = _previewEnv;
+    document.getElementById('out-override').value = _previewOverride;
+    document.getElementById('out-xp').value       = _previewXp;
+    document.getElementById('instr-port').textContent = val('port_dashboard') || '8000';
+    document.getElementById('instr-poll').textContent = val('poll_seconds')   || '300';
+    openModal();
+    switchTab('env');
   }
 
+  function openModal()  { document.getElementById('outputModal').classList.add('open'); }
+  function closeModal() { document.getElementById('outputModal').classList.remove('open'); }
+  function handleOverlayClick(e) { if (e.target === document.getElementById('outputModal')) closeModal(); }
+
   function switchTab(name) {
-    ['env','override','instructions'].forEach(t => {
+    ['env','override','xp','instructions'].forEach(t => {
       document.getElementById(`tab-${t}`).classList.toggle('active', t === name);
       document.getElementById(`tab-btn-${t}`).classList.toggle('active', t === name);
     });
@@ -1154,41 +997,33 @@
       fb.textContent = '// copied to clipboard //';
       fb.classList.add('show');
       setTimeout(() => { fb.classList.remove('show'); fb.textContent = ''; }, 1800);
-    }).catch(() => {
-      const el = document.getElementById(textareaId);
-      el.select();
-      document.execCommand('copy');
-    });
+    }).catch(() => { const el = document.getElementById(textareaId); el.select(); document.execCommand('copy'); });
   }
 
   function downloadOutput(textareaId, filename) {
-    const text = document.getElementById(textareaId).value;
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    _download(filename, document.getElementById(textareaId).value);
+  }
+
+  function _download(filename, content) {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url; a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
   }
 
-  // ── LOAD CONFIG FILE ────────────────────────────────────────────────────
+  // ── LOAD CONFIG FILE ──────────────────────────────────────────────────────
   document.getElementById('config-file-input').addEventListener('change', function() {
     const name = this.files[0]?.name || 'No file selected';
     document.getElementById('config-file-name').textContent = name;
-    // Reset feedback when a new file is chosen
     const fb = document.getElementById('load-feedback');
-    fb.style.display = 'none';
-    fb.innerHTML = '';
+    fb.style.display = 'none'; fb.innerHTML = '';
   });
 
   function loadConfigFile() {
     const fileInput = document.getElementById('config-file-input');
-    if (!fileInput.files.length) {
-      alert('Please choose a file first.');
-      return;
-    }
+    if (!fileInput.files.length) { alert('Please choose a file first.'); return; }
     const file = fileInput.files[0];
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -1220,10 +1055,7 @@
       if (eqIdx < 1) continue;
       const key = line.slice(0, eqIdx).trim();
       let v = line.slice(eqIdx + 1).trim();
-      // Strip surrounding quotes
-      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
-        v = v.slice(1, -1);
-      }
+      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) v = v.slice(1, -1);
       map[key] = v;
     }
     return map;
@@ -1233,33 +1065,25 @@
     const map = {};
     let inEnv = false;
     for (const rawLine of content.split('\n')) {
-      const line  = rawLine.trimEnd();
+      const line = rawLine.trimEnd();
       const trimmed = line.trim();
       if (!trimmed || trimmed.startsWith('#')) continue;
-
-      // Detect environment: block
       if (trimmed === 'environment:') { inEnv = true; continue; }
-      // A non-list key at same or lower indent ends the env block
       if (inEnv && trimmed && !trimmed.startsWith('-') && /^\w/.test(trimmed)) inEnv = false;
-
       if (inEnv && trimmed.startsWith('- ')) {
         const item = trimmed.slice(2).trim();
         const eq = item.indexOf('=');
         if (eq > 0) map[item.slice(0, eq).trim()] = item.slice(eq + 1).trim();
       }
-
-      // Ports: - "XXXX:8000"
       const portM = trimmed.match(/^-\s+["']?(\d+):8000["']?$/);
       if (portM) map['__PORT__'] = portM[1];
-
-      // Volumes
       const volM = trimmed.match(/^-\s+(.+):(.+)$/);
       if (volM) {
         const host = volM[1].trim().replace(/^["']|["']$/g, '');
         const cont = volM[2].trim().replace(/^["']|["']$/g, '');
-        if (cont === '/data')        map['__PATH_DATA__']   = host;
-        if (cont === '/static' || cont === '/app/static') map['__PATH_STATIC__'] = host;
-        if (cont === '/data/covers') map['__PATH_COVERS__'] = host;
+        if (cont === '/data')                               map['__PATH_DATA__']   = host;
+        if (cont === '/static' || cont === '/app/static')  map['__PATH_STATIC__'] = host;
+        if (cont === '/data/covers')                        map['__PATH_COVERS__'] = host;
       }
     }
     return map;
@@ -1268,36 +1092,28 @@
   function parseUnraidTemplate(content) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(content, 'application/xml');
-    if (xmlDoc.querySelector('parsererror')) {
-      throw new Error('Invalid XML — not a valid Unraid template.');
-    }
+    if (xmlDoc.querySelector('parsererror')) throw new Error('Invalid XML — not a valid Unraid template.');
     const map = {};
     xmlDoc.querySelectorAll('Config').forEach(cfg => {
       const type   = cfg.getAttribute('Type')   || '';
       const target = (cfg.getAttribute('Target') || '').trim();
       const value  = (cfg.textContent || '').trim();
-
-      if (type === 'Port' && target === '8000') {
-        if (value) map['__PORT__'] = value;
-      } else if (type === 'Path') {
-        if      (target === '/data')         map['__PATH_DATA__']   = value;
+      if (type === 'Port' && target === '8000') { if (value) map['__PORT__'] = value; }
+      else if (type === 'Path') {
+        if      (target === '/data')                               map['__PATH_DATA__']   = value;
         else if (target === '/static' || target === '/app/static') map['__PATH_STATIC__'] = value;
-        else if (target === '/data/covers')  map['__PATH_COVERS__'] = value;
-      } else if (type === 'Variable' && target) {
-        map[target] = value;
-      }
+        else if (target === '/data/covers')                        map['__PATH_COVERS__'] = value;
+      } else if (type === 'Variable' && target) { map[target] = value; }
     });
     return map;
   }
 
   function populateFromMap(map) {
-    // Maps env-var / special key → [fieldId, type ('text'|'number'|'bool'|'pass'), friendly label]
     const FIELD_MAP = {
       'TZ':                              ['tz',                    'text',   'Timezone'],
       'POLL_SECONDS':                    ['poll_seconds',          'number', 'Poll Interval'],
       'ALLOWED_USERS':                   ['allowed_users',         'text',   'Allowed Users'],
       'USER_ALIASES':                    ['user_aliases',          'text',   'User Aliases'],
-      'USER_ICONS':                      ['user_icons',            'text',   'User Icons'],
       'USER_EMAILS':                     ['user_emails',           'text',   'User Emails'],
       'XP_START_TIMESTAMP':              ['xp_start',             'number', 'XP Start Timestamp'],
       'STRICT_VERIFICATION':             ['strict_verification',   'bool',   'Strict Verification'],
@@ -1313,29 +1129,29 @@
       'SMTP_FROM':                       ['smtp_from',             'text',   'From Address'],
       'SMTP_TO_OVERRIDE':                ['smtp_to_override',      'text',   'Override To Address'],
       'BACKFILL_ONCE_KEY':               ['backfill_key',          'text',   'Backfill Once Key'],
-      // abs-stats docker-compose env vars
       'ABS_URL':                         ['abs_url',               'text',   'ABS URL'],
       'ABS_TOKEN':                       ['abs_token',             'pass',   'Global ABS Token'],
       'ABS_TOKENS':                      ['abs_tokens',            'text',   'Per-User Tokens'],
       'ALLOWED_USERNAMES':               ['abs_allowed_usernames', 'text',   'Allowed Usernames'],
       'DISCORD_WEBHOOK_URL':             ['discord_webhook',       'text',   'Discord Webhook'],
-      // special docker-compose parsed tokens
       '__PORT__':                        ['port_dashboard',        'number', 'Dashboard Port'],
       '__PATH_DATA__':                   ['path_data',             'text',   'Data Directory'],
       '__PATH_STATIC__':                 ['path_static',           'text',   'Static Files Directory'],
       '__PATH_COVERS__':                 ['path_covers',           'text',   'Covers Directory'],
     };
 
-    const populated = [];
-    const unknown   = [];
+    const populated = [], unknown = [];
 
     for (const [key, value] of Object.entries(map)) {
+      // Special handling for USER_ICONS — use icon picker
+      if (key === 'USER_ICONS') {
+        loadUserIconsFromValue(value);
+        if (value) populated.push('User Icons');
+        continue;
+      }
       if (!FIELD_MAP[key]) {
-        // Skip internal comments / blank keys / known-ignorable
-        if (key && !key.startsWith('ENGINE_URL') && !key.startsWith('STATE_DB_PATH')
-            && !key.startsWith('ABSSTATS_BASE_URL') && !key.startsWith('SEND_TEST_EMAIL')
-            && !key.startsWith('SMTP_DEBUG') && !key.startsWith('RUN_ACHIEVEMENT_BACKFILL')
-            && !key.startsWith('WRAPPED_ENABLED')) {
+        if (key && !['ENGINE_URL','STATE_DB_PATH','ABSSTATS_BASE_URL','SEND_TEST_EMAIL',
+                     'SMTP_DEBUG','RUN_ACHIEVEMENT_BACKFILL','WRAPPED_ENABLED'].includes(key)) {
           unknown.push(key);
         }
         continue;
@@ -1343,15 +1159,11 @@
       const [fieldId, type, label] = FIELD_MAP[key];
       const el = document.getElementById(fieldId);
       if (!el) continue;
-      if (type === 'bool') {
-        el.checked = (value === 'true' || value === '1' || value === 'yes');
-      } else {
-        if (value !== '') el.value = value;
-      }
+      if (type === 'bool') { el.checked = (value === 'true' || value === '1' || value === 'yes'); }
+      else { if (value !== '') el.value = value; }
       populated.push(label);
     }
 
-    // Build feedback
     const fb = document.getElementById('load-feedback');
     fb.style.display = 'block';
     let html = '';
@@ -1367,16 +1179,17 @@
     }
     fb.innerHTML = html;
 
-    // Expand all sections so the user can see what was filled
-    ['sec1','sec2','sec3','sec4','sec5','sec6','sec7'].forEach(id => {
+    ['sec0','sec1','sec2','sec3','sec4','sec5','sec6','sec7'].forEach(id => {
       document.getElementById(id)?.classList.remove('collapsed');
     });
-  }
-  // ── END LOAD CONFIG ──────────────────────────────────────────────────────
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-  });
+    liveUpdate();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Init
+  liveUpdate();
 </script>
 </body>
 </html>

@@ -1,765 +1,716 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Achievement Engine — Setup Wizard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg-dark: #121212;
-      --window-bg: #e8dbc3;
-      --border-color: #4a3b2a;
-      --gold-accent: #b89548;
-      --ink: #2b2018;
-      --ink-muted: #665243;
-      --tab-bg: #3d2f24;
-      --tab-text: #a89582;
-      --tab-hover: #4f3d2f;
-      --font-title: 'Cinzel', serif;
-      --font-body: 'Lato', sans-serif;
+      --neon-blue:   #00f2ff;
+      --neon-pink:   #ff00ff;
+      --neon-purple: #bc13fe;
+      --neon-green:  #00ff88;
+      --bg-dark:     #050505;
+      --card-bg:     #111;
+      --card-bg2:    #151515;
+      --input-bg:    #0a0a0a;
+      --border-dim:  #2a2a2a;
+      --border-mid:  #333;
+      --text:        #e0e0e0;
+      --text-muted:  #666;
+      --text-dim:    #444;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--bg-dark);
-      color: var(--ink);
-      font-family: var(--font-body);
+      background-color: var(--bg-dark);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
       min-height: 100vh;
+      padding-bottom: 80px;
+      overflow-x: hidden;
     }
 
-    /* ── Nav ── */
-    .nav-bar {
+    /* ── SCANLINE ── */
+    .scanline {
+      width: 100%; height: 100px; z-index: 10;
+      background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255,255,255,.05) 50%, rgba(0,0,0,0) 100%);
+      opacity: 0.1; position: fixed; bottom: 100%; left: 0;
+      pointer-events: none; animation: scanline 10s linear infinite;
+    }
+    @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
+
+    /* ── NAV ── */
+    .admin-nav {
+      width: 100%;
+      background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+      border-bottom: 1px solid var(--neon-blue);
+      box-shadow: 0 0 12px rgba(0,242,255,.16);
+    }
+    .admin-nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 10px 14px;
+      display: flex; justify-content: center; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+    .admin-nav a {
+      text-decoration: none; font-family: 'Orbitron', sans-serif;
+      font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+      color: #9ad8df; padding: 6px 10px; border: 1px solid #2b4448; transition: all 0.2s ease;
+    }
+    .admin-nav a.brand { color: var(--neon-blue); border-color: transparent; padding-left: 0; margin-right: 4px; }
+    .admin-nav a:hover { color: #001215; background: var(--neon-blue); border-color: var(--neon-blue); }
+    .admin-nav a.active { color: #001215; background: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0,242,255,.35); }
+
+    /* ── HEADER ── */
+    header {
+      background: #111; padding: 15px; border-bottom: 2px solid var(--neon-blue);
       display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 40px; background: var(--tab-bg);
-      border-bottom: 3px solid #2a2118;
-      background-image: linear-gradient(to bottom, rgba(255,255,255,.05), rgba(0,0,0,.2));
       width: 100%; box-sizing: border-box;
     }
-    .nav-bar a {
-      color: var(--tab-text); text-decoration: none;
-      font-family: var(--font-title); font-size: .95rem;
-      padding: 6px 16px; border-radius: 4px; transition: all .2s;
-    }
-    .nav-bar a:hover { background: var(--tab-hover); color: #dccaa5; }
-    .nav-bar a.nav-title {
-      color: var(--gold-accent); font-size: 1.1rem; font-weight: 700;
-      letter-spacing: 1px; padding: 0; background: none;
-    }
-    .nav-bar a.nav-title:hover { background: none; color: #dccaa5; }
+    header h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 5px; text-transform: uppercase; color: var(--neon-blue); }
+    .header-status { color: var(--neon-blue); text-decoration: none; font-size: 0.8rem; }
 
-    /* ── Layout ── */
+    /* ── TWO-COLUMN LAYOUT ── */
     .wizard-wrap {
-      max-width: 1380px;
-      margin: 24px auto;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 20px;
-      align-items: start;
+      max-width: 1420px; margin: 0 auto; padding: 0 20px 100px;
+      display: grid; grid-template-columns: 1fr 400px; gap: 20px; align-items: start;
     }
 
-    /* ── Form panel ── */
-    .form-panel {
-      background: var(--window-bg);
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
-      padding: 36px 40px;
-    }
+    /* ── MAIN CONTAINER (left column) ── */
+    .container { padding: 20px 0 0; }
 
-    .panel-title {
-      font-family: var(--font-title);
-      color: var(--gold-accent);
-      font-size: 1.5rem;
-      margin-bottom: 6px;
+    .page-desc {
+      font-size: 0.8rem; color: var(--text-muted); margin-bottom: 28px;
+      padding: 12px 16px; border-left: 2px solid var(--neon-blue);
+      background: rgba(0,242,255,.04); letter-spacing: 0.5px; line-height: 1.7;
     }
-    .panel-subtitle {
-      color: var(--ink-muted);
-      font-size: 0.88rem;
-      margin-bottom: 36px;
-      line-height: 1.5;
-    }
+    .page-desc span { color: var(--neon-blue); }
 
-    /* ── Steps ── */
-    .step {
-      padding-bottom: 32px;
-      margin-bottom: 32px;
-      border-bottom: 1px solid #c4af93;
+    /* ── SECTION CARDS ── */
+    .section-card {
+      background: var(--card-bg); border: 1px solid var(--border-mid);
+      margin-bottom: 16px; transition: border-color 0.2s; position: relative; overflow: hidden;
     }
-    .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .section-card::before {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-blue));
+      animation: borderFlow 4s linear infinite;
+    }
+    @keyframes borderFlow { 0% { left: -100%; } 100% { left: 100%; } }
+    .section-card:hover { border-color: var(--neon-blue); }
 
-    .step-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 22px;
+    .section-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 18px; background: #0d0d0d; border-bottom: 1px solid var(--border-mid);
+      cursor: pointer; user-select: none; transition: background 0.15s;
     }
-    .step-num {
-      width: 34px; height: 34px; flex-shrink: 0;
-      background: var(--tab-bg);
-      color: var(--gold-accent);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-title);
-      font-size: 0.9rem; font-weight: 700;
-    }
-    .step-title {
-      font-family: var(--font-title);
-      color: var(--gold-accent);
-      font-size: 1.05rem;
-    }
-    .badge-optional {
-      font-size: 0.72rem;
-      background: var(--tab-bg);
-      color: var(--tab-text);
-      padding: 2px 9px;
-      border-radius: 10px;
-      font-family: var(--font-body);
-      letter-spacing: 0.5px;
-    }
-    .badge-required {
-      font-size: 0.72rem;
-      background: #5a2020;
-      color: #e88;
-      padding: 2px 9px;
-      border-radius: 10px;
-      font-family: var(--font-body);
-    }
+    .section-header:hover { background: #131313; }
 
-    /* ── Fields ── */
-    .field { margin-bottom: 18px; }
-    .field:last-child { margin-bottom: 0; }
+    .section-title {
+      font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 700;
+      color: var(--neon-blue); letter-spacing: 2px; text-transform: uppercase;
+    }
+    .section-chevron { color: var(--text-muted); font-size: 0.7rem; transition: transform 0.25s ease; font-family: 'Share Tech Mono', monospace; }
+    .section-card.collapsed .section-chevron { transform: rotate(-90deg); }
 
-    .field label {
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--ink);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 5px;
+    .section-body {
+      padding: 20px 20px 22px; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.25s ease; max-height: 4000px;
     }
-    .field-hint {
-      font-size: 0.8rem;
-      color: var(--ink-muted);
-      margin-bottom: 7px;
-      line-height: 1.4;
+    .section-card.collapsed .section-body { max-height: 0; padding-top: 0; padding-bottom: 0; }
+
+    /* ── FIELDS ── */
+    .field-row { margin-bottom: 18px; }
+    .field-row:last-child { margin-bottom: 0; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+    .field-label {
+      display: block; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700;
+      color: #aaa; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px;
     }
-    .field-hint a { color: var(--gold-accent); }
+    .field-label .optional { font-family: 'Share Tech Mono', monospace; font-weight: 400; font-size: 0.65rem; color: var(--text-muted); text-transform: none; letter-spacing: 0; margin-left: 6px; }
+    .field-desc { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 7px; line-height: 1.5; letter-spacing: 0.3px; }
 
     input[type="text"],
-    input[type="url"],
-    input[type="password"],
     input[type="number"],
+    input[type="password"],
     input[type="date"] {
-      width: 100%;
-      padding: 9px 12px;
-      background: #f5ede0;
-      border: 1.5px solid #c4af93;
-      border-radius: 4px;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      color: var(--ink);
-      outline: none;
-      transition: border-color .2s, background .2s;
+      width: 100%; padding: 8px 12px; background: var(--input-bg);
+      border: 1px solid var(--border-mid); color: var(--text);
+      font-family: 'Share Tech Mono', monospace; font-size: 0.82rem;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
     }
-    input:focus {
-      border-color: var(--gold-accent);
-      background: #fff;
-    }
-    input.input-ok  { border-color: #5a9a6e; }
-    input.input-err { border-color: #cc4444; }
+    input[type="date"] { color-scheme: dark; }
+    input:focus { border-color: var(--neon-blue); box-shadow: 0 0 8px rgba(0,242,255,.2); }
+    input::placeholder { color: #3a3a3a; }
 
-    /* ── URL validation ── */
-    .url-wrap { position: relative; }
-    .url-wrap input { padding-right: 34px; }
-    .url-icon {
-      position: absolute;
-      right: 10px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 1rem; font-weight: 700;
-      pointer-events: none;
+    /* Checkbox grid */
+    .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+      background: var(--input-bg); border: 1px solid var(--border-mid);
+      cursor: pointer; transition: border-color 0.15s;
     }
-    .url-msg {
-      font-size: 0.78rem;
-      margin-top: 5px;
-      display: none;
-    }
-    .url-msg.ok  { color: #5a9a6e; display: block; }
-    .url-msg.err { color: #cc4444; display: block; }
+    .check-item:hover { border-color: var(--neon-blue); }
+    .check-item input[type="checkbox"] { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; accent-color: var(--neon-blue); cursor: pointer; }
+    .check-label { display: block; font-family: 'Orbitron', sans-serif; font-size: 0.62rem; font-weight: 700; color: #bbb; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+    .check-desc { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
 
-    /* ── Toggle group ── */
-    .toggle-group {
-      display: inline-flex;
-      border: 1.5px solid var(--border-color);
-      border-radius: 4px;
-      overflow: hidden;
+    /* Info box */
+    .info-box {
+      background: rgba(0,242,255,.04); border: 1px solid rgba(0,242,255,.2);
+      border-left: 2px solid var(--neon-blue); padding: 10px 14px;
+      font-size: 0.76rem; color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 18px; letter-spacing: 0.3px;
     }
-    .toggle-group input[type="radio"] { display: none; }
-    .toggle-group label {
-      margin: 0;
-      padding: 7px 22px;
-      cursor: pointer;
-      background: #f5ede0;
-      color: var(--ink-muted);
-      font-size: 0.85rem;
-      text-transform: none;
-      letter-spacing: 0;
-      font-weight: 400;
-      border-right: 1px solid var(--border-color);
-      transition: all .2s;
-      user-select: none;
-    }
-    .toggle-group label:last-of-type { border-right: none; }
-    .toggle-group input:checked + label {
-      background: var(--tab-bg);
-      color: var(--gold-accent);
-      font-weight: 700;
-    }
+    .info-box strong { color: var(--text); }
+    .info-box code { color: var(--neon-blue); font-family: 'Share Tech Mono', monospace; font-size: 0.82em; }
 
-    /* ── Dynamic rows ── */
-    .dyn-row {
-      display: grid;
-      gap: 8px;
-      margin-bottom: 8px;
-      align-items: center;
-    }
-    .dyn-row.two-col { grid-template-columns: 1fr 1.6fr auto; }
-    .dyn-row.one-col { grid-template-columns: 1fr auto; }
+    /* ── USER ICON BUILDER ── */
+    .user-icon-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+    .user-icon-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #0a0a0a; border: 1px solid #222; padding: 10px; }
+    .user-icon-row input[type="text"] { flex: 1; min-width: 120px; max-width: 200px; }
+    .user-icon-preview { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #444; object-fit: cover; background: #1a1a1a; flex-shrink: 0; }
+    .user-icon-preview.empty { visibility: hidden; }
+    .pick-icon-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: #1a1a1a; border: 1px solid var(--neon-blue); color: var(--neon-blue); cursor: pointer; white-space: nowrap; }
+    .pick-icon-btn:hover { background: var(--neon-blue); color: #000; }
+    .remove-user-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: #1a1a1a; border: 1px solid #ff3333; color: #ff3333; cursor: pointer; }
+    .remove-user-btn:hover { background: #ff3333; color: #000; }
+    .icon-picker-panel { display: none; width: 100%; margin-top: 8px; background: #0d0d0d; border: 1px solid #333; padding: 10px; max-height: 260px; overflow-y: auto; }
+    .icon-picker-panel.open { display: block; }
+    .icon-group-label { font-size: 0.65rem; color: var(--neon-blue); letter-spacing: 2px; margin-bottom: 6px; margin-top: 10px; }
+    .icon-group-label:first-child { margin-top: 0; }
+    .icon-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .icon-thumb { width: 40px; height: 40px; object-fit: cover; border: 2px solid #333; border-radius: 4px; cursor: pointer; transition: border-color 0.15s; }
+    .icon-thumb:hover { border-color: var(--neon-blue); }
+    .icon-thumb.selected { border-color: var(--neon-blue); box-shadow: 0 0 8px rgba(0,242,255,0.5); }
+    .add-user-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; padding: 8px 16px; background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+    .add-user-btn:hover { background: var(--neon-green); color: #000; }
 
-    .btn-remove {
-      width: 30px; height: 30px;
-      background: #7a2828;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      line-height: 1;
-      flex-shrink: 0;
-      transition: background .2s;
-    }
-    .btn-remove:hover { background: #9e3333; }
+    /* ── PER-USER XP DATES ── */
+    .xp-col-labels { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-bottom: 6px; }
+    .xp-col-label { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+    .xp-user-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+    .xp-user-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center; }
+    .btn-xp-remove { background: #3a0a0a; border: 1px solid #7a2828; color: #e88; padding: 8px 10px; cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 1rem; line-height: 1; transition: all 0.2s; }
+    .btn-xp-remove:hover { background: #5a1010; border-color: #cc4444; }
+    .btn-xp-add { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; padding: 7px 14px; background: transparent; border: 1px dashed var(--border-mid); color: var(--neon-blue); cursor: pointer; margin-top: 2px; transition: all 0.2s; }
+    .btn-xp-add:hover { border-color: var(--neon-blue); background: rgba(0,242,255,.05); }
 
-    .btn-add {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 16px;
-      margin-top: 4px;
-      background: var(--tab-bg);
-      color: var(--gold-accent);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: var(--font-body);
-      font-size: 0.83rem;
-      transition: background .2s;
+    /* ── STICKY GENERATE BAR ── */
+    .generate-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+      background: linear-gradient(180deg, #0e0e0e 0%, #080808 100%);
+      border-top: 1px solid var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0,242,255,.15), 0 -4px 20px rgba(0,0,0,.6);
+      padding: 13px 24px; display: flex; justify-content: center; align-items: center; gap: 20px;
     }
-    .btn-add:hover { background: var(--tab-hover); }
-
-    /* ── Collapsible ── */
-    .collapsible-trigger {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      user-select: none;
-      padding: 10px 0;
-      border-top: 1px dashed #c4af93;
-      margin-top: 18px;
+    .generate-bar p { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+    .btn-generate {
+      background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);
+      font-family: 'Orbitron', sans-serif; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; padding: 11px 32px;
+      cursor: pointer; transition: all 0.2s ease;
     }
-    .collapsible-trigger .c-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--ink);
-    }
-    .c-arrow { color: var(--gold-accent); font-size: 0.75rem; transition: transform .2s; }
-    .c-arrow.open { transform: rotate(180deg); }
-    .collapsible-body { display: none; padding-top: 16px; }
-    .collapsible-body.open { display: block; }
+    .btn-generate:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 18px rgba(0,242,255,.5); }
+    .btn-generate:active { transform: translateY(1px); }
 
-    .two-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    /* ── Right panel ── */
+    /* ── LIVE PREVIEW PANEL (right column) ── */
     .preview-panel {
-      position: sticky;
-      top: 20px;
-      background: #0d1117;
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
-      overflow: hidden;
+      position: sticky; top: 20px;
+      background: #0d0d0d; border: 1px solid var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0,242,255,.1);
     }
-
-    .preview-tabs {
-      display: flex;
-      background: #161b22;
-      border-bottom: 1px solid #30363d;
-    }
+    .preview-tabs { display: flex; background: #080808; border-bottom: 1px solid var(--border-mid); }
     .ptab {
-      flex: 1;
-      padding: 10px 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      font-size: 0.73rem;
-      color: #8b949e;
-      transition: all .2s;
-      border-bottom: 2px solid transparent;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      flex: 1; padding: 10px 6px; background: none; border: none; cursor: pointer;
+      font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--text-muted);
+      transition: all .2s; border-bottom: 2px solid transparent;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .ptab.active {
-      color: var(--gold-accent);
-      border-bottom-color: var(--gold-accent);
-      background: #0d1117;
-    }
-
-    .preview-code {
-      padding: 16px;
-      max-height: 440px;
-      overflow-y: auto;
-    }
+    .ptab.active { color: var(--neon-blue); border-bottom-color: var(--neon-blue); background: #0d0d0d; }
+    .preview-code { padding: 14px; max-height: 440px; overflow-y: auto; }
     .preview-code pre {
-      font-family: 'Courier New', monospace;
-      font-size: 0.74rem;
-      line-height: 1.65;
-      white-space: pre-wrap;
-      word-break: break-all;
-      color: #c9d1d9;
+      font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; line-height: 1.65;
+      white-space: pre-wrap; word-break: break-all; color: #00ff88;
     }
+    .preview-dl-section {
+      padding: 12px 14px; border-top: 1px solid var(--border-mid);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .btn-dl-preview {
+      display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px;
+      border: 1px solid var(--neon-blue); background: rgba(0,242,255,.04);
+      color: var(--neon-blue); cursor: pointer; font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem; transition: all .2s; width: 100%;
+    }
+    .btn-dl-preview:hover { background: rgba(0,242,255,.15); box-shadow: 0 0 10px rgba(0,242,255,.2); }
 
-    /* Syntax colors */
-    .sc { color: #6e7681; }          /* comment */
-    .sk { color: #79c0ff; }          /* env key */
-    .sv { color: #a5d6ff; }          /* env value */
-    .se { color: #484f58; font-style: italic; } /* empty value */
-    .yk { color: #7ee787; }          /* yaml key */
-    .yv { color: #a5d6ff; }          /* yaml value */
-    .yd { color: #ff7b72; }          /* yaml dash */
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 200;
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--card-bg); border: 1px solid var(--neon-blue);
+      box-shadow: 0 0 40px rgba(0,242,255,.2), 0 0 80px rgba(0,242,255,.08);
+      width: 100%; max-width: 800px; max-height: 92vh;
+      display: flex; flex-direction: column; overflow: hidden;
+      animation: modalIn 0.2s ease;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: #0d0d0d; border-bottom: 1px solid var(--border-mid); flex-shrink: 0; }
+    .modal-title { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--neon-blue); letter-spacing: 3px; text-transform: uppercase; }
+    .modal-close { background: none; border: 1px solid var(--border-mid); color: var(--text-muted); font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; cursor: pointer; padding: 3px 9px; transition: all 0.15s; }
+    .modal-close:hover { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 8px rgba(255,0,255,.3); }
+    .modal-tabs { display: flex; background: #0a0a0a; border-bottom: 1px solid var(--border-mid); flex-shrink: 0; }
+    .modal-tab { padding: 9px 20px; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); cursor: pointer; border-right: 1px solid var(--border-dim); transition: all 0.15s; user-select: none; }
+    .modal-tab:hover { color: var(--neon-blue); background: rgba(0,242,255,.04); }
+    .modal-tab.active { color: #000; background: var(--neon-blue); box-shadow: 0 0 12px rgba(0,242,255,.3); }
+    .modal-content { flex: 1; overflow-y: auto; padding: 18px 20px 20px; background: var(--card-bg2); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .output-area { width: 100%; height: 310px; font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; line-height: 1.7; background: #000; color: #00ff88; border: 1px solid var(--border-mid); padding: 14px; resize: vertical; outline: none; box-shadow: inset 0 0 20px rgba(0,255,136,.05); }
+    .output-area:focus { border-color: var(--neon-blue); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end; align-items: center; }
+    .copy-feedback { flex: 1; font-size: 0.72rem; color: var(--neon-green); letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; }
+    .copy-feedback.show { opacity: 1; }
+    .btn-action { padding: 8px 20px; background: transparent; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.2s ease; }
+    .btn-copy { border: 1px solid var(--border-mid); color: var(--text-muted); }
+    .btn-copy:hover { border-color: var(--text-muted); color: var(--text); }
+    .btn-download { border: 1px solid var(--neon-blue); color: var(--neon-blue); }
+    .btn-download:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 12px rgba(0,242,255,.4); }
 
-    /* Downloads */
-    .dl-section {
-      padding: 14px 16px;
-      border-top: 1px solid #30363d;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .btn-dl {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px;
-      border: 1px solid #238636;
-      background: #0f2d1a;
-      color: #3fb950;
-      border-radius: 5px;
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      font-size: 0.78rem;
-      transition: all .2s;
-      width: 100%;
-    }
-    .btn-dl:hover { background: #1a4228; }
+    /* Instructions tab */
+    .instructions-body h3 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--neon-blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border-mid); }
+    .instructions-body ol { padding-left: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .instructions-body li { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+    .instructions-body li strong { color: var(--text); }
+    .instructions-body code { color: var(--neon-blue); font-family: 'Share Tech Mono', monospace; font-size: 0.9em; background: rgba(0,242,255,.06); padding: 1px 6px; }
+    .instructions-body .note { margin-top: 22px; padding: 12px 16px; background: rgba(0,242,255,.04); border: 1px solid rgba(0,242,255,.2); border-left: 2px solid var(--neon-blue); font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
 
-    .warn-box {
-      padding: 10px 14px;
-      background: #2d1b00;
-      border-top: 1px solid #30363d;
-      color: #e3a54e;
-      font-size: 0.78rem;
-      line-height: 1.5;
-    }
+    /* ── LOAD CONFIG ── */
+    .load-file-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+    .btn-file-pick { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); font-family: 'Orbitron', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+    .btn-file-pick:hover { background: var(--neon-blue); color: #000; }
+    .load-file-name { font-size: 0.74rem; color: var(--text-muted); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-load-config { background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); font-family: 'Orbitron', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+    .btn-load-config:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 12px rgba(0,255,136,.4); }
+    .load-feedback { background: rgba(0,255,136,.04); border: 1px solid rgba(0,255,136,.2); border-left: 2px solid var(--neon-green); padding: 12px 16px; font-size: 0.75rem; line-height: 1.7; margin-top: 14px; display: none; }
+    .load-feedback .lf-heading { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; color: var(--text); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .load-feedback .lf-heading + .lf-heading { margin-top: 10px; }
+    .load-feedback .lf-ok   { color: var(--neon-green); }
+    .load-feedback .lf-skip { color: var(--text-dim); }
 
-    /* ── Final commands ── */
-    .commands-wrap {
-      max-width: 1380px;
-      margin: 0 auto 32px;
-      padding: 0 24px;
-    }
-    .commands-panel {
-      background: #161b22;
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
-      padding: 28px 36px;
-    }
-    .commands-panel h3 {
-      font-family: var(--font-title);
-      color: var(--gold-accent);
-      font-size: 1.1rem;
-      margin-bottom: 18px;
-    }
-    .step-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .step-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
-    .step-badge {
-      width: 26px; height: 26px; flex-shrink: 0;
-      background: var(--tab-bg);
-      color: var(--gold-accent);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-title);
-      font-size: 0.78rem; font-weight: 700;
-    }
-    .step-item-body { flex: 1; }
-    .step-item-label {
-      color: #8b949e;
-      font-size: 0.83rem;
-      margin-bottom: 7px;
-    }
-    .code-block {
-      background: #0d1117;
-      border: 1px solid #30363d;
-      border-radius: 5px;
-      padding: 12px 16px;
-    }
-    .code-block pre {
-      font-family: 'Courier New', monospace;
-      font-size: 0.86rem;
-      line-height: 1.8;
-      color: #c9d1d9;
-    }
-    .code-block .cmd { color: #7ee787; }
-    .code-block .cmt { color: #6e7681; }
-    .code-block .url { color: #a5d6ff; }
-
-    /* ── Responsive ── */
-    @media (max-width: 960px) {
+    @media (max-width: 1060px) {
       .wizard-wrap { grid-template-columns: 1fr; }
       .preview-panel { position: static; }
-      .nav-bar { padding: 10px 16px; }
-      .form-panel { padding: 24px 20px; }
+    }
+    @media (max-width: 620px) {
+      .two-col, .check-grid, .xp-col-labels, .xp-user-row { grid-template-columns: 1fr; }
+      .admin-nav-inner { padding: 8px; }
+      .load-file-row { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
 
-<nav class="nav-bar">
-  <a href="#" class="nav-title">⚔ Achievement Engine</a>
-  <span style="font-family:var(--font-title);color:var(--tab-text);font-size:.85rem;letter-spacing:1px;">SETUP WIZARD</span>
-</nav>
+<div class="scanline"></div>
 
+<!-- NAV -->
+<header style="background:#111;padding:14px 40px;border-bottom:2px solid var(--neon-blue);display:flex;justify-content:space-between;align-items:center;width:100%;box-sizing:border-box;">
+  <span style="font-family:'Orbitron',sans-serif;letter-spacing:4px;text-transform:uppercase;color:var(--neon-blue);font-size:1.1rem;">⚔ Achievement Engine</span>
+  <span style="font-family:'Share Tech Mono',monospace;color:#666;font-size:0.8rem;letter-spacing:2px;">SETUP WIZARD</span>
+</header>
+
+<!-- TWO-COLUMN LAYOUT -->
 <div class="wizard-wrap">
 
-  <!-- ══ FORM PANEL ══ -->
-  <div class="form-panel">
-    <div class="panel-title">Setup Wizard</div>
-    <div class="panel-subtitle">
-      Fill in your settings below — your config files are generated live in the preview panel.
-      Download both files, drop them in your project folder, then run one command.
+  <!-- ══ LEFT: FORM ══ -->
+  <div class="container">
+
+    <p class="page-desc">
+      Fill in your environment below. Config files update live in the panel on the right —
+      download <span>.env</span> and <span>docker-compose.override.yml</span> then run
+      <span>docker compose up -d</span>. Use <span>[ ⚙ Generate ]</span> for copy/paste access.
+    </p>
+
+    <!-- ── SECTION 0: LOAD CONFIG ── -->
+    <div class="section-card" id="sec0">
+      <div class="section-header" onclick="toggleSection('sec0')">
+        <span class="section-title">⚡ // Load Existing Config</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="info-box">
+          Already have a config? Load a previously generated <code>.env</code>, a shell script with
+          <code>export KEY=VALUE</code> lines, a <code>docker-compose.override.yml</code>, or an
+          <code>Unraid template (.xml)</code> to auto-populate all matching fields below.<br><br>
+          <strong>Unraid users:</strong> load <code>my-achievement-engine.xml</code> to fill
+          progression/SMTP/user sections, then load <code>my-abs-stats.xml</code> to fill the
+          Audiobookshelf connection section.
+        </div>
+        <div class="field-row">
+          <label class="field-label">Config File</label>
+          <p class="field-desc">Supported: <code>.env</code> &nbsp;·&nbsp; <code>.sh</code> (export KEY=VALUE) &nbsp;·&nbsp; <code>docker-compose.override.yml</code> &nbsp;·&nbsp; <code>Unraid template .xml</code></p>
+          <div class="load-file-row">
+            <label class="btn-file-pick" for="config-file-input">[ Choose File ]</label>
+            <input type="file" id="config-file-input" accept=".env,.sh,.yml,.yaml,.xml,text/plain" style="display:none">
+            <span id="config-file-name" class="load-file-name">No file selected</span>
+            <button class="btn-load-config" onclick="loadConfigFile()">[ Load &amp; Populate ]</button>
+          </div>
+        </div>
+        <div id="load-feedback" class="load-feedback"></div>
+      </div>
     </div>
 
-    <!-- ① ABS Connection -->
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num">1</div>
-        <div class="step-title">Audiobookshelf Connection</div>
-        <span class="badge-required">required</span>
+    <!-- ── SECTION 1: PATHS & PORTS ── -->
+    <div class="section-card" id="sec1">
+      <div class="section-header" onclick="toggleSection('sec1')">
+        <span class="section-title">01 // Paths &amp; Ports</span>
+        <span class="section-chevron">[ ▼ ]</span>
       </div>
-
-      <div class="field">
-        <label>Server URL</label>
-        <div class="field-hint">Full address of your ABS instance, including port</div>
-        <div class="url-wrap">
-          <input type="text" id="abs-url" placeholder="http://192.168.1.50:13378" oninput="update()" onblur="validateUrl()">
-          <span class="url-icon" id="url-icon"></span>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="path_data">Data Directory</label>
+            <p class="field-desc">Host path for persistent data (database, JSON files, icons)</p>
+            <input type="text" id="path_data" value="./data" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="port_dashboard">Dashboard Port</label>
+            <p class="field-desc">Host port to access the web UI</p>
+            <input type="number" id="port_dashboard" value="8000" oninput="liveUpdate()" />
+          </div>
         </div>
-        <div class="url-msg" id="url-msg"></div>
+        <div class="field-row">
+          <label class="field-label" for="path_static">Static Files Directory <span class="optional">// optional</span></label>
+          <p class="field-desc">Map this to edit HTML/CSS/JS live without rebuilding the Docker image. Leave blank to skip.</p>
+          <input type="text" id="path_static" placeholder="./static  (optional)" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="path_covers">Covers Directory <span class="optional">// optional</span></label>
+          <p class="field-desc">Host path for synced book cover images. Leave blank to store inside the data directory.</p>
+          <input type="text" id="path_covers" placeholder="./data/covers  (optional)" oninput="liveUpdate()" />
+        </div>
       </div>
+    </div>
 
-      <div class="field">
-        <label>User Mode</label>
-        <div class="field-hint">Track one account or multiple separate ABS users?</div>
-        <div class="toggle-group">
-          <input type="radio" name="umode" id="mode-single" value="single" checked onchange="toggleMode()">
-          <label for="mode-single">Single User</label>
-          <input type="radio" name="umode" id="mode-multi" value="multi" onchange="toggleMode()">
-          <label for="mode-multi">Multiple Users</label>
+    <!-- ── SECTION 2: AUDIOBOOKSHELF ── -->
+    <div class="section-card" id="sec2">
+      <div class="section-header" onclick="toggleSection('sec2')">
+        <span class="section-title">02 // Audiobookshelf Connection</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="abs_url">ABS URL</label>
+            <p class="field-desc">Your Audiobookshelf instance URL</p>
+            <input type="text" id="abs_url" placeholder="http://192.168.1.100:13378" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="abs_token">Global ABS Token</label>
+            <p class="field-desc">Admin API token — ABS Settings → API</p>
+            <input type="password" id="abs_token" placeholder="your-abs-api-token" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="abs_tokens">Per-User Tokens <span class="optional">// optional</span></label>
+          <p class="field-desc">One token per ABS user for per-user session data. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:token,absusername2:token2</code></p>
+          <input type="text" id="abs_tokens" placeholder="user1:token1,user2:token2" oninput="liveUpdate()" />
+        </div>
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="abs_allowed_usernames">Allowed Usernames <span class="optional">// optional</span></label>
+            <p class="field-desc">Filter which ABS users abs-stats reports on</p>
+            <input type="text" id="abs_allowed_usernames" placeholder="*  (blank or * for all)" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="discord_webhook">Discord Webhook <span class="optional">// optional</span></label>
+            <p class="field-desc">Post achievement notifications to Discord</p>
+            <input type="text" id="discord_webhook" placeholder="https://discord.com/api/webhooks/..." oninput="liveUpdate()" />
+          </div>
         </div>
       </div>
+    </div>
 
-      <div id="section-single" class="field">
-        <label>API Token</label>
-        <div class="field-hint">
-          ABS → Settings → Users → [your username] → API Token
-        </div>
-        <input type="text" id="abs-token" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." oninput="update()">
+    <!-- ── SECTION 3: USERS ── -->
+    <div class="section-card" id="sec3">
+      <div class="section-header" onclick="toggleSection('sec3')">
+        <span class="section-title">03 // Users</span>
+        <span class="section-chevron">[ ▼ ]</span>
       </div>
-
-      <div id="section-multi" style="display:none;">
-        <div class="field-hint" style="margin-bottom:10px;">
-          Add one row per ABS user. Token location: ABS → Settings → Users → [username] → API Token
+      <div class="section-body">
+        <div class="field-row">
+          <label class="field-label" for="allowed_users">Allowed Users <span class="optional">// optional</span></label>
+          <p class="field-desc">Comma-separated ABS usernames to include on dashboard/leaderboard. Leave blank to include all.</p>
+          <input type="text" id="allowed_users" placeholder="absuser1,absuser2  (blank = all users)" oninput="liveUpdate()" />
         </div>
-        <div class="field">
-          <div style="display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;margin-bottom:6px;">
-            <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Username</span>
-            <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">API Token</span>
+        <div class="field-row">
+          <label class="field-label" for="user_aliases">User Aliases <span class="optional">// optional</span></label>
+          <p class="field-desc">Display names shown in the UI. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:Display Name</code></p>
+          <input type="text" id="user_aliases" placeholder="absuser1:Display Name,absuser2:Display Name" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">User Icons <span class="optional">// optional</span></label>
+          <p class="field-desc">Select an avatar icon for each user. Icons are pre-installed in the container at <code>/icons/users/</code>.</p>
+          <div class="user-icon-rows" id="user-icon-rows"></div>
+          <button class="add-user-btn" onclick="addUserIconRow()">[ + ADD USER ]</button>
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="user_emails">User Emails <span class="optional">// optional</span></label>
+          <p class="field-desc">Per-user email addresses for notifications. Format: <code style="color:var(--neon-blue);font-size:.85em">absusername:email@example.com</code></p>
+          <input type="text" id="user_emails" placeholder="absuser1:user@example.com,absuser2:other@example.com" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">Per-User XP Start Dates <span class="optional">// optional</span></label>
+          <p class="field-desc">Override the global XP start date for specific users. Listening before this date won't count toward their levels.</p>
+          <div class="xp-col-labels">
+            <span class="xp-col-label">Username</span>
+            <span class="xp-col-label">Start Date</span>
             <span></span>
           </div>
-          <div id="user-rows">
-            <div class="dyn-row two-col">
-              <input type="text" placeholder="alice" class="u-name" oninput="update()">
-              <input type="text" placeholder="token..." class="u-token" oninput="update()">
-              <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>
-            </div>
+          <div class="xp-user-rows" id="xp-user-rows"></div>
+          <button class="btn-xp-add" onclick="addXpUserRow()">+ Add User</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: PROGRESSION ── -->
+    <div class="section-card" id="sec4">
+      <div class="section-header" onclick="toggleSection('sec4')">
+        <span class="section-title">04 // Progression</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="tz">Timezone</label>
+            <p class="field-desc">IANA timezone string (e.g. America/New_York)</p>
+            <input type="text" id="tz" value="America/New_York" oninput="liveUpdate()" />
           </div>
-          <button class="btn-add" onclick="addUser()">+ Add User</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ② Settings -->
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num">2</div>
-        <div class="step-title">Your Settings</div>
-      </div>
-
-      <div class="field">
-        <label>Timezone</label>
-        <div class="field-hint">Used for date display across all pages</div>
-        <input type="text" id="timezone" value="America/New_York" list="tz-list" oninput="update()">
-        <datalist id="tz-list">
-          <option value="America/New_York">
-          <option value="America/Chicago">
-          <option value="America/Denver">
-          <option value="America/Los_Angeles">
-          <option value="America/Anchorage">
-          <option value="Pacific/Honolulu">
-          <option value="America/Toronto">
-          <option value="America/Vancouver">
-          <option value="America/Sao_Paulo">
-          <option value="America/Mexico_City">
-          <option value="Europe/London">
-          <option value="Europe/Paris">
-          <option value="Europe/Berlin">
-          <option value="Europe/Rome">
-          <option value="Europe/Madrid">
-          <option value="Europe/Amsterdam">
-          <option value="Europe/Stockholm">
-          <option value="Europe/Warsaw">
-          <option value="Europe/Moscow">
-          <option value="Asia/Dubai">
-          <option value="Asia/Kolkata">
-          <option value="Asia/Bangkok">
-          <option value="Asia/Singapore">
-          <option value="Asia/Tokyo">
-          <option value="Asia/Seoul">
-          <option value="Asia/Shanghai">
-          <option value="Australia/Sydney">
-          <option value="Australia/Perth">
-          <option value="Pacific/Auckland">
-        </datalist>
-      </div>
-
-      <div class="field">
-        <label>Poll Interval</label>
-        <div class="field-hint">How often to check ABS for new listening data (seconds). 300 = every 5 minutes.</div>
-        <input type="number" id="poll-seconds" value="300" min="60" max="3600" oninput="update()">
-      </div>
-    </div>
-
-    <!-- ③ Users -->
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num">3</div>
-        <div class="step-title">User Display</div>
-        <span class="badge-optional">optional</span>
-      </div>
-
-      <div class="field">
-        <label>Allowed Users</label>
-        <div class="field-hint">
-          Comma-separated ABS usernames to track. Leave blank to include all users on your server.
-        </div>
-        <input type="text" id="allowed-users" placeholder="alice,bob,carol" oninput="update()">
-      </div>
-
-      <div class="field">
-        <label>Display Name Aliases</label>
-        <div class="field-hint">Map ABS usernames to friendlier names shown on the dashboard and leaderboard</div>
-        <div style="display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;margin-bottom:6px;" id="alias-header" style="display:none;">
-          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">ABS Username</span>
-          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Display Name</span>
-          <span></span>
-        </div>
-        <div id="alias-rows"></div>
-        <button class="btn-add" onclick="addAlias()">+ Add Alias</button>
-      </div>
-    </div>
-
-    <!-- ④ XP Start Dates -->
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num">4</div>
-        <div class="step-title">XP Start Dates</div>
-        <span class="badge-optional">optional</span>
-      </div>
-
-      <div class="field-hint" style="margin-bottom:14px;">
-        Set a per-user start date for XP accumulation. Listening before this date won't count toward levels.
-        Useful when users joined at different times. Leave blank to use the global XP start date for everyone.
-      </div>
-
-      <div class="field">
-        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:6px;">
-          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Username</span>
-          <span style="font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);">Start Date</span>
-          <span></span>
-        </div>
-        <div id="xp-rows"></div>
-        <button class="btn-add" onclick="addXpRow()">+ Add User</button>
-      </div>
-    </div>
-
-    <!-- ⑤ Notifications -->
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num">5</div>
-        <div class="step-title">Notifications</div>
-        <span class="badge-optional">optional</span>
-      </div>
-
-      <div class="field">
-        <label>Discord Webhook URL</label>
-        <div class="field-hint">
-          Post achievement unlocks to a Discord channel.
-          <a href="https://support.discord.com/hc/en-us/articles/228383668" target="_blank">How to create a webhook ↗</a>
-        </div>
-        <input type="url" id="discord-webhook" placeholder="https://discord.com/api/webhooks/..." oninput="update()">
-      </div>
-
-      <!-- SMTP collapsible -->
-      <div class="collapsible-trigger" onclick="toggleC('smtp-body','smtp-arrow')">
-        <span class="c-label">Email (SMTP) Notifications</span>
-        <span class="c-arrow" id="smtp-arrow">▼</span>
-      </div>
-      <div class="collapsible-body" id="smtp-body">
-        <div class="field-hint" style="margin-bottom:16px;">
-          Send email notifications when achievements are earned. Leave all fields blank to skip.
-        </div>
-        <div class="field">
-          <label>SMTP Host</label>
-          <input type="text" id="smtp-host" placeholder="smtp.gmail.com" oninput="update()">
-        </div>
-        <div class="two-grid">
-          <div class="field">
-            <label>Port</label>
-            <input type="number" id="smtp-port" value="587" oninput="update()">
-          </div>
-          <div class="field">
-            <label>Username</label>
-            <input type="text" id="smtp-user" placeholder="you@example.com" oninput="update()">
+          <div>
+            <label class="field-label" for="poll_seconds">Poll Interval (seconds)</label>
+            <p class="field-desc">How often the engine polls abs-stats for new data</p>
+            <input type="number" id="poll_seconds" value="300" oninput="liveUpdate()" />
           </div>
         </div>
-        <div class="field">
-          <label>Password</label>
-          <input type="password" id="smtp-pass" placeholder="••••••••" oninput="update()">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="xp_start">XP Start Timestamp</label>
+            <p class="field-desc">Unix seconds when XP/loot economy begins. Books before this are "legacy".</p>
+            <input type="number" id="xp_start" value="1767225600" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="verify_threshold">Listen Threshold</label>
+            <p class="field-desc">Required listen ratio for strict verification (0.0–1.0)</p>
+            <input type="text" id="verify_threshold" value="0.80" oninput="liveUpdate()" />
+          </div>
         </div>
-        <div class="field">
-          <label>From Address</label>
-          <input type="text" id="smtp-from" placeholder="Achievement Engine &lt;noreply@yourdomain.com&gt;" oninput="update()">
-        </div>
-        <div class="field">
-          <label>Override — Send All Emails To</label>
-          <div class="field-hint">Route all notifications to one address (useful for testing)</div>
-          <input type="text" id="smtp-override" placeholder="you@example.com" oninput="update()">
+        <div class="field-row">
+          <label class="field-label">Verification Rules</label>
+          <div class="check-grid">
+            <label class="check-item">
+              <input type="checkbox" id="strict_verification" onchange="liveUpdate()" />
+              <span>
+                <span class="check-label">Strict Verification</span>
+                <span class="check-desc">Require listen ratio proof for progression credit</span>
+              </span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="require_duration" checked onchange="liveUpdate()" />
+              <span>
+                <span class="check-label">Require Duration</span>
+                <span class="check-desc">Exclude books with unknown duration from credit</span>
+              </span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" id="require_2026_session" checked onchange="liveUpdate()" />
+              <span>
+                <span class="check-label">Require In-Scope Session</span>
+                <span class="check-desc">Book must have a session on/after the XP start timestamp</span>
+              </span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
 
-  </div><!-- /form-panel -->
+    <!-- ── SECTION 5: WRAPPED ── -->
+    <div class="section-card" id="sec5">
+      <div class="section-header" onclick="toggleSection('sec5')">
+        <span class="section-title">05 // Wrapped</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="wrapped_year">Wrapped Year</label>
+            <p class="field-desc">Reporting year for the Wrapped year-end experience</p>
+            <input type="number" id="wrapped_year" value="2026" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="wrapped_boss_hp">Boss HP</label>
+            <p class="field-desc">Max HP for the year-end boss battle in Wrapped</p>
+            <input type="number" id="wrapped_boss_hp" value="250000" oninput="liveUpdate()" />
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <!-- ══ PREVIEW PANEL ══ -->
+    <!-- ── SECTION 6: SMTP ── -->
+    <div class="section-card" id="sec6">
+      <div class="section-header" onclick="toggleSection('sec6')">
+        <span class="section-title">06 // Email / SMTP <span style="font-size:.7em;color:var(--text-muted);letter-spacing:0;font-family:'Share Tech Mono',monospace;text-transform:none"> // optional</span></span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="info-box">Leave <strong>SMTP Host</strong> blank to disable email notifications entirely.</div>
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="smtp_host">SMTP Host</label>
+            <p class="field-desc">Your SMTP server hostname</p>
+            <input type="text" id="smtp_host" placeholder="smtp.mailgun.org" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="smtp_port">SMTP Port</label>
+            <p class="field-desc">Usually 587 (TLS) or 465 (SSL)</p>
+            <input type="number" id="smtp_port" value="587" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="smtp_username">SMTP Username</label>
+            <p class="field-desc">Your SMTP login / email address</p>
+            <input type="text" id="smtp_username" placeholder="noreply@yourdomain.com" oninput="liveUpdate()" />
+          </div>
+          <div>
+            <label class="field-label" for="smtp_password">SMTP Password</label>
+            <p class="field-desc">Your SMTP password or API key</p>
+            <input type="password" id="smtp_password" placeholder="••••••••" oninput="liveUpdate()" />
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="smtp_from">From Address</label>
+          <p class="field-desc">Display name and address shown in the "From" field</p>
+          <input type="text" id="smtp_from" placeholder="The System noreply@yourdomain.com" oninput="liveUpdate()" />
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="smtp_to_override">Override To Address <span class="optional">// optional</span></label>
+          <p class="field-desc">Send all emails here instead of per-user addresses. Useful for testing.</p>
+          <input type="text" id="smtp_to_override" placeholder="youremail@gmail.com  (optional)" oninput="liveUpdate()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 7: ADVANCED ── -->
+    <div class="section-card" id="sec7">
+      <div class="section-header" onclick="toggleSection('sec7')">
+        <span class="section-title">07 // Advanced</span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="info-box">
+          To run a one-time <strong>achievement backfill</strong>, manually set
+          <code>RUN_ACHIEVEMENT_BACKFILL=true</code> in your generated <code>.env</code>,
+          start the container, then set it back to <code>false</code> and restart.
+        </div>
+        <div class="field-row">
+          <label class="field-label" for="backfill_key">Backfill Once Key</label>
+          <p class="field-desc">Change this value to trigger a fresh backfill run on the next container startup.</p>
+          <input type="text" id="backfill_key" value="ach_backfill_v1" oninput="liveUpdate()" />
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- ══ RIGHT: LIVE PREVIEW PANEL ══ -->
   <div class="preview-panel">
     <div class="preview-tabs">
-      <button class="ptab active" id="ptab-override" onclick="switchTab('override')">docker-compose.override.yml</button>
-      <button class="ptab" id="ptab-env" onclick="switchTab('env')">.env</button>
-      <button class="ptab" id="ptab-xp" onclick="switchTab('xp')">user_xp_start.json</button>
+      <button class="ptab active" id="ptab-env"      onclick="switchPreviewTab('env')">.env</button>
+      <button class="ptab"        id="ptab-override" onclick="switchPreviewTab('override')">override.yml</button>
+      <button class="ptab"        id="ptab-xp"       onclick="switchPreviewTab('xp')">xp_start.json</button>
     </div>
-
     <div class="preview-code">
       <pre id="preview-pre"></pre>
     </div>
-
-    <div class="dl-section">
-      <button class="btn-dl" onclick="dlOverride()">⬇ &nbsp;docker-compose.override.yml</button>
-      <button class="btn-dl" onclick="dlEnv()">⬇ &nbsp;env.txt</button>
-      <button class="btn-dl" onclick="dlXp()">⬇ &nbsp;user_xp_start.json</button>
-      <div style="font-size:0.72rem;color:#6e7681;line-height:1.5;padding:4px 2px 0;">
-        Move all files into your project folder using the commands in the final steps below.
-      </div>
-    </div>
-
-    <div class="warn-box" id="warn-box" style="display:none;">
-      ⚠ &nbsp;Enter your ABS URL and at least one token to enable downloads
+    <div class="preview-dl-section">
+      <button class="btn-dl-preview" onclick="dlFile('env')">⬇ &nbsp;.env</button>
+      <button class="btn-dl-preview" onclick="dlFile('override')">⬇ &nbsp;docker-compose.override.yml</button>
+      <button class="btn-dl-preview" onclick="dlFile('xp')">⬇ &nbsp;user_xp_start.json</button>
     </div>
   </div>
 
 </div><!-- /wizard-wrap -->
 
-<!-- ══ FINAL STEPS ══ -->
-<div class="commands-wrap">
-  <div class="commands-panel">
-    <h3>After Downloading Both Files</h3>
-    <div class="step-list">
+<!-- ── STICKY GENERATE BAR ── -->
+<div class="generate-bar">
+  <p>// Fill in settings above, then generate //</p>
+  <button class="btn-generate" onclick="generate()">[ ⚙ Generate Config Files ]</button>
+</div>
 
-      <div class="step-item">
-        <div class="step-badge">1</div>
-        <div class="step-item-body">
-          <div class="step-item-label">Move the downloaded files into your project folder (where you cloned the repo)</div>
-          <div class="code-block"><pre><span class="cmt"># Both files go here:</span>
-achievement-engine-wrapped/
-  ├── <span class="cmd">.env</span>                             ← downloaded
-  ├── <span class="cmd">docker-compose.override.yml</span>      ← downloaded
-  ├── docker-compose.yml
-  └── ...</pre></div>
+<!-- ── OUTPUT MODAL ── -->
+<div class="modal-overlay" id="outputModal" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">// Config Files Generated //</span>
+      <button class="modal-close" onclick="closeModal()">[ X ]</button>
+    </div>
+    <div class="modal-tabs">
+      <div class="modal-tab active" id="tab-btn-env"          onclick="switchTab('env')">.env</div>
+      <div class="modal-tab"        id="tab-btn-override"     onclick="switchTab('override')">docker-compose.override.yml</div>
+      <div class="modal-tab"        id="tab-btn-xp"           onclick="switchTab('xp')">user_xp_start.json</div>
+      <div class="modal-tab"        id="tab-btn-instructions" onclick="switchTab('instructions')">Instructions</div>
+    </div>
+    <div class="modal-content">
+
+      <div class="tab-panel active" id="tab-env">
+        <textarea class="output-area" id="out-env" readonly spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <span class="copy-feedback" id="fb-env"></span>
+          <button class="btn-action btn-copy"     onclick="copyOutput('out-env','fb-env')">[ Copy ]</button>
+          <button class="btn-action btn-download" onclick="downloadOutput('out-env','.env')">[ Download .env ]</button>
         </div>
       </div>
 
-      <div class="step-item">
-        <div class="step-badge">2</div>
-        <div class="step-item-body">
-          <div class="step-item-label">Move the downloaded files into your project folder and rename env.txt</div>
-          <div class="code-block"><pre><span class="cmd">mv ~/Downloads/env.txt ~/achievement-engine-wrapped/.env</span>
-<span class="cmd">mv ~/Downloads/docker-compose.override.yml ~/achievement-engine-wrapped/docker-compose.override.yml</span>
-<span class="cmd">mv ~/Downloads/user_xp_start.json ~/achievement-engine-wrapped/data/json/user_xp_start.json</span></pre></div>
+      <div class="tab-panel" id="tab-override">
+        <textarea class="output-area" id="out-override" readonly spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <span class="copy-feedback" id="fb-override"></span>
+          <button class="btn-action btn-copy"     onclick="copyOutput('out-override','fb-override')">[ Copy ]</button>
+          <button class="btn-action btn-download" onclick="downloadOutput('out-override','docker-compose.override.yml')">[ Download Override ]</button>
         </div>
       </div>
 
-      <div class="step-item">
-        <div class="step-badge">3</div>
-        <div class="step-item-body">
-          <div class="step-item-label">Build and start all services (takes a few minutes the first time)</div>
-          <div class="code-block"><pre><span class="cmd">cd ~/achievement-engine-wrapped</span>
-<span class="cmd">sudo docker compose up --build -d</span>
-
-<span class="cmt"># To avoid needing sudo permanently (log out and back in after):</span>
-<span class="cmd">sudo usermod -aG docker $USER</span></pre></div>
+      <div class="tab-panel" id="tab-xp">
+        <textarea class="output-area" id="out-xp" readonly spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <span class="copy-feedback" id="fb-xp"></span>
+          <button class="btn-action btn-copy"     onclick="copyOutput('out-xp','fb-xp')">[ Copy ]</button>
+          <button class="btn-action btn-download" onclick="downloadOutput('out-xp','user_xp_start.json')">[ Download JSON ]</button>
         </div>
       </div>
 
-      <div class="step-item">
-        <div class="step-badge">4</div>
-        <div class="step-item-body">
-          <div class="step-item-label">Open in your browser</div>
-          <div class="code-block"><pre><span class="url">http://localhost:8000</span></pre></div>
+      <div class="tab-panel" id="tab-instructions">
+        <div class="instructions-body">
+          <h3>// Setup Instructions //</h3>
+          <ol>
+            <li>Download <strong>.env</strong>, <strong>docker-compose.override.yml</strong>, and optionally <strong>user_xp_start.json</strong> using the buttons above.</li>
+            <li>Place all files in the same directory as the project's <code>docker-compose.yml</code>.</li>
+            <li>If using per-user XP start dates: <code>mv user_xp_start.json ./data/json/user_xp_start.json</code></li>
+            <li>Start the stack: <code>docker compose up -d</code></li>
+            <li>Open <code>http://your-server-ip:<span id="instr-port">8000</span></code> in your browser.</li>
+            <li>The engine polls abs-stats every <strong><span id="instr-poll">300</span>s</strong> — navigate to <code>/journal</code> after the first poll to see data.</li>
+          </ol>
+          <div class="note">
+            <strong>Unraid users:</strong> Download <code>template-builder.html</code> from the <a href="https://github.com/yxqzme2/achievement-engine-wrapped" style="color:var(--neon-blue)" target="_blank">GitHub repo</a> to generate Unraid templates instead of docker-compose files.
+          </div>
         </div>
       </div>
 
@@ -768,110 +719,95 @@ achievement-engine-wrapped/
 </div>
 
 <script>
-  let activeTab = 'override';
-  let _override = '';
-  let _env = '';
-  let _xp = '';
+  // ── USER ICON BUILDER ──────────────────────────────────────────────────────
+  const GITHUB_BASE     = 'https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/users/';
+  const ICON_LOCAL_BASE = '/icons/users/';
+  const MALE_ICONS   = ['user_male_001.png','user_male_002.png','user_male_003.png','user_male_004.png','user_male_005.png','user_male_006.png','user_male_007.png','user_male_008.png','user_male_009.png','user_male_010.png','user_male_011.png','user_male_012.png','user_male_013.png','user_male_014.png','user_male_015.png','user_male_016.png','user_male_017.png','user_male_018.png','user_male_019.png','user_male_020.png','user_male_021.png','user_male_022.png','user_male_023.png','user_male_024.png','user_male_025.png','user_male_026.png','user_male_027.png','user_male_028.png','user_male_029.png'];
+  const FEMALE_ICONS = ['user_female_001.png','user_female_002.png','user_female_003.png','user_female_004.png','user_female_005.png','user_female_006.png','user_female_007.png','user_female_008.png','user_female_009.png','user_female_010.png','user_female_011.png','user_female_012.png','user_female_013.png','user_female_014.png','user_female_015.png','user_female_016.png','user_female_017.png','user_female_018.png','user_female_019.png','user_female_020.png','user_female_021.png','user_female_022.png','user_female_023.png','user_female_024.png','user_female_025.png','user_female_026.png','user_female_027.png','user_female_028.png','user_female_029.png'];
+  let _rowCounter = 0;
 
-  // ── Tab switching ──
-  function switchTab(tab) {
-    activeTab = tab;
-    document.getElementById('ptab-override').classList.toggle('active', tab === 'override');
-    document.getElementById('ptab-env').classList.toggle('active', tab === 'env');
-    document.getElementById('ptab-xp').classList.toggle('active', tab === 'xp');
-    render();
-  }
+  function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // ── URL validation ──
-  function validateUrl() {
-    const val   = v('abs-url');
-    const icon  = document.getElementById('url-icon');
-    const msg   = document.getElementById('url-msg');
-    const input = document.getElementById('abs-url');
-    if (!val) {
-      icon.textContent = '';
-      msg.textContent = '';
-      msg.className = 'url-msg';
-      input.classList.remove('input-ok', 'input-err');
-      return;
-    }
-    const ip        = /^https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?(\/.*)?$/;
-    const localhost = /^https?:\/\/localhost(:\d+)?(\/.*)?$/;
-    const domain    = /^https?:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*(\.[a-zA-Z0-9][a-zA-Z0-9\-]*)+(:\d+)?(\/.*)?$/;
-    const hostport  = /^https?:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]+(:\d{2,5})(\/.*)?$/;
-    const valid = ip.test(val) || localhost.test(val) || domain.test(val) || hostport.test(val);
-    if (valid) {
-      icon.textContent = '✓';
-      icon.style.color = '#5a9a6e';
-      input.classList.add('input-ok');
-      input.classList.remove('input-err');
-      msg.textContent = 'Format looks good — server not tested';
-      msg.className = 'url-msg ok';
-    } else {
-      icon.textContent = '✗';
-      icon.style.color = '#cc4444';
-      input.classList.add('input-err');
-      input.classList.remove('input-ok');
-      msg.textContent = 'Must be http:// or https:// followed by an IP, domain, or hostname:port';
-      msg.className = 'url-msg err';
-    }
-  }
-
-  // ── Toggle single/multi mode ──
-  function toggleMode() {
-    const multi = document.getElementById('mode-multi').checked;
-    document.getElementById('section-single').style.display = multi ? 'none' : 'block';
-    document.getElementById('section-multi').style.display = multi ? 'block' : 'none';
-    update();
-  }
-
-  // ── Dynamic rows ──
-  function addUser() {
+  function addUserIconRow(username = '', iconPath = '') {
+    const id = ++_rowCounter;
+    const selectedFile = iconPath ? iconPath.replace(ICON_LOCAL_BASE, '') : '';
     const row = document.createElement('div');
-    row.className = 'dyn-row two-col';
+    row.className = 'user-icon-row'; row.id = `urow-${id}`;
     row.innerHTML = `
-      <input type="text" placeholder="username" class="u-name" oninput="update()">
-      <input type="text" placeholder="token..." class="u-token" oninput="update()">
-      <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>`;
-    document.getElementById('user-rows').appendChild(row);
-    update();
+      <input type="text" placeholder="username" value="${escapeHtml(username)}" id="uname-${id}" oninput="liveUpdate()">
+      <img class="user-icon-preview${selectedFile ? '' : ' empty'}" id="upreview-${id}"
+           src="${selectedFile ? GITHUB_BASE + selectedFile : ''}"
+           data-file="${escapeHtml(selectedFile)}"
+           onerror="this.style.visibility='hidden'">
+      <button class="pick-icon-btn" onclick="toggleIconPicker(${id})">[ PICK ICON ]</button>
+      <button class="remove-user-btn" onclick="removeUserRow(${id})">[ REMOVE ]</button>
+      <div class="icon-picker-panel" id="icon-panel-${id}">
+        <div class="icon-group-label">— MALE —</div>
+        <div class="icon-grid">
+          ${MALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id},'${f}')" title="${f}" loading="lazy">`).join('')}
+        </div>
+        <div class="icon-group-label">— FEMALE —</div>
+        <div class="icon-grid">
+          ${FEMALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id},'${f}')" title="${f}" loading="lazy">`).join('')}
+        </div>
+      </div>`;
+    document.getElementById('user-icon-rows').appendChild(row);
+    liveUpdate();
   }
 
-  function addAlias() {
-    const rows = document.getElementById('alias-rows');
-    if (!rows.children.length) {
-      // show header
-      document.getElementById('alias-header').style.display = 'grid';
-    }
+  function toggleIconPicker(id) { document.getElementById(`icon-panel-${id}`).classList.toggle('open'); }
+
+  function selectIcon(id, filename) {
+    document.getElementById(`icon-panel-${id}`).querySelectorAll('.icon-thumb').forEach(t => t.classList.remove('selected'));
+    document.getElementById(`icon-panel-${id}`).querySelector(`[data-file="${filename}"]`).classList.add('selected');
+    const preview = document.getElementById(`upreview-${id}`);
+    preview.src = GITHUB_BASE + filename;
+    preview.style.visibility = 'visible';
+    preview.dataset.file = filename;
+    document.getElementById(`icon-panel-${id}`).classList.remove('open');
+    liveUpdate();
+  }
+
+  function removeUserRow(id) { const r = document.getElementById(`urow-${id}`); if (r) r.remove(); liveUpdate(); }
+
+  function getUserIconsValue() {
+    const parts = [];
+    document.querySelectorAll('.user-icon-row').forEach(row => {
+      const id = row.id.replace('urow-','');
+      const username = (document.getElementById(`uname-${id}`)?.value || '').trim();
+      const file = document.getElementById(`upreview-${id}`)?.dataset?.file || '';
+      if (username && file) parts.push(`${username}:${ICON_LOCAL_BASE}${file}`);
+    });
+    return parts.join(',');
+  }
+
+  function loadUserIconsFromValue(val) {
+    document.getElementById('user-icon-rows').innerHTML = '';
+    _rowCounter = 0;
+    if (!val) return;
+    val.split(',').forEach(entry => {
+      const colonIdx = entry.indexOf(':');
+      if (colonIdx < 0) return;
+      const username = entry.slice(0, colonIdx).trim();
+      const iconPath = entry.slice(colonIdx + 1).trim();
+      if (username) addUserIconRow(username, iconPath);
+    });
+  }
+
+  // ── PER-USER XP DATES ─────────────────────────────────────────────────────
+  function addXpUserRow(username = '', date = '') {
     const row = document.createElement('div');
-    row.className = 'dyn-row two-col';
+    row.className = 'xp-user-row';
     row.innerHTML = `
-      <input type="text" placeholder="absusername" class="a-user" oninput="update()">
-      <input type="text" placeholder="Display Name" class="a-disp" oninput="update()">
-      <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>`;
-    rows.appendChild(row);
-    update();
-  }
-
-  function removeRow(btn) {
-    btn.closest('.dyn-row').remove();
-    update();
-  }
-
-  function addXpRow() {
-    const row = document.createElement('div');
-    row.className = 'dyn-row';
-    row.style.gridTemplateColumns = '1fr 1fr auto';
-    row.innerHTML = `
-      <input type="text" placeholder="username" class="xp-name" oninput="update()">
-      <input type="date" class="xp-date" oninput="update()">
-      <button class="btn-remove" onclick="removeRow(this)" title="Remove">×</button>`;
-    document.getElementById('xp-rows').appendChild(row);
-    update();
+      <input type="text" placeholder="username" class="xp-name" value="${escapeHtml(username)}" oninput="liveUpdate()">
+      <input type="date" class="xp-date" value="${escapeHtml(date)}" oninput="liveUpdate()">
+      <button class="btn-xp-remove" onclick="this.closest('.xp-user-row').remove();liveUpdate()">×</button>`;
+    document.getElementById('xp-user-rows').appendChild(row);
+    liveUpdate();
   }
 
   function getXpPairs() {
-    return [...document.querySelectorAll('#xp-rows .dyn-row')].map(r => {
+    return [...document.querySelectorAll('#xp-user-rows .xp-user-row')].map(r => {
       const u = r.querySelector('.xp-name')?.value.trim();
       const d = r.querySelector('.xp-date')?.value.trim();
       return (u && d) ? { user: u, date: d } : null;
@@ -885,225 +821,360 @@ achievement-engine-wrapped/
     return JSON.stringify(obj, null, 2);
   }
 
-  // ── Collapsible ──
-  function toggleC(bodyId, arrowId) {
-    const body = document.getElementById(bodyId);
-    const arrow = document.getElementById(arrowId);
-    body.classList.toggle('open');
-    arrow.classList.toggle('open', body.classList.contains('open'));
-    arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+  // ── LIVE PREVIEW PANEL ────────────────────────────────────────────────────
+  let _activePreviewTab = 'env';
+  let _previewEnv = '', _previewOverride = '', _previewXp = '';
+
+  function switchPreviewTab(name) {
+    _activePreviewTab = name;
+    ['env','override','xp'].forEach(t => {
+      document.getElementById(`ptab-${t}`).classList.toggle('active', t === name);
+    });
+    renderPreview();
   }
 
-  // ── Helpers ──
-  function v(id) { return (document.getElementById(id)?.value || '').trim(); }
-
-  function isReady() {
-    if (!v('abs-url')) return false;
-    const multi = document.getElementById('mode-multi').checked;
-    if (multi) {
-      const pairs = getMultiPairs();
-      return pairs.length > 0;
-    }
-    return !!v('abs-token');
+  function renderPreview() {
+    const content = _activePreviewTab === 'env' ? _previewEnv
+                  : _activePreviewTab === 'override' ? _previewOverride
+                  : _previewXp;
+    document.getElementById('preview-pre').textContent = content;
   }
 
-  function getMultiPairs() {
-    return [...document.querySelectorAll('#user-rows .dyn-row')].map(r => {
-      const u = r.querySelector('.u-name')?.value.trim();
-      const t = r.querySelector('.u-token')?.value.trim();
-      return (u && t) ? `${u}:${t}` : null;
-    }).filter(Boolean);
+  function liveUpdate() {
+    _previewEnv      = buildEnv();
+    _previewOverride = buildOverride();
+    _previewXp       = genXpJson();
+    renderPreview();
   }
 
-  function getAliases() {
-    return [...document.querySelectorAll('#alias-rows .dyn-row')].map(r => {
-      const u = r.querySelector('.a-user')?.value.trim();
-      const d = r.querySelector('.a-disp')?.value.trim();
-      return (u && d) ? `${u}:${d}` : null;
-    }).filter(Boolean).join(',');
+  function dlFile(type) {
+    const content  = type === 'env' ? _previewEnv : type === 'override' ? _previewOverride : _previewXp;
+    const filename = type === 'env' ? '.env' : type === 'override' ? 'docker-compose.override.yml' : 'user_xp_start.json';
+    _download(filename, content);
   }
 
-  // ── File generators ──
-  function genOverride() {
-    const url   = v('abs-url')  || 'http://your-audiobookshelf:13378';
-    const multi = document.getElementById('mode-multi').checked;
-    const disc  = v('discord-webhook');
+  // ── SECTION TOGGLE ────────────────────────────────────────────────────────
+  function toggleSection(id) { document.getElementById(id).classList.toggle('collapsed'); }
+
+  // ── HELPERS ───────────────────────────────────────────────────────────────
+  function val(id)  { return (document.getElementById(id)?.value || '').trim(); }
+  function chk(id)  { return document.getElementById(id)?.checked ? 'true' : 'false'; }
+  function line(key, value) { return `${key}=${value}`; }
+
+  // ── FILE GENERATORS ───────────────────────────────────────────────────────
+  function buildEnv() {
+    const smtpHost = val('smtp_host');
     const lines = [
-      'services:',
-      '  abs-stats:',
-      '    environment:'
+      '# achievement-engine — generated by Achievement Engine Setup Wizard',
+      '# Place this file alongside docker-compose.yml',
+      '',
+      '# ─── Core ──────────────────────────────────────────────',
+      line('ABSSTATS_BASE_URL', 'http://abs-stats:3000'),
+      line('POLL_SECONDS',      val('poll_seconds') || '300'),
+      line('STATE_DB_PATH',     '/data/state.db'),
+      line('TZ',                val('tz') || 'America/New_York'),
+      '',
+      '# ─── Users ─────────────────────────────────────────────',
+      line('ALLOWED_USERS', val('allowed_users')),
+      line('USER_ALIASES',  val('user_aliases')),
+      line('USER_ICONS',    getUserIconsValue()),
+      line('USER_EMAILS',   val('user_emails')),
+      '',
+      '# ─── Progression ───────────────────────────────────────',
+      line('XP_START_TIMESTAMP',              val('xp_start')         || '1767225600'),
+      line('STRICT_VERIFICATION',             chk('strict_verification')),
+      line('VERIFY_LISTEN_THRESHOLD',         val('verify_threshold')  || '0.80'),
+      line('REQUIRE_DURATION_FOR_CREDIT',     chk('require_duration')),
+      line('REQUIRE_2026_SESSION_FOR_CREDIT', chk('require_2026_session')),
+      '',
+      '# ─── Wrapped ───────────────────────────────────────────',
+      line('WRAPPED_YEAR',    val('wrapped_year')    || '2026'),
+      line('WRAPPED_BOSS_HP', val('wrapped_boss_hp') || '250000'),
+      '',
     ];
-    lines.push(`      - ABS_URL=${url}`);
-    if (multi) {
-      const pairs = getMultiPairs();
-      lines.push(`      - ABS_TOKENS=${pairs.length ? pairs.join(',') : 'username:your-token'}`);
-    } else {
-      lines.push(`      - ABS_TOKEN=${v('abs-token') || 'your-abs-api-token'}`);
+
+    if (smtpHost) {
+      lines.push('# ─── SMTP ──────────────────────────────────────────────');
+      lines.push(line('SMTP_HOST',        smtpHost));
+      lines.push(line('SMTP_PORT',        val('smtp_port') || '587'));
+      lines.push(line('SMTP_USERNAME',    val('smtp_username')));
+      lines.push(line('SMTP_PASSWORD',    val('smtp_password')));
+      lines.push(line('SMTP_FROM',        val('smtp_from')));
+      lines.push(line('SMTP_TO_OVERRIDE', val('smtp_to_override')));
+      lines.push(line('SEND_TEST_EMAIL',  'false'));
+      lines.push(line('SMTP_DEBUG',       '0'));
+      lines.push('');
     }
-    lines.push('      - ENGINE_URL=http://achievement-engine:8000');
-    if (disc) lines.push(`      - DISCORD_WEBHOOK_URL=${disc}`);
+
+    lines.push('# ─── Advanced ──────────────────────────────────────────');
+    lines.push(line('RUN_ACHIEVEMENT_BACKFILL', 'false'));
+    lines.push(line('BACKFILL_ONCE_KEY',        val('backfill_key') || 'ach_backfill_v1'));
+
     return lines.join('\n');
   }
 
-  function genEnv() {
-    const tz        = v('timezone')      || 'America/New_York';
-    const poll      = v('poll-seconds')  || '300';
-    const allowed   = v('allowed-users');
-    const aliases   = getAliases();
-    const smtpHost  = v('smtp-host');
-    const smtpPort  = v('smtp-port')    || '587';
-    const smtpUser  = v('smtp-user');
-    const smtpPass  = v('smtp-pass');
-    const smtpFrom  = v('smtp-from');
-    const smtpOver  = v('smtp-override');
+  function buildOverride() {
+    const port       = val('port_dashboard') || '8000';
+    const pathData   = val('path_data')   || './data';
+    const pathStatic = val('path_static');
+    const pathCovers = val('path_covers');
+    const absUrl     = val('abs_url');
+    const absToken   = val('abs_token');
+    const absTokens  = val('abs_tokens');
+    const absUsers   = val('abs_allowed_usernames');
+    const discord    = val('discord_webhook');
 
-    const L = [];
-    L.push('# Achievement Engine — Environment Configuration');
-    L.push('# Generated by Setup Wizard');
-    L.push('');
-    L.push('# Internal companion service URL — do not change');
-    L.push('ABSSTATS_BASE_URL=http://abs-stats:3000');
-    L.push('');
-    L.push('# Poll interval in seconds (how often to check ABS for new data)');
-    L.push(`POLL_SECONDS=${poll}`);
-    L.push('');
-    L.push('# Database path inside container — do not change');
-    L.push('STATE_DB_PATH=/data/state.db');
-    L.push('');
-    L.push('# Timezone for date display');
-    L.push(`TZ=${tz}`);
-    L.push('');
-    L.push('# Unix timestamp: XP/loot economy start date');
-    L.push('XP_START_TIMESTAMP=1767225600');
-    L.push('');
-    L.push('# ── Completion Verification ──────────────────────────');
-    L.push('STRICT_VERIFICATION=false');
-    L.push('VERIFY_LISTEN_THRESHOLD=0.80');
-    L.push('REQUIRE_DURATION_FOR_CREDIT=true');
-    L.push('REQUIRE_2026_SESSION_FOR_CREDIT=true');
-    L.push('');
-    L.push('# ── Users ───────────────────────────────────────────');
-    L.push(`ALLOWED_USERS=${allowed}`);
-    L.push(`USER_ALIASES=${aliases}`);
-    L.push('USER_ICONS=');
-    L.push('');
-    L.push('# ── Wrapped Year-End Experience ──────────────────────');
-    L.push('WRAPPED_YEAR=2026');
-    L.push('WRAPPED_BOSS_HP=250000');
-    L.push('');
-    L.push('# ── Achievement Backfill ─────────────────────────────');
-    L.push('RUN_ACHIEVEMENT_BACKFILL=false');
-    L.push('BACKFILL_ONCE_KEY=ach_backfill_v1');
-    L.push('');
-    if (smtpHost) {
-      L.push('# ── Email Notifications ──────────────────────────────');
-      L.push(`SMTP_HOST=${smtpHost}`);
-      L.push(`SMTP_PORT=${smtpPort}`);
-      L.push(`SMTP_USERNAME=${smtpUser}`);
-      L.push(`SMTP_PASSWORD=${smtpPass}`);
-      L.push(`SMTP_FROM=${smtpFrom}`);
-      L.push(`SMTP_TO_OVERRIDE=${smtpOver}`);
-      L.push('SEND_TEST_EMAIL=false');
-      L.push('SMTP_DEBUG=0');
-    } else {
-      L.push('# ── Email Notifications (uncomment to enable) ────────');
-      L.push('# SMTP_HOST=smtp.gmail.com');
-      L.push('# SMTP_PORT=587');
-      L.push('# SMTP_USERNAME=you@example.com');
-      L.push('# SMTP_PASSWORD=your-password');
-      L.push('# SMTP_FROM=Achievement Engine <noreply@yourdomain.com>');
-      L.push('# SMTP_TO_OVERRIDE=');
-    }
-    return L.join('\n');
+    const lines = [
+      '# docker-compose.override.yml — generated by Achievement Engine Setup Wizard',
+      '# Place alongside docker-compose.yml, then run: docker compose up -d',
+      '',
+      'services:',
+      '  achievement-engine:',
+      '    ports:',
+      `      - "${port}:8000"`,
+      '    volumes:',
+      `      - ${pathData}:/data`,
+    ];
+
+    if (pathStatic) lines.push(`      - ${pathStatic}:/app/static`);
+    if (pathCovers) lines.push(`      - ${pathCovers}:/data/covers`);
+
+    lines.push('');
+    lines.push('  abs-stats:');
+    lines.push('    environment:');
+    lines.push('      - ENGINE_URL=http://achievement-engine:8000');
+    if (absUrl)    lines.push(`      - ABS_URL=${absUrl}`);
+    if (absToken)  lines.push(`      - ABS_TOKEN=${absToken}`);
+    if (absTokens) lines.push(`      - ABS_TOKENS=${absTokens}`);
+    if (absUsers)  lines.push(`      - ALLOWED_USERNAMES=${absUsers}`);
+    if (discord)   lines.push(`      - DISCORD_WEBHOOK_URL=${discord}`);
+
+    return lines.join('\n');
   }
 
-  // ── Syntax highlight ──
-  function esc(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // ── GENERATE BUTTON (opens modal with copy/download) ─────────────────────
+  function generate() {
+    liveUpdate();
+    document.getElementById('out-env').value      = _previewEnv;
+    document.getElementById('out-override').value = _previewOverride;
+    document.getElementById('out-xp').value       = _previewXp;
+    document.getElementById('instr-port').textContent = val('port_dashboard') || '8000';
+    document.getElementById('instr-poll').textContent = val('poll_seconds')   || '300';
+    openModal();
+    switchTab('env');
   }
 
-  function highlight(content, type) {
-    return content.split('\n').map(line => {
-      if (type === 'env') {
-        if (line.startsWith('#'))  return `<span class="sc">${esc(line)}</span>`;
-        if (!line.trim())          return '';
-        const eq = line.indexOf('=');
-        if (eq > -1) {
-          const k = esc(line.slice(0, eq));
-          const val = esc(line.slice(eq + 1));
-          return `<span class="sk">${k}</span><span style="color:#555">=</span>${val
-            ? `<span class="sv">${val}</span>`
-            : `<span class="se">(empty)</span>`}`;
-        }
-        return esc(line);
-      } else {
-        // YAML
-        if (line.startsWith('#')) return `<span class="sc">${esc(line)}</span>`;
-        if (!line.trim())         return '';
-        const trimmed = line.trim();
-        if (trimmed.startsWith('-')) {
-          const indent = line.match(/^\s*/)[0];
-          const rest   = trimmed.slice(1).trim();
-          const eq     = rest.indexOf('=');
-          if (eq > -1) {
-            return `${indent}<span class="yd">-</span> <span class="yk">${esc(rest.slice(0,eq))}</span><span style="color:#555">=</span><span class="yv">${esc(rest.slice(eq+1))}</span>`;
-          }
-          return `${indent}<span class="yd">-</span> <span class="yv">${esc(rest)}</span>`;
-        }
-        const colon = line.indexOf(':');
-        if (colon > -1) {
-          return `<span class="yk">${esc(line.slice(0,colon+1))}</span><span class="yv">${esc(line.slice(colon+1))}</span>`;
-        }
-        return esc(line);
-      }
-    }).join('\n');
+  function openModal()  { document.getElementById('outputModal').classList.add('open'); }
+  function closeModal() { document.getElementById('outputModal').classList.remove('open'); }
+  function handleOverlayClick(e) { if (e.target === document.getElementById('outputModal')) closeModal(); }
+
+  function switchTab(name) {
+    ['env','override','xp','instructions'].forEach(t => {
+      document.getElementById(`tab-${t}`).classList.toggle('active', t === name);
+      document.getElementById(`tab-btn-${t}`).classList.toggle('active', t === name);
+    });
   }
 
-  // ── Render preview ──
-  function render() {
-    let content, type;
-    if (activeTab === 'xp') {
-      content = _xp;
-      type = 'json';
-    } else if (activeTab === 'env') {
-      content = _env;
-      type = 'env';
-    } else {
-      content = _override;
-      type = 'yaml';
-    }
-    if (type === 'json') {
-      document.getElementById('preview-pre').innerHTML = esc(content);
-    } else {
-      document.getElementById('preview-pre').innerHTML = highlight(content, type);
-    }
+  function copyOutput(textareaId, feedbackId) {
+    const text = document.getElementById(textareaId).value;
+    navigator.clipboard.writeText(text).then(() => {
+      const fb = document.getElementById(feedbackId);
+      fb.textContent = '// copied to clipboard //';
+      fb.classList.add('show');
+      setTimeout(() => { fb.classList.remove('show'); fb.textContent = ''; }, 1800);
+    }).catch(() => { const el = document.getElementById(textareaId); el.select(); document.execCommand('copy'); });
   }
 
-  // ── Main update ──
-  function update() {
-    _override = genOverride();
-    _env      = genEnv();
-    _xp       = genXpJson();
-    render();
-    const ready = isReady();
-    document.getElementById('warn-box').style.display = ready ? 'none' : 'block';
+  function downloadOutput(textareaId, filename) {
+    _download(filename, document.getElementById(textareaId).value);
   }
 
-  // ── Downloads ──
-  function dl(filename, content) {
-    const blob = new Blob([content], { type: 'application/octet-stream' });
+  function _download(filename, content) {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
-    a.href = url; a.download = filename; a.click();
-    URL.revokeObjectURL(url);
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
   }
 
-  function dlOverride() { dl('docker-compose.override.yml', _override); }
-  function dlEnv()      { dl('env.txt', _env); }
-  function dlXp()       { dl('user_xp_start.json', _xp); }
+  // ── LOAD CONFIG FILE ──────────────────────────────────────────────────────
+  document.getElementById('config-file-input').addEventListener('change', function() {
+    const name = this.files[0]?.name || 'No file selected';
+    document.getElementById('config-file-name').textContent = name;
+    const fb = document.getElementById('load-feedback');
+    fb.style.display = 'none'; fb.innerHTML = '';
+  });
+
+  function loadConfigFile() {
+    const fileInput = document.getElementById('config-file-input');
+    if (!fileInput.files.length) { alert('Please choose a file first.'); return; }
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const content = e.target.result;
+      const filename = file.name.toLowerCase();
+      try {
+        const kvMap = (filename.endsWith('.yml') || filename.endsWith('.yaml'))
+          ? parseOverrideYml(content)
+          : filename.endsWith('.xml')
+            ? parseUnraidTemplate(content)
+            : parseEnvOrSh(content);
+        populateFromMap(kvMap);
+      } catch (err) {
+        const fb = document.getElementById('load-feedback');
+        fb.style.display = 'block';
+        fb.innerHTML = `<div class="lf-skip">Error parsing file: ${err.message}</div>`;
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function parseEnvOrSh(content) {
+    const map = {};
+    for (let rawLine of content.split('\n')) {
+      let line = rawLine.trim();
+      if (!line || line.startsWith('#')) continue;
+      if (line.startsWith('export ')) line = line.slice(7).trim();
+      const eqIdx = line.indexOf('=');
+      if (eqIdx < 1) continue;
+      const key = line.slice(0, eqIdx).trim();
+      let v = line.slice(eqIdx + 1).trim();
+      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) v = v.slice(1, -1);
+      map[key] = v;
+    }
+    return map;
+  }
+
+  function parseOverrideYml(content) {
+    const map = {};
+    let inEnv = false;
+    for (const rawLine of content.split('\n')) {
+      const line = rawLine.trimEnd();
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      if (trimmed === 'environment:') { inEnv = true; continue; }
+      if (inEnv && trimmed && !trimmed.startsWith('-') && /^\w/.test(trimmed)) inEnv = false;
+      if (inEnv && trimmed.startsWith('- ')) {
+        const item = trimmed.slice(2).trim();
+        const eq = item.indexOf('=');
+        if (eq > 0) map[item.slice(0, eq).trim()] = item.slice(eq + 1).trim();
+      }
+      const portM = trimmed.match(/^-\s+["']?(\d+):8000["']?$/);
+      if (portM) map['__PORT__'] = portM[1];
+      const volM = trimmed.match(/^-\s+(.+):(.+)$/);
+      if (volM) {
+        const host = volM[1].trim().replace(/^["']|["']$/g, '');
+        const cont = volM[2].trim().replace(/^["']|["']$/g, '');
+        if (cont === '/data')                               map['__PATH_DATA__']   = host;
+        if (cont === '/static' || cont === '/app/static')  map['__PATH_STATIC__'] = host;
+        if (cont === '/data/covers')                        map['__PATH_COVERS__'] = host;
+      }
+    }
+    return map;
+  }
+
+  function parseUnraidTemplate(content) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(content, 'application/xml');
+    if (xmlDoc.querySelector('parsererror')) throw new Error('Invalid XML — not a valid Unraid template.');
+    const map = {};
+    xmlDoc.querySelectorAll('Config').forEach(cfg => {
+      const type   = cfg.getAttribute('Type')   || '';
+      const target = (cfg.getAttribute('Target') || '').trim();
+      const value  = (cfg.textContent || '').trim();
+      if (type === 'Port' && target === '8000') { if (value) map['__PORT__'] = value; }
+      else if (type === 'Path') {
+        if      (target === '/data')                               map['__PATH_DATA__']   = value;
+        else if (target === '/static' || target === '/app/static') map['__PATH_STATIC__'] = value;
+        else if (target === '/data/covers')                        map['__PATH_COVERS__'] = value;
+      } else if (type === 'Variable' && target) { map[target] = value; }
+    });
+    return map;
+  }
+
+  function populateFromMap(map) {
+    const FIELD_MAP = {
+      'TZ':                              ['tz',                    'text',   'Timezone'],
+      'POLL_SECONDS':                    ['poll_seconds',          'number', 'Poll Interval'],
+      'ALLOWED_USERS':                   ['allowed_users',         'text',   'Allowed Users'],
+      'USER_ALIASES':                    ['user_aliases',          'text',   'User Aliases'],
+      'USER_EMAILS':                     ['user_emails',           'text',   'User Emails'],
+      'XP_START_TIMESTAMP':              ['xp_start',             'number', 'XP Start Timestamp'],
+      'STRICT_VERIFICATION':             ['strict_verification',   'bool',   'Strict Verification'],
+      'VERIFY_LISTEN_THRESHOLD':         ['verify_threshold',      'text',   'Listen Threshold'],
+      'REQUIRE_DURATION_FOR_CREDIT':     ['require_duration',      'bool',   'Require Duration'],
+      'REQUIRE_2026_SESSION_FOR_CREDIT': ['require_2026_session',  'bool',   'Require In-Scope Session'],
+      'WRAPPED_YEAR':                    ['wrapped_year',          'number', 'Wrapped Year'],
+      'WRAPPED_BOSS_HP':                 ['wrapped_boss_hp',       'number', 'Boss HP'],
+      'SMTP_HOST':                       ['smtp_host',             'text',   'SMTP Host'],
+      'SMTP_PORT':                       ['smtp_port',             'number', 'SMTP Port'],
+      'SMTP_USERNAME':                   ['smtp_username',         'text',   'SMTP Username'],
+      'SMTP_PASSWORD':                   ['smtp_password',         'pass',   'SMTP Password'],
+      'SMTP_FROM':                       ['smtp_from',             'text',   'From Address'],
+      'SMTP_TO_OVERRIDE':                ['smtp_to_override',      'text',   'Override To Address'],
+      'BACKFILL_ONCE_KEY':               ['backfill_key',          'text',   'Backfill Once Key'],
+      'ABS_URL':                         ['abs_url',               'text',   'ABS URL'],
+      'ABS_TOKEN':                       ['abs_token',             'pass',   'Global ABS Token'],
+      'ABS_TOKENS':                      ['abs_tokens',            'text',   'Per-User Tokens'],
+      'ALLOWED_USERNAMES':               ['abs_allowed_usernames', 'text',   'Allowed Usernames'],
+      'DISCORD_WEBHOOK_URL':             ['discord_webhook',       'text',   'Discord Webhook'],
+      '__PORT__':                        ['port_dashboard',        'number', 'Dashboard Port'],
+      '__PATH_DATA__':                   ['path_data',             'text',   'Data Directory'],
+      '__PATH_STATIC__':                 ['path_static',           'text',   'Static Files Directory'],
+      '__PATH_COVERS__':                 ['path_covers',           'text',   'Covers Directory'],
+    };
+
+    const populated = [], unknown = [];
+
+    for (const [key, value] of Object.entries(map)) {
+      // Special handling for USER_ICONS — use icon picker
+      if (key === 'USER_ICONS') {
+        loadUserIconsFromValue(value);
+        if (value) populated.push('User Icons');
+        continue;
+      }
+      if (!FIELD_MAP[key]) {
+        if (key && !['ENGINE_URL','STATE_DB_PATH','ABSSTATS_BASE_URL','SEND_TEST_EMAIL',
+                     'SMTP_DEBUG','RUN_ACHIEVEMENT_BACKFILL','WRAPPED_ENABLED'].includes(key)) {
+          unknown.push(key);
+        }
+        continue;
+      }
+      const [fieldId, type, label] = FIELD_MAP[key];
+      const el = document.getElementById(fieldId);
+      if (!el) continue;
+      if (type === 'bool') { el.checked = (value === 'true' || value === '1' || value === 'yes'); }
+      else { if (value !== '') el.value = value; }
+      populated.push(label);
+    }
+
+    const fb = document.getElementById('load-feedback');
+    fb.style.display = 'block';
+    let html = '';
+    if (populated.length) {
+      html += `<div class="lf-heading">Populated (${populated.length})</div>`;
+      html += populated.map(n => `<div class="lf-ok">  ✓ ${n}</div>`).join('');
+    } else {
+      html += '<div class="lf-skip">No matching fields found in this file.</div>';
+    }
+    if (unknown.length) {
+      html += `<div class="lf-heading">Unrecognized keys (${unknown.length})</div>`;
+      html += unknown.map(k => `<div class="lf-skip">  — ${k}</div>`).join('');
+    }
+    fb.innerHTML = html;
+
+    ['sec0','sec1','sec2','sec3','sec4','sec5','sec6','sec7'].forEach(id => {
+      document.getElementById(id)?.classList.remove('collapsed');
+    });
+
+    liveUpdate();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   // Init
-  update();
+  liveUpdate();
 </script>
 </body>
 </html>
