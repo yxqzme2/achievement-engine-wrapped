@@ -177,6 +177,66 @@ The sync saves covers to your data folder (`/data/covers`) and only needs to be 
 
 ---
 
+## User Avatars
+
+User avatars are larger portrait images displayed in three places: the **Roster** page, the **Character Sheet / Inventory**, and the **gear combat win screen** in Wrapped. They are not configured through the template builder — you add them manually by placing image files in your data folder.
+
+### Where to put them
+
+Place avatar files in your appdata avatars folder:
+
+- **Unraid:** `/mnt/user/appdata/achievement-engine/avatars/`
+- **Docker Compose:** whatever host path you mapped to `/data` — create an `avatars/` subfolder inside it
+
+### Naming convention
+
+Files must be named after the ABS username in **lowercase**. For a user named `Alice`:
+
+| File | Used by |
+|---|---|
+| `alice.png` | Roster, Character Sheet, Wrapped win screen |
+| `alice.gif` | Roster only (animated avatars) |
+| `win-alice.png` | Wrapped win screen only — optional hero/victory portrait |
+
+### Format support and fallback chain
+
+Each surface tries formats in order and falls back gracefully:
+
+**Roster**
+1. `username.gif`
+2. `username.png`
+3. ABS profile picture (proxied automatically)
+4. First letter of username displayed as a text initial
+
+**Character Sheet / Inventory**
+1. `username.png`
+2. ABS profile picture
+3. Image element removed (no placeholder shown)
+
+**Wrapped gear win screen**
+1. `win-username.png` *(optional victory portrait — separate from the standard avatar)*
+2. `username.png`
+3. ABS profile picture
+4. First letter of username displayed as a text initial
+
+### Supported formats
+
+| Format | Roster | Character Sheet | Win Screen |
+|---|---|---|---|
+| PNG | ✅ | ✅ | ✅ |
+| GIF | ✅ (animated) | ❌ | ❌ |
+| SVG | ❌ | ❌ | ❌ |
+
+### Image size
+
+No strict size requirements — CSS controls the display dimensions on each page. A **square image** works best across all three surfaces. Recommended minimum: **256×256 px** for clean display at all screen sizes.
+
+### The win portrait
+
+`win-username.png` is optional. If present, it replaces the standard avatar specifically on the Wrapped boss battle win screen — useful if you want a more dramatic or styled victory pose separate from the everyday roster portrait. If not found, the system falls back to `username.png`.
+
+---
+
 ## Cleanup / Reset (Testing)
 
 Remove containers, images, and the cloned folder completely:

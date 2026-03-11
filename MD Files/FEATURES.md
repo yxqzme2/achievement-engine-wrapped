@@ -303,7 +303,8 @@ A typical mounted data folder should include:
 | `csv/quest.csv` | Quest definitions (182 quests) |
 | `csv/xpcurve.csv` | XP curve table |
 | `covers/` | Synced cover art from ABS |
-| `icons/` | Avatars and custom icons |
+| `icons/` | Achievement and gear icon assets |
+| `avatars/` | Per-user avatar images (see [User Avatars](#user-avatars)) |
 
 Override any file by placing a custom copy in your mapped `/data` path before startup.
 

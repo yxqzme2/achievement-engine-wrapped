@@ -51,6 +51,7 @@ Fill in your settings, download both XML files, and drop them onto your Unraid f
 | **Year-end Wrapped** | 9-slide animated boss battle driven by your real listening data and gear |
 | **14+ portal pages** | Dashboard, character sheet, leaderboard, quests, loot compendium, tier list |
 | **Multi-user** | Track a family or group with individual API tokens |
+| **User avatars** | Per-user portrait images on the Roster, Character Sheet, and Wrapped win screen |
 | **Notifications** | Discord webhook and SMTP email |
 
 ---
