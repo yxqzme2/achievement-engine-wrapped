@@ -1,0 +1,173 @@
+﻿Base_Item,Slot,Type
+Brigandine,Chest,Leather
+Robe,Chest,Cloth
+Breastplate,Chest,Plate
+Jerkin,Chest,Leather
+Gambeson,Chest,Cloth
+Hauberk,Chest,Mail
+Cuirass,Chest,Plate
+Tunic,Chest,Cloth
+Plate,Chest,Plate
+Mail,Chest,Mail
+Doublet,Chest,Cloth
+Tabard,Chest,Cloth
+Vambraces,Chest,Plate
+Kevlar Vest,Chest,Ballistic
+Pauldrons,Chest,Plate
+Carapace,Chest,Bio-Armor
+Exosuit,Chest,Powered
+Bracers,Chest,Leather
+Harness,Chest,Utility
+Aegis Coat,Chest,Heavy Cloth
+Battle Jacket,Chest,Reinforced
+Lamellar,Chest,Scale
+Plastron,Chest,Plate
+Duster,Chest,Leather
+Bodyglove,Chest,Stealth Weave
+Void Mantle,Chest,Cloak
+Tabard Vest,Chest,Ceremonial
+Shell Armor,Chest,Composite
+Scaleshirt,Chest,Scale
+Surcoat,Chest,Cloth
+Greathelm,Head,Plate
+Cowl,Head,Cloth
+Diadem,Head,Jewelry
+Visor,Head,Plate
+Hood,Head,Cloth
+Crown,Head,Jewelry
+Circlet,Head,Jewelry
+Bascinet,Head,Plate
+Sallet,Head,Plate
+Armet,Head,Plate
+Coif,Head,Mail
+Helm,Head,Plate
+Mask,Head,Cloth
+Visage,Head,Arcane
+Skullcap,Head,Leather
+Faceplate,Head,Composite
+Battle Visor,Head,Tactical
+Pilot Hood,Head,Flight Gear
+Cerebral Halo,Head,Psionic
+Targeter,Head,Optics
+Wreath,Head,Divine
+War Bonnet,Head,Leather
+Mindcage,Head,Psionic
+Deathmask,Head,Bone
+Horned Casque,Head,Plate
+Observer Goggles,Head,Optics
+Laurel,Head,Ceremonial
+Amulet,Neck,Jewelry
+Gorget,Neck,Plate
+Torque,Neck,Jewelry
+Medallion,Neck,Jewelry
+Pendant,Neck,Jewelry
+Necklace,Neck,Jewelry
+Choker,Neck,Jewelry
+Charm,Neck,Jewelry
+Locket,Neck,Jewelry
+Beads,Neck,Jewelry
+Sigil,Neck,Insignia
+Dog Tags,Neck,Military
+Rosary,Neck,Divine
+Chain,Neck,Metal
+Collar,Neck,Leather
+Pectoral,Neck,Ceremonial
+Charmstring,Neck,Twine
+Data Lanyard,Neck,Tech
+Soul Prism,Neck,Crystal
+Oathcord,Neck,Braided
+Rune Torque,Neck,Runic Metal
+Monolith Shard,Neck,Stone
+Lifesignet,Neck,Biotech
+Grav Pendant,Neck,High-Tech
+Band,Ring,Jewelry
+Signet,Ring,Jewelry
+Loop,Ring,Jewelry
+Seal,Ring,Jewelry
+Circle,Ring,Jewelry
+Ring,Ring,Jewelry
+Coil,Ring,Jewelry
+Shank,Ring,Jewelry
+Loopband,Ring,Metal
+Knuckleband,Ring,Iron
+Halo Ring,Ring,Radiant
+Thumb Ring,Ring,Bone
+Circuit Ring,Ring,High-Tech
+Shard Ring,Ring,Crystal
+Seal Ring,Ring,Noble
+Warden Band,Ring,Steel
+Blood Ring,Ring,Occult
+Starloop,Ring,Astral
+Coil Ring,Ring,Copper
+Vowband,Ring,Silver
+Hexband,Ring,Runic
+Null Ring,Ring,Void
+Totem,Trinket,Relic
+Reliquary,Trinket,Relic
+Bauble,Trinket,Misc
+Phylactery,Trinket,Relic
+Idol,Trinket,Relic
+Icon,Trinket,Relic
+Token,Trinket,Misc
+Figurine,Trinket,Relic
+Orb,Trinket,Relic
+Fetish,Trinket,Relic
+Charm,Trinket,Misc
+Artifact,Trinket,Relic
+Phaser Relic,Trinket,Relic
+Lantern Core,Trinket,Power Cell
+Compass,Trinket,Utility
+Microdrone,Trinket,Drone
+Chronometer,Trinket,Clockwork
+Votive,Trinket,Divine
+Talisman,Trinket,Charm
+Lucky Bone,Trinket,Bone
+Memory Crystal,Trinket,Crystal
+Beacon,Trinket,Signal Device
+Phylactery Shard,Trinket,Phylactery
+Rune Tablet,Trinket,Stone
+Pocket Shrine,Trinket,Divine
+Data Cube,Trinket,Archive
+Soul Vial,Trinket,Essence
+Holo Projector,Trinket,Tech
+Cogwheel,Trinket,Clockwork
+Echo Recorder,Trinket,Audio Device
+Gladius,Weapon,Sword
+Claymore,Weapon,Sword
+Warstaff,Weapon,Staff
+Recurve,Weapon,Bow
+Dirk,Weapon,Dagger
+Maul,Weapon,Mace
+Rapier,Weapon,Sword
+Spatha,Weapon,Sword
+Falchion,Weapon,Sword
+Morningstar,Weapon,Mace
+Longbow,Weapon,Bow
+Sledge,Weapon,Mace
+Scimitar,Weapon,Sword
+Greataxe,Weapon,Axe
+Halberd,Weapon,Polearm
+Dagger,Weapon,Dagger
+Mace,Weapon,Mace
+Warhammer,Weapon,Mace
+Shortsword,Weapon,Sword
+Hand-Cannon,Weapon,Firearm
+Pulse Rifle,Weapon,Energy Rifle
+Arc Pistol,Weapon,Sidearm
+Chainblade,Weapon,Chainsword
+Spear,Weapon,Polearm
+Glaive,Weapon,Polearm
+Katana,Weapon,Blade
+Crossbow,Weapon,Bow
+Repeater,Weapon,Ranged
+Wand,Weapon,Focus
+Scepter,Weapon,Focus
+Lance,Weapon,Polearm
+Whip,Weapon,Flexible
+Chakram,Weapon,Thrown
+Boomstick,Weapon,Scattergun
+Railgun,Weapon,Magnetic
+Shock Baton,Weapon,Blunt
+Spellbook,Weapon,Grimoire
+Needler,Weapon,Launcher
+Sunblade,Weapon,Sword

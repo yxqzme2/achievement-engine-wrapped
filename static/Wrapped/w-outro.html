@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="/static/Wrapped/w-shared.css?v=4">
+  <link rel="stylesheet" href="/static/Wrapped/w-outro.css?v=6">
+</head>
+<body>
+<div id="screen-fx"></div>
+<div id="progress-bar-row"></div>
+<div id="combat-ui">
+  <div class="hp-bar-container" id="boss-hp-container">
+    <div class="hp-label">💀💀 SYSTEM ADMINISTRATOR [ELITE✚✚]</div>
+    <div class="hp-fill" id="boss-hp-fill"></div>
+    <div class="hp-text" id="boss-hp-text">0 / 15,000</div>
+  </div>
+  <div id="user-stats-bar"></div>
+  <div class="hp-bar-container" id="user-hp-container">
+    <div id="user-shield"></div>
+    <div class="hp-label" id="hp-user-label">LISTENER</div>
+    <div class="hp-fill" id="user-hp-fill"></div>
+    <div class="hp-text" id="user-hp-text">0 / 1,500</div>
+  </div>
+</div>
+
+<canvas id="fireworks-canvas"></canvas>
+
+<div id="slide-content">
+
+  <!-- LOSE STATE -->
+  <div id="outro-lose" style="display:none;">
+    <div id="lose-glass" class="glass" style="border-color:#8b0000;box-shadow:0 0 40px rgba(255,0,0,0.25);max-width:700px;">
+      <div class="lbl" style="color:#ff4444;letter-spacing:6px;">SYSTEM VERDICT</div>
+      <div id="lose-glitch" class="verdict-unworthy" style="margin:18px 0 10px 0;">UNWORTHY</div>
+      <div class="big-text" id="lose-title" style="font-size:1.6rem;color:#ffcccc;margin-bottom:8px;">ASSET LIQUIDATED</div>
+      <div class="sub-text" id="lose-desc" style="font-size:1.05rem;line-height:1.7;color:#c0a090;margin-bottom:28px;">
+        Loading verdict...
+      </div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <button class="outro-btn outro-btn-primary" onclick="location.href='/wrapped'">
+          ↺ INITIATE RECURSION PROTOCOL
+        </button>
+        <a id="outro-character-btn" class="outro-btn outro-btn-secondary" href="/wrapped">
+          👤 VIEW CHARACTER SHEET
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIN STATE -->
+  <div id="outro-win" style="display:none;">
+    <div class="glass" style="border-color:#00ff00;box-shadow:0 0 30px rgba(0,255,0,0.2);max-width:700px;">
+      <div class="lbl" style="color:#00ff00;font-weight:bold;font-size:1.5rem;">SYSTEM PURGED</div>
+      <div class="big-text" id="outro-title" style="font-size:2rem;">You survived the 2026 Cull.</div>
+      <div class="sub-text" id="outro-desc" style="font-size:1.2rem;margin-top:12px;">The System Administrator has been vanquished. Your legend is written.</div>
+      <button class="outro-btn outro-btn-primary" style="margin-top:30px;" onclick="location.href='/wrapped'">
+        ↺ RUN IT AGAIN
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script src="/static/Wrapped/w-shared.js?v=4"></script>
+<script src="/static/Wrapped/w-outro.js?v=8"></script>
+</body>
+</html>
+

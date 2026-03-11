@@ -1,0 +1,183 @@
+quest_id,target_type,target_name,quest_name,description,xp_reward,guaranteed_loot_id,lore_source,dmg
+q_001,series,Dungeon Crawler Carl,"God Dammit, Donut!",Survive the collapse and conquer the dungeon.,1500,loot_001,Dungeon Crawler Carl,1750
+q_002,book,The Dungeon Anarchist's Cookbook,Recipe for Disaster,Learn the explosive truths of the 3rd floor.,300,loot_002,Dungeon Crawler Carl,250
+q_003,series,The Primal Hunter,Apex Predator,Conquer the tutorial and the newly integrated world.,1500,loot_003,The Primal Hunter,3250
+q_004,book,The Primal Hunter 2,Alchemical Ambitions,Master the cauldron and survive the wild.,300,loot_004,The Primal Hunter,250
+q_005,series,He Who Fights with Monsters,Ashen Ascendant,Embrace your outworlder destiny.,1500,loot_005,He Who Fights with Monsters,3000
+q_006,book,He Who Fights with Monsters 2,Blood and Leeches,Acquire a rather unusual familiar.,300,loot_006,He Who Fights with Monsters,250
+q_007,series,Defiance of the Fall,Earth's Defiance,Stand against the invading forces of the multiverse.,1500,loot_007,Defiance of the Fall,4000
+q_008,book,Defiance of the Fall 3,Void Touched,Harness the power of the void.,300,loot_008,Defiance of the Fall,250
+q_009,series,Cradle,Unsouled No More,Advance your core from Foundation to Monarch.,1500,loot_009,Cradle,3250
+q_010,book,Wintersteel,The Uncrowned King,Prove your might and advance your path.,600,loot_010,Cradle,500
+q_011,book,Ghostwater,Pocket Dimensions,Survive the collapsing pocket world.,300,loot_011,Cradle,250
+q_012,series,Beware of Chicken,The Dao of Farming,Reject heaven-defying cultivation for a quiet life.,1500,loot_012,Beware of Chicken,1250
+q_013,book,Beware of Chicken: A Xianxia Cultivation Novel,Fa Ram,Establish your farm and meet your unusual pets.,300,loot_013,Beware of Chicken,250
+q_014,series,The Wandering Inn,Is It A Skill?,"Serve food, survive goblins, and level up.",1500,loot_014,The Wandering Inn,4250
+q_015,book,The Wandering Inn,First Guests,Open the inn doors for the first time.,300,loot_015,The Wandering Inn,1250
+q_016,series,Mother of Learning,Time is a Flat Circle,Escape the month-long time loop.,1500,loot_016,Mother of Learning,1000
+q_017,book,Mother of Learning Arc 1,The First Reset,Realize that you are trapped in time.,300,loot_017,Mother of Learning,250
+q_018,series,Noobtown,Mayor Jim,Rebuild the village of Noobtown.,1500,loot_018,Noobtown,2000
+q_019,book,The Mayor of Noobtown,Feckin' Badgers,Survive your first encounters with the wildlife.,300,loot_019,Noobtown,187.5
+q_020,series,The Ripple System,Unrivaled,Exploit the early access advantage.,1500,loot_020,The Ripple System,1500
+q_021,series,Chrysalis,For the Colony!,Evolve from a lowly monster ant.,1500,loot_021,Chrysalis,1750
+q_022,series,Azarinth Healer,Battle Junkie,Punch and heal your way across the world.,1500,loot_022,Azarinth Healer,1250
+q_023,book,Azarinth Healer: Book One,Ashen Ruins,Discover the lost order of battle healers.,300,loot_023,Azarinth Healer,250
+q_024,series,Everybody Loves Large Chests,Shiny!,Consume adventurers and collect all the shiny things.,1500,loot_024,Everybody Loves Large Chests,2250
+q_025,series,The Completionist Chronicles,Ritual Mastery,Complete all the hidden quests.,1500,loot_025,The Completionist Chronicles,3250
+q_026,book,Ritualist,The Jumper,Take a leap of faith into a new class.,300,loot_026,The Completionist Chronicles,375
+q_027,series,Battle Mage Farmer,Swords to Plowshares,Keep the Doom stat at bay.,1500,loot_027,Battle Mage Farmer,2250
+q_028,series,System Universe Series,System Interference,Break the rules of the local system.,1500,loot_028,System Universe Series,2000
+q_029,book,System Change: A LitRPG Adventure,A New Void,Survive the unexpected system shift.,300,loot_029,System Universe Series,250
+q_030,series,The Perfect Run,Save Point,Achieve the elusive perfect ending.,1500,loot_030,The Perfect Run,750
+q_031,series,Arcane Ascension,Climber of the Spire,Unravel the mysteries of the Serpent Spire.,1500,loot_031,Arcane Ascension,1500
+q_032,book,Sufficiently Advanced Magic,Enchanter's Trial,Survive your first judgment.,300,loot_032,Arcane Ascension,250
+q_033,series,Ascend Online,Village Builder,Establish and defend your new virtual home.,1500,loot_033,Ascend Online,1000
+q_034,series,Cinnamon Bun,Power of Friendship,Make friends with literally everything.,1500,loot_034,Cinnamon Bun,1500
+q_035,series,A Thousand Li,The Long Journey,Cultivate the Dao of the martial world.,1500,loot_035,A Thousand Li,3250
+q_036,series,The Legend of Randidly Ghosthound,Path of the Spear,Survive the initial system integration.,1500,loot_036,The Legend of Randidly Ghosthound,3000
+q_037,book,The Legend of Randidly Ghosthound 2: A LitRPG Adventure,Tribulation,Face the system's wrath.,300,loot_037,The Legend of Randidly Ghosthound,250
+q_038,series,The Path of Ascension,Tier 15,Ascend through the rifts.,1500,loot_038,The Path of Ascension,2500
+q_039,book,The Path of Ascension,The Tier 1 Talent,Unlock a seemingly useless ability.,300,loot_039,The Path of Ascension,250
+q_040,series,Unbound,Breaking the Chains,Defy the gods and the system.,1500,loot_040,Unbound,2750
+q_041,book,Dissonance,The Maw,Survive the chaotic void.,300,loot_041,Unbound,250
+q_042,series,Stormweaver Series,S-Rank Potential,Master your reactive CAD.,1500,loot_042,Stormweaver Series,500
+q_043,series,Portal to Nova Roma,Rebuilding Rome,Bring an AI's logic to a magical past.,1500,loot_043,Portal to Nova Roma,750
+q_044,series,Mark of the Fool,Defying Destiny,Turn a curse into a blessing.,1500,loot_044,Mark of the Fool,2250
+q_045,series,Chaos Seeds,The Village of Mist,Establish the first node of power.,1500,loot_045,Chaos Seeds,2000
+q_046,series,All the Skills,Deck Builder,Collect the ultimate set of dragon cards.,1500,loot_046,All the Skills,1250
+q_047,series,Shopocalypse Saga,Valued Customer,Survive the brutal multiversal market.,1500,loot_047,Shopocalypse Saga,1750
+q_048,book,Defiance of the Fall 2,Creation and Destruction,Balance your dual heritages.,300,loot_048,Defiance of the Fall,375
+q_049,series,Spellmonger,Magelord,Defend the valleys from the goblin horde.,1500,loot_049,Spellmonger,5500
+q_050,book,Dungeon Crawler Carl,Pants are an Illusion,"Lose your pants, but gain an audience.",300,loot_050,Dungeon Crawler Carl,375
+q_051,series,1% Lifesteal,One Percent at a Time,Harness the vampiric lifesteal ability to survive a hostile system integration.,1500,loot_051,1% Lifesteal,750
+q_052,series,A Learning Experience,First Contact Protocol,Lead humanity's first interstellar colonization effort with salvaged alien technology.,1500,loot_052,A Learning Experience,1500
+q_053,series,A Shrouded World,Through the Veil,Navigate the fog-shrouded post-apocalyptic world where mana has transformed all life.,1500,loot_053,A Shrouded World,2000
+q_054,series,A Song of Ice and Fire,The Game of Thrones,Survive the political machinations and supernatural threats of Westeros.,1500,loot_054,A Song of Ice and Fire,1250
+q_055,series,A Zombie Tale,Walker's End,Build a survivor community and master combat against the undead hordes.,1500,loot_055,A Zombie Tale,1250
+q_056,series,Accidental Champion,Unintended Glory,Stumble into the role of system champion through a series of improbable heroics.,1500,loot_056,Accidental Champion,750
+q_057,series,Adventures on Brad,Brad's Grand Tour,Accompany the party across the strange continent of Brad and level up your cooking class.,1500,loot_057,Adventures on Brad,2250
+q_058,series,After Hours,Midnight Shift,Survive the supernatural occurrences that only manifest after business hours.,1500,loot_058,After Hours,250
+q_059,series,Alchemist Series,Crucible Master,Brew the forbidden compounds that the Alchemist's Guild refuses to teach.,1500,loot_059,Alchemist Series,1000
+q_060,series,Angel in the Whirlwind,God's Own Fury,Lead the human fleet through the alien Theocracy's crusade against mankind.,1500,loot_060,Angel in the Whirlwind,1250
+q_061,series,Ark Royal,Carrier Strike,Command the antiquated carrier Ark Royal and her obsolete railguns against alien invaders.,1500,loot_061,Ark Royal,4500
+q_062,series,Art of the Adept,William's Awakening,Master the four spheres of magic and navigate the hidden society of modern adepts.,1500,loot_062,Art of the Adept,1000
+q_063,series,Artorian's Archives,Grandfather's Wisdom,Guide Artorian through the cultivation ranks while dispensing hard-won life advice.,1500,loot_063,Artorian's Archives,4750
+q_064,series,Benjamin Ashwood Series,From Farmer to Fighter,Follow Benjamin from village life to the frontlines of a continent-spanning war.,1500,loot_064,Benjamin Ashwood Series,1500
+q_065,series,Born In,System Born,Navigate the world as someone born after System integration who has never known anything else.,1500,loot_065,Born In,750
+q_066,series,Caverns and Creatures,Dungeons and Dysfunction,Survive the absurdist dungeon-delving adventures of a deeply dysfunctional adventuring party.,1500,loot_066,Caverns and Creatures,2500
+q_067,series,Chronicles of The One,The One's Burden,Wield reality-bending magick as the prophesied One in a world of witch hunters.,1500,loot_067,Chronicles of The One,250
+q_068,series,Codename: Freedom,Ghost Protocol,Execute off-the-books operations as a super-powered government agent in a classified world.,1500,loot_068,Codename: Freedom,1000
+q_069,series,Crystal Shards Online,Shattered Login,Dive into the Crystal Shards Online VR game and discover the power of the Shards system.,1500,loot_069,Crystal Shards Online,1250
+q_070,series,Dark Lord Davi,Reluctant Overlord,Accidentally become the Dark Lord and manage your dungeon against the heroes trying to stop you.,1500,loot_070,Dark Lord Davi,500
+q_071,series,Das Große Spiel,The Grand Game Opens,Enter the mysterious continental game where noble houses compete for ultimate dominance.,1500,loot_071,Das Große Spiel,250
+q_072,series,Dear Spellbook Series,Annotated Magic,Record your arcane experiments and personal growth in a spellbook that talks back.,1500,loot_072,Dear Spellbook Series,750
+q_073,series,Death Cultivator,Harvest the Reaped,Cultivate the power of death itself and grow stronger from every soul that falls.,1500,loot_073,Death Cultivator,750
+q_074,series,Democracy's Right,First Fleet Rising,Command the Colonial Defense Force against the crushing weight of the Hegemony.,1500,loot_074,Democracy's Right,500
+q_075,series,Destiny Cycle,Chosen Fate,Fight the predestined destiny the gods have written and carve your own path.,1500,loot_075,Destiny Cycle,750
+q_076,series,Discount Dan's Backroom Bargains,Clearance Event,Exploit the absolute cheapest and most broken items in the System's official discount store.,1500,loot_076,Discount Dan's Backroom Bargains,500
+q_077,series,Dragon Heart Series,Heart of the Dragon,Bond with your draconic heart to unlock the full power of humanity's last hope.,1500,loot_077,Dragon Heart Series,4500
+q_078,series,Dragonlance Chronicles,Heroes of the Lance,Reunite the Companions and uncover the return of the true gods to Krynn.,1500,loot_078,Dragonlance Chronicles,1000
+q_079,series,Dragonlance: Preludes,Before the Lance,Experience the formative adventures of the Companions before the War of the Lance begins.,1500,loot_079,Dragonlance: Preludes,1500
+q_080,series,Dragonlance: The Lost Chronicles,Untold War Stories,Fill the gaps of the War of the Lance from the perspectives that history forgot.,1500,loot_080,Dragonlance: The Lost Chronicles,750
+q_081,series,Dystance,Distance Overcomes,Survive the post-apocalyptic dystopia where the distance you travel converts directly to power.,1500,loot_081,Dystance,750
+q_082,series,Falling with Folded Wings,Feathered Descent,Navigate the political intrigue of a world where fallen angels walk among mortals.,1500,loot_082,Falling with Folded Wings,500
+q_083,series,Five Points' Mob Collection Series,Street Level Power,Rise through the supernatural criminal underworld of Five Points to become its undisputed boss.,1500,loot_083,Five Points' Mob Collection Series,2250
+q_084,series,Harry Potter,Hogwarts Admission,Survive seven years at Hogwarts and face the Dark Lord who cannot be named.,1500,loot_084,Harry Potter,1750
+q_085,series,Healer's Way,Mending the Broken,Practice forbidden healing arts in a world that outlaws healers as dangerously powerful.,1500,loot_085,Healer's Way,2750
+q_086,series,Heartstrings,Resonance Unlocked,Discover the music-based magic system and wield sound as a weapon and a shield.,1500,loot_086,Heartstrings,250
+q_087,series,Heaven's Laws,Celestial Mandate,Navigate the rigidly structured heavenly bureaucracy while pursuing your own path to ascension.,1500,loot_087,Heaven's Laws,250
+q_088,series,I'm Not the Hero,Sidekick Supremacy,Prove that the supposed side character is the true driving force behind every victory.,1500,loot_088,I'm Not the Hero,1000
+q_089,series,Illusionist,Master of Mirrors,Wield the underestimated school of illusion magic to outmaneuver every opponent.,1500,loot_089,Illusionist,1000
+q_090,series,Immortal Great Souls,Soul Unbound,Cultivate your immortal soul through the trials of a world where great souls wage eternal war.,1500,loot_090,Immortal Great Souls,750
+q_091,series,Imperial Initiative,First Empress,Establish the foundations of a magical empire from the ground up.,1500,loot_091,Imperial Initiative,250
+q_092,series,Imperium Cicernus,Cicero's Shadow,Survive the politically lethal games of a fantasy Roman empire as an advisor to the throne.,1500,loot_092,Imperium Cicernus,250
+q_093,series,Indian Hill,Hill Protocol,Navigate the supernatural dangers lurking beneath the ordinary surface of Indian Hill.,1500,loot_093,Indian Hill,1750
+q_094,series,Industrial Strength Magic,Factory Floor Power,Combine industrial revolution technology with newly awakened magic in a steampunk system world.,1500,loot_094,Industrial Strength Magic,500
+q_095,series,Infinite Realm Series,Realm Conquest,Conquer territories across the infinite realm and grow your faction's power.,1500,loot_095,Infinite Realm Series,1500
+q_096,series,Instrument of Omens,The Foretold Note,Play the instrument destined to either save or destroy the world.,1500,loot_096,Instrument of Omens,750
+q_097,series,Jake's Magical Market,Open for Business,Stock your magical shop with rare and dangerous items that adventurers desperately need.,1500,loot_097,Jake's Magical Market,750
+q_098,series,Kingkiller Chronicle,Kvothe's Name,Learn the Name of the Wind and survive the Chandrian who hunt those who seek the truth.,1500,loot_098,Kingkiller Chronicle,500
+q_099,series,Law of the Jungle,Apex Laws,Survive the brutal jungle world where the law is simple — eat or be eaten.,1500,loot_099,Law of the Jungle,1750
+q_100,series,Legend of the Arch Magus,Arch Magus Rising,Master every school of magic and claim the title that only one living wizard can hold.,1500,loot_100,Legend of the Arch Magus,1250
+q_101,series,Legends,The Legendary Record,Chronicle the deeds of heroes so extraordinary that the world reshapes itself around their stories.,1500,loot_101,Legends,750
+q_102,series,Legends & Lattes,Coffee and Courage,Open the first coffee shop in a city that has never tasted it and survive the consequences.,1500,loot_102,Legends & Lattes,750
+q_103,series,Lord of EXP Farming,Infinite Grind,Discover the exploitable loop that turns routine monster kills into godlike experience gain.,1500,loot_103,Lord of EXP Farming,250
+q_104,series,Lord Valevsky: Last of the Line Series,Valevsky's Legacy,Restore the honor of the last surviving member of a destroyed noble house.,1500,loot_104,Lord Valevsky: Last of the Line Series,1750
+q_105,series,Lycan Fallout,Pack Law,Navigate the post-nuclear world where radiation has triggered widespread lycanthropic transformation.,1500,loot_105,Lycan Fallout,1500
+q_106,series,Mage Errant,Hugh's Departure,Follow the expelled apprentice into the dangerous wider world beyond the academy's walls.,1500,loot_106,Mage Errant,1750
+q_107,series,Mage Tank,Unmovable Object,Build the ultimate defensive mage capable of absorbing punishment that would kill lesser wizards.,1500,loot_107,Mage Tank,750
+q_108,series,Magical Fusion,Combined Arts,Fuse disparate magic schools together to create effects that no single tradition could achieve.,1500,loot_108,Magical Fusion,2000
+q_109,series,Main Character Hides His Strength,Hiding in Plain Sight,Conceal your overwhelming power while methodically dismantling the enemies who think you weak.,1500,loot_109,Main Character Hides His Strength,1250
+q_110,series,Merchant Crab,Shellback Trader,Carry your entire shop on your shell and negotiate deals with beings far larger and more dangerous than yourself.,1500,loot_110,Merchant Crab,250
+q_111,series,Michael Talbot Adventures,Talbot's Hunt,Follow Michael Talbot through supernatural investigations that push the limits of his unique abilities.,1500,loot_111,Michael Talbot Adventures,500
+q_112,series,Mimic & Me,Chest of Holding,Bond with your mimic companion and navigate the dungeon ecosystem as an unlikely duo.,1500,loot_112,Mimic & Me,1000
+q_113,series,New Era Online,Beta Tester Zero,Exploit the first-mover advantage in a VRMMO that blurs the line between game and reality.,1500,loot_113,New Era Online,1500
+q_114,series,Outcast In Another World Series,Isekai Defiance,Survive being transported to a hostile fantasy world with a crippled class and no support.,1500,loot_114,Outcast In Another World Series,1250
+q_115,series,Paranoid Mage,Survival Instincts,Leverage a lifetime of paranoia into comprehensive threat analysis as a newly awakened mage.,1500,loot_115,Paranoid Mage,1250
+q_116,series,Quest Academy,First Year Trials,Survive the brutal entrance trials of the academy that trains the world's most powerful questers.,1500,loot_116,Quest Academy,1000
+q_117,series,Quintessence,Fifth Element,Wield the forbidden fifth element that the four great elemental schools have tried to erase from history.,1500,loot_117,Quintessence,750
+q_118,series,Ready Player One,Easter Egg Hunt,Solve Halliday's hidden challenge and claim the ultimate prize before IOI locks the OASIS forever.,1500,loot_118,Ready Player One,500
+q_119,series,Reborn: Apocalypse,Second Chance Protocol,Use foreknowledge of the apocalypse to build power before the System integration begins.,1500,loot_119,Reborn: Apocalypse,1000
+q_120,series,Red Rising,Carved in Red,Infiltrate the Gold elite from below and bring the Society's hierarchy crashing down.,1500,loot_120,Red Rising,1500
+q_121,series,Rise of the Last Summoner,Final Summons,Master the dying art of true summoning and call forth creatures that change the fate of nations.,1500,loot_121,Rise of the Last Summoner,500
+q_122,series,Scholomance,El's Survival Guide,Survive three years in the Scholomance where the school itself is trying to kill you.,1500,loot_122,Scholomance,750
+q_123,series,Schooled in Magic,Emily's Lesson,Master the unique blend of science and magic in a world where Emily Needles changes everything.,1500,loot_123,Schooled in Magic,6250
+q_124,series,Second Chance Swordsman,Steel Reborn,Return from death with full knowledge of your previous failure and correct every single mistake.,1500,loot_124,Second Chance Swordsman,1000
+q_125,series,Shadowcroft Academy For Dungeons,Dungeon Design 101,Enroll in the only academy that teaches you how to build a dungeon rather than conquer one.,1500,loot_125,Shadowcroft Academy For Dungeons,250
+q_126,series,Sign of Seven,Seventh Seal,Unravel the ancient prophecy tied to the seven signs before the cycle of doom completes.,1500,loot_126,Sign of Seven,250
+q_127,series,Spellmonger Cadet Series,Cadet Warmage,Begin your journey through the Magelord's military academy and survive the hazing.,1500,loot_127,Spellmonger Cadet Series,750
+q_128,series,Spellmonger: Legacy and Secrets,Hidden Magics,Uncover the buried secrets of the magelord tradition that even the guild masters don't know.,1500,loot_128,Spellmonger: Legacy and Secrets,750
+q_129,series,Station 64: The Doll Dungeon,Living Doll Protocol,Inhabit a porcelain doll body and navigate the shifting political landscape of Station 64.,1500,loot_129,Station 64: The Doll Dungeon,1000
+q_130,series,Super Powereds,Hero Certification,Pass the grueling HCP program and earn official hero status in a world of dangerous superpowers.,1500,loot_130,Super Powereds,1250
+q_131,series,System Optimization,Efficiency Run,Min-max every attribute and skill in the System to achieve a build no developer anticipated.,1500,loot_131,System Optimization,500
+q_132,series,The Alchemic Weaponeer Series,Forge and Formula,Combine alchemical science with weapons crafting to produce arms that defy conventional classification.,1500,loot_132,The Alchemic Weaponeer Series,250
+q_133,series,The Amatherean Tales,Tales of Amatherea,Explore the richly layered history of Amatherea through interconnected stories spanning generations.,1500,loot_133,The Amatherean Tales,250
+q_134,series,The Bear Clan,Clan Proving,Survive the initiation rites of the Bear Clan and prove yourself worthy of the clan's ancient power.,1500,loot_134,The Bear Clan,1000
+q_135,series,The Beginning after the End,King Grey Reborn,Rebuild your power from nothing as the reincarnated Battle God in a world of mana and monsters.,1500,loot_135,The Beginning after the End,2250
+q_136,series,The Broken Earth,Orogene's Trial,Wield orogeny to survive the apocalyptic Fifth Season while searching for your stolen child.,1500,loot_136,The Broken Earth,750
+q_137,series,The Dark Healer,Forbidden Mending,Practice the dark side of healing magic to repair what conventional healers declare beyond saving.,1500,loot_137,The Dark Healer,2250
+q_138,series,The Decline and Fall of the Galactic Empire,Imperial Twilight,Navigate the collapse of a galactic empire and preserve enough knowledge for the next civilization.,1500,loot_138,The Decline and Fall of the Galactic Empire,750
+q_139,series,The Dragon Heart Legacy,Legacy Flame,Inherit the dragon heart legacy and master its power against those who want to claim it from you.,1500,loot_139,The Dragon Heart Legacy,750
+q_140,series,The Dresden Files,Harry's Investigations,Take on the supernatural cases that Chicago's only wizard detective dares to solve.,1500,loot_140,The Dresden Files,5250
+q_141,series,The Elder Empire: Sea,Calder's Fleet,Command the Guild of Navigators' most dangerous ship through the monster-infested Reading Sea.,1500,loot_141,The Elder Empire: Sea,750
+q_142,series,The Elder Empire: Shadow,Simon's Ascent,Rise through the Blackstone Irregulars and face the Guilds that control the Elder Empire.,1500,loot_142,The Elder Empire: Shadow,750
+q_143,series,The Embers of War Series,Burning Stars,Navigate the political fallout after a devastating interstellar war where no side truly won.,1500,loot_143,The Embers of War Series,750
+q_144,series,The Empire's Corps,Wolfbane's Stand,Fight for humanity's survival as a Marine unit stranded in a galaxy that has forgotten Earth.,1500,loot_144,The Empire's Corps,5250
+q_145,series,The Firebrand Series,Ember Rising,Lead the resistance against the oppressive empire as the firebrand who ignites the revolution.,1500,loot_145,The Firebrand Series,750
+q_146,series,The First Law Trilogy,Bayaz's Gambit,Survive the brutal politics and grinding wars of a world where even the heroes are morally bankrupt.,1500,loot_146,The First Law Trilogy,250
+q_147,series,The Forbidden Library,Alice's Stacks,Navigate the dangerous magical library where every book contains something that wants to escape.,1500,loot_147,The Forbidden Library,1000
+q_148,series,The Grand Game,Grand Strategist,Dominate the dungeon-based grand strategy game by mastering every faction and system interaction.,1500,loot_148,The Grand Game,1750
+q_149,series,The Heartfire Healer,Heartfire Mending,Use the rare heartfire magic to heal wounds that go deeper than flesh and bone.,1500,loot_149,The Heartfire Healer,500
+q_150,series,The Hedge Wizard,Hedge Lord,Master the humble hedge wizard arts and prove that so-called minor magic can topple kingdoms.,1500,loot_150,The Hedge Wizard,750
+q_151,series,The Infinite World,Infinite Dungeons,Explore the procedurally infinite dungeon world where floors have no theoretical ceiling.,1500,loot_151,The Infinite World,1000
+q_152,series,The Last Horizon,Beyond the Edge,Push past the last mapped horizon into territory where the laws of physics break down.,1500,loot_152,The Last Horizon,1000
+q_153,series,The Lord of the Rings,Fellowship's Journey,Carry the One Ring to the fires of Mount Doom while the Eye of Sauron hunts you across Middle-earth.,1500,loot_153,The Lord of the Rings,1000
+q_154,series,The Portal Wars Saga,Gate Keeper,Control the portal network that links a thousand worlds and keep the wrong things from crossing over.,1500,loot_154,The Portal Wars Saga,2000
+q_155,series,The Starsea Cycle,Starsea Navigator,Chart the unmapped star-sea and survive the ancient things that have been sleeping in the deep.,1500,loot_155,The Starsea Cycle,2500
+q_156,series,The Ten Realms,Ten Realm Climber,Fight your way up through all ten realms and claim a place among the highest powers.,1500,loot_156,The Ten Realms,3000
+q_157,series,The Traveler's Gate Trilogy,House of Blades,Claim the weapons of the Traveler and walk the gates between deadly pocket dimensions.,1500,loot_157,The Traveler's Gate Trilogy,750
+q_158,series,The Viridian Gate Archives,Gate Crasher,Survive the asteroid impact inside the Viridian Gate VR system while the real world ends outside.,1500,loot_158,The Viridian Gate Archives,250
+q_159,series,The Way of the Shaman,Barliona Bound,Navigate the prison VRMMO Barliona as a shaman and find a way to freedom.,1500,loot_159,The Way of the Shaman,1750
+q_160,series,The Weirkey Chronicles,Weirkey Binding,Inscribe your weirkey and navigate the soul space that underpins all of creation.,1500,loot_160,The Weirkey Chronicles,1250
+q_161,series,The Wells of Sorcery Trilogy,Deep Magic,Descend to the Wells of Sorcery and draw power from the source that feeds all magic.,1500,loot_161,The Wells of Sorcery Trilogy,750
+q_162,series,The Wheel of Time,Pattern Weaver,Follow the Dragon Reborn across the turning of the Wheel and face the Dark One at Tarmon Gai'don.,1500,loot_162,The Wheel of Time,4000
+q_163,series,The Witcher,Geralt's Contract,Hunt monsters for coin and navigate the brutal politics of the Northern Kingdoms as the White Wolf.,1500,loot_163,The Witcher,1750
+q_164,series,This Trilogy Is Broken,System Error Detected,Navigate the catastrophically broken game system where every mechanic is exploitable and nothing works as intended.,1500,loot_164,This Trilogy Is Broken,1000
+q_165,series,Timothy,Timothy's Quest,Guide the small but determined Timothy through trials that prove size has no bearing on courage.,1500,loot_165,Timothy,750
+q_166,series,Tower of Jack,Jack's Ascent,Climb the System's infinite tower and face the increasingly terrifying bosses on every floor.,1500,loot_166,Tower of Jack,750
+q_167,series,Twin Rivers Possession,Dual Current,Survive the possession event that splits your consciousness between two supernatural factions.,1500,loot_167,Twin Rivers Possession,250
+q_168,series,Ultimate Level 1,Max From the Start,Begin at the highest level the System allows and discover why nobody survives there.,1500,loot_168,Ultimate Level 1,2500
+q_169,series,United States of Apocalypse,Stars and Stripes Rising,Rebuild American civilization from scratch after a System apocalypse reshapes the continent.,1500,loot_169,United States of Apocalypse,750
+q_170,series,Unorthodox Farming,Off-Meta Agriculture,Discover that the System's farming class has wildly broken interactions with every combat skill.,1500,loot_170,Unorthodox Farming,500
+q_171,series,Victor of Tucson,Victor's Arena,Fight as a modern-day man trapped in a gladiatorial arena culture with a real death consequence.,1500,loot_171,Victor of Tucson,2250
+q_172,series,Vigil Bound,Eternal Watch,Stand the eternal vigil against the forces that press against the boundaries of the mortal world.,1500,loot_172,Vigil Bound,250
+q_173,series,Virtuous Sons,Aristeia,Pursue arete in a Greco-Roman fantasy world where virtue and excellence are measurable divine attributes.,1500,loot_173,Virtuous Sons,250
+q_174,series,War of Souls,Krynn in Flames,Navigate the cataclysmic War of Souls as dragons and gods tear Dragonlance's Krynn apart.,1500,loot_174,War of Souls,750
+q_175,series,Warspite,Last Broadside,Command the Warspite through increasingly desperate naval battles in a world of ironclad magic.,1500,loot_175,Warspite,750
+q_176,series,Wasteland Warlords,Rule of the Wastes,Carve out a territory in the irradiated wasteland and defend it against every warlord who wants it.,1500,loot_176,Wasteland Warlords,1500
+q_177,series,Weaponsmith Series,Forged in Fire,Smith weapons so perfectly calibrated to their wielders that they become extensions of the soul.,1500,loot_177,Weaponsmith Series,750
+q_178,series,Welcome to the Multiverse,Pan-Dimensional Tourist,Navigate the infinite multiverse as an accidental dimensional traveler who keeps landing in disaster zones.,1500,loot_178,Welcome to the Multiverse,2000
+q_179,series,World of the Changed,Changed World,Adapt to a world where a random subset of humanity has been Changed into something more and less than human.,1500,loot_179,World of the Changed,750
+q_180,series,World of Warcraft,Azeroth's Champion,Answer the call to defend Azeroth against the latest world-ending threat.,1500,loot_180,World of Warcraft,250
+q_181,series,Wrath of the Stormking,Stormking's Fury,Survive the wrath of the Stormking whose power over weather has become a weapon of continental destruction.,1500,loot_181,Wrath of the Stormking,500
+q_182,series,Zombie Fallout,Talbot Undead,Follow Mike Talbot's desperate fight to protect his family and community as the zombie apocalypse reshapes America.,1500,loot_182,Zombie Fallout,4750

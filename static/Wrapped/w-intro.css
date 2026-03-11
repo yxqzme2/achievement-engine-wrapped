@@ -1,0 +1,7 @@
+#slide-content {
+  position: fixed; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 28px 80px; text-align: center; z-index: 10;
+}
+.verdict-container { margin: 10px 0; }
+.verdict-label { font-family: var(--font-t); font-size: 1.5rem; color: var(--muted); margin-right: 10px; }

@@ -1,0 +1,501 @@
+item_id,item_name,slot,str,mag,def,hp,special_ability,rarity,flavor_text,series_tag,icon
+new_697182,Moonlit Halberd of Impact,Weapon,22,16,2,0,None,Uncommon,Highly recommended by 4 out of 5 dead heroes.,Scholomance,/icons/icons_quest_misc_173.png
+new_174873,Standard-Issue Sigil of the Colossus March,Neck,24,4,9,15,None,Uncommon,It still smells faintly of the previous owner.,System,/icons/acc_necklace_001.png
+new_789186,Fool-Marked Mace of the Wall,Weapon,9,7,29,75,None,Rare,"It rattles when moved, much like your long-term build plan.",Mark of the Fool,/icons/weapon_mace_185.png
+new_332035,Montana's Compass of the Moon Script,Trinket,32,26,1,5,None,Rare,The finish peeled off before you equipped it. Very efficient.,The Good Guys,/icons/acc_trinket_121.png
+new_452108,Gleaming Shock Baton of Stars,Weapon,4,8,8,0,None,Common,A reward for your 'hard work.' Try not to lose it.,General,/icons/icons_quest_misc_260.png
+new_654351,Tinplate Dirk of the Void,Weapon,3,12,2,15,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/weapon_shortblade_036.png
+new_821969,Dan's Lantern Core of Brilliance,Trinket,9,21,7,15,None,Uncommon,The kind of gear merchants call 'starter' and veterans call 'bait.',The Bad Guys,/icons/acc_trinket_004.png
+new_176150,Ooze-Stained Mask of Deflection,Head,2,6,12,0,None,Common,A minor triumph of cheap materials over basic standards.,General,/icons/head_cloth_138.png
+new_451589,Budget-Line Longbow of the Warlord,Weapon,9,3,7,5,None,Common,The System acknowledges your survival. For now.,High-Tech,/icons/weapon_bow_139.png
+new_467444,Second-Hand Band of the Stone Choir,Ring,3,7,9,5,None,Common,"Smells like mildew, pennies, and survivorship bias.",General,/icons/acc_ring_077.png
+new_111067,Tavi's Observer Goggles of the Crushing Tide,Head,41,13,24,10,None,Epic,Slightly better than nothing. Only slightly.,A Thousand Li,/icons/icons_quest_misc_155.png
+new_142549,Stamped-Alloy Brigandine of the Sage,Chest,6,31,19,20,None,Rare,Forged in the fires of your own obsession.,High-Tech,/icons/icons_quest_misc_207.png
+new_822078,Dan's Visor of the Deep Keep,Head,7,4,8,5,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',The Bad Guys,/icons/head_plate_073.png
+new_708425,Factory-Stamped Mail of the Warlord,Chest,12,3,0,25,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,High-Tech,/icons/chest_mail_096.png
+new_543685,Archmagus Chainblade of the Ether Crown,Weapon,2,39,15,120,None,Epic,The kind of gear merchants call 'starter' and veterans call 'bait.',Legend of the Arch Magus,/icons/icons_quest_misc_008.png
+new_960397,Salvaged Chain of the Adamant Crown,Neck,19,13,3,25,None,Uncommon,The System acknowledges your survival. For now.,High-Tech,/icons/acc_neck_004.png
+new_752140,Iron-Bound Rosary of Ripping,Neck,32,1,24,15,None,Rare,Slightly better than nothing. Only slightly.,General,/icons/acc_necklace_004.png
+new_696454,Glowing Beacon of the Iron Avalanche,Trinket,43,23,5,45,None,Epic,The craftsmanship is... adequate. Barely.,General,/icons/acc_trinket_046.png
+new_160349,Monarchforged Cuirass of the Chainbreaker,Chest,33,24,11,60,None,Epic,A patch fix for a bug that technically never existed.,Cradle,/icons/chest_plate_045.png
+new_939025,Ooze-Stained Shell Armor of the Crushing Tide,Chest,48,4,24,20,None,Epic,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/icons_quest_misc_209.png
+new_660052,Nerfed Cuirass of the Comet,Chest,6,10,3,5,None,Common,A pity prize for finishing another book.,System,/icons/chest_plate_057.png
+new_363438,Gleaming Null Ring of the Mountain,Ring,19,0,20,5,None,Uncommon,It was discovered under a cart. Great destinies begin somewhere awful.,General,/icons/acc_ringwod_021.png
+new_461852,Nerfed Wreath of Ripping,Head,9,3,3,25,None,Common,The finish peeled off before you equipped it. Very efficient.,System,/icons/icons_quest_misc_053.png
+new_805648,Crownsworn Warhammer of the Juggernaut,Weapon,26,9,9,80,None,Rare,The craftsmanship is... adequate. Barely.,Mark of the Fool,/icons/weapon_mace_182.png
+new_570956,Rattletrap Gladius of Unbroken Lines,Weapon,5,2,12,5,None,Common,A pity prize for finishing another book.,High-Tech,/icons/weapon_sword_257.png
+new_499333,Blackflame Loopband of the Mountain,Ring,23,8,27,10,None,Rare,"Smells like mildew, pennies, and survivorship bias.",Cradle,/icons/acc_ring_036.png
+new_552519,Surplus Soul Vial of Final Impact,Trinket,9,1,10,0,None,Common,Forged in haste and probably in violation of several safety codes.,Imperial Initiative,/icons/acc_trinket_016.png
+new_579872,Carl's Monolith Shard of the Archmage,Neck,9,20,4,35,None,Uncommon,"Mass-produced, lightly cursed, and somehow still an upgrade.",Dungeon Crawler Carl,/icons/acc_neck_015.png
+new_172649,Ironroot Shock Baton of the Tortoise,Weapon,25,19,32,20,None,Epic,"Somebody threw this away. The System saw potential. Tragic, really.",Battle Mage Farmer,/icons/icons_quest_misc_153.png
+new_349028,Rusty Thumb Ring of the Deep Spell,Ring,0,12,6,10,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",General,/icons/acc_ring_062.png
+new_299693,Mustang's Bauble of the Goliath Brand,Trinket,46,5,9,100,None,Epic,"This survived a drawer full of junk. Against all odds, so did you.",Red Rising,/icons/acc_trinket_094.png
+new_950228,Gleaming Chronometer of the Void,Trinket,0,11,9,0,None,Common,It looks rented. The System expects it back in worse condition.,General,/icons/acc_trinket_003.png
+new_453743,Boilerplate Choker of the Stronghold,Neck,1,10,8,5,None,Common,The AI that designed this was having a bad day.,High-Tech,/icons/acc_necklace_008.png
+new_381064,Surplus Rapier of the Void,Weapon,6,11,1,10,None,Common,Built from scrap and optimism. One of those failed first.,Imperial Initiative,/icons/weapon_sword_019.png
+new_180350,Second-Hand Mask of the Furnace Heart,Head,16,5,5,70,None,Uncommon,Even the goblins passed on this one. Bold of you to disagree.,General,/icons/head_cloth_054.png
+new_884144,Academy-Forged Pulse Rifle of the Archmage,Weapon,14,32,13,5,None,Rare,The System has classified this as usable. Barely.,Quest Academy,/icons/icons_quest_misc_048.png
+new_724153,Empire's-End Claymore of the Battle Saint,Weapon,44,14,5,85,None,Epic,The System flagged this as significant. You should try being the same.,The Decline and Fall of the Galactic Empire,/icons/weapon_sword_435.png
+new_131299,Nerfed Halo Ring of the Crushing Tide,Ring,12,5,0,15,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",System,/icons/acc_ringwod_031.png
+new_637761,Second-Hand Boomstick of Astral Fire,Weapon,12,8,0,0,None,Common,It still smells faintly of the previous owner.,General,/icons/icons_quest_misc_109.png
+new_948718,Discounted Rapier of the Luminous Veil,Weapon,9,11,0,0,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',Discount Dan's Backroom Bargains,/icons/weapon_sword_201.png
+new_899201,Mossgrown Beacon of the Sage,Trinket,8,16,11,25,None,Uncommon,Improved after three revisions and one embarrassing recall.,Beware of Chicken,/icons/acc_trinket_012.png
+new_973812,Carl's Spellbook of the Mystic,Weapon,13,22,0,25,None,Uncommon,Carries the faint confidence of gear that has only failed other people.,Dungeon Crawler Carl,/icons/icons_quest_misc_059.png
+new_609360,Trash-Tier Scaleshirt of the Parapet,Chest,2,5,12,5,None,Common,A reward for your 'hard work.' Try not to lose it.,System,/icons/icons_quest_misc_225.png
+new_917649,Spare-Parts Lucky Bone of the Blue Nova,Trinket,4,11,3,10,None,Common,A pity prize for finishing another book.,High-Tech,/icons/acc_trinket_028.png
+new_343283,Rusty Wand of the Sage,Weapon,2,10,1,35,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',General,/icons/icons_quest_misc_067.png
+new_883044,Second-Hand Crown of Sorcery,Head,9,10,0,5,None,Common,A pity prize for finishing another book.,General,/icons/icons_quest_misc_210.png
+new_460338,Standard-Issue Memory Crystal of Stone,Trinket,3,6,11,0,None,Common,Factory-second quality for a second-rate hero.,System,/icons/acc_trinket_002.png
+new_435486,Trash-Tier Hexband of Unbroken Lines,Ring,3,4,11,10,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,System,/icons/acc_ringwod_025.png
+new_611453,Second-Hand Rosary of Astral Fire,Neck,7,9,1,15,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,General,/icons/acc_neck_028.png
+new_526808,Flea-Market Lucky Bone of the Colossus March,Trinket,58,7,22,65,None,Legendary,The AI that designed this was having a bad day.,Jake's Magical Market,/icons/acc_trinket_101.png
+new_141642,Misprinted Sunblade of the Gatekeeper,Weapon,1,8,11,0,None,Common,The AI that designed this was having a bad day.,General,/icons/weapon_sword_450.png
+new_793984,Flea-Market Shank of the Eldritch Gale,Ring,4,8,4,20,None,Common,It looks rented. The System expects it back in worse condition.,Jake's Magical Market,/icons/acc_ringwod_007.png
+new_164105,Battle-Worn Crossbow of Iron,Weapon,0,25,31,20,None,Rare,The System rarely admits admiration. This is close.,General,/icons/weapon_bow_016.png
+new_281524,Off-Brand Monolith Shard of the Wolf General,Neck,10,5,4,5,None,Common,Error 404: Better loot not found.,General,/icons/acc_neck_018.png
+new_663225,Trash-Tier Seal Ring of the Void Walker,Ring,3,8,9,0,None,Common,"The stitching is uneven, but so is fate.",System,/icons/acc_ring_001.png
+new_384520,Nerfed Greathelm of the Fortress Oath,Head,0,9,11,0,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",System,/icons/head_plate_034.png
+new_685151,Beta-Tested Pauldrons of the War Cry,Chest,32,8,2,90,None,Rare,Error 404: Better loot not found.,System,/icons/chest_plate_098.png
+new_257705,Standard-Issue Monolith Shard of the Iron Avalanche,Neck,12,8,0,0,None,Common,The craftsmanship is... adequate. Barely.,System,/icons/acc_neck_031.png
+new_959694,Ironleaf Oathcord of the Berserker,Neck,20,4,15,5,None,Uncommon,A reward for your 'hard work.' Try not to lose it.,Beware of Chicken,/icons/acc_neck_028.png
+new_771570,Boilerplate Idol of the Battle Saint,Trinket,10,3,3,20,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,High-Tech,/icons/acc_trinket_037.png
+new_543391,Hugh's Medallion of Crushing,Neck,45,9,18,40,None,Epic,Improved after three revisions and one embarrassing recall.,Mage Errant,/icons/acc_neck_035.png
+new_975317,Nova-Forged Charmstring of the Glass Horizon,Neck,5,34,3,90,None,Rare,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,Portal to Nova Roma,/icons/acc_necklace_006.png
+new_696910,Stamped-Alloy Visor of the Iron Reign,Head,12,0,8,0,None,Common,"If disappointment had a loot table entry, this would be near the top.",High-Tech,/icons/head_plate_096.png
+new_774931,Mimic-Bait Repeater of Ripping,Weapon,8,3,4,25,None,Common,"The stitching is uneven, but so is fate.",System,/icons/icons_quest_misc_213.png
+new_130274,Flea-Market Figurine of the Goliath Brand,Trinket,8,9,1,10,None,Common,"It rattles when moved, much like your long-term build plan.",Jake's Magical Market,/icons/acc_trinket_121.png
+new_242083,Dan's Jerkin of Final Impact,Chest,10,1,9,0,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,The Bad Guys,/icons/icons_quest_misc_239.png
+new_422893,Battle-Worn Necklace of the Bastioned Heart,Neck,5,0,12,15,None,Common,It still smells faintly of the previous owner.,General,/icons/acc_necklace_010.png
+new_352480,Trash-Tier Shell Armor of the Prism Mind,Chest,3,8,4,25,None,Common,The System has classified this as usable. Barely.,System,/icons/icons_quest_misc_073.png
+new_534661,Forgotten Brigandine of the Warlord,Chest,48,0,32,0,None,Epic,"Calibrated by the System to be adequate, which for you counts as praise.",Ancient,/icons/icons_quest_misc_078.png
+new_242806,Warspun Vambraces of Brilliance,Chest,8,32,15,25,None,Rare,"Smells like mildew, pennies, and survivorship bias.",A Soldier's Life,/icons/chest_plate_038.png
+new_205102,Barracks-Issue Horned Casque of the Granite March,Head,2,7,11,0,None,Common,Error 404: Better loot not found.,A Soldier's Life,/icons/head_plate_114.png
+new_339261,Wolfsworn Reliquary of the Warded Step,Trinket,6,14,20,0,None,Uncommon,A patch fix for a bug that technically never existed.,Law of the Jungle,/icons/acc_trinket_003.png
+new_528528,Flea-Market Diadem of the Anvil Fist,Head,9,2,8,5,None,Common,Warning: Do not consume.,Jake's Magical Market,/icons/icons_quest_misc_089.png
+new_160481,Soulplated Compass of the Citadel,Trinket,24,13,34,45,None,Epic,Built from scrap and optimism. One of those failed first.,Immortal Great Souls,/icons/acc_trinket_046.png
+new_249227,Jake's Sigil of the Ember Champion,Neck,36,2,15,35,None,Rare,It was discovered under a cart. Great destinies begin somewhere awful.,Primal Hunter,/icons/acc_neck_014.png
+new_621926,Knockoff Soul Vial of the Void Walker,Trinket,4,34,20,10,None,Rare,It was discovered under a cart. Great destinies begin somewhere awful.,Corrupted,/icons/acc_trinket_053.png
+new_597302,Iron-Bound Talisman of the Siege Horn,Trinket,24,15,0,5,None,Uncommon,It pulses with a rhythmic; annoying light.,General,/icons/acc_trinket_132.png
+new_601189,Flea-Market Bodyglove of Shielding,Chest,1,4,12,15,None,Common,Wait; is that a bloodstain or a design choice?,Jake's Magical Market,/icons/icons_quest_misc_171.png
+new_560004,Mass-Forged Longbow of the Siege Horn,Weapon,20,7,6,35,None,Uncommon,A reward for your 'hard work.' Try not to lose it.,General,/icons/weapon_bow_067.png
+new_770101,Knockoff Doublet of the Berserker,Chest,10,1,7,10,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',Corrupted,/icons/chest_cloth_029.png
+new_741086,Steelbloom Charm of the Blue Nova,Neck,17,31,3,45,None,Rare,"It rattles when moved, much like your long-term build plan.",The Alchemic Weaponeer Series,/icons/acc_neck_003.png
+new_744789,Shattered Spatha of Deflection,Weapon,8,0,9,15,None,Common,A minor triumph of cheap materials over basic standards.,General,/icons/weapon_sword_047.png
+new_795618,Drill-Grade Ring of the Titan Guard,Ring,7,9,20,20,None,Uncommon,Pulled from a cracked A Soldier's Life footlocker. It smells like mildew and regret.,A Soldier's Life,/icons/acc_ring_004.png
+new_305150,Discounted Sallet of the Wardstone,Head,0,2,8,50,None,Common,The AI that designed this was having a bad day.,Discount Dan's Backroom Bargains,/icons/head_plate_052.png
+new_341068,Cracked-Core Circuit Ring of the Siege Hold,Ring,15,0,24,5,None,Uncommon,It was discovered under a cart. Great destinies begin somewhere awful.,Corrupted,/icons/acc_ring_014.png
+new_107508,Tavi's Ring of Stars,Ring,3,32,9,80,None,Rare,It looks rented. The System expects it back in worse condition.,A Thousand Li,/icons/acc_ring_082.png
+new_628794,Ogre's Loopband of the Goliath Brand,Ring,17,7,14,10,None,Uncommon,"The stitching is uneven, but so is fate.",Defiance of the Fall,/icons/acc_ringwod_036.png
+new_668983,Surplus Gladius of the Night Lens,Weapon,1,24,35,0,None,Rare,The System has classified this as usable. Barely.,Imperial Initiative,/icons/weapon_sword_504.png
+new_586524,Misprinted Kevlar Vest of the Colossus March,Chest,9,4,3,20,None,Common,The finish peeled off before you equipped it. Very efficient.,General,/icons/icons_quest_misc_243.png
+new_689990,Patch-Note Coif of the Berserker,Head,18,3,13,30,None,Uncommon,"Calibrated by the System to be adequate, which for you counts as praise.",System,/icons/head_mail_132.png
+new_639101,Scuffed Carapace of the Glass Horizon,Chest,5,9,6,0,None,Common,Built from scrap and optimism. One of those failed first.,General,/icons/icons_quest_misc_196.png
+new_717813,Stamped-Alloy Soul Vial of the Bastioned Heart,Trinket,7,0,12,5,None,Common,It pulses with a rhythmic; annoying light.,High-Tech,/icons/acc_trinket_078.png
+new_855862,Training-Yard Circlet of the Berserker,Head,8,10,1,5,None,Common,"If disappointment had a loot table entry, this would be near the top.",Quest Academy,/icons/icons_quest_misc_083.png
+new_668581,Off-Brand Monolith Shard of the Cosmic Thread,Neck,2,8,4,30,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/acc_necklace_009.png
+new_390768,Ooze-Stained Rapier of Relentless Force,Weapon,12,4,4,0,None,Common,The finish peeled off before you equipped it. Very efficient.,General,/icons/weapon_sword_374.png
+new_839415,Ooze-Stained Skullcap of Deflection,Head,1,3,10,30,None,Common,"Somebody threw this away. The System saw potential. Tragic, really.",General,/icons/icons_quest_misc_047.png
+new_981755,Ooze-Stained Visor of the Battle Saint,Head,9,1,6,20,None,Common,"Mass-produced, lightly cursed, and somehow still an upgrade.",General,/icons/head_plate_113.png
+new_896474,Discounted Targeter of the Stormbreak,Head,2,2,11,25,None,Common,Congratulations. You found the shiny thing.,Discount Dan's Backroom Bargains,/icons/icons_quest_misc_103.png
+new_425971,Rattletrap Pendant of the Battle Saint,Neck,8,1,11,0,None,Common,Slightly better than nothing. Only slightly.,High-Tech,/icons/acc_neck_031.png
+new_127052,Ooze-Stained Tunic of the Aether Throne,Chest,7,10,2,5,None,Common,A pity prize for finishing another book.,General,/icons/chest_cloth_182.png
+new_923300,Cracked-Core Brigandine of the Stormbreak,Chest,0,11,9,0,None,Common,The System found this in a trash bin. Enjoy.,Corrupted,/icons/icons_quest_misc_099.png
+new_473903,Lanternlit Charmstring of the Battle Saint,Neck,19,0,17,20,None,Uncommon,Wait; is that a bloodstain or a design choice?,Legends & Lattes,/icons/acc_neck_031.png
+new_983837,Boilerplate Pocket Shrine of Sorcery,Trinket,3,12,1,20,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,High-Tech,/icons/acc_trinket_058.png
+new_124925,Embermarked Lifesignet of the Last Charge,Neck,45,6,1,140,None,Epic,The System refuses to comment on this item.,Divine,/icons/acc_neck_030.png
+new_734314,Discounted Scaleshirt of the Granite March,Chest,21,0,17,10,None,Uncommon,Forged in haste and probably in violation of several safety codes.,Discount Dan's Backroom Bargains,/icons/icons_quest_misc_258.png
+new_813745,Ooze-Stained Halo Ring of the Siege Hold,Ring,7,0,11,10,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/acc_ringwod_023.png
+new_640896,Dan's Whip of the Granite March,Weapon,3,7,9,5,None,Common,"Somebody threw this away. The System saw potential. Tragic, really.",The Bad Guys,/icons/icons_quest_misc_240.png
+new_396493,Standard-Issue Reliquary of the Oracle's Wake,Trinket,25,29,6,0,None,Rare,"Somebody threw this away. The System saw potential. Tragic, really.",System,/icons/acc_trinket_005.png
+new_331658,Second-Hand Surcoat of the Siege Hold,Chest,1,4,11,20,None,Common,Built from scrap and optimism. One of those failed first.,General,/icons/chest_cloth_138.png
+new_822049,Relic Charmstring of the Ember Champion,Neck,38,7,6,145,None,Epic,A reward for your 'hard work.' Try not to lose it.,General,/icons/acc_neck_030.png
+new_650348,Standard-Issue Spatha of Stars,Weapon,0,8,6,30,None,Common,Warning: Do not consume.,System,/icons/weapon_sword_570.png
+new_406549,Shattered Locket of the Blue Nova,Neck,3,8,9,0,None,Common,The System acknowledges your survival. For now.,General,/icons/acc_necklace_001.png
+new_787158,Iron-Bound Circle of the Sentinel,Ring,2,14,32,60,None,Rare,The kind of gear merchants call 'starter' and veterans call 'bait.',General,/icons/acc_ring_012.png
+new_800957,Ooze-Stained Totem of the Last Shield,Trinket,0,6,8,30,None,Common,A minor triumph of cheap materials over basic standards.,General,/icons/acc_trinket_074.png
+new_156881,Surplus Scimitar of the Red Banner,Weapon,31,2,24,15,None,Rare,It feels like someone is watching you.,Imperial Initiative,/icons/weapon_sword_377.png
+new_285521,Spare-Parts Battle Jacket of Slaying,Chest,10,7,3,0,None,Common,"Smells like mildew, pennies, and survivorship bias.",High-Tech,/icons/icons_quest_misc_207.png
+new_518209,Scuffed Signet of Channeling,Ring,1,8,6,25,None,Common,The finish peeled off before you equipped it. Very efficient.,General,/icons/acc_ring_098.png
+new_861144,Ashen Gambeson of the Aether Throne,Chest,5,27,21,35,None,Rare,Carries the faint confidence of gear that has only failed other people.,Corrupted,/icons/chest_cloth_080.png
+new_455130,Surplus Rune Tablet of the Luminous Veil,Trinket,2,10,6,10,None,Common,The AI that designed this was having a bad day.,Imperial Initiative,/icons/acc_trinket_085.png
+new_359175,Factory-Stamped Exosuit of Impact,Chest,9,0,4,35,None,Common,The craftsmanship is... adequate. Barely.,High-Tech,/icons/icons_quest_misc_146.png
+new_388058,Embermarked Tabard Vest of the Rampart Breaker,Chest,18,20,0,10,None,Uncommon,Slightly better than nothing. Only slightly.,Divine,/icons/icons_quest_misc_017.png
+new_701042,Dust-Caked Circle of the Rune Storm,Ring,0,12,7,5,None,Common,It looks rented. The System expects it back in worse condition.,A Shrouded World,/icons/acc_ring_021.png
+new_516957,Ration-Issue Pilot Hood of the Warded Step,Head,7,3,33,85,None,Rare,"Smells like mildew, pennies, and survivorship bias.",A Soldier's Life,/icons/icons_quest_misc_108.png
+new_789932,Knockoff Halberd of Channeling,Weapon,30,45,8,85,None,Legendary,Wait; is that a bloodstain or a design choice?,Corrupted,/icons/icons_quest_misc_033.png
+new_343162,Cracked-Core Shell Armor of the Shellback,Chest,1,4,9,30,None,Common,"It rattles when moved, much like your long-term build plan.",Corrupted,/icons/icons_quest_misc_100.png
+new_605697,Off-Brand Dog Tags of Might,Neck,9,2,5,20,None,Common,A reward for your 'hard work.' Try not to lose it.,General,/icons/acc_neck_020.png
+new_838634,Scamp's Vambraces of the Warlord,Chest,11,5,3,5,None,Common,It still smells faintly of the previous owner.,The Bad Guys,/icons/chest_plate_180.png
+new_563583,Clyde's Figurine of the Stronghold,Trinket,5,10,21,20,None,Uncommon,One of a kind. Until you find another one.,The Bad Guys,/icons/acc_trinket_096.png
+new_946427,Scamp's Chainblade of Might,Weapon,8,7,3,10,None,Common,Error 404: Better loot not found.,The Bad Guys,/icons/icons_quest_misc_274.png
+new_582939,Discounted Sigil of the Parapet,Neck,11,17,32,0,None,Rare,One of a kind. Until you find another one.,Discount Dan's Backroom Bargains,/icons/acc_neck_009.png
+new_316791,Ironleaf Mindcage of the Ether Crown,Head,11,17,11,5,None,Uncommon,The System has classified this as usable. Barely.,Beware of Chicken,/icons/icons_quest_misc_224.png
+new_269253,Voidscript Warhammer of the Anchor,Weapon,16,1,45,190,None,Legendary,The craftsmanship is... adequate. Barely.,Paranoid Mage,/icons/weapon_mace_403.png
+new_889494,Barracks-Issue Orb of the Ember Champion,Trinket,10,4,2,20,None,Common,It pulses with a rhythmic; annoying light.,A Soldier's Life,/icons/acc_trinket_002.png
+new_309319,Misprinted Observer Goggles of the Cosmic Thread,Head,6,22,12,0,None,Uncommon,One of a kind. Until you find another one.,General,/icons/icons_quest_misc_213.png
+new_852638,Mimic-Bait Collar of the Nebula,Neck,8,9,2,5,None,Common,The System found this in a trash bin. Enjoy.,System,/icons/acc_necklace_009.png
+new_232009,Boilerplate Bauble of the Cosmic Thread,Trinket,8,12,0,0,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",High-Tech,/icons/acc_trinket_057.png
+new_264400,Ration-Issue Helm of the Phalanx,Head,3,10,20,35,None,Uncommon,The AI that designed this was having a bad day.,A Soldier's Life,/icons/head_plate_043.png
+new_533902,Nerfed Band of the Bastioned Heart,Ring,0,8,12,0,None,Common,It pulses with a rhythmic; annoying light.,System,/icons/acc_ring_031.png
+new_398708,Trash-Tier Null Ring of the Gatekeeper,Ring,2,5,10,15,None,Common,It pulses with a rhythmic; annoying light.,System,/icons/acc_ring_096.png
+new_548024,Soulharrow Breastplate of the Nebula,Chest,3,40,34,15,None,Epic,The craftsmanship is... adequate. Barely.,Corrupted,/icons/chest_plate_134.png
+new_342361,Hexproof Greathelm of the Mountain,Head,7,13,19,5,None,Uncommon,Warning: Do not consume.,Arcane Ascension,/icons/head_plate_014.png
+new_970580,Budget-Line Pulse Rifle of the Thunder Maul,Weapon,10,8,1,5,None,Common,The System found this in a trash bin. Enjoy.,High-Tech,/icons/icons_quest_misc_173.png
+new_164453,Worldwalker Lance of the Tortoise,Weapon,2,0,47,155,None,Epic,A reward for your 'hard work.' Try not to lose it.,Portal to Nova Roma,/icons/icons_quest_misc_031.png
+new_664401,Embermarked Necklace of Warding,Neck,14,2,22,10,None,Uncommon,"This survived a drawer full of junk. Against all odds, so did you.",Divine,/icons/acc_neck_027.png
+new_318417,Nerfed Oathcord of the Chainbreaker,Neck,11,0,9,0,None,Common,A reward for your 'hard work.' Try not to lose it.,System,/icons/acc_neck_028.png
+new_627919,Bent-Nail Idol of the Sunken Sigil,Trinket,1,8,7,20,None,Common,"Mass-produced, lightly cursed, and somehow still an upgrade.",General,/icons/acc_trinket_059.png
+new_911399,Dust-Caked Figurine of the Comet,Trinket,10,10,0,0,None,Common,Slightly better than nothing. Only slightly.,A Shrouded World,/icons/acc_trinket_138.png
+new_473182,Factory-Stamped Railgun of the Granite March,Weapon,2,5,12,5,None,Common,Factory-second quality for a second-rate hero.,High-Tech,/icons/icons_quest_misc_088.png
+new_136795,Discounted Horned Casque of the Mauler,Head,8,4,5,15,None,Common,A reward for your 'hard work.' Try not to lose it.,Discount Dan's Backroom Bargains,/icons/head_plate_150.png
+new_664655,Lanternlit Longbow of the Tortoise,Weapon,4,11,35,50,None,Rare,"Calibrated by the System to be adequate, which for you counts as praise.",Legends & Lattes,/icons/weapon_bow_058.png
+new_290336,Ironroot Mask of Might,Head,42,4,0,170,None,Epic,Your progress has been noted. Please remain seated.,Battle Mage Farmer,/icons/head_cloth_119.png
+new_239513,Iron-Bound Arc Pistol of the Void Walker,Weapon,17,17,5,5,None,Uncommon,The brass gleam suggests ambition. The dents suggest reality.,General,/icons/icons_quest_misc_249.png
+new_132343,Corin's Necklace of the Sage,Neck,7,32,9,60,None,Rare,Not heroic. Not worthless. The middle path remains ugly.,Arcane Ascension,/icons/acc_neck_019.png
+new_204355,Off-Brand Spear of the Celestial Circuit,Weapon,0,22,7,55,None,Uncommon,Your progress has been noted. Please remain seated.,General,/icons/icons_quest_misc_044.png
+new_332998,Ogre's Totem of the Warlord,Trinket,29,5,17,45,None,Rare,It still smells faintly of the previous owner.,Defiance of the Fall,/icons/acc_trinket_104.png
+new_529911,Off-Brand War Bonnet of the Eldritch Gale,Head,0,21,17,10,None,Uncommon,Procedurally generated for maximum efficiency.,General,/icons/icons_quest_misc_228.png
+new_183595,Mass-Forged Vambraces of the Mountain,Chest,6,3,10,5,None,Common,"Smells like mildew, pennies, and survivorship bias.",General,/icons/chest_plate_083.png
+new_701378,Iron-Bound Orb of Brutality,Trinket,21,6,8,25,None,Uncommon,Congratulations. You found the shiny thing.,General,/icons/acc_trinket_128.png
+new_974552,Flea-Market Rune Tablet of the Comet,Trinket,2,11,7,0,None,Common,Error 404: Better loot not found.,Jake's Magical Market,/icons/acc_trinket_077.png
+new_556101,Tinplate Votive of the Night Lens,Trinket,1,8,1,50,None,Common,The System acknowledges your survival. For now.,General,/icons/acc_trinket_080.png
+new_486308,Cracked-Core Torque of Sorcery,Neck,5,10,1,20,None,Common,"Somebody threw this away. The System saw potential. Tragic, really.",Corrupted,/icons/acc_necklace_003.png
+new_992210,Mimic-Bait Helm of the Celestial Circuit,Head,2,9,8,5,None,Common,The System has classified this as usable. Barely.,System,/icons/head_plate_142.png
+new_872265,Beta-Tested Pocket Shrine of Relentless Force,Trinket,24,14,1,5,None,Uncommon,Factory-second quality for a second-rate hero.,System,/icons/acc_trinket_074.png
+new_282447,Shattered Spellbook of Cleaving,Weapon,10,0,6,20,None,Common,The System acknowledges your survival. For now.,General,/icons/icons_quest_misc_266.png
+new_277239,Second-Hand Spear of the Great Hunt,Weapon,9,4,4,15,None,Common,It looks rented. The System expects it back in worse condition.,General,/icons/icons_quest_misc_149.png
+new_800617,Patch-Note Circuit Ring of the Void,Ring,0,17,22,5,None,Uncommon,Improved after three revisions and one embarrassing recall.,System,/icons/acc_ringwod_038.png
+new_989248,Ashwood Rosary of Warding,Neck,1,10,23,30,None,Uncommon,"It rattles when moved, much like your long-term build plan.",Benjamin Ashwood Series,/icons/acc_neck_004.png
+new_703723,Standard-Issue Battle Jacket of the Eldritch Gale,Chest,1,19,7,65,None,Uncommon,Wait; is that a bloodstain or a design choice?,System,/icons/icons_quest_misc_226.png
+new_777160,Shattered Beads of the Comet,Neck,24,43,1,60,None,Epic,The System acknowledges your survival. For now.,General,/icons/acc_neck_007.png
+new_719760,Donut's Scepter of the Thunder Maul,Weapon,34,24,1,5,None,Rare,The kind of gear merchants call 'starter' and veterans call 'bait.',Dungeon Crawler Carl,/icons/icons_quest_misc_061.png
+new_707199,Discounted Warden Band of the Sentinel,Ring,0,2,22,80,None,Uncommon,"Smells like mildew, pennies, and survivorship bias.",Discount Dan's Backroom Bargains,/icons/acc_ringwod_003.png
+new_772899,Cracked-Core Beads of Channeling,Neck,4,11,4,5,None,Common,Slightly better than nothing. Only slightly.,Corrupted,/icons/acc_neck_030.png
+new_517931,Montana's Doublet of the Aegis Crown,Chest,40,3,35,10,None,Epic,Hard-coded into the reality substrate for your convenience.,The Good Guys,/icons/chest_cloth_043.png
+new_526643,Dresden's Halo Ring of the Chronomancer,Ring,2,29,29,0,None,Rare,Slightly better than nothing. Only slightly.,Dresden Files,/icons/acc_ring_035.png
+new_892679,Misprinted Phylactery Shard of Stars,Trinket,1,10,8,5,None,Common,A pity prize for finishing another book.,General,/icons/acc_trinket_082.png
+new_563277,Dresden's Cuirass of the Chronomancer,Chest,2,33,36,45,None,Epic,The brass gleam suggests ambition. The dents suggest reality.,Dresden Files,/icons/chest_plate_103.png
+new_954626,Spare-Parts Circlet of the Cosmic Thread,Head,6,24,5,25,None,Uncommon,Improved after three revisions and one embarrassing recall.,High-Tech,/icons/icons_quest_misc_069.png
+new_121301,Knockoff Echo Recorder of the Aegis Crown,Trinket,8,4,8,0,None,Common,Wait; is that a bloodstain or a design choice?,Corrupted,/icons/acc_trinket_041.png
+new_340460,Ashen Totem of the War Cry,Trinket,16,2,21,5,None,Uncommon,"It rattles when moved, much like your long-term build plan.",Corrupted,/icons/acc_trinket_100.png
+new_972315,Bent-Nail Greataxe of Warding,Weapon,4,23,35,90,None,Epic,A patch fix for a bug that technically never existed.,General,/icons/weapon_axe_030.png
+new_895369,Drill-Grade Rune Torque of Manifesting,Neck,0,8,9,15,None,Common,The System has classified this as usable. Barely.,A Soldier's Life,/icons/acc_neck_034.png
+new_588197,Barracks-Issue Repeater of the Moon Script,Weapon,0,12,8,0,None,Common,Slightly better than nothing. Only slightly.,A Soldier's Life,/icons/icons_quest_misc_208.png
+new_322774,Off-Brand Oathcord of the Chronomancer,Neck,11,18,6,25,None,Uncommon,One of a kind. Until you find another one.,General,/icons/acc_neck_027.png
+new_285505,Ooze-Stained Dog Tags of the Gorilla,Neck,12,0,8,0,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/acc_necklace_010.png
+new_796529,Barracks-Issue Blood Ring of Might,Ring,12,3,0,25,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',A Soldier's Life,/icons/acc_ring_032.png
+new_225272,Waymarked Circlet of the Juggernaut,Head,18,1,7,70,None,Uncommon,"If disappointment had a loot table entry, this would be near the top.",Heaven's Laws,/icons/icons_quest_misc_157.png
+new_694483,Field-Repaired Reliquary of the Fortress Oath,Trinket,9,4,35,60,None,Rare,The System rarely admits admiration. This is close.,High-Tech,/icons/acc_trinket_115.png
+new_567796,Trash-Tier Votive of the Anchor,Trinket,5,0,10,25,None,Common,Slightly better than nothing. Only slightly.,System,/icons/acc_trinket_123.png
+new_889106,Knockoff Circuit Ring of the Black Bastion,Ring,18,0,17,25,None,Uncommon,The System acknowledges your survival. For now.,Corrupted,/icons/acc_ringwod_052.png
+new_693728,Budget-Line Pulse Rifle of the Stronghold,Weapon,22,6,44,40,None,Epic,"Smells like mildew, pennies, and survivorship bias.",High-Tech,/icons/icons_quest_misc_086.png
+new_771995,Riverstone Plastron of the Void Walker,Chest,4,36,40,0,None,Epic,A reward for your 'hard work.' Try not to lose it.,A Thousand Li,/icons/chest_plate_027.png
+new_719389,Ogre's Lifesignet of Slaying,Neck,24,10,15,55,None,Rare,Highly recommended by 4 out of 5 dead heroes.,Defiance of the Fall,/icons/acc_neck_036.png
+new_899904,Ooze-Stained Blood Ring of the Fortress Oath,Ring,4,7,8,5,None,Common,The System found this in a trash bin. Enjoy.,General,/icons/acc_ringwod_015.png
+new_103032,Shopworn Duster of the Mountain,Chest,0,8,12,0,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",Shopocalypse Saga,/icons/icons_quest_misc_111.png
+new_268428,Patch-Note Mindcage of the Comet,Head,14,36,7,115,None,Epic,Slightly better than nothing. Only slightly.,System,/icons/icons_quest_misc_106.png
+new_884811,Cracked-Core Maul of the Phalanx,Weapon,10,3,18,45,None,Uncommon,Wait; is that a bloodstain or a design choice?,Corrupted,/icons/weapon_mace_211.png
+new_871503,Fool-Marked Memory Crystal of the Sky Furnace,Trinket,4,31,21,20,None,Rare,Error 404: Better loot not found.,Mark of the Fool,/icons/acc_trinket_122.png
+new_161479,Mass-Forged Choker of the Berserker,Neck,11,1,2,30,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,General,/icons/acc_neck_028.png
+new_342428,Ration-Issue Pectoral of the Citadel,Neck,31,3,46,0,None,Epic,It still smells faintly of the previous owner.,A Soldier's Life,/icons/acc_neck_032.png
+new_989818,Wolfsworn Warstaff of the Berserker,Weapon,30,5,17,40,None,Rare,Wait; is that a bloodstain or a design choice?,Law of the Jungle,/icons/weapon_mace_233.png
+new_534311,Bent-Nail Brigandine of the Owl,Chest,3,10,0,35,None,Common,Factory-second quality for a second-rate hero.,General,/icons/icons_quest_misc_060.png
+new_242784,Second-Hand Totem of the Iron Avalanche,Trinket,11,1,0,40,None,Common,Forged in haste and probably in violation of several safety codes.,General,/icons/acc_trinket_122.png
+new_430091,Frost-Bitten Halberd of the Gorilla,Weapon,22,7,8,15,None,Uncommon,"This survived a drawer full of junk. Against all odds, so did you.",General,/icons/icons_quest_misc_249.png
+new_521073,Sigilborne Jerkin of Relentless Force,Chest,30,28,2,0,None,Rare,"It rattles when moved, much like your long-term build plan.",Arcane Ascension,/icons/icons_quest_misc_127.png
+new_312428,Knockoff Brigandine of the Void,Chest,0,10,10,0,None,Common,"Smells like mildew, pennies, and survivorship bias.",Corrupted,/icons/icons_quest_misc_059.png
+new_504903,Scamp's Memory Crystal of the Comet,Trinket,7,8,0,25,None,Common,"If disappointment had a loot table entry, this would be near the top.",The Bad Guys,/icons/acc_trinket_111.png
+new_161892,Archmagus Rapier of the Aether Throne,Weapon,27,37,14,10,None,Epic,Procedurally generated for maximum efficiency.,Legend of the Arch Magus,/icons/weapon_sword_063.png
+new_360998,Gearbound Surcoat of Whispers,Chest,8,17,12,15,None,Uncommon,Your progress has been noted. Please remain seated.,High-Tech,/icons/chest_cloth_026.png
+new_658998,Battle-Worn Compass of Brilliance,Trinket,1,8,9,10,None,Common,Built from scrap and optimism. One of those failed first.,General,/icons/acc_trinket_049.png
+new_238490,Bent-Nail Soul Vial of Arcane Power,Trinket,4,12,1,15,None,Common,A minor triumph of cheap materials over basic standards.,General,/icons/acc_trinket_005.png
+new_806846,Riftshaper Vowband of the Crushing Tide,Ring,34,21,16,45,None,Epic,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,Defiance of the Fall,/icons/acc_ring_075.png
+new_260630,Monarchforged Charm of Warding,Trinket,26,12,59,15,None,Legendary,The finish peeled off before you equipped it. Very efficient.,Cradle,/icons/acc_trinket_141.png
+new_907407,Trash-Tier Rosary of the Black Bastion,Neck,2,0,11,35,None,Common,It pulses with a rhythmic; annoying light.,System,/icons/acc_neck_007.png
+new_852794,Ration-Issue Kevlar Vest of Impact,Chest,9,1,9,5,None,Common,Congratulations. You found the shiny thing.,A Soldier's Life,/icons/icons_quest_misc_165.png
+new_827539,Surplus Amulet of the Aether Throne,Neck,4,11,4,5,None,Common,Wait; is that a bloodstain or a design choice?,Imperial Initiative,/icons/acc_neck_033.png
+new_281450,Dan's Necklace of the Comet,Neck,7,11,2,0,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,The Bad Guys,/icons/acc_neck_029.png
+new_609784,Salvaged Mindcage of Slaying,Head,32,33,4,55,None,Epic,Not heroic. Not worthless. The middle path remains ugly.,High-Tech,/icons/icons_quest_misc_021.png
+new_190050,Boilerplate Gambeson of the Rampart,Chest,0,8,10,10,None,Common,Error 404: Better loot not found.,High-Tech,/icons/chest_cloth_168.png
+new_630920,Cracked-Core Robe of Ripping,Chest,12,7,1,0,None,Common,Built from scrap and optimism. One of those failed first.,Corrupted,/icons/chest_cloth_156.png
+new_114109,Waymarked Circuit Ring of Warding,Ring,5,5,24,30,None,Uncommon,The System has classified this as usable. Barely.,Heaven's Laws,/icons/acc_ring_046.png
+new_672237,Scamp's Falchion of Iron,Weapon,3,7,8,10,None,Common,A bargain from Dan's backroom. Possibly cursed.,The Bad Guys,/icons/weapon_sword_187.png
+new_326483,Discounted Monolith Shard of the Eldritch Gale,Neck,1,9,10,0,None,Common,"If disappointment had a loot table entry, this would be near the top.",Discount Dan's Backroom Bargains,/icons/acc_necklace_010.png
+new_292540,Mimic-Bait Longbow of Stars,Weapon,1,8,0,55,None,Common,Wait; is that a bloodstain or a design choice?,System,/icons/weapon_bow_041.png
+new_450541,Drill-Grade Scepter of the Rampart,Weapon,2,6,9,15,None,Common,Wait; is that a bloodstain or a design choice?,A Soldier's Life,/icons/icons_quest_misc_186.png
+new_177214,Ration-Issue Beacon of the Night Lens,Trinket,7,10,3,0,None,Common,The AI that designed this was having a bad day.,A Soldier's Life,/icons/acc_trinket_135.png
+new_305549,Viv's Dagger of the Arc-Light,Weapon,2,30,8,100,None,Rare,"The stitching is uneven, but so is fate.",Legends & Lattes,/icons/weapon_shortblade_100.png
+new_299201,Surplus Tabard Vest of the Iron Wall,Chest,4,2,9,25,None,Common,Error 404: Better loot not found.,Imperial Initiative,/icons/icons_quest_misc_137.png
+new_965412,Nerfed Deathmask of the Eldritch Gale,Head,1,11,4,20,None,Common,The System acknowledges your survival. For now.,System,/icons/icons_quest_misc_163.png
+new_935409,Dust-Caked Chainblade of the Siege Horn,Weapon,10,1,8,5,None,Common,Forged in haste and probably in violation of several safety codes.,A Shrouded World,/icons/icons_quest_misc_029.png
+new_711961,Misprinted Dagger of Iron,Weapon,1,1,8,50,None,Common,It pulses with a rhythmic; annoying light.,General,/icons/weapon_shortblade_062.png
+new_151732,Gleaming Mail of Slaying,Chest,41,0,54,25,None,Legendary,Your progress has been noted. Please remain seated.,General,/icons/chest_mail_065.png
+new_811572,Barracks-Issue Figurine of Relentless Force,Trinket,16,0,10,70,None,Uncommon,"Somebody threw this away. The System saw potential. Tragic, really.",A Soldier's Life,/icons/acc_trinket_072.png
+new_102237,Mass-Forged Soul Vial of the War Cry,Trinket,9,3,3,25,None,Common,A pity prize for finishing another book.,General,/icons/acc_trinket_093.png
+new_244590,Corin's Halberd of the Rune Storm,Weapon,5,29,23,15,None,Rare,The System found this in a trash bin. Enjoy.,Arcane Ascension,/icons/icons_quest_misc_098.png
+new_787931,Battleborn Soul Vial of the Berserker,Trinket,32,6,37,25,None,Epic,It still smells faintly of the previous owner.,Azarinth Healer,/icons/acc_trinket_041.png
+new_699050,Factory-Stamped Rune Tablet of the Wardstone,Trinket,2,3,12,15,None,Common,Slightly better than nothing. Only slightly.,High-Tech,/icons/acc_trinket_001.png
+new_126027,Cracked-Core Circuit Ring of Final Impact,Ring,11,8,1,0,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,Corrupted,/icons/acc_ring_062.png
+new_693854,Shattered Sunblade of the Night Lens,Weapon,1,9,10,0,None,Common,A pity prize for finishing another book.,General,/icons/weapon_sword_052.png
+new_781901,Scamp's Null Ring of the Warded Step,Ring,8,7,24,105,None,Rare,It looks rented. The System expects it back in worse condition.,The Bad Guys,/icons/acc_ringwod_012.png
+new_642247,Spare-Parts Signet of the Last Shield,Ring,2,8,9,5,None,Common,Built from scrap and optimism. One of those failed first.,High-Tech,/icons/acc_ring_064.png
+new_341800,Bent-Nail Tabard Vest of the Colossus March,Chest,8,1,7,20,None,Common,"The stitching is uneven, but so is fate.",General,/icons/icons_quest_misc_074.png
+new_191157,Dan's Cuirass of the Siege Horn,Chest,8,4,1,35,None,Common,"If disappointment had a loot table entry, this would be near the top.",The Bad Guys,/icons/chest_plate_117.png
+new_343958,Voidreaver Rosary of the Sage,Neck,41,47,6,30,None,Legendary,Congratulations. You found the shiny thing.,System Universe Series,/icons/acc_neck_030.png
+new_501335,Rattletrap Recurve of the Warded Step,Weapon,0,18,22,0,None,Uncommon,Built from scrap and optimism. One of those failed first.,High-Tech,/icons/weapon_bow_060.png
+new_483534,Spare-Parts Medallion of the Parapet,Neck,0,7,11,10,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",High-Tech,/icons/acc_neck_029.png
+new_751664,Gleaming Robe of the Iron Wall,Chest,15,4,21,0,None,Uncommon,The System has classified this as usable. Barely.,General,/icons/chest_cloth_099.png
+new_712655,Steelbloom Pilot Hood of Fortitude,Head,3,15,19,15,None,Uncommon,It looks rented. The System expects it back in worse condition.,The Alchemic Weaponeer Series,/icons/icons_quest_misc_018.png
+new_856870,Zev's Crown of the Black Bastion,Head,7,4,23,30,None,Uncommon,Factory-second quality for a second-rate hero.,Dungeon Crawler Carl,/icons/icons_quest_misc_253.png
+new_358265,Shopworn Cowl of the Moon Script,Head,1,11,2,30,None,Common,"It rattles when moved, much like your long-term build plan.",Shopocalypse Saga,/icons/head_cloth_023.png
+new_320565,Void-Touched Bauble of the Warded Step,Trinket,32,6,34,40,None,Epic,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,Ancient,/icons/acc_trinket_052.png
+new_765183,Carl's Talisman of the Mountain,Trinket,1,6,20,65,None,Uncommon,Even the goblins passed on this one. Bold of you to disagree.,Dungeon Crawler Carl,/icons/acc_trinket_122.png
+new_185751,Dan's Kevlar Vest of the Iron Wall,Chest,4,5,10,5,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,The Bad Guys,/icons/icons_quest_misc_126.png
+new_106902,Gleaming Mail of the Anchor,Chest,3,3,10,20,None,Common,Warning: Do not consume.,General,/icons/chest_mail_134.png
+new_115240,Dan's Sledge of Bonebreaker Oaths,Weapon,23,9,7,5,None,Uncommon,Your progress has been noted. Please remain seated.,The Bad Guys,/icons/weapon_mace_108.png
+new_507219,Shadow-Sect Warden Band of the Eldritch Gale,Ring,4,29,19,40,None,Rare,"Somebody threw this away. The System saw potential. Tragic, really.",General,/icons/acc_ringwod_034.png
+new_431267,Shopworn Dirk of the War Cry,Weapon,11,9,0,0,None,Common,The AI that designed this was having a bad day.,Shopocalypse Saga,/icons/weapon_shortblade_011.png
+new_458160,Mass-Forged Arc Pistol of the Mystic,Weapon,1,12,5,10,None,Common,The System has classified this as usable. Barely.,General,/icons/icons_quest_misc_024.png
+new_767244,Ashwood Warden Band of the Parapet,Ring,2,16,22,0,None,Uncommon,It was discovered under a cart. Great destinies begin somewhere awful.,Benjamin Ashwood Series,/icons/acc_ring_040.png
+new_407432,Gearbound Maul of Relentless Force,Weapon,18,8,14,0,None,Uncommon,Your progress has been noted. Please remain seated.,High-Tech,/icons/weapon_mace_066.png
+new_923943,Stamped-Alloy Chainblade of the Deep Spell,Weapon,10,8,0,10,None,Common,The AI that designed this was having a bad day.,High-Tech,/icons/icons_quest_misc_227.png
+new_239980,Wolfsworn Mace of the Sky Furnace,Weapon,0,20,10,50,None,Uncommon,A reward for your 'hard work.' Try not to lose it.,Law of the Jungle,/icons/weapon_mace_388.png
+new_570635,Salvaged Artifact of Final Impact,Trinket,22,10,5,15,None,Uncommon,Your progress has been noted. Please remain seated.,High-Tech,/icons/acc_trinket_055.png
+new_810949,Misprinted Knuckleband of the Mystic,Ring,0,11,9,0,None,Common,The System found this in a trash bin. Enjoy.,General,/icons/acc_ring_094.png
+new_678642,Drill-Grade Tunic of Shielding,Chest,10,1,8,5,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",A Soldier's Life,/icons/chest_cloth_060.png
+new_244882,Barracks-Issue Loop of Iron,Ring,8,0,12,0,None,Common,"It rattles when moved, much like your long-term build plan.",A Soldier's Life,/icons/acc_ring_010.png
+new_342340,Cracked-Core Hexband of the Phalanx,Ring,6,4,8,10,None,Common,"If disappointment had a loot table entry, this would be near the top.",Corrupted,/icons/acc_ring_057.png
+new_139856,Dust-Caked Lucky Bone of the Bear,Trinket,12,3,1,20,None,Common,"It rattles when moved, much like your long-term build plan.",A Shrouded World,/icons/acc_trinket_122.png
+new_614477,Mass-Forged Bauble of the Tower,Trinket,3,4,11,10,None,Common,Warning: Do not consume.,General,/icons/acc_trinket_014.png
+new_760993,Rattletrap Needler of the Shellback,Weapon,5,0,9,30,None,Common,"Somebody threw this away. The System saw potential. Tragic, really.",High-Tech,/icons/icons_quest_misc_175.png
+new_557226,Embermarked Shank of the Titan,Ring,23,0,7,50,None,Uncommon,A minor triumph of cheap materials over basic standards.,Divine,/icons/acc_ring_031.png
+new_555326,Ooze-Stained Spatha of the Crushing Tide,Weapon,11,1,6,10,None,Common,It looks rented. The System expects it back in worse condition.,General,/icons/weapon_sword_043.png
+new_981356,Ooze-Stained Plastron of Manifesting,Chest,13,55,22,50,None,Legendary,Improved after three revisions and one embarrassing recall.,General,/icons/chest_plate_120.png
+new_790431,Rattletrap Chronometer of the Shellback,Trinket,13,0,22,25,None,Uncommon,A minor triumph of cheap materials over basic standards.,High-Tech,/icons/acc_trinket_115.png
+new_432430,Stamped-Alloy Tabard of the Citadel,Chest,9,1,8,10,None,Common,Forged in haste and probably in violation of several safety codes.,High-Tech,/icons/chest_cloth_066.png
+new_849012,Mimic-Bait Observer Goggles of the Prism Mind,Head,0,12,0,40,None,Common,Congratulations. You found the shiny thing.,System,/icons/icons_quest_misc_042.png
+new_237420,Off-Brand Coif of the Nebula,Head,1,8,0,55,None,Common,The System found this in a trash bin. Enjoy.,General,/icons/head_mail_015.png
+new_393863,Ghostwater Arc Pistol of the Thunder Maul,Weapon,36,0,24,0,None,Rare,The finish peeled off before you equipped it. Very efficient.,Cradle,/icons/icons_quest_misc_101.png
+new_512728,Boilerplate Lamellar of Stars,Chest,0,11,9,0,None,Common,Error 404: Better loot not found.,High-Tech,/icons/icons_quest_misc_092.png
+new_671955,Misprinted Claymore of the Iron Reign,Weapon,10,0,2,40,None,Common,The System has classified this as usable. Barely.,General,/icons/weapon_sword_267.png
+new_460765,Surplus Tabard Vest of the Tortoise,Chest,1,0,11,40,None,Common,Factory-second quality for a second-rate hero.,Imperial Initiative,/icons/icons_quest_misc_163.png
+new_163357,Flea-Market Phylactery of the Warded Step,Trinket,10,1,9,0,None,Common,Forged in haste and probably in violation of several safety codes.,Jake's Magical Market,/icons/acc_trinket_003.png
+new_929870,Shattered Grav Pendant of the Warded Step,Neck,4,6,10,0,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",General,/icons/acc_neck_022.png
+new_717393,Bent-Nail Soul Prism of the Chainbreaker,Neck,9,1,8,10,None,Common,It pulses with a rhythmic; annoying light.,General,/icons/acc_neck_001.png
+new_760241,Montana's Halo Ring of Ripping,Ring,21,18,0,5,None,Uncommon,"Calibrated by the System to be adequate, which for you counts as praise.",The Good Guys,/icons/acc_ring_073.png
+new_147246,Battle-Worn Circuit Ring of the Bastion,Ring,8,0,12,0,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/acc_ring_057.png
+new_860992,Cracked-Core Collar of Slaying,Neck,9,11,0,0,None,Common,The System has classified this as usable. Barely.,Corrupted,/icons/acc_neck_005.png
+new_266830,Ration-Issue Necklace of the Bulwark,Neck,1,7,12,0,None,Common,"The stitching is uneven, but so is fate.",A Soldier's Life,/icons/acc_neck_017.png
+new_496465,Scuffed Sigil of Arcane Power,Neck,9,8,2,5,None,Common,Congratulations. You found the shiny thing.,General,/icons/acc_neck_027.png
+new_302472,Cursed-ish Greathelm of the Tortoise,Head,6,6,23,25,None,Uncommon,"The stitching is uneven, but so is fate.",System,/icons/head_plate_045.png
+new_454951,Scuffed Whip of Deflection,Weapon,4,15,18,15,None,Uncommon,The brass gleam suggests ambition. The dents suggest reality.,General,/icons/icons_quest_misc_056.png
+new_941788,Gleaming Rapier of the Warlord,Weapon,9,0,5,30,None,Common,Factory-second quality for a second-rate hero.,General,/icons/weapon_sword_221.png
+new_927038,Bent-Nail Votive of the Bear,Trinket,11,2,0,35,None,Common,The System has classified this as usable. Barely.,General,/icons/acc_trinket_046.png
+new_544658,Bent-Nail Greathelm of the Night Lens,Head,8,12,0,0,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/head_plate_145.png
+new_330060,Rattletrap Lamellar of the Sky Furnace,Chest,0,10,7,15,None,Common,"It rattles when moved, much like your long-term build plan.",High-Tech,/icons/icons_quest_misc_093.png
+new_840810,Mimic-Bait Crown of the Crushing Tide,Head,20,8,2,50,None,Uncommon,"Calibrated by the System to be adequate, which for you counts as praise.",System,/icons/icons_quest_misc_245.png
+new_308339,Ration-Issue Orb of the Stormbreak,Trinket,0,5,9,30,None,Common,The craftsmanship is... adequate. Barely.,A Soldier's Life,/icons/acc_trinket_092.png
+new_197251,Standard-Issue Locket of the Moon Script,Neck,15,18,3,20,None,Uncommon,It pulses with a rhythmic; annoying light.,System,/icons/acc_neck_033.png
+new_416457,Shopworn Boomstick of the Juggernaut,Weapon,25,12,13,50,None,Rare,A pity prize for finishing another book.,Shopocalypse Saga,/icons/icons_quest_misc_176.png
+new_878259,Training-Yard Sunblade of Unbroken Lines,Weapon,1,7,12,0,None,Common,Slightly better than nothing. Only slightly.,Quest Academy,/icons/weapon_sword_560.png
+new_621724,Boilerplate Knuckleband of the Iron Avalanche,Ring,23,2,0,75,None,Uncommon,Forged in the fires of your own obsession.,High-Tech,/icons/acc_ring_087.png
+new_778798,Spare-Parts Pulse Rifle of the Ether Crown,Weapon,0,9,8,15,None,Common,"Mass-produced, lightly cursed, and somehow still an upgrade.",High-Tech,/icons/icons_quest_misc_144.png
+new_518050,Embermarked Loop of the Chainbreaker,Ring,22,5,6,35,None,Uncommon,It still smells faintly of the previous owner.,Divine,/icons/acc_ring_008.png
+new_355700,Zev's Mail of the Adamant Crown,Chest,44,8,16,60,None,Epic,The AI that designed this was having a bad day.,Dungeon Crawler Carl,/icons/chest_mail_013.png
+new_649861,Scuffed Halberd of the Colossus March,Weapon,9,7,4,0,None,Common,"Smells like mildew, pennies, and survivorship bias.",General,/icons/icons_quest_misc_135.png
+new_196081,Training-Yard Icon of the Wolf General,Trinket,36,10,30,20,None,Epic,A patch fix for a bug that technically never existed.,Quest Academy,/icons/acc_trinket_059.png
+new_731613,Gleaming Scepter of the Titan,Weapon,11,4,3,10,None,Common,The System found this in a trash bin. Enjoy.,General,/icons/icons_quest_misc_081.png
+new_795339,Barracks-Issue Carapace of the Ether Crown,Chest,8,9,2,5,None,Common,Factory-second quality for a second-rate hero.,A Soldier's Life,/icons/icons_quest_misc_161.png
+new_464253,Surplus Sigil of the Anvil Fist,Neck,11,1,0,40,None,Common,The System has classified this as usable. Barely.,Imperial Initiative,/icons/acc_neck_027.png
+new_164291,Shopworn Brigandine of Unbroken Lines,Chest,1,0,9,50,None,Common,The System acknowledges your survival. For now.,Shopocalypse Saga,/icons/icons_quest_misc_258.png
+new_537643,Misprinted Necklace of the Siege Horn,Neck,10,8,2,0,None,Common,Forged in haste and probably in violation of several safety codes.,General,/icons/acc_necklace_012.png
+new_559877,Mass-Forged Mail of the Last Shield,Chest,18,9,31,10,None,Rare,Congratulations. You found the shiny thing.,General,/icons/chest_mail_028.png
+new_740203,Crownsworn Starloop of Crushing,Ring,28,15,0,85,None,Rare,"Mass-produced, lightly cursed, and somehow still an upgrade.",Mark of the Fool,/icons/acc_ring_100.png
+new_870031,Nova-Forged Scaleshirt of the Prism Mind,Chest,18,60,10,60,None,Legendary,"If disappointment had a loot table entry, this would be near the top.",Portal to Nova Roma,/icons/icons_quest_misc_169.png
+new_402228,Barracks-Issue Mail of the Blood Ram,Chest,10,7,3,0,None,Common,The System acknowledges your survival. For now.,A Soldier's Life,/icons/chest_mail_091.png
+new_264901,Surplus Mindcage of the Thunder Maul,Head,8,10,1,5,None,Common,The AI that designed this was having a bad day.,Imperial Initiative,/icons/icons_quest_misc_011.png
+new_986658,Second-Hand Starloop of Astral Fire,Ring,6,11,0,15,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",General,/icons/acc_ring_066.png
+new_655371,Pristine Spellbook of the Gorilla,Weapon,19,5,16,0,None,Uncommon,A reward for your 'hard work.' Try not to lose it.,General,/icons/icons_quest_misc_079.png
+new_445952,Void-Touched Data Cube of the Stone Choir,Trinket,17,22,35,30,None,Epic,A patch fix for a bug that technically never existed.,Ancient,/icons/acc_trinket_030.png
+new_325132,Standard-Issue Null Ring of the Cosmic Thread,Ring,0,9,7,20,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',System,/icons/acc_ring_029.png
+new_836175,Steelbloom Beads of the Wardstone,Neck,13,11,57,95,None,Legendary,The System does not joke about artifacts like this. It merely records who fails to deserve them.,The Alchemic Weaponeer Series,/icons/acc_neck_019.png
+new_488376,Battle-Worn Morningstar of Impact,Weapon,16,24,0,0,None,Uncommon,Error 404: Better loot not found.,General,/icons/weapon_mace_266.png
+new_358630,Training-Yard Spear of Iron,Weapon,11,0,8,5,None,Common,It pulses with a rhythmic; annoying light.,Quest Academy,/icons/icons_quest_misc_157.png
+new_354148,Drill-Grade Token of the Blue Nova,Trinket,2,8,10,0,None,Common,"If disappointment had a loot table entry, this would be near the top.",A Soldier's Life,/icons/acc_trinket_139.png
+new_959726,Second-Hand Loop of the Iron Reign,Ring,9,1,9,5,None,Common,Congratulations. You found the shiny thing.,General,/icons/acc_ring_072.png
+new_631557,Dawn-Touched Beads of the Warded Step,Neck,7,8,18,35,None,Uncommon,Forged in the fires of your own obsession.,Divine,/icons/acc_neck_025.png
+new_929422,Stamped-Alloy Whip of the Siege Horn,Weapon,12,3,3,10,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,High-Tech,/icons/icons_quest_misc_143.png
+new_551410,Drill-Grade Visage of the Deep Spell,Head,7,11,2,0,None,Common,The System found this in a trash bin. Enjoy.,A Soldier's Life,/icons/icons_quest_misc_275.png
+new_566782,Bent-Nail Battle Visor of the Goliath Brand,Head,8,1,6,25,None,Common,It pulses with a rhythmic; annoying light.,General,/icons/icons_quest_misc_219.png
+new_991462,Drill-Grade Echo Recorder of the Battle Saint,Trinket,12,5,2,5,None,Common,"Mass-produced, lightly cursed, and somehow still an upgrade.",A Soldier's Life,/icons/acc_trinket_071.png
+new_844003,Ashen Pauldrons of Arcane Power,Chest,6,24,8,110,None,Rare,Built from scrap and optimism. One of those failed first.,Corrupted,/icons/chest_plate_126.png
+new_185383,Second-Hand Cuirass of Arcane Power,Chest,8,12,0,0,None,Common,Forged in haste and probably in violation of several safety codes.,General,/icons/chest_plate_010.png
+new_713446,Dawn-Touched Vambraces of the Dream Current,Chest,7,19,2,60,None,Uncommon,The System has classified this as usable. Barely.,Divine,/icons/chest_plate_045.png
+new_937119,Nerfed Circuit Ring of Iron,Ring,6,3,27,120,None,Rare,Forged in the fires of your own obsession.,System,/icons/acc_ringwod_037.png
+new_622881,Rusty Visor of the Mountain,Head,1,7,10,10,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",General,/icons/head_plate_018.png
+new_963177,Budget-Line Vambraces of the Sentinel,Chest,6,1,23,50,None,Uncommon,Built from scrap and optimism. One of those failed first.,High-Tech,/icons/chest_plate_013.png
+new_617143,Misprinted Microdrone of the Parapet,Trinket,9,0,11,0,None,Common,Congratulations. You found the shiny thing.,General,/icons/acc_trinket_024.png
+new_144152,Rattletrap Horned Casque of the Siege Hold,Head,2,6,10,10,None,Common,A reward for your 'hard work.' Try not to lose it.,High-Tech,/icons/head_plate_040.png
+new_898365,Stamped-Alloy Railgun of the Nebula,Weapon,15,33,1,55,None,Rare,Even the goblins passed on this one. Bold of you to disagree.,High-Tech,/icons/icons_quest_misc_159.png
+new_470163,Second-Hand Chain of the Sunken Sigil,Neck,4,12,2,10,None,Common,It pulses with a rhythmic; annoying light.,General,/icons/acc_neck_010.png
+new_817332,Pristine Dirk of Slaying,Weapon,28,29,3,0,None,Rare,The System rarely admits admiration. This is close.,General,/icons/weapon_shortblade_006.png
+new_278701,Nova-Forged Laurel of the Mystic,Head,10,26,17,35,None,Rare,Forged in haste and probably in violation of several safety codes.,Portal to Nova Roma,/icons/icons_quest_misc_021.png
+new_417898,Patch-Note Chain of the Chainbreaker,Neck,17,20,1,10,None,Uncommon,The AI that designed this was having a bad day.,System,/icons/acc_neck_008.png
+new_740204,Jason's Ring of the Chainbreaker,Ring,34,21,2,15,None,Rare,The System has classified this as usable. Barely.,He Who Fights with Monsters,/icons/acc_ringwod_052.png
+new_561058,Voidscript Falchion of the Oracle's Wake,Weapon,3,26,0,155,None,Rare,Not heroic. Not worthless. The middle path remains ugly.,Paranoid Mage,/icons/weapon_sword_453.png
+new_466012,Second-Hand Battle Visor of the Sentinel,Head,11,0,20,45,None,Uncommon,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/icons_quest_misc_241.png
+new_909496,Misprinted Vambraces of the Titan,Chest,8,6,2,20,None,Common,The System acknowledges your survival. For now.,General,/icons/chest_plate_005.png
+new_983011,Ashen Compass of Brutality,Trinket,20,20,0,0,None,Uncommon,The System has classified this as usable. Barely.,Corrupted,/icons/acc_trinket_110.png
+new_744727,Training-Yard Locket of the Star Choir,Neck,1,36,23,0,None,Rare,Carries the faint confidence of gear that has only failed other people.,Quest Academy,/icons/acc_neck_023.png
+new_284920,Trash-Tier Rosary of the Fortress Oath,Neck,0,10,8,10,None,Common,The System has classified this as usable. Barely.,System,/icons/acc_necklace_011.png
+new_284860,Bent-Nail Circlet of the Ether Crown,Head,0,9,0,55,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/icons_quest_misc_254.png
+new_459377,Moonlit Plate of the Wolf General,Chest,27,2,9,110,None,Rare,Forged in haste and probably in violation of several safety codes.,Scholomance,/icons/chest_plate_168.png
+new_404851,Barracks-Issue Bascinet of Relentless Force,Head,8,5,3,20,None,Common,"Smells like mildew, pennies, and survivorship bias.",A Soldier's Life,/icons/head_plate_148.png
+new_738428,Barracks-Issue Icon of the Black Bastion,Trinket,0,3,8,45,None,Common,It still smells faintly of the previous owner.,A Soldier's Life,/icons/acc_trinket_045.png
+new_729110,Bent-Nail Tunic of the Last Charge,Chest,12,2,3,15,None,Common,"Somebody threw this away. The System saw potential. Tragic, really.",General,/icons/chest_cloth_121.png
+new_999751,Legacy Robe of the Void Walker,Chest,4,33,6,85,None,Rare,Hard-coded into the reality substrate for your convenience.,System,/icons/chest_cloth_179.png
+new_394331,Battle-Worn Orb of the Deep Keep,Trinket,5,2,10,15,None,Common,"Smells like mildew, pennies, and survivorship bias.",General,/icons/acc_trinket_065.png
+new_430903,Scamp's Pendant of the Blue Nova,Neck,10,8,1,5,None,Common,It pulses with a rhythmic; annoying light.,The Bad Guys,/icons/acc_neck_013.png
+new_455673,Gearbound Cerebral Halo of the Stronghold,Head,0,22,18,0,None,Uncommon,The finish peeled off before you equipped it. Very efficient.,High-Tech,/icons/icons_quest_misc_127.png
+new_890652,Stamped-Alloy Laurel of the War Cry,Head,16,7,1,80,None,Uncommon,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,High-Tech,/icons/icons_quest_misc_080.png
+new_185402,Flea-Market Phylactery Shard of the Colossus March,Trinket,10,9,1,0,None,Common,Congratulations. You found the shiny thing.,Jake's Magical Market,/icons/acc_trinket_117.png
+new_699514,Ironroot Data Cube of Astral Fire,Trinket,6,23,11,0,None,Uncommon,"Somebody threw this away. The System saw potential. Tragic, really.",Battle Mage Farmer,/icons/acc_trinket_137.png
+new_740816,Riverstone Circlet of Brilliance,Head,13,34,9,20,None,Rare,It pulses with a rhythmic; annoying light.,A Thousand Li,/icons/icons_quest_misc_090.png
+new_612945,Mossgrown Armet of the Colossus March,Head,16,6,12,30,None,Uncommon,Error 404: Better loot not found.,Beware of Chicken,/icons/head_plate_058.png
+new_136695,Nerfed Votive of the Sage,Trinket,3,11,4,10,None,Common,Forged in haste and probably in violation of several safety codes.,System,/icons/acc_trinket_090.png
+new_357690,Shadow-Sect Crossbow of Arcane Power,Weapon,28,30,0,10,None,Rare,It looks rented. The System expects it back in worse condition.,General,/icons/weapon_bow_126.png
+new_863364,Clyde's Necklace of the Tortoise,Neck,7,12,24,85,None,Rare,"It rattles when moved, much like your long-term build plan.",The Bad Guys,/icons/acc_neck_006.png
+new_116117,Embermarked Charmstring of the Mountain,Neck,14,9,16,5,None,Uncommon,A patch fix for a bug that technically never existed.,Divine,/icons/acc_neck_011.png
+new_395099,Thousandfold Plastron of the Mauler,Chest,38,31,7,20,None,Epic,The finish peeled off before you equipped it. Very efficient.,A Thousand Li,/icons/chest_plate_086.png
+new_692976,Cracked-Core Whip of the Mountain,Weapon,2,1,9,40,None,Common,The finish peeled off before you equipped it. Very efficient.,Corrupted,/icons/icons_quest_misc_197.png
+new_109625,Surplus Chain of the Celestial Circuit,Neck,0,10,3,35,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",Imperial Initiative,/icons/acc_neck_030.png
+new_311255,Spellbound Halberd of the Bulwark,Weapon,8,50,40,10,None,Legendary,Forged in the fires of your own obsession.,Spellmonger,/icons/icons_quest_misc_257.png
+new_958819,Iron-Bound Sunblade of Final Impact,Weapon,19,6,12,15,None,Uncommon,Forged in haste and probably in violation of several safety codes.,General,/icons/weapon_sword_368.png
+new_882966,Knockoff Lance of the Rampart,Weapon,6,4,9,5,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,Corrupted,/icons/icons_quest_misc_205.png
+new_689550,Rusty Greathelm of the Titan Guard,Head,9,3,8,0,None,Common,It looks rented. The System expects it back in worse condition.,General,/icons/head_plate_032.png
+new_892272,Dungeon-Bred Shell Armor of Unbroken Lines,Chest,11,7,22,0,None,Uncommon,Slightly better than nothing. Only slightly.,Station 64: The Doll Dungeon,/icons/icons_quest_misc_207.png
+new_885890,Surplus Phylactery of the Citadel,Trinket,12,4,20,20,None,Uncommon,Your progress has been noted. Please remain seated.,Imperial Initiative,/icons/acc_trinket_062.png
+new_648094,Battle-Worn Oathcord of the Star Choir,Neck,16,21,3,0,None,Uncommon,A pity prize for finishing another book.,General,/icons/acc_neck_030.png
+new_109008,Rattletrap Sunblade of Sorcery,Weapon,2,19,1,90,None,Uncommon,Error 404: Better loot not found.,High-Tech,/icons/weapon_sword_592.png
+new_466812,Flea-Market Dog Tags of the Bastioned Heart,Neck,18,0,19,15,None,Uncommon,It looks rented. The System expects it back in worse condition.,Jake's Magical Market,/icons/acc_neck_029.png
+new_217260,Scamp's Signet of Sorcery,Ring,4,11,5,0,None,Common,The AI that designed this was having a bad day.,The Bad Guys,/icons/acc_ringwod_021.png
+new_865261,Drill-Grade Torque of Relentless Force,Neck,22,2,16,0,None,Uncommon,A patch fix for a bug that technically never existed.,A Soldier's Life,/icons/acc_neck_031.png
+new_359117,Misprinted Pulse Rifle of the Gorilla,Weapon,11,1,2,30,None,Common,Wait; is that a bloodstain or a design choice?,General,/icons/icons_quest_misc_162.png
+new_300406,Runed Soul Vial of the Stronghold,Trinket,6,20,30,20,None,Rare,Even the goblins passed on this one. Bold of you to disagree.,General,/icons/acc_trinket_043.png
+new_398525,Pristine Orb of the Battle Saint,Trinket,24,13,2,5,None,Uncommon,A minor triumph of cheap materials over basic standards.,General,/icons/acc_trinket_080.png
+new_125322,Surplus Mindcage of the Gorilla,Head,12,8,0,0,None,Common,Error 404: Better loot not found.,Imperial Initiative,/icons/icons_quest_misc_012.png
+new_595373,Storm-Forged Hood of the Great Hunt,Head,19,0,4,85,None,Uncommon,Procedurally generated for maximum efficiency.,Stormweaver Series,/icons/head_cloth_122.png
+new_191803,Battle-Worn Chainblade of the Colossus March,Weapon,8,3,3,30,None,Common,Congratulations. You found the shiny thing.,General,/icons/icons_quest_misc_171.png
+new_478830,Rusty Hexband of the Colossus March,Ring,8,10,2,0,None,Common,It looks rented. The System expects it back in worse condition.,General,/icons/acc_ring_052.png
+new_629409,Rattletrap Warden Band of Channeling,Ring,0,22,17,5,None,Uncommon,The brass gleam suggests ambition. The dents suggest reality.,High-Tech,/icons/acc_ring_066.png
+new_745844,Trash-Tier Bascinet of the Mauler,Head,10,6,2,10,None,Common,Factory-second quality for a second-rate hero.,System,/icons/head_plate_135.png
+new_371422,Factory-Stamped Deathmask of the Anvil Fist,Head,10,5,5,0,None,Common,"Smells like mildew, pennies, and survivorship bias.",High-Tech,/icons/icons_quest_misc_192.png
+new_371704,Misprinted Medallion of Bonebreaker Oaths,Neck,10,1,1,40,None,Common,"Somebody threw this away. The System saw potential. Tragic, really.",General,/icons/acc_neck_029.png
+new_322855,Rune-Laced Amulet of Astral Fire,Neck,12,36,10,10,None,Rare,The brass gleam suggests ambition. The dents suggest reality.,Mage Errant,/icons/acc_neck_003.png
+new_351453,Tinplate Mask of the Aegis Crown,Head,7,0,10,15,None,Common,"If disappointment had a loot table entry, this would be near the top.",General,/icons/head_cloth_088.png
+new_242520,Rusty Phylactery Shard of Might,Trinket,12,2,2,20,None,Common,The finish peeled off before you equipped it. Very efficient.,General,/icons/acc_trinket_013.png
+new_476110,Lanternlit Laurel of Sorcery,Head,0,17,22,5,None,Uncommon,The System found this in a trash bin. Enjoy.,Legends & Lattes,/icons/icons_quest_misc_257.png
+new_591808,Ooze-Stained Observer Goggles of Stone,Head,0,7,23,50,None,Uncommon,The finish peeled off before you equipped it. Very efficient.,General,/icons/icons_quest_misc_138.png
+new_157170,Cursed-ish Gorget of the Celestial Circuit,Neck,5,21,8,30,None,Uncommon,The AI that designed this was having a bad day.,System,/icons/acc_neck_026.png
+new_343114,Scuffed Hand-Cannon of the Thunder Maul,Weapon,12,3,0,25,None,Common,The System acknowledges your survival. For now.,General,/icons/icons_quest_misc_117.png
+new_552490,Lanternlit Jerkin of Manifesting,Chest,18,19,1,10,None,Uncommon,The finish peeled off before you equipped it. Very efficient.,Legends & Lattes,/icons/icons_quest_misc_090.png
+new_303750,Shopworn Holo Projector of the Owl,Trinket,22,35,9,70,None,Epic,A reward for your 'hard work.' Try not to lose it.,Shopocalypse Saga,/icons/acc_trinket_081.png
+new_232119,Archon-Blessed Data Lanyard of Stars,Neck,3,47,13,85,None,Epic,A patch fix for a bug that technically never existed.,Divine,/icons/acc_neck_022.png
+new_970950,Hexproof Chainblade of Sorcery,Weapon,0,22,6,60,None,Uncommon,It pulses with a rhythmic; annoying light.,Arcane Ascension,/icons/icons_quest_misc_074.png
+new_613031,Off-Brand Sigil of Arcane Power,Neck,0,19,14,35,None,Uncommon,The kind of gear merchants call 'starter' and veterans call 'bait.',General,/icons/acc_neck_013.png
+new_681976,Kingkiller Crown of the Chainbreaker,Head,33,7,36,20,None,Epic,Forged in the fires of your own obsession.,Kingkiller Chronicle,/icons/icons_quest_misc_258.png
+new_872857,Shattered Hauberk of the Aegis Crown,Chest,7,1,10,10,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",General,/icons/chest_mail_123.png
+new_466740,Scuffed Railgun of the Bastion,Weapon,3,16,20,5,None,Uncommon,"This survived a drawer full of junk. Against all odds, so did you.",General,/icons/icons_quest_misc_251.png
+new_100194,Gravebound Thumb Ring of the Titan,Ring,18,4,9,45,None,Uncommon,Highly recommended by 4 out of 5 dead heroes.,Corrupted,/icons/acc_ring_006.png
+new_590466,Standard-Issue Seal of the Berserker,Ring,10,10,0,0,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,System,/icons/acc_ring_088.png
+new_185666,Pristine Katana of the Rift,Weapon,9,32,12,35,None,Rare,"It rattles when moved, much like your long-term build plan.",General,/icons/icons_quest_misc_055.png
+new_403977,Second-Hand Tabard Vest of the Cosmic Thread,Chest,1,32,26,5,None,Rare,The brass gleam suggests ambition. The dents suggest reality.,General,/icons/icons_quest_misc_017.png
+new_216081,Ooze-Stained Greataxe of Might,Weapon,11,1,4,20,None,Common,Factory-second quality for a second-rate hero.,General,/icons/weapon_axe_314.png
+new_662745,Shopworn Plastron of the Spellweaver,Chest,8,11,0,5,None,Common,"Smells like mildew, pennies, and survivorship bias.",Shopocalypse Saga,/icons/chest_plate_123.png
+new_151376,Trash-Tier Coil Ring of the Fortress Oath,Ring,1,6,12,5,None,Common,Even the goblins passed on this one. Bold of you to disagree.,System,/icons/acc_ringwod_037.png
+new_690122,Infused Mail of Manifesting,Chest,5,31,16,40,None,Rare,It feels like someone is watching you.,General,/icons/chest_mail_028.png
+new_447573,Nerfed Cerebral Halo of Fortitude,Head,3,6,9,10,None,Common,The craftsmanship is... adequate. Barely.,System,/icons/icons_quest_misc_176.png
+new_537094,Dust-Caked Token of the Adamant Crown,Trinket,11,0,9,0,None,Common,The System acknowledges your survival. For now.,A Shrouded World,/icons/acc_trinket_102.png
+new_418253,Off-Brand Seal of the Siege Horn,Ring,10,2,7,5,None,Common,Factory-second quality for a second-rate hero.,General,/icons/acc_ringwod_027.png
+new_641214,Rusty Coil Ring of the Rift,Ring,4,12,1,15,None,Common,"Smells like mildew, pennies, and survivorship bias.",General,/icons/acc_ring_069.png
+new_461620,Stamped-Alloy Medallion of Fortitude,Neck,0,5,22,65,None,Uncommon,Highly recommended by 4 out of 5 dead heroes.,High-Tech,/icons/acc_necklace_008.png
+new_997894,Ooze-Stained Scimitar of the Parapet,Weapon,2,4,9,25,None,Common,The System acknowledges your survival. For now.,General,/icons/weapon_sword_588.png
+new_552956,Godslayer's Compass of the Rampart,Trinket,22,24,47,35,None,Legendary,The System rarely admits admiration. This is close.,Immortal Great Souls,/icons/acc_trinket_080.png
+new_254404,Nova-Forged Repeater of the Prism Mind,Weapon,19,33,13,75,None,Epic,Forged in the fires of your own obsession.,Portal to Nova Roma,/icons/icons_quest_misc_001.png
+new_121266,Rusty Bauble of the Wolf General,Trinket,11,6,1,10,None,Common,The craftsmanship is... adequate. Barely.,General,/icons/acc_trinket_129.png
+new_725209,Gravebound Loop of the Void Walker,Ring,19,28,13,0,None,Rare,Procedurally generated for maximum efficiency.,Corrupted,/icons/acc_ringwod_019.png
+new_166560,Tinplate Shock Baton of the Red Banner,Weapon,11,0,3,30,None,Common,"It rattles when moved, much like your long-term build plan.",General,/icons/icons_quest_misc_061.png
+new_565601,Cursed-ish Brigandine of Shielding,Chest,14,8,17,5,None,Uncommon,"Mass-produced, lightly cursed, and somehow still an upgrade.",System,/icons/icons_quest_misc_002.png
+new_260685,Bent-Nail Skullcap of the Furnace Heart,Head,22,0,7,55,None,Uncommon,The System has classified this as usable. Barely.,General,/icons/icons_quest_misc_209.png
+new_992056,Rattletrap Loop of the Sky Furnace,Ring,1,8,7,20,None,Common,Wait; is that a bloodstain or a design choice?,High-Tech,/icons/acc_ring_056.png
+new_981933,Dust-Caked Spellbook of the Prism Mind,Weapon,3,10,5,10,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,A Shrouded World,/icons/icons_quest_misc_176.png
+new_494420,Legacy Hexband of the Berserker,Ring,36,2,20,10,None,Rare,Built from scrap and optimism. One of those failed first.,System,/icons/acc_ringwod_010.png
+new_661416,Tinplate Aegis Coat of the Sage,Chest,2,8,1,45,None,Common,Factory-second quality for a second-rate hero.,General,/icons/icons_quest_misc_259.png
+new_408496,Carl's Data Lanyard of the Iron Reign,Neck,21,2,13,20,None,Uncommon,"It rattles when moved, much like your long-term build plan.",Dungeon Crawler Carl,/icons/acc_neck_002.png
+new_834011,Gleaming Hauberk of Iron,Chest,5,1,9,25,None,Common,Warning: Do not consume.,General,/icons/chest_mail_005.png
+new_159052,Dan's Signet of the Gorilla,Ring,24,15,0,5,None,Uncommon,A reward for your 'hard work.' Try not to lose it.,The Bad Guys,/icons/acc_ring_078.png
+new_344747,Spare-Parts Starloop of the Cosmic Thread,Ring,1,10,7,10,None,Common,It was discovered under a cart. Great destinies begin somewhere awful.,High-Tech,/icons/acc_ring_029.png
+new_158974,Runed Choker of the Wall,Neck,9,3,35,65,None,Rare,Procedurally generated for maximum efficiency.,General,/icons/acc_neck_021.png
+new_781199,Waymarked Needler of Brutality,Weapon,23,5,3,45,None,Uncommon,"Somebody threw this away. The System saw potential. Tragic, really.",Heaven's Laws,/icons/icons_quest_misc_140.png
+new_521058,Wolfsworn Rune Tablet of the Parapet,Trinket,10,23,40,35,None,Epic,The brass gleam suggests ambition. The dents suggest reality.,Law of the Jungle,/icons/acc_trinket_002.png
+new_257715,Zev's Maul of the Granite March,Weapon,10,4,18,40,None,Uncommon,The System found this in a trash bin. Enjoy.,Dungeon Crawler Carl,/icons/weapon_mace_282.png
+new_490600,Boilerplate Gambeson of the Void,Chest,10,10,0,0,None,Common,Congratulations. You found the shiny thing.,High-Tech,/icons/chest_cloth_052.png
+new_990748,Beta-Tested Microdrone of the Sky Furnace,Trinket,1,16,10,65,None,Uncommon,Slightly better than nothing. Only slightly.,System,/icons/acc_trinket_035.png
+new_718568,Frost-Bitten Dog Tags of the Eldritch Gale,Neck,9,16,4,55,None,Uncommon,A patch fix for a bug that technically never existed.,General,/icons/acc_neck_017.png
+new_675369,Mustang's Mace of the Red Banner,Weapon,36,5,16,15,None,Rare,Improved after three revisions and one embarrassing recall.,Red Rising,/icons/weapon_mace_199.png
+new_293688,Rune-Laced Hauberk of Whispers,Chest,1,16,10,65,None,Uncommon,Forged in the fires of your own obsession.,Mage Errant,/icons/chest_mail_139.png
+new_721405,Shattered Cerebral Halo of the Goliath Brand,Head,10,5,3,10,None,Common,The AI that designed this was having a bad day.,General,/icons/icons_quest_misc_026.png
+new_440164,Ration-Issue Bauble of the Adamant Crown,Trinket,10,2,7,5,None,Common,A pity prize for finishing another book.,A Soldier's Life,/icons/acc_trinket_012.png
+new_614568,Bent-Nail Loopband of the Archmage,Ring,5,8,6,5,None,Common,Built from scrap and optimism. One of those failed first.,General,/icons/acc_ringwod_006.png
+new_584388,Second-Hand Fetish of the Juggernaut,Trinket,23,6,2,45,None,Uncommon,"Smells like mildew, pennies, and survivorship bias.",General,/icons/acc_trinket_054.png
+new_624136,Budget-Line Band of the Thunder Maul,Ring,12,7,1,0,None,Common,The craftsmanship is... adequate. Barely.,High-Tech,/icons/acc_ringwod_003.png
+new_450897,Flea-Market Robe of Iron,Chest,0,16,16,40,None,Uncommon,A minor triumph of cheap materials over basic standards.,Jake's Magical Market,/icons/chest_cloth_128.png
+new_139768,Scuffed Bracers of the Glass Horizon,Chest,0,10,8,10,None,Common,Error 404: Better loot not found.,General,/icons/icons_quest_misc_104.png
+new_259100,Ooze-Stained Carapace of Iron,Chest,0,6,11,15,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',General,/icons/icons_quest_misc_209.png
+new_465788,Scamp's Vowband of the Void Walker,Ring,9,11,0,0,None,Common,Warning: Do not consume.,The Bad Guys,/icons/acc_ring_003.png
+new_137737,Crow-Marked Phylactery Shard of the Black Bastion,Trinket,0,23,17,0,None,Uncommon,A pity prize for finishing another book.,A Shrouded World,/icons/acc_trinket_081.png
+new_711296,Drill-Grade Loopband of the Ember Champion,Ring,36,3,2,95,None,Rare,The kind of gear merchants call 'starter' and veterans call 'bait.',A Soldier's Life,/icons/acc_ringwod_007.png
+new_761700,Moonlit Phylactery of the Juggernaut,Trinket,18,1,19,10,None,Uncommon,A minor triumph of cheap materials over basic standards.,Scholomance,/icons/acc_trinket_109.png
+new_279123,Dust-Caked Beacon of the Colossus March,Trinket,12,1,2,25,None,Common,"If disappointment had a loot table entry, this would be near the top.",A Shrouded World,/icons/acc_trinket_111.png
+new_974526,Shattered Beacon of the Citadel,Trinket,1,8,9,10,None,Common,The System found this in a trash bin. Enjoy.,General,/icons/acc_trinket_052.png
+new_259941,Discounted Reliquary of Stars,Trinket,6,12,1,5,None,Common,A reward for your 'hard work.' Try not to lose it.,Discount Dan's Backroom Bargains,/icons/acc_trinket_101.png
+new_598106,Mimic-Bait Beacon of the Iron Reign,Trinket,9,6,1,20,None,Common,Even the goblins passed on this one. Bold of you to disagree.,System,/icons/acc_trinket_029.png
+new_971620,Nerfed Wand of Ripping,Weapon,11,2,0,35,None,Common,"This survived a drawer full of junk. Against all odds, so did you.",System,/icons/icons_quest_misc_008.png
+new_889489,Crow-Marked Battle Visor of Sorcery,Head,2,27,29,10,None,Rare,One of a kind. Until you find another one.,A Shrouded World,/icons/icons_quest_misc_219.png
+new_602461,Surplus Deathmask of the Goliath Brand,Head,9,0,10,5,None,Common,"It rattles when moved, much like your long-term build plan.",Imperial Initiative,/icons/icons_quest_misc_053.png
+new_285521,Starbreaker Spatha of the Void,Weapon,3,36,35,30,None,Epic,A patch fix for a bug that technically never existed.,Red Rising,/icons/weapon_sword_364.png
+new_958589,Trash-Tier Faceplate of the Battle Saint,Head,20,15,5,0,None,Uncommon,Carries the faint confidence of gear that has only failed other people.,System,/icons/icons_quest_misc_018.png
+new_180356,Wolfsworn War Bonnet of the Moon Script,Head,20,34,22,20,None,Epic,"It rattles when moved, much like your long-term build plan.",Law of the Jungle,/icons/icons_quest_misc_179.png
+new_534729,Forgotten Oathcord of the Rampart,Neck,2,19,26,65,None,Rare,Highly recommended by 4 out of 5 dead heroes.,Ancient,/icons/acc_neck_020.png
+new_706653,Scuffed Visage of the Gorilla,Head,10,8,0,10,None,Common,Built from scrap and optimism. One of those failed first.,General,/icons/icons_quest_misc_081.png
+new_343048,Ashwood Signet of the Shellback,Ring,1,2,17,100,None,Uncommon,A patch fix for a bug that technically never existed.,Benjamin Ashwood Series,/icons/acc_ring_095.png
+new_811832,Hugh's Mail of the Owl,Chest,25,32,2,105,None,Epic,Highly recommended by 4 out of 5 dead heroes.,Mage Errant,/icons/chest_mail_038.png
+new_446860,Discounted Data Cube of Iron,Trinket,5,6,9,0,None,Common,Error 404: Better loot not found.,Discount Dan's Backroom Bargains,/icons/acc_trinket_075.png
+new_376854,Legacy Whip of the Bastioned Heart,Weapon,2,13,32,165,None,Epic,Congratulations. You found the shiny thing.,System,/icons/icons_quest_misc_255.png
+new_334571,Dust-Caked Chronometer of the Furnace Heart,Trinket,10,1,0,45,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,A Shrouded World,/icons/acc_trinket_075.png
+new_250454,Shattered Laurel of the Red Banner,Head,49,44,1,30,None,Legendary,The System rarely admits admiration. This is close.,General,/icons/icons_quest_misc_056.png
+new_283743,Standard-Issue Token of Warding,Trinket,11,2,24,15,None,Uncommon,A minor triumph of cheap materials over basic standards.,System,/icons/acc_trinket_141.png
+new_603769,Training-Yard Visage of the Chronomancer,Head,2,10,7,5,None,Common,The finish peeled off before you equipped it. Very efficient.,Quest Academy,/icons/icons_quest_misc_022.png
+new_737076,Rusty Null Ring of the Archmage,Ring,4,12,4,0,None,Common,It looks rented. The System expects it back in worse condition.,General,/icons/acc_ring_004.png
+new_331193,Training-Yard Falchion of the Citadel,Weapon,0,10,10,0,None,Common,A reward for your 'hard work.' Try not to lose it.,Quest Academy,/icons/weapon_sword_013.png
+new_987474,Second-Hand Soul Prism of the Bear,Neck,21,17,0,10,None,Uncommon,"The stitching is uneven, but so is fate.",General,/icons/acc_necklace_003.png
+new_889331,Factory-Stamped Needler of the Bulwark Prime,Weapon,13,2,19,30,None,Uncommon,The AI that designed this was having a bad day.,High-Tech,/icons/icons_quest_misc_095.png
+new_181717,Pristine Shank of the Celestial Circuit,Ring,2,16,5,85,None,Uncommon,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,General,/icons/acc_ring_077.png
+new_563183,Ironroot Seal Ring of the Sky Furnace,Ring,10,19,4,35,None,Uncommon,"Calibrated by the System to be adequate, which for you counts as praise.",Battle Mage Farmer,/icons/acc_ring_080.png
+new_268486,Moonlit Helm of the Ember Champion,Head,27,9,21,15,None,Rare,"This survived a drawer full of junk. Against all odds, so did you.",Scholomance,/icons/head_plate_114.png
+new_694910,Mossgrown Vambraces of the Rampart,Chest,9,8,18,25,None,Uncommon,"Mass-produced, lightly cursed, and somehow still an upgrade.",Beware of Chicken,/icons/chest_plate_014.png
+new_705728,Barracks-Issue Oathcord of Arcane Power,Neck,20,18,0,10,None,Uncommon,Your progress has been noted. Please remain seated.,A Soldier's Life,/icons/acc_necklace_006.png
+new_344525,Dust-Caked Repeater of the Deep Spell,Weapon,4,9,7,0,None,Common,Slightly better than nothing. Only slightly.,A Shrouded World,/icons/icons_quest_misc_217.png
+new_635003,Second-Hand Halberd of the War Cry,Weapon,12,1,1,30,None,Common,Even the goblins passed on this one. Bold of you to disagree.,General,/icons/icons_quest_misc_212.png
+new_755355,Warspun Greathelm of the Titan Guard,Head,17,9,25,45,None,Rare,Even the goblins passed on this one. Bold of you to disagree.,A Soldier's Life,/icons/head_plate_101.png
+new_948823,Budget-Line Glaive of the Bastion,Weapon,16,6,16,10,None,Uncommon,"This survived a drawer full of junk. Against all odds, so did you.",High-Tech,/icons/icons_quest_misc_271.png
+new_915556,Misprinted Vowband of the Winter Keep,Ring,2,4,11,15,None,Common,Factory-second quality for a second-rate hero.,General,/icons/acc_ringwod_051.png
+new_890423,Spellbound Pauldrons of Astral Fire,Chest,0,33,27,0,None,Rare,The AI that designed this was having a bad day.,Spellmonger,/icons/chest_plate_072.png
+new_252500,Boilerplate Greathelm of the Siege Hold,Head,5,0,12,15,None,Common,A reward for your 'hard work.' Try not to lose it.,High-Tech,/icons/head_plate_114.png
+new_890987,Dust-Caked Medallion of the Nebula,Neck,2,11,6,5,None,Common,The kind of gear merchants call 'starter' and veterans call 'bait.',A Shrouded World,/icons/acc_neck_033.png
+new_859661,Mass-Forged Signet of the Berserker,Ring,10,0,10,0,None,Common,Warning: Do not consume.,General,/icons/acc_ring_055.png
+new_999158,Legacy Beads of Brutality,Neck,32,5,14,145,None,Epic,It pulses with a rhythmic; annoying light.,System,/icons/acc_neck_022.png
+new_813397,Flea-Market Needler of the Phalanx,Weapon,4,0,12,20,None,Common,A pity prize for finishing another book.,Jake's Magical Market,/icons/icons_quest_misc_094.png
+new_683383,Factory-Stamped Chronometer of the Sentinel,Trinket,10,2,8,0,None,Common,The AI that designed this was having a bad day.,High-Tech,/icons/acc_trinket_013.png
+new_421206,Nerfed Breastplate of Relentless Force,Chest,12,2,1,25,None,Common,It looks rented. The System expects it back in worse condition.,System,/icons/chest_plate_072.png
+new_865676,Trash-Tier Battle Jacket of Shielding,Chest,8,1,11,0,None,Common,Stamped out by a bored quartermaster and dropped immediately. A natural lifecycle.,System,/icons/icons_quest_misc_128.png

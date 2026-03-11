@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>achievement-engine</Name>
+  <Repository>achievement-engine</Repository>
+  <Registry/>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project/>
+  <Overview/>
+  <Category/>
+  <WebUI/>
+  <TemplateURL/>
+  <Icon/>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1772798120</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="data" Target="/data" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/achievement-engine/</Config>
+  <Config Name="covers" Target="/data/covers" Default="" Mode="rw" Description="Optional: path to abs-stats covers folder for local serving. If not mapped, cover images proxy through abs-stats API." Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/achievement-engine/covers</Config>
+  <Config Name="ABSSTATS_BASE_URL" Target="ABSSTATS_BASE_URL" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">http://abs-stats:3000</Config>
+  <Config Name="POLL_SECONDS" Target="POLL_SECONDS" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">300</Config>
+  <Config Name="STATE_DB_PATH" Target="STATE_DB_PATH" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">/data/state.db</Config>
+  <Config Name="TZ" Target="TZ" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">America/New_York</Config>
+  <Config Name="XP_START_TIMESTAMP" Target="XP_START_TIMESTAMP" Default="" Mode="" Description="Unix timestamp (seconds) when progression economy starts. XP/loot/levels use this boundary." Type="Variable" Display="always" Required="false" Mask="false">1767225600</Config>
+  <Config Name="VERIFY_LISTEN_THRESHOLD" Target="VERIFY_LISTEN_THRESHOLD" Default="" Mode="" Description="Completion verification ratio (timeListening / duration). Used only when STRICT_VERIFICATION=true." Type="Variable" Display="always" Required="false" Mask="false">0.80</Config>
+  <Config Name="STRICT_VERIFICATION" Target="STRICT_VERIFICATION" Default="" Mode="" Description="If true, progression requires verification rules. If false, progression uses completion timestamps only." Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="REQUIRE_DURATION_FOR_CREDIT" Target="REQUIRE_DURATION_FOR_CREDIT" Default="" Mode="" Description="If true, books with unknown duration are excluded from progression credit." Type="Variable" Display="always" Required="false" Mask="false">true</Config>
+  <Config Name="REQUIRE_2026_SESSION_FOR_CREDIT" Target="REQUIRE_2026_SESSION_FOR_CREDIT" Default="" Mode="" Description="Legacy name: if true, requires at least one in-scope session (&gt;= XP_START_TIMESTAMP) for progression credit when STRICT_VERIFICATION=true." Type="Variable" Display="always" Required="false" Mask="false">true</Config>
+  <Config Name="WRAPPED_BOSS_HP" Target="WRAPPED_BOSS_HP" Default="" Mode="" Description="Boss HP used by wrapped combat and picker state." Type="Variable" Display="always" Required="false" Mask="false">250000</Config>
+  <Config Name="WRAPPED_YEAR" Target="WRAPPED_YEAR" Default="" Mode="" Description="Admin-only Wrapped reporting year (e.g., 2026, 2027). Does not reset progression XP/loot/levels." Type="Variable" Display="always" Required="false" Mask="false">2026</Config>
+  <Config Name="RUN_ACHIEVEMENT_BACKFILL" Target="RUN_ACHIEVEMENT_BACKFILL" Default="" Mode="" Description="One-shot startup backfill for all-time achievements. Set true for one boot, then false." Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="BACKFILL_ONCE_KEY" Target="BACKFILL_ONCE_KEY" Default="" Mode="" Description="Marker ID stored in DB so backfill only runs once per key." Type="Variable" Display="always" Required="false" Mask="false">ach_backfill_v1</Config>
+  <Config Name="SMTP_HOST" Target="SMTP_HOST" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">smtp.mailgun.org</Config>
+  <Config Name="SMTP_PORT" Target="SMTP_PORT" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">587</Config>
+  <Config Name="SMTP_USERNAME" Target="SMTP_USERNAME" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">noreply@yourdomain.com</Config>
+  <Config Name="SMTP_PASSWORD" Target="SMTP_PASSWORD" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">YOUR_SMTP_PASSWORD</Config>
+  <Config Name="SMTP_FROM" Target="SMTP_FROM" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">The System noreply@yourdomain.com</Config>
+  <Config Name="SEND_TEST_EMAIL" Target="SEND_TEST_EMAIL" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="SMTP_DEBUG" Target="SMTP_DEBUG" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">0</Config>
+  <Config Name="Dashboard Port" Target="8000" Default="" Mode="tcp" Description="" Type="Port" Display="always" Required="false" Mask="false">8000</Config>
+  <Config Name="SMTP_TO_OVERRIDE" Target="SMTP_TO_OVERRIDE" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">youremail@gmail.com</Config>
+  <Config Name="USER_EMAILS" Target="USER_EMAILS" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="USER_ICONS" Target="USER_ICONS" Default="" Mode="" Description="Custom avatar images for each user on the dashboard. Place avatar PNG files in your appdata icons folder, then map them here. Format: absuser1:/icons/avatar1.png,absuser2:/icons/avatar2.png. Leave empty for default avatars." Type="Variable" Display="always" Required="false" Mask="false">absuser1:/icons/avatar1.png,absuser2:/icons/avatar2.png</Config>
+  <Config Name="USER_ALIASES" Target="USER_ALIASES" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">absuser1:Name1,absuser2:Name2</Config>
+  <Config Name="ALLOWED_USERS" Target="ALLOWED_USERS" Default="" Mode="" Description="Optional comma-separated ABS usernames to include on filtered pages/APIs. Leave empty to include all users." Type="Variable" Display="always" Required="false" Mask="false">absuser1,absuser2</Config>
+  <Config Name="HTML Files" Target="/static" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/achievement-engine/static/</Config>
+  <TailscaleStateDir/>
+</Container>

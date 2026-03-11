@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Armory - Forge Gear</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --bg-dark: #050505;
+            --card-bg: #111;
+            --text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: #111;
+            padding: 15px;
+            border-bottom: 2px solid var(--neon-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0;
+            color: var(--neon-blue);
+        }
+
+        .admin-nav {
+            width: 100%;
+            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+            border-bottom: 1px solid var(--neon-blue, var(--system-blue, #00f2ff));
+            box-shadow: 0 0 12px rgba(0, 242, 255, 0.16);
+        }
+
+        .admin-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .admin-nav a {
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #9ad8df;
+            padding: 6px 10px;
+            border: 1px solid #2b4448;
+            transition: all 0.2s ease;
+        }
+
+        .admin-nav a.brand {
+            color: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: transparent;
+            padding-left: 0;
+            margin-right: 4px;
+        }
+
+        .admin-nav a:hover {
+            color: #001215;
+            background: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+        }
+
+        .admin-nav a.active {
+            color: #001215;
+            background: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.35);
+        }
+
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+            opacity: 0.1;
+            position: fixed;
+            bottom: 100%;
+            left: 0;
+            pointer-events: none;
+            animation: scanline 10s linear infinite;
+        }
+
+        @keyframes scanline {
+            0%   { bottom: 100%; }
+            100% { bottom: -100px; }
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.2);
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue));
+            animation: borderFlow 3s linear infinite;
+        }
+
+        @keyframes borderFlow {
+            0%   { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--neon-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #222;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 0.8rem;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        subLabel {
+            font-size: 0.6rem;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--neon-blue);
+            outline: none;
+        }
+
+        /* --- Stat Allocation Card --- */
+        .stat-budget-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .stat-budget-row span {
+            color: var(--neon-blue);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: #151515;
+            padding: 15px;
+            border: 1px solid #333;
+        }
+
+        .stat-grid .form-group label {
+            font-size: 0.75rem;
+        }
+
+        /* --- Actions Row --- */
+        .actions-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-test {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid #4ab2bc;
+            color: #91dde4;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-test:hover {
+            background: #4ab2bc;
+            color: #000;
+            box-shadow: 0 0 15px rgba(74, 178, 188, 0.8);
+        }
+
+        .btn-save {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .nav-back {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        /* --- Icon Preview --- */
+        .icon-input-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
+        #preview-icon {
+            width: 48px;
+            height: 48px;
+            border: 1px solid #444;
+            margin-top: 8px;
+            background: #000;
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        .btn-icon-picker {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 10px 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-icon-picker:hover {
+            background: var(--neon-blue);
+            color: #000;
+        }
+
+        /* --- Loot Preview Panel --- */
+        .loot-preview-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+
+        .loot-preview-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .loot-card-wrap {
+            position: relative;
+            margin-left: 55px;
+            max-width: 520px;
+        }
+
+        .loot-card {
+            background-color: #070710;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-height: 180px;
+            position: relative;
+        }
+
+        .loot-icon {
+            position: absolute;
+            left: -55px;
+            top: 10px;
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px black;
+            border: 2px solid;
+            background: #000;
+            object-fit: cover;
+        }
+
+        .rarity-common { border-color: #555; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .rarity-common .loot-icon { border-color: #a0a0a0; }
+        .rarity-common .item-name { color: #a0a0a0; }
+
+        .rarity-uncommon { border-color: #1eff0044; box-shadow: 0 4px 15px rgba(30, 255, 0, 0.1); }
+        .rarity-uncommon .loot-icon { border-color: #3bd26f; }
+        .rarity-uncommon .item-name { color: #3bd26f; }
+
+        .rarity-rare { border-color: #0070dd44; box-shadow: 0 4px 15px rgba(0, 112, 221, 0.15); }
+        .rarity-rare .loot-icon { border-color: #0070dd; }
+        .rarity-rare .item-name { color: #0070dd; }
+
+        .rarity-epic { border-color: #a335ee44; box-shadow: 0 4px 20px rgba(163, 53, 238, 0.2); }
+        .rarity-epic .loot-icon { border-color: #a335ee; }
+        .rarity-epic .item-name { color: #a335ee; }
+
+        .rarity-legendary { border-color: #ff800066; box-shadow: 0 4px 25px rgba(255, 128, 0, 0.3); }
+        .rarity-legendary .loot-icon { border-color: #ff8000; }
+        .rarity-legendary .item-name { color: #ff8000; }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 2px;
+        }
+
+        .item-type-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            color: #fff;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+        }
+
+        .item-stats {
+            color: #fff;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            min-height: 44px;
+        }
+
+        .item-effect {
+            color: #1eff00;
+            font-size: 0.92rem;
+            line-height: 1.3;
+            margin-top: 6px;
+        }
+
+        .item-flavor {
+            color: #ffd100;
+            font-size: 0.86rem;
+            font-style: italic;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .item-source {
+            color: #888;
+            font-size: 0.72rem;
+            margin-top: auto;
+            padding-top: 12px;
+            text-align: right;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .preview-note {
+            color: #9ab5b9;
+            font-size: 0.74rem;
+            margin-top: 10px;
+        }
+
+        /* --- Icon Modal --- */
+        .icon-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.76);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .icon-modal.hidden {
+            display: none;
+        }
+
+        .icon-modal-panel {
+            width: min(1100px, 96vw);
+            max-height: 88vh;
+            background: #0f0f0f;
+            border: 1px solid #2f2f2f;
+            box-shadow: 0 0 28px rgba(0, 242, 255, 0.16);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-modal-head {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #2b2b2b;
+            padding: 12px;
+            flex-wrap: wrap;
+        }
+
+        .icon-modal-head strong {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            letter-spacing: 1px;
+            font-size: 0.86rem;
+            text-transform: uppercase;
+        }
+
+        #icon-filter {
+            min-width: 240px;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 12px;
+            overflow: auto;
+        }
+
+        .icon-card {
+            border: 1px solid #2f2f2f;
+            background: #171717;
+            color: #9bbec4;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-height: 110px;
+            text-align: center;
+        }
+
+        .icon-card img {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            background: #000;
+            border: 1px solid #343434;
+        }
+
+        .icon-status {
+            border-top: 1px solid #2b2b2b;
+            color: #8aa3a8;
+            padding: 10px 12px;
+            font-size: 0.72rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    <nav class="admin-nav">
+        <div class="admin-nav-inner">
+            <a href="/admin" class="brand">System Admin</a>
+            <a href="/admin">Hub</a>
+            <a href="/admin/forge">Forge</a>
+            <a href="/admin/loot" class="active">Armory</a>
+            <a href="/admin/quest">Bounties</a>
+            <a href="/admin/template">Template</a>
+            <a href="/admin/setup">Script</a>
+            <a href="/admin/ops">Ops</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>ITEM ARMORY // GEAR FORGE</h1>
+        <a href="/admin" class="nav-back">[ RETURN TO HUB ]</a>
+    </header>
+
+    <div class="container">
+
+        <!-- Card 1: Item Properties -->
+        <div class="admin-card">
+            <h2 class="card-title">Item Properties</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="item_name" placeholder="e.g. Phoenix Down Vest">
+                </div>
+                <div class="form-group">
+                    <label>Slot</label>
+                    <select id="slot">
+                        <option value="Head">Head</option>
+                        <option value="Chest">Chest</option>
+                        <option value="Neck">Neck</option>
+                        <option value="Ring">Ring</option>
+                        <option value="Trinket">Trinket</option>
+                        <option value="Weapon">Weapon</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Rarity</label>
+                    <select id="rarity" onchange="updateBudget()">
+                        <option value="Common">Common (20 pts)</option>
+                        <option value="Uncommon">Uncommon (40 pts)</option>
+                        <option value="Rare">Rare (60 pts)</option>
+                        <option value="Epic">Epic (80 pts)</option>
+                        <option value="Legendary">Legendary (100 pts)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Series Tag</label>
+                    <input type="text" id="series_tag" placeholder="e.g. Red Rising">
+                </div>
+                <div class="form-group">
+                    <label>Icon Path</label>
+                    <div class="icon-input-row">
+                        <input type="text" id="icon" placeholder="/icons/..." oninput="updateIconPreview()">
+                        <button type="button" class="btn-icon-picker" onclick="openIconPicker()">Browse Icons</button>
+                    </div>
+                    <div class="hint">Choose from live `/data/icons` via picker or type path manually.</div>
+                    <img id="preview-icon" src="" alt="Select Icon">
+                </div>
+                <div class="form-group">
+                    <label>Special Ability
+                        <span style="font-size: 0.8em; color: gray; font-weight: normal;">(appearances only)</span>
+                    </label>
+                    <input type="text" id="special_ability" placeholder="None">
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Stat Allocation -->
+        <div class="admin-card">
+            <h2 class="card-title">Stat Allocation</h2>
+            <div class="stat-budget-row">
+                <span>Budget: <span id="current-pts">0</span> / <span id="target-pts">20</span> pts</span>
+                <span style="color: #555; font-size: 0.75rem;">STR + MAG + DEF + (HP ÷ 5) = total</span>
+            </div>
+            <div class="stat-grid">
+                <div class="form-group">
+                    <label>STR</label>
+                    <input type="number" id="str" value="0" min="0" oninput="calculatePoints()">
+                </div>
+                <div class="form-group">
+                    <label>MAG</label>
+                    <input type="number" id="mag" value="0" min="0" oninput="calculatePoints()">
+                </div>
+                <div class="form-group">
+                    <label>DEF</label>
+                    <input type="number" id="def" value="0" min="0" oninput="calculatePoints()">
+                </div>
+                <div class="form-group">
+                    <label>HP (x5)</label>
+                    <input type="number" id="hp" value="0" min="0" step="5" oninput="calculatePoints()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Flavor Text -->
+        <div class="admin-card">
+            <h2 class="card-title">Flavor Text</h2>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="flavor_text" rows="3" placeholder="Describe the item's history..."></textarea>
+            </div>
+        </div>
+
+        <!-- Card 4: Forge Preview -->
+        <div class="admin-card">
+            <h2 class="card-title">Forge Preview</h2>
+            <div class="loot-preview-title">Test result before writing to csv</div>
+            <div id="loot-test-preview" class="loot-preview-grid"></div>
+            <div id="preview-note" class="preview-note">Click Test after editing fields to generate a preview card.</div>
+        </div>
+
+        <!-- Actions Row -->
+        <div class="actions-row">
+            <button class="btn-test" type="button" onclick="testItem()">[ TEST ]</button>
+            <button class="btn-save" onclick="forgeItem()">[ COMMENCE FORGING ]</button>
+        </div>
+
+    </div>
+
+    <!-- Icon Modal (fixed overlay, outside container) -->
+    <div id="icon-modal" class="icon-modal hidden" onclick="handleIconModalBackdrop(event)">
+        <div class="icon-modal-panel">
+            <div class="icon-modal-head">
+                <strong>Icon Arsenal</strong>
+                <input type="text" id="icon-filter" placeholder="Filter icons..." oninput="renderIconGrid()">
+                <button type="button" class="btn-icon-picker" onclick="closeIconPicker()">Close</button>
+            </div>
+            <div id="icon-grid" class="icon-grid"></div>
+            <div id="icon-status" class="icon-status">Idle.</div>
+        </div>
+    </div>
+
+    <script>
+        const budgets = {
+            "Common": 20,
+            "Uncommon": 40,
+            "Rare": 60,
+            "Epic": 80,
+            "Legendary": 100
+        };
+
+        let iconCatalog = [];
+        let iconsLoaded = false;
+
+        function updateBudget() {
+            const rarity = document.getElementById('rarity').value;
+            document.getElementById('target-pts').textContent = budgets[rarity];
+            calculatePoints();
+        }
+
+        function calculatePoints() {
+            const str = parseInt(document.getElementById('str').value) || 0;
+            const mag = parseInt(document.getElementById('mag').value) || 0;
+            const def = parseInt(document.getElementById('def').value) || 0;
+            const hp = parseInt(document.getElementById('hp').value) || 0;
+
+            const total = str + mag + def + (hp / 5);
+            const display = document.getElementById('current-pts');
+            display.textContent = total;
+
+            const target = budgets[document.getElementById('rarity').value];
+            display.style.color = total > target ? '#ff0055' : (total === target ? '#00ff00' : '#888');
+        }
+
+        function normalizeIconPath(path) {
+            const raw = (path || '').trim();
+            if (!raw) return '';
+            if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+            if (raw.startsWith('/icons/')) return raw;
+            if (raw.startsWith('icons/')) return '/' + raw;
+            return '/icons/' + raw.replace(/^\/+/, '');
+        }
+
+        function updateIconPreview() {
+            const src = normalizeIconPath(document.getElementById('icon').value);
+            const img = document.getElementById('preview-icon');
+            if (!src) {
+                img.removeAttribute('src');
+                return;
+            }
+            img.src = src;
+            img.onerror = () => {
+                img.removeAttribute('src');
+            };
+        }
+
+        async function loadIcons() {
+            if (iconsLoaded) return;
+            const status = document.getElementById('icon-status');
+            status.textContent = 'Loading icons...';
+
+            const endpoints = [];
+            endpoints.push('/awards/api/icons');
+            endpoints.push('/api/icons');
+            let payload = null;
+            let lastErr = '';
+            let usedEndpoint = '';
+
+            for (const ep of endpoints) {
+                try {
+                    const response = await fetch(ep, { cache: 'no-store' });
+                    if (!response.ok) {
+                        lastErr = `${ep} -> HTTP ${response.status}`;
+                        continue;
+                    }
+
+                    const bodyText = await response.text();
+                    let data = null;
+                    try {
+                        data = JSON.parse(bodyText);
+                    } catch (_e) {
+                        lastErr = `${ep} -> invalid JSON`;
+                        continue;
+                    }
+
+                    if (Array.isArray(data)) {
+                        payload = { icons: data };
+                    } else if (data && Array.isArray(data.icons)) {
+                        payload = data;
+                    } else {
+                        lastErr = `${ep} -> unexpected payload`;
+                        continue;
+                    }
+
+                    usedEndpoint = ep;
+                    break;
+                } catch (e) {
+                    lastErr = `${ep} -> ${e.message}`;
+                }
+            }
+
+            iconCatalog = Array.isArray(payload?.icons) ? payload.icons : [];
+            iconsLoaded = true;
+
+            if (iconCatalog.length) {
+                status.textContent = `Loaded ${iconCatalog.length} icons via ${usedEndpoint}.`;
+            } else {
+                status.textContent = `No icons loaded. ${lastErr || 'No working endpoint.'}`;
+            }
+        }
+
+        function iconName(path) {
+            const idx = path.lastIndexOf('/');
+            return idx >= 0 ? path.slice(idx + 1) : path;
+        }
+
+        function renderIconGrid() {
+            const grid = document.getElementById('icon-grid');
+            const status = document.getElementById('icon-status');
+            const q = document.getElementById('icon-filter').value.trim().toLowerCase();
+            const list = iconCatalog.filter(p => p.toLowerCase().includes(q));
+
+            grid.innerHTML = '';
+            if (!list.length) {
+                status.textContent = iconCatalog.length ? 'No matches for that filter.' : status.textContent;
+                return;
+            }
+
+            const frag = document.createDocumentFragment();
+            for (const path of list) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'icon-card';
+                btn.title = path;
+                btn.onclick = () => selectIcon(path);
+
+                const img = document.createElement('img');
+                img.src = path;
+                img.alt = iconName(path);
+
+                const txt = document.createElement('span');
+                txt.textContent = iconName(path);
+
+                btn.appendChild(img);
+                btn.appendChild(txt);
+                frag.appendChild(btn);
+            }
+            grid.appendChild(frag);
+            status.textContent = `${list.length} shown${q ? ` (filtered from ${iconCatalog.length})` : ''}.`;
+        }
+
+        async function openIconPicker() {
+            document.getElementById('icon-modal').classList.remove('hidden');
+            await loadIcons();
+            renderIconGrid();
+            document.getElementById('icon-filter').focus();
+        }
+
+        function closeIconPicker() {
+            document.getElementById('icon-modal').classList.add('hidden');
+        }
+
+        function handleIconModalBackdrop(event) {
+            if (event.target.id === 'icon-modal') closeIconPicker();
+        }
+
+        function selectIcon(path) {
+            document.getElementById('icon').value = path;
+            updateIconPreview();
+            closeIconPicker();
+        }
+
+        function escapeHtml(v) {
+            return String(v || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function readItemFromForm() {
+            return {
+                item_name: document.getElementById('item_name').value.trim(),
+                slot: document.getElementById('slot').value,
+                rarity: document.getElementById('rarity').value,
+                series_tag: document.getElementById('series_tag').value.trim(),
+                str: parseInt(document.getElementById('str').value) || 0,
+                mag: parseInt(document.getElementById('mag').value) || 0,
+                def: parseInt(document.getElementById('def').value) || 0,
+                hp: parseInt(document.getElementById('hp').value) || 0,
+                icon: document.getElementById('icon').value.trim(),
+                special_ability: (document.getElementById('special_ability').value || '').trim(),
+                flavor_text: (document.getElementById('flavor_text').value || '').trim()
+            };
+        }
+
+        function buildLootCardHtml(item) {
+            const rarityClass = `rarity-${(item.rarity || 'Common').toLowerCase()}`;
+            const icon = normalizeIconPath(item.icon) || '/icons/chests.png';
+            const name = escapeHtml(item.item_name || 'Unnamed Artifact');
+            const slot = escapeHtml(item.slot || 'Unknown');
+            const rarity = escapeHtml(item.rarity || 'Common');
+            const series = escapeHtml(item.series_tag || 'Unknown');
+            let statsHtml = '';
+            if (item.str) statsHtml += `+${item.str} STR<br>`;
+            if (item.mag) statsHtml += `+${item.mag} MAG<br>`;
+            if (item.def) statsHtml += `+${item.def} DEF<br>`;
+            if (item.hp) statsHtml += `+${item.hp} HP<br>`;
+            if (!statsHtml) statsHtml = 'No stat bonuses';
+
+            const ability = (item.special_ability || '').trim();
+            const flavor = (item.flavor_text || '').trim();
+
+            return `
+                <div class="loot-card-wrap">
+                    <div class="loot-card ${rarityClass}">
+                        <img class="loot-icon" src="${icon}" alt="${name}" onerror="this.src='/icons/chests.png'">
+                        <div class="item-name">${name}</div>
+                        <div class="item-type-line">
+                            <span>${slot}</span>
+                            <span>${rarity}</span>
+                        </div>
+                        <div class="item-stats">${statsHtml}</div>
+                        ${ability ? `<div class="item-effect">Equip: ${escapeHtml(ability)}</div>` : ''}
+                        ${flavor ? `<div class="item-flavor">"${escapeHtml(flavor)}"</div>` : ''}
+                        <div class="item-source">Series: ${series}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function testItem() {
+            const item = readItemFromForm();
+            const target = budgets[item.rarity];
+            const current = item.str + item.mag + item.def + (item.hp / 5);
+            const preview = document.getElementById('loot-test-preview');
+            const previewNote = document.getElementById('preview-note');
+            preview.innerHTML = buildLootCardHtml(item);
+            if (previewNote) previewNote.style.display = 'none';
+
+            if (current > target) {
+                alert(`Preview generated. Warning: item is over budget (${current}/${target}).`);
+            }
+        }
+
+        async function forgeItem() {
+            const item = readItemFromForm();
+            item.special_ability = item.special_ability || "None";
+
+            if (!item.item_name) { alert("Item Name is mandatory."); return; }
+
+            const target = budgets[item.rarity];
+            const current = item.str + item.mag + item.def + (item.hp / 5);
+            if (current > target) {
+                if (!confirm(`Item is over budget (${current}/${target}). Proceed anyway?`)) return;
+            }
+
+            try {
+                const resp = await fetch('/awards/api/admin/loot/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item)
+                });
+                const data = await resp.json();
+                if (data.ok) {
+                    alert(`Item forged successfully with ID: ${data.id}`);
+                    window.location.href = '/admin';
+                } else {
+                    alert('Forging failed: ' + data.detail);
+                }
+            } catch (e) {
+                alert('Communication failure: ' + e.message);
+            }
+        }
+
+        updateBudget();
+        updateIconPreview();
+    </script>
+</body>
+</html>

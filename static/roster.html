@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sanctum Roster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/roster.css?v=1">
+</head>
+<body>
+
+<nav class="nav-bar">
+    <a href="/" class="nav-title">The Listener's Sanctum</a>
+    <div>
+        <a href="/journal">Journal</a>
+        <a href="/champions">Leaderboard</a>
+        <a href="/roster" class="active">Roster</a>
+        <a href="/timeline">Timeline</a>
+        <a href="/archives">Stats</a>
+        <a href="/playlist">Playlist</a>
+        <a href="/tier">Tier List</a>
+        <a href="/loot">Loot</a>
+        <a href="/quests">Quests</a>
+        </div>
+        </nav>
+<div class="page-content">
+    <div class="roster-header">
+        <h1 class="roster-title">THE SANCTUM ROSTER</h1>
+        <div class="roster-subtitle" id="roster-subtitle">Summoning adventurers&hellip;</div>
+    </div>
+
+    <div id="boss-banner" class="boss-banner" style="display:none"></div>
+
+    <div id="roster-container">
+        <div class="loading">
+            Loading roster
+            <span class="loading-spinner"></span>
+        </div>
+    </div>
+</div>
+
+<script src="/static/roster.js?v=1"></script>
+</body>
+</html>

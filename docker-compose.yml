@@ -1,0 +1,36 @@
+services:
+  # ------------------------------------------------------------------
+  # abs-stats: required companion service
+  # Connects to your Audiobookshelf instance and exposes listening data
+  # via a REST API that the achievement engine polls.
+  # ------------------------------------------------------------------
+  abs-stats:
+    build: ./abs-stats
+    ports:
+      - "3000:3000"
+    environment:
+      - ENGINE_URL=http://achievement-engine:8000
+      # Set these in docker-compose.override.yml (created by setup.sh) or uncomment here:
+      # - ABS_URL=http://your-audiobookshelf:13378
+      # - ABS_TOKEN=your-abs-api-token
+      # - ABS_TOKENS=user1:token1,user2:token2
+      # - ALLOWED_USERNAMES=*
+      # - DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  # achievement-engine: the trophy/achievement system
+  # ------------------------------------------------------------------
+  achievement-engine:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+      - ./icons:/data/icons
+      - ./data/covers:/data/covers
+    env_file:
+      - .env
+    depends_on:
+      - abs-stats
+    restart: unless-stopped

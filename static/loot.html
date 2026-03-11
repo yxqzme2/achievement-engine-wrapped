@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loot Compendium - The Listener's Sanctum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/loot.css?v=2">
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="/" class="nav-title">The Listener's Sanctum</a>
+        <div>
+            <a href="/journal">Journal</a>
+            <a href="/champions">Leaderboard</a>
+            <a href="/roster">Roster</a>
+            <a href="/timeline">Timeline</a>
+            <a href="/archives">Stats</a>
+            <a href="/playlist">Playlist</a>
+            <a href="/tier">Tier List</a>
+            <a href="/loot" class="active">Loot</a>
+            <a href="/quests">Quests</a>
+        </div>
+    </nav>
+
+    <div class="compendium-header">
+        <h1 class="compendium-title">Loot Compendium</h1>
+    </div>
+
+    <div class="controls-container">
+        <input type="text" id="search" class="search-box" placeholder="Search by artifact name or flavor text..." oninput="filterItems()">
+        
+        <div class="filter-row" id="slot-filters">
+            <div class="filter-pill active" data-slot="all" onclick="setFilter('slot', 'all')">All Slots</div>
+            <div class="filter-pill" data-slot="Weapon" onclick="setFilter('slot', 'Weapon')">Weapons</div>
+            <div class="filter-pill" data-slot="Chest" onclick="setFilter('slot', 'Chest')">Chest</div>
+            <div class="filter-pill" data-slot="Head" onclick="setFilter('slot', 'Head')">Head</div>
+            <div class="filter-pill" data-slot="Neck" onclick="setFilter('slot', 'Neck')">Neck</div>
+            <div class="filter-pill" data-slot="Ring" onclick="setFilter('slot', 'Ring')">Ring</div>
+            <div class="filter-pill" data-slot="Trinket" onclick="setFilter('slot', 'Trinket')">Trinket</div>
+        </div>
+
+        <div class="filter-row" id="rarity-filters">
+            <div class="filter-pill active" data-rarity="all" onclick="setFilter('rarity', 'all')">All Rarities</div>
+            <div class="filter-pill" data-rarity="Legendary" onclick="setFilter('rarity', 'Legendary')">Legendary</div>
+            <div class="filter-pill" data-rarity="Epic" onclick="setFilter('rarity', 'Epic')">Epic</div>
+            <div class="filter-pill" data-rarity="Rare" onclick="setFilter('rarity', 'Rare')">Rare</div>
+            <div class="filter-pill" data-rarity="Uncommon" onclick="setFilter('rarity', 'Uncommon')">Uncommon</div>
+            <div class="filter-pill" data-rarity="Common" onclick="setFilter('rarity', 'Common')">Common</div>
+        </div>
+    </div>
+
+    <div id="grid" class="loot-grid">
+        <div class="loader">Opening the Vault...</div>
+    </div>
+
+    <script src="/static/loot.js?v=2"></script>
+</body>
+</html>

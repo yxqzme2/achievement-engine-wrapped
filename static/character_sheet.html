@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status Window</title>
+    <script src='https://code.createjs.com/easeljs-0.7.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+    <link rel="stylesheet" href="/static/character_sheet.css?v=61">
+</head>
+<body>
+
+    <canvas id="projector"></canvas>
+
+    <div id="loading-overlay">
+        <div>ACCESSING SYSTEM DATABASE</div>
+        <div class="blink" style="margin-top:12px;font-size:0.9rem;color:var(--text-muted)">▌</div>
+    </div>
+
+    <div class="status-wrapper" id="sheet-root" style="display:none">
+        <div id="limbo-overlay" class="limbo-glitch"></div>
+
+        <div class="header">
+            <div class="user-info">
+                <h1 id="char-name">---</h1>
+                <p id="class-title-header">Title: ---</p>
+                <div id="limbo-tag" class="limbo-status">SYSTEM STATE: UNSTABLE // AWAITING PROGRESSION START</div>
+            </div>
+            <div class="level-info">
+                <span>LVL</span>
+                <h2 id="char-level">--</h2>
+            </div>
+        </div>
+
+        <div class="xp-container">
+            <div class="xp-bar" id="xp-bar"></div>
+            <div class="xp-text" id="xp-text">-- / -- EXP</div>
+        </div>
+
+        <div class="character-screen">
+
+            <div class="left-panel-wrapper">
+
+                <div class="equip-avatar-section">
+
+                    <div class="equip-column left">
+                        <div class="equip-slot" id="slot-Head">
+                            <div class="slot-tag">HEAD</div>
+                            <span class="slot-label">---</span>
+                            <div class="tooltip" id="tip-Head"></div>
+                        </div>
+                        <div class="equip-slot" id="slot-Chest">
+                            <div class="slot-tag">CHEST</div>
+                            <span class="slot-label">---</span>
+                            <div class="tooltip" id="tip-Chest"></div>
+                        </div>
+                        <div class="equip-slot" id="slot-Neck">
+                            <div class="slot-tag">NECK</div>
+                            <span class="slot-label">---</span>
+                            <div class="tooltip" id="tip-Neck"></div>
+                        </div>
+                    </div>
+
+                    <div class="avatar-display" id="avatar-display-box">
+                        <div class="avatar-frame" id="avatar-frame"></div>
+                    </div>
+
+                    <div class="equip-column right">
+                        <div class="equip-slot" id="slot-Weapon">
+                            <div class="slot-tag">WEAPON</div>
+                            <span class="slot-label">---</span>
+                            <div class="tooltip" id="tip-Weapon"></div>
+                        </div>
+                        <div class="equip-slot" id="slot-Ring">
+                            <div class="slot-tag">RING</div>
+                            <span class="slot-label">---</span>
+                            <div class="tooltip" id="tip-Ring"></div>
+                        </div>
+                        <div class="equip-slot" id="slot-Trinket">
+                            <div class="slot-tag">TRINKET</div>
+                            <span class="slot-label">---</span>
+                            <div class="tooltip" id="tip-Trinket"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="active-quest-widget">
+                    <div class="quest-cover">⚔</div>
+                    <div class="quest-details">
+                        <span class="quest-label">System Inventory</span>
+                        <span class="quest-title" id="inventory-line">Loading...</span>
+                        <div class="mini-progress-bg">
+                            <div class="mini-progress-fill" id="xp-mini-fill" style="width:0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="stats-section">
+                <h3 class="panel-title">System Attributes</h3>
+
+                <div class="combat-power">
+                    <span>Total Combat Power</span>
+                    <h3 id="stat-cp">--</h3>
+                </div>
+
+                <div class="stat-row"><span class="stat-label">Strength (STR)</span> <span class="stat-value" id="stat-str">--</span></div>
+                <div class="stat-row"><span class="stat-label">Magic (MAG)</span>    <span class="stat-value" id="stat-mag">--</span></div>
+                <div class="stat-row"><span class="stat-label">Defense (DEF)</span>  <span class="stat-value" id="stat-def">--</span></div>
+                <div class="stat-row"><span class="stat-label">Hit Points (HP)</span><span class="stat-value" id="stat-hp">--</span></div>
+
+                <div class="secondary-stats">
+                    <h3 class="panel-title" style="font-size:0.8rem;">Listening Statistics</h3>
+                    <div class="stat-row"><span class="stat-label">Total Hours</span>     <span class="stat-value" id="stat-hours">--</span></div>
+                    <div class="stat-row"><span class="stat-label">Books Conquered</span> <span class="stat-value" id="stat-books">--</span></div>
+                    <div class="stat-row"><span class="stat-label">Total XP Earned</span> <span class="stat-value" id="stat-xp">--</span></div>
+                </div>
+
+                <button id="inv-toggle-btn" onclick="openInventory()">Open System Inventory</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- WoW Inventory Modal -->
+    <div id="inventory-modal" style="display:none">
+        <div id="slot-picker" style="display:none">
+            <h3 style="color:var(--gold);margin:0 0 20px;letter-spacing:2px;">CHOOSE ACCESSORY SLOT</h3>
+            <div style="display:flex;gap:10px;">
+                <button class="btn-action" onclick="pickSlot('Neck')">NECK</button>
+                <button class="btn-action" onclick="pickSlot('Ring')">RING</button>
+                <button class="btn-action" onclick="pickSlot('Trinket')">TRINKET</button>
+                <button class="btn-action" style="background:#444;color:#fff;" onclick="cancelSlotPick()">CANCEL</button>
+            </div>
+        </div>
+        <div id="pin-overlay" style="display:none">
+            <h3 id="pin-instruction">ENTER SYSTEM PIN</h3>
+            <input type="password" id="pin-field" class="pin-input" maxlength="4" placeholder="****">
+            <div style="display:flex;gap:10px;">
+                <button class="btn-action" id="pin-submit-btn">ACCESS</button>
+                <button class="btn-action" style="background:#444;color:#fff;" onclick="closeInventory()">CANCEL</button>
+            </div>
+        </div>
+        <div class="inv-modal-wrapper">
+        <button class="inv-close-btn" onclick="closeInventory()">&times;</button>
+        <div class="modal-container wow-style">
+
+            <!-- LEFT: inventory grid -->
+            <div class="wow-inv-main">
+                <div class="wow-inv-header">
+                    <span id="wow-inv-tab-title">ALL ITEMS</span>
+                    <input type="text" id="inv-search" placeholder="Search..." oninput="filterInventory()">
+                    <div class="stat-filters">
+                        <label class="stat-filter-label"><input type="checkbox" id="filter-str" onchange="applyInventoryFilter()"><span>STR</span></label>
+                        <label class="stat-filter-label"><input type="checkbox" id="filter-mag" onchange="applyInventoryFilter()"><span>MAG</span></label>
+                        <label class="stat-filter-label"><input type="checkbox" id="filter-def" onchange="applyInventoryFilter()"><span>DEF</span></label>
+                        <label class="stat-filter-label"><input type="checkbox" id="filter-hp"  onchange="applyInventoryFilter()"><span>HP</span></label>
+                    </div>
+                </div>
+                <div id="inventory-grid" class="wow-inv-grid"></div>
+            </div>
+
+            <!-- RIGHT: mini character sheet -->
+            <div class="wow-inv-charsheet">
+                <div class="mini-cs-header">
+                    <span id="mini-cs-name">---</span>
+                    <span id="mini-cs-level">LVL --</span>
+                </div>
+                <div class="mini-equip-grid">
+                    <div class="mini-equip-col">
+                        <div class="mini-slot" id="mini-slot-Head"    data-accepts="Head"    ondragover="miniDragOver(event,this)" ondragleave="miniDragLeave(event,this)" ondrop="miniDrop(event,'Head')"><div class="mini-slot-tag">HEAD</div></div>
+                        <div class="mini-slot" id="mini-slot-Chest"   data-accepts="Chest"   ondragover="miniDragOver(event,this)" ondragleave="miniDragLeave(event,this)" ondrop="miniDrop(event,'Chest')"><div class="mini-slot-tag">CHEST</div></div>
+                        <div class="mini-slot" id="mini-slot-Neck"    data-accepts="Neck"    ondragover="miniDragOver(event,this)" ondragleave="miniDragLeave(event,this)" ondrop="miniDrop(event,'Neck')"><div class="mini-slot-tag">NECK</div></div>
+                    </div>
+                    <div class="mini-equip-col">
+                        <div class="mini-slot" id="mini-slot-Weapon"  data-accepts="Weapon"  ondragover="miniDragOver(event,this)" ondragleave="miniDragLeave(event,this)" ondrop="miniDrop(event,'Weapon')"><div class="mini-slot-tag">WEAPON</div></div>
+                        <div class="mini-slot" id="mini-slot-Ring"    data-accepts="Ring"    ondragover="miniDragOver(event,this)" ondragleave="miniDragLeave(event,this)" ondrop="miniDrop(event,'Ring')"><div class="mini-slot-tag">RING</div></div>
+                        <div class="mini-slot" id="mini-slot-Trinket" data-accepts="Trinket" ondragover="miniDragOver(event,this)" ondragleave="miniDragLeave(event,this)" ondrop="miniDrop(event,'Trinket')"><div class="mini-slot-tag">TRINKET</div></div>
+                    </div>
+                </div>
+                <div class="optimize-section">
+                    <div class="optimize-label">Optimize Loadout</div>
+                    <div class="optimize-buttons">
+                        <button class="opt-btn opt-cp"  onclick="optimizeLoadout('cp')"  title="Best total Combat Power">MAX CP</button>
+                        <button class="opt-btn opt-str" onclick="optimizeLoadout('str')" title="Maximize physical damage (STR × 450 + books)">MAX STR</button>
+                        <button class="opt-btn opt-mag" onclick="optimizeLoadout('mag')" title="Maximize magic damage (MAG × 600)">MAX MAG</button>
+                        <button class="opt-btn opt-def" onclick="optimizeLoadout('def')" title="Minimize boss retaliation (DEF × 3)">MAX DEF</button>
+                        <button class="opt-btn opt-hp"  onclick="optimizeLoadout('hp')"  title="Maximize HP to survive liquidation">MAX HP</button>
+                    </div>
+                </div>
+                    <div class="mini-stats">
+                    <div class="mini-stat-row"><span>STR</span><span id="mini-stat-str">--</span></div>
+                    <div class="mini-stat-row"><span>MAG</span><span id="mini-stat-mag">--</span></div>
+                    <div class="mini-stat-row"><span>DEF</span><span id="mini-stat-def">--</span></div>
+                    <div class="mini-stat-row"><span>HP</span> <span id="mini-stat-hp">--</span></div>
+                    <div class="mini-stat-row mini-stat-cp"><span>CP</span><span id="mini-stat-cp">--</span></div>
+                </div>
+
+                <div class="mini-allocator">
+                    <div class="mini-allocator-head">
+                        <span>Stat Points</span>
+                        <span id="mini-unspent-points">Unspent: 0</span>
+                    </div>
+
+                    <div class="mini-alloc-row">
+                        <span class="mini-alloc-label">STR</span>
+                        <div class="mini-alloc-controls">
+                            <button type="button" id="alloc-dec-str" class="alloc-btn" onclick="adjustPointAllocation('str', -5)">-5</button>
+                            <input type="number" id="mini-alloc-str" class="alloc-input" min="0" step="5" value="0" onchange="setPointAllocationFromInput('str', this.value)">
+                            <button type="button" id="alloc-inc-str" class="alloc-btn" onclick="adjustPointAllocation('str', 5)">+5</button>
+                        </div>
+                    </div>
+                    <div class="mini-alloc-row">
+                        <span class="mini-alloc-label">MAG</span>
+                        <div class="mini-alloc-controls">
+                            <button type="button" id="alloc-dec-mag" class="alloc-btn" onclick="adjustPointAllocation('mag', -5)">-5</button>
+                            <input type="number" id="mini-alloc-mag" class="alloc-input" min="0" step="5" value="0" onchange="setPointAllocationFromInput('mag', this.value)">
+                            <button type="button" id="alloc-inc-mag" class="alloc-btn" onclick="adjustPointAllocation('mag', 5)">+5</button>
+                        </div>
+                    </div>
+                    <div class="mini-alloc-row">
+                        <span class="mini-alloc-label">DEF</span>
+                        <div class="mini-alloc-controls">
+                            <button type="button" id="alloc-dec-def" class="alloc-btn" onclick="adjustPointAllocation('def', -5)">-5</button>
+                            <input type="number" id="mini-alloc-def" class="alloc-input" min="0" step="5" value="0" onchange="setPointAllocationFromInput('def', this.value)">
+                            <button type="button" id="alloc-inc-def" class="alloc-btn" onclick="adjustPointAllocation('def', 5)">+5</button>
+                        </div>
+                    </div>
+                    <div class="mini-alloc-row">
+                        <span class="mini-alloc-label">HP</span>
+                        <div class="mini-alloc-controls">
+                            <button type="button" id="alloc-dec-hp" class="alloc-btn" onclick="adjustPointAllocation('hp', -5)">-5</button>
+                            <input type="number" id="mini-alloc-hp" class="alloc-input" min="0" step="5" value="0" onchange="setPointAllocationFromInput('hp', this.value)">
+                            <button type="button" id="alloc-inc-hp" class="alloc-btn" onclick="adjustPointAllocation('hp', 5)">+5</button>
+                        </div>
+                    </div>
+
+                    <div class="mini-alloc-actions">
+                        <button type="button" class="alloc-action" id="mini-alloc-save" onclick="savePointAllocation()">Save</button>
+                        <button type="button" class="alloc-action alloc-reset" onclick="resetPointAllocation()">Reset</button>
+                    </div>
+                    <div id="mini-alloc-status" class="mini-alloc-status"></div>
+                </div>
+                <div class="mini-hint">Drag gear onto a slot to equip</div>
+            </div>
+
+        </div>
+        <div class="inv-tabs">
+            <button class="inv-tab active" data-tab="All"     onclick="setInvTab('All')">ALL</button>
+            <button class="inv-tab"        data-tab="Weapon"  onclick="setInvTab('Weapon')">WEAPONS</button>
+            <button class="inv-tab"        data-tab="Head"    onclick="setInvTab('Head')">HEAD</button>
+            <button class="inv-tab"        data-tab="Chest"   onclick="setInvTab('Chest')">CHEST</button>
+            <button class="inv-tab"        data-tab="Neck"    onclick="setInvTab('Neck')">NECK</button>
+            <button class="inv-tab"        data-tab="Ring"    onclick="setInvTab('Ring')">RING</button>
+            <button class="inv-tab"        data-tab="Trinket" onclick="setInvTab('Trinket')">TRINKET</button>
+        </div>
+        </div><!-- end inv-modal-wrapper -->
+    </div>
+
+    <div id="mouse-tooltip"></div>
+
+    <script src="/static/shared/particle-engine.js?v=11"></script>
+    <script src="/static/character_sheet.js?v=25"></script>
+</body>
+</html>
+
+
+
+
+
