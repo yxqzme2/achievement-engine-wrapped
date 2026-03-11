@@ -25,6 +25,7 @@ COPY covers/ /defaults/covers/
 
 # --- PREPARE CORE APP ---
 COPY app/ /app/app/
+COPY static/ /app/static/
 
 # --- STARTUP SCRIPT ---
 COPY setup.sh /app/setup.sh
