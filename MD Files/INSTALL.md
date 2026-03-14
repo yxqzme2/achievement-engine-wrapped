@@ -1,6 +1,6 @@
 # Achievement Engine — Install Reference
 
-Four ways to get up and running. Options A and C use browser-based wizards — no prior config knowledge needed.
+Five ways to get up and running. Options A, C, and D use browser-based builders — no prior config knowledge needed.
 
 ---
 
@@ -124,6 +124,50 @@ If you prefer to configure templates directly in the Unraid UI:
 6. Put both containers on the same Docker network
 7. Apply and start both containers
 8. Open `http://<unraid-ip>:8000`
+
+---
+
+## Option D — Portainer Stack Builder
+
+Use this when the host is managed through Portainer and the user needs a single stack file instead of Compose overrides or Unraid XML templates.
+
+### On any platform
+
+Open the builder from the repo root:
+
+- `portainer-stack-builder.html`
+- Direct download: [portainer-stack-builder.html](https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/portainer-stack-builder.html)
+
+### What it generates
+
+1. A single Portainer stack YAML that defines:
+   - `achievement-engine`
+   - `abs-stats`
+   - a shared Docker network
+2. An optional `user_xp_start.json` file for per-user progression boundaries
+
+### Steps
+
+1. Fill in:
+   - image names
+   - container names
+   - host ports
+   - data/icons/covers/static paths
+   - ABS URL and token(s)
+   - SMTP settings if needed
+   - wrapped/progression options
+2. Copy or download the generated stack YAML
+3. In Portainer, open **Stacks → Add stack**
+4. Paste the YAML into the web editor
+5. Deploy the stack
+6. If using XP start overrides, place `user_xp_start.json` inside the achievement engine data folder before or after deploy
+7. Open `http://<host-ip>:<dashboard-port>`
+
+### Notes
+
+- Put custom user icon files in the mapped icons folder before starting the stack
+- If you use a static override, map it to the host path you want mounted at `/app/static`
+- If covers are stored locally, point the covers path at the folder abs-stats and the engine should share
 
 ---
 

@@ -6,7 +6,7 @@ A LitRPG achievement and progression companion for [Audiobookshelf](https://www.
 
 ## Quick Start
 
-See **[INSTALL.md](MD%20Files/INSTALL.md)** for full details. Two browser-based wizards are included — no prior config knowledge needed.
+See **[INSTALL.md](MD%20Files/INSTALL.md)** for full details. Three browser-based builders are included — no prior config knowledge needed.
 
 ### Docker Compose — Web Wizard
 
@@ -40,6 +40,19 @@ start template-builder.html       # Windows
 
 Fill in your settings, download both XML files, and drop them onto your Unraid flash drive to install as container templates. See **[INSTALL.md](MD%20Files/INSTALL.md)** for the full Windows path.
 
+### Portainer — Stack Builder
+
+If your user runs Portainer instead of raw Compose or Unraid templates, use the dedicated stack builder:
+
+- [portainer-stack-builder.html](portainer-stack-builder.html)
+- [Direct download](https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/portainer-stack-builder.html)
+
+It generates:
+- One Portainer-ready stack YAML for both containers
+- An optional `user_xp_start.json` file for per-user progression start dates
+
+Open the builder, fill in the same options exposed by the Unraid templates, then paste the generated YAML into **Portainer → Stacks → Add stack**.
+
 ---
 
 ## What's Inside
@@ -69,6 +82,7 @@ Fill in your settings, download both XML files, and drop them onto your Unraid f
 | Doc | What it covers |
 |---|---|
 | [INSTALL.md](MD%20Files/INSTALL.md) | Web wizard, terminal script, and Unraid install paths |
+| [portainer-stack-builder.html](portainer-stack-builder.html) | Browser-based Portainer stack generator for both containers |
 | [FEATURES.md](MD%20Files/FEATURES.md) | Portal pages, achievement system, gear, Wrapped, API reference |
 | [TEMPLATE_EXPLANATION.md](MD%20Files/TEMPLATE_EXPLANATION.md) | Every environment variable explained |
 | [UPGRADE_GUIDE.md](MD%20Files/UPGRADE_GUIDE.md) | Migrating from the original Achievement Engine |

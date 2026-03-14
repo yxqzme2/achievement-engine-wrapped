@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Achievement Engine Portainer Stack Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06111a;
+      --panel: rgba(10, 20, 30, 0.94);
+      --panel-2: rgba(9, 17, 25, 0.98);
+      --line: #21465b;
+      --line-bright: #61d1ff;
+      --text: #dceef7;
+      --muted: #7f9aaa;
+      --accent: #8cffc6;
+      --warn: #ffd27d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      background:
+        radial-gradient(circle at top left, rgba(62, 133, 176, 0.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(95, 255, 197, 0.1), transparent 24%),
+        linear-gradient(180deg, #08131d 0%, #050a11 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 28px 20px 40px;
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(12, 27, 40, 0.95), rgba(8, 17, 26, 0.97));
+      padding: 22px 24px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .eyebrow {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent);
+      letter-spacing: 2px;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      letter-spacing: 2px;
+      color: var(--line-bright);
+      text-transform: uppercase;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 1000px;
+      line-height: 1.7;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-head {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .card-head h2 {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--line-bright);
+    }
+
+    .card-head span {
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-size: 0.76rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .field .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.5;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      background: #071019;
+      border: 1px solid #244559;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.86rem;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--line-bright);
+      box-shadow: 0 0 0 3px rgba(97, 209, 255, 0.15);
+    }
+
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border: 1px solid #244559;
+      background: #071019;
+      min-height: 52px;
+    }
+
+    .check input {
+      margin-top: 3px;
+      accent-color: var(--line-bright);
+    }
+
+    .check strong {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .check span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    .info {
+      padding: 12px 14px;
+      border-left: 3px solid var(--line-bright);
+      background: rgba(97, 209, 255, 0.08);
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.78rem;
+      margin-bottom: 16px;
+    }
+
+    .info code {
+      color: var(--accent);
+    }
+
+    .preview {
+      position: sticky;
+      top: 20px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.35);
+      min-height: 300px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tab {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 12px 10px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      color: var(--line-bright);
+      box-shadow: inset 0 -2px 0 var(--line-bright);
+    }
+
+    .codebox {
+      padding: 16px;
+      max-height: 560px;
+      overflow: auto;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.6;
+      color: var(--accent);
+      font-size: 0.78rem;
+    }
+
+    .actions {
+      padding: 14px 16px 16px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 1px solid var(--line-bright);
+      background: transparent;
+      color: var(--line-bright);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: rgba(97, 209, 255, 0.12);
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 0.74rem;
+      line-height: 1.6;
+    }
+
+    .steps {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.78rem;
+    }
+
+    .steps li + li {
+      margin-top: 8px;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .shell {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="eyebrow">Portainer Stack Generator</div>
+      <h1>Achievement Engine + ABS Stats</h1>
+      <p>
+        This builder outputs a single Portainer-compatible stack file for both containers and an optional
+        <code>user_xp_start.json</code> sidecar. It preserves the options exposed by the current Unraid templates:
+        images, container names, network, ports, paths, SMTP, wrapped settings, user filters, ABS tokens, and Discord.
+      </p>
+    </section>
+
+    <div class="layout">
+      <main class="stack">
+        <section class="card">
+          <div class="card-head">
+            <h2>Stack Basics</h2>
+            <span>Shared Portainer Settings</span>
+          </div>
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label for="stack_name">Stack Name</label>
+                <input id="stack_name" type="text" value="achievement-engine" oninput="liveUpdate()" />
+                <div class="hint">Used only as a label in Portainer instructions.</div>
+              </div>
+              <div class="field">
+                <label for="network_name">Docker Network Name</label>
+                <input id="network_name" type="text" value="achievement-engine-net" oninput="liveUpdate()" />
+                <div class="hint">Both containers join this bridge network.</div>
+              </div>
+              <div class="field">
+                <label for="restart_policy">Restart Policy</label>
+                <select id="restart_policy" onchange="liveUpdate()">
+                  <option value="unless-stopped" selected>unless-stopped</option>
+                  <option value="always">always</option>
+                  <option value="on-failure">on-failure</option>
+                  <option value="no">no</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="state_db_path">State DB Path In Container</label>
+                <input id="state_db_path" type="text" value="/data/state.db" oninput="liveUpdate()" />
+                <div class="hint">Usually leave this alone.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h2>Achievement Engine Container</h2>
+            <span>Image, Port, Volumes</span>
+          </div>
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label for="ae_image">Image</label>
+                <input id="ae_image" type="text" value="ghcr.io/yxqzme2/achievement-engine-wrapped:latest" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="ae_name">Container Name</label>
+                <input id="ae_name" type="text" value="achievement-engine" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="dashboard_port">Host Dashboard Port</label>
+                <input id="dashboard_port" type="number" value="8000" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="ae_data_path">Host Data Directory</label>
+                <input id="ae_data_path" type="text" value="/mnt/user/appdata/achievement-engine" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="ae_icons_path">Host Icons Directory</label>
+                <input id="ae_icons_path" type="text" value="/mnt/user/appdata/achievement-engine/icons" oninput="liveUpdate()" />
+                <div class="hint">Needed if you use custom user icons.</div>
+              </div>
+              <div class="field">
+                <label for="ae_covers_path">Host Covers Directory</label>
+                <input id="ae_covers_path" type="text" value="/mnt/user/appdata/achievement-engine/covers" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="ae_static_path">Optional Host Static Override</label>
+                <input id="ae_static_path" type="text" value="/mnt/user/appdata/achievement-engine/static" oninput="liveUpdate()" />
+                <div class="hint">Leave blank if you do not want to override built-in static files.</div>
+              </div>
+              <div class="field">
+                <label for="timezone">Timezone</label>
+                <input id="timezone" type="text" value="America/New_York" oninput="liveUpdate()" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h2>Achievement Engine Environment</h2>
+            <span>Core, Users, Progression, Wrapped</span>
+          </div>
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label for="poll_seconds">Poll Seconds</label>
+                <input id="poll_seconds" type="number" value="300" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="xp_start">XP Start Timestamp</label>
+                <input id="xp_start" type="text" value="1767225600" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="verify_threshold">Verify Listen Threshold</label>
+                <input id="verify_threshold" type="text" value="0.80" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="wrapped_year">Wrapped Year</label>
+                <input id="wrapped_year" type="number" value="2026" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="wrapped_boss_hp">Wrapped Boss HP</label>
+                <input id="wrapped_boss_hp" type="number" value="250000" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="backfill_key">Backfill Once Key</label>
+                <input id="backfill_key" type="text" value="ach_backfill_v1" oninput="liveUpdate()" />
+              </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 12px;">
+              <label class="check">
+                <input id="strict_verification" type="checkbox" onchange="liveUpdate()" />
+                <span>
+                  <strong>Strict Verification</strong>
+                  Require proof rules instead of trusting completion timestamps alone.
+                </span>
+              </label>
+              <label class="check">
+                <input id="require_duration" type="checkbox" checked onchange="liveUpdate()" />
+                <span>
+                  <strong>Require Duration For Credit</strong>
+                  Exclude books with unknown duration when strict verification is on.
+                </span>
+              </label>
+              <label class="check">
+                <input id="require_scope_session" type="checkbox" checked onchange="liveUpdate()" />
+                <span>
+                  <strong>Require In-Scope Session</strong>
+                  Require at least one valid listening session inside the progression window.
+                </span>
+              </label>
+              <label class="check">
+                <input id="run_backfill" type="checkbox" onchange="liveUpdate()" />
+                <span>
+                  <strong>Run Achievement Backfill Once</strong>
+                  Use for one startup only, then turn it back off.
+                </span>
+              </label>
+            </div>
+
+            <div class="field" style="margin-top: 16px;">
+              <label for="allowed_users">Allowed Users</label>
+              <input id="allowed_users" type="text" placeholder="alice,bob" oninput="liveUpdate()" />
+              <div class="hint">Optional achievement-engine user filter.</div>
+            </div>
+            <div class="field">
+              <label for="user_aliases">User Aliases</label>
+              <textarea id="user_aliases" placeholder="alice:Alice,bob:Bob" oninput="liveUpdate()"></textarea>
+            </div>
+            <div class="field">
+              <label for="user_icons">User Icons</label>
+              <textarea id="user_icons" placeholder="alice:/icons/alice.png,bob:/icons/bob.png" oninput="liveUpdate()"></textarea>
+              <div class="hint">Match the Unraid format. Put the files in the mapped icons folder.</div>
+            </div>
+            <div class="field">
+              <label for="user_emails">User Emails</label>
+              <textarea id="user_emails" placeholder="alice:alice@example.com,bob:bob@example.com" oninput="liveUpdate()"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h2>SMTP</h2>
+            <span>Optional Email Notifications</span>
+          </div>
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label for="smtp_host">SMTP Host</label>
+                <input id="smtp_host" type="text" placeholder="smtp.mailgun.org" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="smtp_port">SMTP Port</label>
+                <input id="smtp_port" type="number" value="587" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="smtp_username">SMTP Username</label>
+                <input id="smtp_username" type="text" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="smtp_password">SMTP Password</label>
+                <input id="smtp_password" type="password" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="smtp_from">SMTP From</label>
+                <input id="smtp_from" type="text" placeholder="The System noreply@yourdomain.com" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="smtp_to_override">SMTP To Override</label>
+                <input id="smtp_to_override" type="text" placeholder="you@example.com" oninput="liveUpdate()" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h2>ABS Stats Container</h2>
+            <span>Companion Service</span>
+          </div>
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label for="abs_image">Image</label>
+                <input id="abs_image" type="text" value="ghcr.io/yxqzme2/abs-stats:latest" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="abs_name">Container Name</label>
+                <input id="abs_name" type="text" value="abs-stats" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="abs_port">Host ABS Stats Port</label>
+                <input id="abs_port" type="number" value="3000" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="abs_data_path">Host ABS Stats Data Directory</label>
+                <input id="abs_data_path" type="text" value="/mnt/user/appdata/abs-stats" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="abs_url">Audiobookshelf URL</label>
+                <input id="abs_url" type="text" placeholder="http://audiobookshelf:13378" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="engine_url">Engine URL Inside Docker Network</label>
+                <input id="engine_url" type="text" value="http://achievement-engine:8000" oninput="liveUpdate()" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="abs_token">ABS Token</label>
+              <input id="abs_token" type="password" oninput="liveUpdate()" />
+              <div class="hint">Single-user mode. Leave blank if using per-user tokens below.</div>
+            </div>
+            <div class="field">
+              <label for="abs_tokens">ABS Tokens</label>
+              <textarea id="abs_tokens" placeholder="alice:token1,bob:token2" oninput="liveUpdate()"></textarea>
+              <div class="hint">Multi-user mode from the Unraid template.</div>
+            </div>
+            <div class="field">
+              <label for="allowed_usernames">Allowed Usernames</label>
+              <input id="allowed_usernames" type="text" value="*" oninput="liveUpdate()" />
+            </div>
+            <div class="field">
+              <label for="discord_webhook">Discord Webhook URL</label>
+              <input id="discord_webhook" type="password" oninput="liveUpdate()" />
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h2>Optional XP Start Overrides</h2>
+            <span>Generates user_xp_start.json</span>
+          </div>
+          <div class="card-body">
+            <div class="info">
+              One username/date pair per line. Format: <code>username=YYYY-MM-DD</code>.
+              This file should live inside the achievement engine data folder if you use it.
+            </div>
+            <div class="field">
+              <label for="xp_overrides">XP Start Overrides</label>
+              <textarea id="xp_overrides" placeholder="alice=2026-01-01&#10;bob=2026-02-15" oninput="liveUpdate()"></textarea>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="preview">
+        <div class="tabs">
+          <button class="tab active" data-tab="stack" onclick="switchTab('stack')">Stack Yaml</button>
+          <button class="tab" data-tab="xp" onclick="switchTab('xp')">XP Json</button>
+          <button class="tab" data-tab="notes" onclick="switchTab('notes')">Portainer Notes</button>
+        </div>
+        <div class="codebox">
+          <pre id="preview"></pre>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="copyCurrent()">Copy Current Tab</button>
+          <button class="btn" onclick="downloadCurrent()">Download Current Tab</button>
+          <div class="subtle" id="feedback">Use the generated stack in Portainer: Stacks -> Add stack -> Web editor.</div>
+          <ol class="steps" id="notes" style="display:none;">
+            <li>Create the mapped host folders first, especially the achievement engine data path and abs-stats data path.</li>
+            <li>If you use custom icons, place those files in the mapped icons folder before starting the stack.</li>
+            <li>If you use XP start overrides, download <code>user_xp_start.json</code> and place it in the achievement engine data folder.</li>
+            <li>In Portainer, open <code>Stacks</code>, click <code>Add stack</code>, paste the generated YAML, and deploy.</li>
+            <li>After deploy, open the engine at <code>http://host:dashboard-port/</code>. If covers are local, ensure the covers path matches the abs-stats output directory.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    let activeTab = 'stack';
+    let stackText = '';
+    let xpJsonText = '';
+
+    function val(id) {
+      return (document.getElementById(id)?.value || '').trim();
+    }
+
+    function bool(id) {
+      return document.getElementById(id)?.checked ? 'true' : 'false';
+    }
+
+    function q(value) {
+      return JSON.stringify(String(value));
+    }
+
+    function yamlQuote(value) {
+      const s = String(value ?? '');
+      return `"${s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+    }
+
+    function pushEnv(lines, key, value) {
+      if (value === '' || value === null || value === undefined) return;
+      lines.push(`      ${key}: ${yamlQuote(value)}`);
+    }
+
+    function buildXpJson() {
+      const rows = val('xp_overrides').split(/\r?\n/);
+      const out = {};
+      for (const raw of rows) {
+        const line = raw.trim();
+        if (!line || line.startsWith('#')) continue;
+        const idx = line.indexOf('=');
+        if (idx < 1) continue;
+        const key = line.slice(0, idx).trim();
+        const value = line.slice(idx + 1).trim();
+        if (key && value) out[key] = value;
+      }
+      return JSON.stringify(out, null, 2);
+    }
+
+    function buildStack() {
+      const aeName = val('ae_name') || 'achievement-engine';
+      const absName = val('abs_name') || 'abs-stats';
+      const aeData = val('ae_data_path');
+      const aeIcons = val('ae_icons_path');
+      const aeCovers = val('ae_covers_path');
+      const aeStatic = val('ae_static_path');
+      const absData = val('abs_data_path');
+      const netName = val('network_name') || 'achievement-engine-net';
+      const restart = val('restart_policy') || 'unless-stopped';
+
+      const lines = [
+        'services:',
+        `  ${absName}:`,
+        `    image: ${yamlQuote(val('abs_image') || 'ghcr.io/yxqzme2/abs-stats:latest')}`,
+        `    container_name: ${yamlQuote(absName)}`,
+        `    restart: ${restart}`,
+        '    ports:',
+        `      - ${yamlQuote(`${val('abs_port') || '3000'}:3000`)}`,
+      ];
+
+      if (absData) {
+        lines.push('    volumes:');
+        lines.push(`      - ${yamlQuote(`${absData}:/data`)}`);
+      }
+
+      lines.push('    environment:');
+      pushEnv(lines, 'ABS_URL', val('abs_url'));
+      pushEnv(lines, 'ABS_TOKEN', val('abs_token'));
+      pushEnv(lines, 'ABS_TOKENS', val('abs_tokens'));
+      pushEnv(lines, 'ENGINE_URL', val('engine_url') || `http://${aeName}:8000`);
+      pushEnv(lines, 'ALLOWED_USERNAMES', val('allowed_usernames') || '*');
+      pushEnv(lines, 'DISCORD_WEBHOOK_URL', val('discord_webhook'));
+      lines.push('    networks:');
+      lines.push(`      - ${netName}`);
+      lines.push('');
+
+      lines.push(`  ${aeName}:`);
+      lines.push(`    image: ${yamlQuote(val('ae_image') || 'ghcr.io/yxqzme2/achievement-engine-wrapped:latest')}`);
+      lines.push(`    container_name: ${yamlQuote(aeName)}`);
+      lines.push(`    restart: ${restart}`);
+      lines.push('    depends_on:');
+      lines.push(`      - ${absName}`);
+      lines.push('    ports:');
+      lines.push(`      - ${yamlQuote(`${val('dashboard_port') || '8000'}:8000`)}`);
+      lines.push('    volumes:');
+      if (aeData) lines.push(`      - ${yamlQuote(`${aeData}:/data`)}`);
+      if (aeIcons) lines.push(`      - ${yamlQuote(`${aeIcons}:/data/icons`)}`);
+      if (aeCovers) lines.push(`      - ${yamlQuote(`${aeCovers}:/data/covers`)}`);
+      if (aeStatic) lines.push(`      - ${yamlQuote(`${aeStatic}:/app/static`)}`);
+      lines.push('    environment:');
+      pushEnv(lines, 'ABSSTATS_BASE_URL', `http://${absName}:3000`);
+      pushEnv(lines, 'POLL_SECONDS', val('poll_seconds') || '300');
+      pushEnv(lines, 'STATE_DB_PATH', val('state_db_path') || '/data/state.db');
+      pushEnv(lines, 'TZ', val('timezone') || 'America/New_York');
+      pushEnv(lines, 'ALLOWED_USERS', val('allowed_users'));
+      pushEnv(lines, 'USER_ALIASES', val('user_aliases'));
+      pushEnv(lines, 'USER_ICONS', val('user_icons'));
+      pushEnv(lines, 'USER_EMAILS', val('user_emails'));
+      pushEnv(lines, 'XP_START_TIMESTAMP', val('xp_start') || '1767225600');
+      pushEnv(lines, 'STRICT_VERIFICATION', bool('strict_verification'));
+      pushEnv(lines, 'VERIFY_LISTEN_THRESHOLD', val('verify_threshold') || '0.80');
+      pushEnv(lines, 'REQUIRE_DURATION_FOR_CREDIT', bool('require_duration'));
+      pushEnv(lines, 'REQUIRE_2026_SESSION_FOR_CREDIT', bool('require_scope_session'));
+      pushEnv(lines, 'WRAPPED_YEAR', val('wrapped_year') || '2026');
+      pushEnv(lines, 'WRAPPED_BOSS_HP', val('wrapped_boss_hp') || '250000');
+      pushEnv(lines, 'RUN_ACHIEVEMENT_BACKFILL', bool('run_backfill'));
+      pushEnv(lines, 'BACKFILL_ONCE_KEY', val('backfill_key') || 'ach_backfill_v1');
+
+      const smtpHost = val('smtp_host');
+      if (smtpHost) {
+        pushEnv(lines, 'SMTP_HOST', smtpHost);
+        pushEnv(lines, 'SMTP_PORT', val('smtp_port') || '587');
+        pushEnv(lines, 'SMTP_USERNAME', val('smtp_username'));
+        pushEnv(lines, 'SMTP_PASSWORD', val('smtp_password'));
+        pushEnv(lines, 'SMTP_FROM', val('smtp_from'));
+        pushEnv(lines, 'SMTP_TO_OVERRIDE', val('smtp_to_override'));
+        pushEnv(lines, 'SEND_TEST_EMAIL', 'false');
+        pushEnv(lines, 'SMTP_DEBUG', '0');
+      }
+
+      lines.push('    networks:');
+      lines.push(`      - ${netName}`);
+      lines.push('');
+      lines.push('networks:');
+      lines.push(`  ${netName}:`);
+      lines.push('    driver: bridge');
+
+      return lines.join('\n');
+    }
+
+    function render() {
+      stackText = buildStack();
+      xpJsonText = buildXpJson();
+
+      const preview = document.getElementById('preview');
+      const notes = document.getElementById('notes');
+
+      document.querySelectorAll('.tab').forEach((tab) => {
+        tab.classList.toggle('active', tab.dataset.tab === activeTab);
+      });
+
+      if (activeTab === 'stack') {
+        preview.style.display = 'block';
+        notes.style.display = 'none';
+        preview.textContent = stackText;
+      } else if (activeTab === 'xp') {
+        preview.style.display = 'block';
+        notes.style.display = 'none';
+        preview.textContent = xpJsonText;
+      } else {
+        preview.style.display = 'none';
+        notes.style.display = 'block';
+      }
+    }
+
+    function liveUpdate() {
+      render();
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      render();
+    }
+
+    async function copyCurrent() {
+      const text = activeTab === 'stack' ? stackText : activeTab === 'xp' ? xpJsonText : document.getElementById('notes').innerText;
+      await navigator.clipboard.writeText(text);
+      document.getElementById('feedback').textContent = `Copied ${activeTab === 'stack' ? 'stack YAML' : activeTab === 'xp' ? 'XP JSON' : 'notes'} to clipboard.`;
+    }
+
+    function download(filename, text) {
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadCurrent() {
+      if (activeTab === 'stack') {
+        download('portainer-stack.yml', stackText);
+        return;
+      }
+      if (activeTab === 'xp') {
+        download('user_xp_start.json', xpJsonText);
+        return;
+      }
+      download('portainer-notes.txt', document.getElementById('notes').innerText);
+    }
+
+    render();
+  </script>
+</body>
+</html>
