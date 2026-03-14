@@ -14,6 +14,10 @@ const RARITY_COLORS = {
 
 /* ---- Helpers ---- */
 function fmt(n) { return Number(n || 0).toLocaleString(); }
+function cleanItemText(value) {
+    const s = String(value ?? '').trim();
+    return !s || s.toLowerCase() === 'none' ? '' : s;
+}
 
 function buildTooltipHTML(item, emptyLabel) {
     if (!item) {
@@ -25,6 +29,9 @@ function buildTooltipHTML(item, emptyLabel) {
         Rare: 'rgba(0,112,221,0.18)', Epic: 'rgba(163,53,238,0.22)', Legendary: 'rgba(255,128,0,0.28)'
     };
     const glow = glowMap[item.rarity] || 'rgba(0,0,0,0)';
+    const slot = cleanItemText(item.slot) || 'Unknown Slot';
+    const specialAbility = cleanItemText(item.special_ability);
+    const flavorText = cleanItemText(item.flavor_text);
     const statLines = [];
     if (item.str > 0) statLines.push(`+${item.str} STR`);
     if (item.mag > 0) statLines.push(`+${item.mag} MAG`);
@@ -34,12 +41,12 @@ function buildTooltipHTML(item, emptyLabel) {
         <div class="tt-card" style="border-color:${col};box-shadow:0 6px 24px rgba(0,0,0,0.95),0 0 20px ${glow},inset 0 0 15px rgba(255,255,255,0.03)">
             <div class="tt-title" style="color:${col}">${item.item_name}</div>
             <div class="tt-type-row">
-                <span>${item.slot}</span>
+                <span>${slot}</span>
                 <span>${item.rarity} &middot; iLvl ${item.item_level || 0}</span>
             </div>
             <div class="tt-stats">${statLines.join('<br>') || '—'}</div>
-            ${item.special_ability ? `<div class="tt-equip">Equip: ${item.special_ability}</div>` : ''}
-            ${item.flavor_text     ? `<div class="tt-flavor">"${item.flavor_text}"</div>` : ''}
+            ${specialAbility ? `<div class="tt-equip">Equip: ${specialAbility}</div>` : ''}
+            ${flavorText ? `<div class="tt-flavor">"${flavorText}"</div>` : ''}
             ${item.series_tag      ? `<div class="tt-series">Series: ${item.series_tag}</div>` : ''}
         </div>
     `;

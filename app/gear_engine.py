@@ -65,12 +65,12 @@ def load_loot_csv(path: str) -> Dict[str, dict]:
                 gear[item_id] = {
                     "item_id":         item_id,
                     "item_name":       (row.get("item_name") or "").strip(),
-                    "slot":            (row.get("slot") or "").strip(),
+                    "slot":            _clean_text(row.get("slot")),
                     "str":             _int(row.get("str")),
                     "mag":             _int(row.get("mag")),
                     "def":             _int(row.get("def")),
                     "hp":              _int(row.get("hp")),
-                    "special_ability": (row.get("special_ability") or "").strip(),
+                    "special_ability": _clean_text(row.get("special_ability")),
                     "rarity":          (row.get("rarity") or "Common").strip() or "Common",
                     "flavor_text":     (row.get("flavor_text") or "").strip(),
                     "series_tag":      (row.get("series_tag") or "").strip(),
@@ -152,6 +152,11 @@ def _int(v) -> int:
         return int(v or 0)
     except (ValueError, TypeError):
         return 0
+
+
+def _clean_text(v) -> str:
+    s = str(v or "").strip()
+    return "" if s.lower() == "none" else s
 
 
 # -----------------------------------------

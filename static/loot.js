@@ -5,6 +5,11 @@ let currentFilters = {
     search: ''
 };
 
+function cleanItemText(value) {
+    const s = String(value ?? '').trim();
+    return !s || s.toLowerCase() === 'none' ? '' : s;
+}
+
 async function loadLoot() {
     const grid = document.getElementById('grid');
     grid.innerHTML = '<div class="loader">Opening the Vault...</div>';
@@ -60,6 +65,9 @@ function renderItems() {
     grid.innerHTML = filtered.map(item => {
         const rarityClass = `rarity-${(item.rarity || 'common').toLowerCase()}`;
         const icon = item.icon ? (item.icon.startsWith('/') ? item.icon : '/icons/' + item.icon) : '/icons/chests.png';
+        const slot = cleanItemText(item.slot) || 'Unknown Slot';
+        const rarity = cleanItemText(item.rarity) || 'Unknown';
+        const specialAbility = cleanItemText(item.special_ability);
 
         let statsHtml = '';
         if (item.str) statsHtml += `+${item.str} STR<br>`;
@@ -73,11 +81,11 @@ function renderItems() {
                     <img class="loot-icon" src="${icon}" onerror="this.src='/icons/chests.png'">
                     <div class="item-name">${item.item_name}</div>
                     <div class="item-type-line">
-                        <span>${item.slot}</span>
-                        <span>${item.rarity}</span>
+                        <span>${slot}</span>
+                        <span>${rarity}</span>
                     </div>
                     <div class="item-stats">${statsHtml}</div>
-                    ${item.special_ability ? `<div class="item-effect">Equip: ${item.special_ability}</div>` : ''}
+                    ${specialAbility ? `<div class="item-effect">Equip: ${specialAbility}</div>` : ''}
                     ${item.flavor_text ? `<div class="item-flavor">"${item.flavor_text}"</div>` : ''}
                     <div class="item-source">Series: ${item.series_tag || 'Unknown'}</div>
                 </div>

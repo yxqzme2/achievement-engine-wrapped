@@ -16,6 +16,11 @@ const $ = (id) => document.getElementById(id);
 let allEntries = [];
 let currentFilter = "all";
 
+function cleanItemText(value) {
+    const s = String(value ?? "").trim();
+    return !s || s.toLowerCase() === "none" ? "" : s;
+}
+
 function displayName(username) {
     return USER_ALIASES[username] || username;
 }
@@ -89,7 +94,7 @@ function setFilter(filter, el) {
 
 function buildLootMeta(e) {
     const parts = [];
-    if (e.slot) parts.push(String(e.slot));
+    if (e.slot) parts.push(cleanItemText(e.slot));
 
     const stats = [];
     if (e.str > 0) stats.push(`+${e.str} STR`);
@@ -98,9 +103,9 @@ function buildLootMeta(e) {
     if (e.hp > 0) stats.push(`+${e.hp} HP`);
     if (stats.length) parts.push(stats.join(" • "));
 
-    if (e.specialAbility) parts.push(String(e.specialAbility));
+    if (e.specialAbility) parts.push(cleanItemText(e.specialAbility));
 
-    return parts.join(" • ");
+    return parts.filter(Boolean).join(" • ");
 }
 
 async function load() {
@@ -145,12 +150,12 @@ async function load() {
                     rarity,
                     points: Number(a.points ?? def?.points ?? 0) || 0,
                     ts,
-                    slot: a.slot || "",
+                    slot: cleanItemText(a.slot ?? a.payload?.slot),
                     str: Number(a.str || 0) || 0,
                     mag: Number(a.mag || 0) || 0,
-                    defn: Number(a.def || 0) || 0,
+                    def: Number((a.def ?? a.payload?.def ?? 0)) || 0,
                     hp: Number(a.hp || 0) || 0,
-                    specialAbility: a.special_ability || "",
+                    specialAbility: cleanItemText(a.special_ability ?? a.specialAbility ?? a.payload?.special_ability ?? a.payload?.specialAbility),
                 });
             }
         }
