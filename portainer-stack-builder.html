@@ -149,6 +149,21 @@
       line-height: 1.5;
     }
 
+    .required-star {
+      color: #ff6b6b;
+      margin-left: 4px;
+    }
+
+    .warn-banner {
+      padding: 10px 14px;
+      border-left: 3px solid #ffd27d;
+      background: rgba(255, 210, 125, 0.1);
+      color: #ffd27d;
+      font-size: 0.76rem;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
     input[type="text"],
     input[type="number"],
     input[type="password"],
@@ -309,6 +324,75 @@
       margin-top: 8px;
     }
 
+    .is-hidden {
+      display: none;
+    }
+
+    /* ── User Icon Picker ── */
+    .user-icon-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+    .user-icon-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #071019; border: 1px solid #244559; padding: 10px; }
+    .user-icon-row input[type="text"] { flex: 1; min-width: 120px; max-width: 200px; }
+    .user-icon-preview { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #244559; object-fit: cover; background: #071019; flex-shrink: 0; }
+    .user-icon-preview.empty { visibility: hidden; }
+    .pick-icon-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: transparent; border: 1px solid var(--line-bright); color: var(--line-bright); cursor: pointer; white-space: nowrap; }
+    .pick-icon-btn:hover { background: rgba(97, 209, 255, 0.12); }
+    .remove-icon-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 6px 10px; background: transparent; border: 1px solid #ff6b6b; color: #ff6b6b; cursor: pointer; }
+    .remove-icon-btn:hover { background: rgba(255, 107, 107, 0.12); }
+    .icon-picker-panel { display: none; width: 100%; margin-top: 8px; background: #050d14; border: 1px solid #244559; padding: 10px; max-height: 260px; overflow-y: auto; }
+    .icon-picker-panel.open { display: block; }
+    .icon-group-label { font-size: 0.65rem; color: var(--line-bright); letter-spacing: 2px; margin-bottom: 6px; margin-top: 10px; text-transform: uppercase; }
+    .icon-group-label:first-child { margin-top: 0; }
+    .icon-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .icon-thumb { width: 40px; height: 40px; object-fit: cover; border: 2px solid #244559; border-radius: 4px; cursor: pointer; transition: border-color 0.15s; }
+    .icon-thumb:hover { border-color: var(--line-bright); }
+    .icon-thumb.selected { border-color: var(--line-bright); box-shadow: 0 0 8px rgba(97, 209, 255, 0.4); }
+    .add-icon-btn { font-family: 'Orbitron', sans-serif; font-size: 0.68rem; letter-spacing: 1px; padding: 8px 14px; background: transparent; border: 1px solid var(--accent); color: var(--accent); cursor: pointer; text-transform: uppercase; margin-top: 4px; }
+    .add-icon-btn:hover { background: rgba(140, 255, 198, 0.1); }
+
+    input.field-imported,
+    textarea.field-imported,
+    select.field-imported {
+      animation: imported-flash 2.5s ease-out forwards;
+    }
+
+    @keyframes imported-flash {
+      0%   { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(140, 255, 198, 0.35); }
+      100% { border-color: #244559; box-shadow: none; }
+    }
+
+    input.field-needs-input,
+    textarea.field-needs-input {
+      border-color: var(--warn) !important;
+      box-shadow: 0 0 0 3px rgba(255, 210, 125, 0.18) !important;
+    }
+
+    .import-status {
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 0.76rem;
+      line-height: 1.7;
+      display: none;
+    }
+
+    .import-status.ok  { border-left: 3px solid var(--accent); background: rgba(140, 255, 198, 0.07); color: var(--accent); }
+    .import-status.err { border-left: 3px solid #ff6b6b; background: rgba(255, 107, 107, 0.07); color: #ff6b6b; }
+
+    .import-missing {
+      margin-top: 8px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--warn);
+      background: rgba(255, 210, 125, 0.07);
+      color: var(--warn);
+      font-size: 0.74rem;
+      line-height: 1.7;
+      display: none;
+    }
+
+    .import-missing ul {
+      margin: 4px 0 0 16px;
+      padding: 0;
+    }
+
     @media (max-width: 1080px) {
       .layout {
         grid-template-columns: 1fr;
@@ -338,13 +422,32 @@
       <h1>Achievement Engine + ABS Stats</h1>
       <p>
         This builder outputs a single Portainer-compatible stack file for both containers and an optional
-        <code>user_xp_start.json</code> sidecar. It preserves the options exposed by the current Unraid templates:
-        images, container names, network, ports, paths, SMTP, wrapped settings, user filters, ABS tokens, and Discord.
+        <code>user_xp_start.json</code> sidecar. By default it generates a portable stack using Docker named volumes,
+        with bind mounts available only when you need host-specific paths for Linux, macOS, Windows, or Unraid.
       </p>
     </section>
 
     <div class="layout">
       <main class="stack">
+        <section class="card">
+          <div class="card-head">
+            <h2>Import Existing Stack</h2>
+            <span>Auto-fill from YML</span>
+          </div>
+          <div class="card-body">
+            <div class="info" style="margin-bottom:0;">
+              Import a <code>portainer-stack.yml</code> to pre-fill all fields. Imported values flash green.
+              Fields that are still required will be highlighted in amber.
+            </div>
+            <div style="margin-top: 12px;">
+              <input type="file" id="yml-file-input" accept=".yml,.yaml" style="display:none;" onchange="handleYmlFileSelected(event)" />
+              <button class="btn" onclick="document.getElementById('yml-file-input').click()">Import YML File</button>
+            </div>
+            <div id="import-status" class="import-status"></div>
+            <div id="import-missing" class="import-missing"></div>
+          </div>
+        </section>
+
         <section class="card">
           <div class="card-head">
             <h2>Stack Basics</h2>
@@ -376,6 +479,14 @@
                 <input id="state_db_path" type="text" value="/data/state.db" oninput="liveUpdate()" />
                 <div class="hint">Usually leave this alone.</div>
               </div>
+              <div class="field">
+                <label for="storage_mode">Storage Mode</label>
+                <select id="storage_mode" onchange="liveUpdate()">
+                  <option value="named" selected>Portable named volumes</option>
+                  <option value="bind">Host bind mounts</option>
+                </select>
+                <div class="hint">Use named volumes for a stack that works across Docker hosts. Use bind mounts only if you need direct host file access.</div>
+              </div>
             </div>
           </div>
         </section>
@@ -399,22 +510,22 @@
                 <label for="dashboard_port">Host Dashboard Port</label>
                 <input id="dashboard_port" type="number" value="8000" oninput="liveUpdate()" />
               </div>
-              <div class="field">
+              <div class="field" data-bind-only>
                 <label for="ae_data_path">Host Data Directory</label>
-                <input id="ae_data_path" type="text" value="/mnt/user/appdata/achievement-engine" oninput="liveUpdate()" />
+                <input id="ae_data_path" type="text" placeholder="/home/daniel/appdata/achievement-engine or C:/docker/achievement-engine" oninput="liveUpdate()" />
               </div>
-              <div class="field">
+              <div class="field" data-bind-only>
                 <label for="ae_icons_path">Host Icons Directory</label>
-                <input id="ae_icons_path" type="text" value="/mnt/user/appdata/achievement-engine/icons" oninput="liveUpdate()" />
-                <div class="hint">Needed if you use custom user icons.</div>
+                <input id="ae_icons_path" type="text" placeholder="/home/daniel/appdata/achievement-engine/icons" oninput="liveUpdate()" />
+                <div class="hint">Needed if you use custom user icons and want to manage them from the host.</div>
               </div>
-              <div class="field">
+              <div class="field" data-bind-only>
                 <label for="ae_covers_path">Host Covers Directory</label>
-                <input id="ae_covers_path" type="text" value="/mnt/user/appdata/achievement-engine/covers" oninput="liveUpdate()" />
+                <input id="ae_covers_path" type="text" placeholder="/home/daniel/appdata/achievement-engine/covers" oninput="liveUpdate()" />
               </div>
-              <div class="field">
+              <div class="field" data-bind-only>
                 <label for="ae_static_path">Optional Host Static Override</label>
-                <input id="ae_static_path" type="text" value="/mnt/user/appdata/achievement-engine/static" oninput="liveUpdate()" />
+                <input id="ae_static_path" type="text" placeholder="/home/daniel/appdata/achievement-engine/static" oninput="liveUpdate()" />
                 <div class="hint">Leave blank if you do not want to override built-in static files.</div>
               </div>
               <div class="field">
@@ -447,6 +558,11 @@
               <div class="field">
                 <label for="wrapped_year">Wrapped Year</label>
                 <input id="wrapped_year" type="number" value="2026" oninput="liveUpdate()" />
+              </div>
+              <div class="field">
+                <label for="discord_proxy_url">Discord Proxy URL</label>
+                <input id="discord_proxy_url" type="text" placeholder="http://abs-stats:3000/api/discord-notify" oninput="liveUpdate()" />
+                <div class="hint">Set this if you configured a Discord webhook on abs-stats. Routes achievement notifications through abs-stats to Discord.</div>
               </div>
               <div class="field">
                 <label for="wrapped_boss_hp">Wrapped Boss HP</label>
@@ -487,6 +603,13 @@
                   Use for one startup only, then turn it back off.
                 </span>
               </label>
+              <label class="check">
+                <input id="wrapped_enabled" type="checkbox" checked onchange="liveUpdate()" />
+                <span>
+                  <strong>Wrapped Enabled</strong>
+                  Enable the Wrapped year-end feature, boss battle, and related pages.
+                </span>
+              </label>
             </div>
 
             <div class="field" style="margin-top: 16px;">
@@ -499,9 +622,10 @@
               <textarea id="user_aliases" placeholder="alice:Alice,bob:Bob" oninput="liveUpdate()"></textarea>
             </div>
             <div class="field">
-              <label for="user_icons">User Icons</label>
-              <textarea id="user_icons" placeholder="alice:/icons/alice.png,bob:/icons/bob.png" oninput="liveUpdate()"></textarea>
-              <div class="hint">Match the Unraid format. Put the files in the mapped icons folder.</div>
+              <label>User Icons</label>
+              <div class="user-icon-rows" id="user-icon-rows"></div>
+              <button class="add-icon-btn" onclick="addUserIconRow()">+ Add User Icon</button>
+              <div class="hint">Pick an avatar for each user. Saved as <code>/icons/users/filename.png</code> paths in the YML.</div>
             </div>
             <div class="field">
               <label for="user_emails">User Emails</label>
@@ -542,6 +666,13 @@
                 <input id="smtp_to_override" type="text" placeholder="you@example.com" oninput="liveUpdate()" />
               </div>
             </div>
+            <label class="check" style="margin-top: 12px;">
+              <input id="send_test_email" type="checkbox" onchange="liveUpdate()" />
+              <span>
+                <strong>Send Test Email on Startup</strong>
+                Sends one test message when the container starts. Turn off again after confirming delivery.
+              </span>
+            </label>
           </div>
         </section>
 
@@ -564,13 +695,14 @@
                 <label for="abs_port">Host ABS Stats Port</label>
                 <input id="abs_port" type="number" value="3000" oninput="liveUpdate()" />
               </div>
-              <div class="field">
+              <div class="field" data-bind-only>
                 <label for="abs_data_path">Host ABS Stats Data Directory</label>
-                <input id="abs_data_path" type="text" value="/mnt/user/appdata/abs-stats" oninput="liveUpdate()" />
+                <input id="abs_data_path" type="text" placeholder="/home/daniel/appdata/abs-stats or C:/docker/abs-stats" oninput="liveUpdate()" />
               </div>
               <div class="field">
-                <label for="abs_url">Audiobookshelf URL</label>
-                <input id="abs_url" type="text" placeholder="http://audiobookshelf:13378" oninput="liveUpdate()" />
+                <label for="abs_url">Audiobookshelf URL<span class="required-star">* required</span></label>
+                <input id="abs_url" type="text" placeholder="http://192.168.1.50:13378" oninput="liveUpdate()" />
+                <div class="hint">Full URL to your Audiobookshelf server. Without this abs-stats cannot fetch any listening data.</div>
               </div>
               <div class="field">
                 <label for="engine_url">Engine URL Inside Docker Network</label>
@@ -624,6 +756,9 @@
           <button class="tab" data-tab="notes" onclick="switchTab('notes')">Portainer Notes</button>
         </div>
         <div class="codebox">
+          <div id="warn-abs-url" class="warn-banner" style="display:none;">
+            ABS_URL is not set. abs-stats won't know where your Audiobookshelf server is and no user data will appear. Fill in the <strong>Audiobookshelf URL</strong> field in the ABS Stats section.
+          </div>
           <pre id="preview"></pre>
         </div>
         <div class="actions">
@@ -631,11 +766,11 @@
           <button class="btn" onclick="downloadCurrent()">Download Current Tab</button>
           <div class="subtle" id="feedback">Use the generated stack in Portainer: Stacks -> Add stack -> Web editor.</div>
           <ol class="steps" id="notes" style="display:none;">
-            <li>Create the mapped host folders first, especially the achievement engine data path and abs-stats data path.</li>
-            <li>If you use custom icons, place those files in the mapped icons folder before starting the stack.</li>
-            <li>If you use XP start overrides, download <code>user_xp_start.json</code> and place it in the achievement engine data folder.</li>
+            <li>Portable mode uses Docker named volumes, so the generated YAML works across Linux, macOS, Windows, and Unraid without editing host paths.</li>
+            <li>Use bind-mount mode only if you need direct host file access. In that mode, replace the example paths with real paths for the Docker host running Portainer.</li>
+            <li>If you use XP start overrides, download <code>user_xp_start.json</code>. In named-volume mode, copy it into the achievement engine volume after deploy. In bind-mount mode, place it in the mapped data folder before or after deploy.</li>
             <li>In Portainer, open <code>Stacks</code>, click <code>Add stack</code>, paste the generated YAML, and deploy.</li>
-            <li>After deploy, open the engine at <code>http://host:dashboard-port/</code>. If covers are local, ensure the covers path matches the abs-stats output directory.</li>
+            <li>After deploy, open the engine at <code>http://host:dashboard-port/</code>. If you need custom icons or a static override from the host filesystem, switch to bind-mount mode.</li>
           </ol>
         </div>
       </aside>
@@ -664,6 +799,14 @@
       return `"${s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
     }
 
+    function volumeName(value, fallback) {
+      const clean = String(value || fallback || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9_.-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return clean || fallback;
+    }
+
     function pushEnv(lines, key, value) {
       if (value === '' || value === null || value === undefined) return;
       lines.push(`      ${key}: ${yamlQuote(value)}`);
@@ -687,6 +830,7 @@
     function buildStack() {
       const aeName = val('ae_name') || 'achievement-engine';
       const absName = val('abs_name') || 'abs-stats';
+      const storageMode = val('storage_mode') || 'named';
       const aeData = val('ae_data_path');
       const aeIcons = val('ae_icons_path');
       const aeCovers = val('ae_covers_path');
@@ -694,6 +838,8 @@
       const absData = val('abs_data_path');
       const netName = val('network_name') || 'achievement-engine-net';
       const restart = val('restart_policy') || 'unless-stopped';
+      const aeDataVolume = volumeName(`${aeName}-data`, 'achievement-engine-data');
+      const absDataVolume = volumeName(`${absName}-data`, 'abs-stats-data');
 
       const lines = [
         'services:',
@@ -705,13 +851,24 @@
         `      - ${yamlQuote(`${val('abs_port') || '3000'}:3000`)}`,
       ];
 
-      if (absData) {
+      if (storageMode === 'bind') {
+        if (absData) {
+          lines.push('    volumes:');
+          lines.push(`      - ${yamlQuote(`${absData}:/data`)}`);
+        }
+      } else {
         lines.push('    volumes:');
-        lines.push(`      - ${yamlQuote(`${absData}:/data`)}`);
+        lines.push(`      - ${yamlQuote(`${absDataVolume}:/data`)}`);
       }
 
       lines.push('    environment:');
-      pushEnv(lines, 'ABS_URL', val('abs_url'));
+      const absUrl = val('abs_url');
+      if (absUrl) {
+        pushEnv(lines, 'ABS_URL', absUrl);
+      } else {
+        lines.push(`      # ERROR: ABS_URL is required — set it to your Audiobookshelf server URL, e.g. http://192.168.1.50:13378`);
+        lines.push(`      ABS_URL: "http://REPLACE_WITH_YOUR_ABS_IP:13378"`);
+      }
       pushEnv(lines, 'ABS_TOKEN', val('abs_token'));
       pushEnv(lines, 'ABS_TOKENS', val('abs_tokens'));
       pushEnv(lines, 'ENGINE_URL', val('engine_url') || `http://${aeName}:8000`);
@@ -730,10 +887,14 @@
       lines.push('    ports:');
       lines.push(`      - ${yamlQuote(`${val('dashboard_port') || '8000'}:8000`)}`);
       lines.push('    volumes:');
-      if (aeData) lines.push(`      - ${yamlQuote(`${aeData}:/data`)}`);
-      if (aeIcons) lines.push(`      - ${yamlQuote(`${aeIcons}:/data/icons`)}`);
-      if (aeCovers) lines.push(`      - ${yamlQuote(`${aeCovers}:/data/covers`)}`);
-      if (aeStatic) lines.push(`      - ${yamlQuote(`${aeStatic}:/app/static`)}`);
+      if (storageMode === 'bind') {
+        if (aeData) lines.push(`      - ${yamlQuote(`${aeData}:/data`)}`);
+        if (aeIcons) lines.push(`      - ${yamlQuote(`${aeIcons}:/data/icons`)}`);
+        if (aeCovers) lines.push(`      - ${yamlQuote(`${aeCovers}:/data/covers`)}`);
+        if (aeStatic) lines.push(`      - ${yamlQuote(`${aeStatic}:/app/static`)}`);
+      } else {
+        lines.push(`      - ${yamlQuote(`${aeDataVolume}:/data`)}`);
+      }
       lines.push('    environment:');
       pushEnv(lines, 'ABSSTATS_BASE_URL', `http://${absName}:3000`);
       pushEnv(lines, 'POLL_SECONDS', val('poll_seconds') || '300');
@@ -741,7 +902,7 @@
       pushEnv(lines, 'TZ', val('timezone') || 'America/New_York');
       pushEnv(lines, 'ALLOWED_USERS', val('allowed_users'));
       pushEnv(lines, 'USER_ALIASES', val('user_aliases'));
-      pushEnv(lines, 'USER_ICONS', val('user_icons'));
+      pushEnv(lines, 'USER_ICONS', getUserIconsValue());
       pushEnv(lines, 'USER_EMAILS', val('user_emails'));
       pushEnv(lines, 'XP_START_TIMESTAMP', val('xp_start') || '1767225600');
       pushEnv(lines, 'STRICT_VERIFICATION', bool('strict_verification'));
@@ -750,6 +911,8 @@
       pushEnv(lines, 'REQUIRE_2026_SESSION_FOR_CREDIT', bool('require_scope_session'));
       pushEnv(lines, 'WRAPPED_YEAR', val('wrapped_year') || '2026');
       pushEnv(lines, 'WRAPPED_BOSS_HP', val('wrapped_boss_hp') || '250000');
+      pushEnv(lines, 'WRAPPED_ENABLED', bool('wrapped_enabled'));
+      pushEnv(lines, 'DISCORD_PROXY_URL', val('discord_proxy_url'));
       pushEnv(lines, 'RUN_ACHIEVEMENT_BACKFILL', bool('run_backfill'));
       pushEnv(lines, 'BACKFILL_ONCE_KEY', val('backfill_key') || 'ach_backfill_v1');
 
@@ -761,13 +924,19 @@
         pushEnv(lines, 'SMTP_PASSWORD', val('smtp_password'));
         pushEnv(lines, 'SMTP_FROM', val('smtp_from'));
         pushEnv(lines, 'SMTP_TO_OVERRIDE', val('smtp_to_override'));
-        pushEnv(lines, 'SEND_TEST_EMAIL', 'false');
+        pushEnv(lines, 'SEND_TEST_EMAIL', bool('send_test_email'));
         pushEnv(lines, 'SMTP_DEBUG', '0');
       }
 
       lines.push('    networks:');
       lines.push(`      - ${netName}`);
       lines.push('');
+      if (storageMode !== 'bind') {
+        lines.push('volumes:');
+        lines.push(`  ${absDataVolume}:`);
+        lines.push(`  ${aeDataVolume}:`);
+        lines.push('');
+      }
       lines.push('networks:');
       lines.push(`  ${netName}:`);
       lines.push('    driver: bridge');
@@ -778,6 +947,7 @@
     function render() {
       stackText = buildStack();
       xpJsonText = buildXpJson();
+      document.getElementById('warn-abs-url').style.display = val('abs_url') ? 'none' : 'block';
 
       const preview = document.getElementById('preview');
       const notes = document.getElementById('notes');
@@ -801,6 +971,10 @@
     }
 
     function liveUpdate() {
+      const bindOnly = val('storage_mode') === 'bind';
+      document.querySelectorAll('[data-bind-only]').forEach((node) => {
+        node.classList.toggle('is-hidden', !bindOnly);
+      });
       render();
     }
 
@@ -837,6 +1011,317 @@
         return;
       }
       download('portainer-notes.txt', document.getElementById('notes').innerText);
+    }
+
+    // ── User Icon Picker ──────────────────────────────────────────────────────
+
+    const GITHUB_BASE     = 'https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/users/';
+    const ICON_LOCAL_BASE = '/icons/users/';
+    const MALE_ICONS   = ['user_male_001.png','user_male_002.png','user_male_003.png','user_male_004.png','user_male_005.png','user_male_006.png','user_male_007.png','user_male_008.png','user_male_009.png','user_male_010.png','user_male_011.png','user_male_012.png','user_male_013.png','user_male_014.png','user_male_015.png','user_male_016.png','user_male_017.png','user_male_018.png','user_male_019.png','user_male_020.png','user_male_021.png','user_male_022.png','user_male_023.png','user_male_024.png','user_male_025.png','user_male_026.png','user_male_027.png','user_male_028.png','user_male_029.png'];
+    const FEMALE_ICONS = ['user_female_001.png','user_female_002.png','user_female_003.png','user_female_004.png','user_female_005.png','user_female_006.png','user_female_007.png','user_female_008.png','user_female_009.png','user_female_010.png','user_female_011.png','user_female_012.png','user_female_013.png','user_female_014.png','user_female_015.png','user_female_016.png','user_female_017.png','user_female_018.png','user_female_019.png','user_female_020.png','user_female_021.png','user_female_022.png','user_female_023.png','user_female_024.png','user_female_025.png','user_female_026.png','user_female_027.png','user_female_028.png','user_female_029.png'];
+    let _rowCounter = 0;
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function addUserIconRow(username = '', iconPath = '') {
+      const id = ++_rowCounter;
+      const selectedFile = iconPath ? iconPath.replace(ICON_LOCAL_BASE, '') : '';
+      const row = document.createElement('div');
+      row.className = 'user-icon-row';
+      row.id = `urow-${id}`;
+      row.innerHTML = `
+        <input type="text" placeholder="username" value="${escHtml(username)}" id="uname-${id}" oninput="liveUpdate()">
+        <img class="user-icon-preview${selectedFile ? '' : ' empty'}" id="upreview-${id}"
+             src="${selectedFile ? GITHUB_BASE + selectedFile : ''}"
+             data-file="${escHtml(selectedFile)}"
+             onerror="this.style.visibility='hidden'">
+        <button class="pick-icon-btn" onclick="toggleIconPicker(${id})">Pick Icon</button>
+        <button class="remove-icon-btn" onclick="removeUserIconRow(${id})">Remove</button>
+        <div class="icon-picker-panel" id="icon-panel-${id}">
+          <div class="icon-group-label">Male</div>
+          <div class="icon-grid">
+            ${MALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id},'${f}')" title="${f}" loading="lazy">`).join('')}
+          </div>
+          <div class="icon-group-label">Female</div>
+          <div class="icon-grid">
+            ${FEMALE_ICONS.map(f => `<img class="icon-thumb${f === selectedFile ? ' selected' : ''}" src="${GITHUB_BASE}${f}" data-file="${f}" onclick="selectIcon(${id},'${f}')" title="${f}" loading="lazy">`).join('')}
+          </div>
+        </div>`;
+      document.getElementById('user-icon-rows').appendChild(row);
+    }
+
+    function toggleIconPicker(id) {
+      document.getElementById(`icon-panel-${id}`).classList.toggle('open');
+    }
+
+    function selectIcon(id, filename) {
+      document.getElementById(`icon-panel-${id}`).querySelectorAll('.icon-thumb').forEach(t => t.classList.remove('selected'));
+      document.getElementById(`icon-panel-${id}`).querySelector(`[data-file="${filename}"]`).classList.add('selected');
+      const preview = document.getElementById(`upreview-${id}`);
+      preview.src = GITHUB_BASE + filename;
+      preview.style.visibility = 'visible';
+      preview.dataset.file = filename;
+      document.getElementById(`icon-panel-${id}`).classList.remove('open');
+      liveUpdate();
+    }
+
+    function removeUserIconRow(id) {
+      const r = document.getElementById(`urow-${id}`);
+      if (r) { r.remove(); liveUpdate(); }
+    }
+
+    function getUserIconsValue() {
+      const parts = [];
+      document.querySelectorAll('.user-icon-row').forEach(row => {
+        const id = row.id.replace('urow-', '');
+        const username = (document.getElementById(`uname-${id}`)?.value || '').trim();
+        const file = document.getElementById(`upreview-${id}`)?.dataset.file || '';
+        if (username && file) parts.push(`${username}:${ICON_LOCAL_BASE}${file}`);
+      });
+      return parts.join(',');
+    }
+
+    function loadUserIconsFromValue(val) {
+      document.getElementById('user-icon-rows').innerHTML = '';
+      _rowCounter = 0;
+      if (!val) return;
+      val.split(',').forEach(entry => {
+        const colonIdx = entry.indexOf(':');
+        if (colonIdx < 0) return;
+        const username = entry.slice(0, colonIdx).trim();
+        const iconPath = entry.slice(colonIdx + 1).trim();
+        if (username) addUserIconRow(username, iconPath);
+      });
+    }
+
+    // ── YML IMPORT ────────────────────────────────────────────────────────────
+
+    function unquoteYaml(s) {
+      s = (s || '').trim();
+      if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+        return s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+      }
+      return s;
+    }
+
+    function parsePortainerYml(text) {
+      const lines = text.split(/\r?\n/);
+      const services = {};
+      const topVolumes = {};
+      let section = null;
+      let currentService = null;
+      let subSection = null;
+
+      for (const rawLine of lines) {
+        const line = rawLine.trimEnd();
+        if (!line.trim() || line.trim().startsWith('#')) continue;
+        const indent = line.length - line.trimStart().length;
+        const content = line.trimStart();
+
+        if (indent === 0) {
+          if (content.startsWith('services:'))      { section = 'services'; currentService = null; subSection = null; }
+          else if (content.startsWith('volumes:'))  { section = 'volumes';  currentService = null; subSection = null; }
+          else if (content.startsWith('networks:')) { section = 'networks'; currentService = null; subSection = null; }
+          continue;
+        }
+
+        if (section === 'services' && indent === 2 && !content.startsWith('-')) {
+          const svcName = content.replace(/:.*$/, '').trim();
+          currentService = svcName;
+          services[svcName] = { env: {}, ports: [], volumes: [], networks: [], depends_on: [] };
+          subSection = null;
+          continue;
+        }
+
+        if (section === 'services' && currentService && indent === 4) {
+          if      (content.startsWith('environment:')) subSection = 'environment';
+          else if (content.startsWith('volumes:'))     subSection = 'volumes';
+          else if (content.startsWith('ports:'))       subSection = 'ports';
+          else if (content.startsWith('networks:'))    subSection = 'networks';
+          else if (content.startsWith('depends_on:'))  subSection = 'depends_on';
+          else {
+            subSection = null;
+            const m = content.match(/^([\w_-]+):\s*(.*)$/);
+            if (m) services[currentService][m[1]] = unquoteYaml(m[2]);
+          }
+          continue;
+        }
+
+        if (section === 'services' && currentService && indent === 6) {
+          if (subSection === 'environment') {
+            const m = content.match(/^([\w_]+):\s*(.*)$/);
+            if (m) services[currentService].env[m[1]] = unquoteYaml(m[2]);
+          } else if (['volumes', 'ports', 'networks', 'depends_on'].includes(subSection)) {
+            if (content.startsWith('- ')) {
+              if (!Array.isArray(services[currentService][subSection])) services[currentService][subSection] = [];
+              services[currentService][subSection].push(unquoteYaml(content.slice(2)));
+            }
+          }
+          continue;
+        }
+
+        if (section === 'volumes' && indent === 2 && !content.startsWith('-')) {
+          topVolumes[content.replace(/:.*$/, '').trim()] = true;
+        }
+      }
+
+      return { services, topVolumes };
+    }
+
+    function setImportedValue(id, value) {
+      const el = document.getElementById(id);
+      if (!el || value === undefined || value === null || value === '') return false;
+      el.value = value;
+      el.classList.remove('field-needs-input');
+      el.classList.remove('field-imported');
+      void el.offsetWidth; // force reflow so animation restarts
+      el.classList.add('field-imported');
+      return true;
+    }
+
+    function setImportedCheckbox(id, boolVal) {
+      const el = document.getElementById(id);
+      if (el) el.checked = boolVal;
+    }
+
+    function highlightMissingRequired() {
+      const absUrlEl = document.getElementById('abs_url');
+      if (absUrlEl && !absUrlEl.value.trim()) absUrlEl.classList.add('field-needs-input');
+
+      const tokenEl  = document.getElementById('abs_token');
+      const tokensEl = document.getElementById('abs_tokens');
+      if (tokenEl && tokensEl && !tokenEl.value.trim() && !tokensEl.value.trim()) {
+        tokenEl.classList.add('field-needs-input');
+        tokensEl.classList.add('field-needs-input');
+      }
+    }
+
+    function populateFromParsedYml(parsed) {
+      const { services, topVolumes } = parsed;
+      let absService = null, aeService = null;
+
+      for (const svc of Object.values(services)) {
+        const img = (svc.image || '').toLowerCase();
+        const cn  = (svc.container_name || '').toLowerCase();
+        if      (!absService && (img.includes('abs-stats')          || cn.includes('abs-stats')))       absService = svc;
+        else if (!aeService  && (img.includes('achievement-engine') || cn.includes('achievement')))    aeService  = svc;
+      }
+
+      const storageMode = Object.keys(topVolumes).length > 0 ? 'named' : 'bind';
+      setImportedValue('storage_mode', storageMode);
+
+      const filled  = [];
+      const missing = [];
+
+      if (absService) {
+        if (setImportedValue('abs_image', absService.image)) filled.push('ABS Stats image');
+        setImportedValue('abs_name', absService.container_name || '');
+
+        const absPort = (absService.ports || []).find(p => String(p).includes(':3000'));
+        if (absPort) setImportedValue('abs_port', String(absPort).split(':')[0]);
+
+        if (storageMode === 'bind') {
+          const dv = (absService.volumes || []).find(v => String(v).endsWith(':/data'));
+          if (dv) setImportedValue('abs_data_path', String(dv).split(':')[0]);
+        }
+
+        const e = absService.env || {};
+        if (e.ABS_URL)    { setImportedValue('abs_url', e.ABS_URL);       filled.push('ABS URL'); }
+        else              missing.push('ABS URL — your Audiobookshelf server address (required)');
+
+        if (e.ABS_TOKEN)  setImportedValue('abs_token', e.ABS_TOKEN);
+        if (e.ABS_TOKENS) { setImportedValue('abs_tokens', e.ABS_TOKENS); filled.push('ABS Tokens'); }
+        if (!e.ABS_TOKEN && !e.ABS_TOKENS) missing.push('ABS Token or ABS Tokens — needed to fetch user data');
+
+        if (e.ENGINE_URL)           setImportedValue('engine_url', e.ENGINE_URL);
+        if (e.ALLOWED_USERNAMES)    setImportedValue('allowed_usernames', e.ALLOWED_USERNAMES);
+        if (e.DISCORD_WEBHOOK_URL)  setImportedValue('discord_webhook', e.DISCORD_WEBHOOK_URL);
+        if ((absService.networks || [])[0]) setImportedValue('network_name', absService.networks[0]);
+      } else {
+        missing.push('abs-stats service not detected in file');
+      }
+
+      if (aeService) {
+        if (setImportedValue('ae_image', aeService.image)) filled.push('Achievement Engine image');
+        setImportedValue('ae_name', aeService.container_name || '');
+
+        const aePort = (aeService.ports || []).find(p => String(p).includes(':8000'));
+        if (aePort) setImportedValue('dashboard_port', String(aePort).split(':')[0]);
+
+        if (storageMode === 'bind') {
+          const vols = aeService.volumes || [];
+          const dv = vols.find(v => String(v).endsWith(':/data'));          if (dv) setImportedValue('ae_data_path',   String(dv).split(':')[0]);
+          const iv = vols.find(v => String(v).endsWith(':/data/icons'));   if (iv) setImportedValue('ae_icons_path',  String(iv).split(':')[0]);
+          const cv = vols.find(v => String(v).endsWith(':/data/covers'));  if (cv) setImportedValue('ae_covers_path', String(cv).split(':')[0]);
+          const sv = vols.find(v => String(v).endsWith(':/app/static'));   if (sv) setImportedValue('ae_static_path', String(sv).split(':')[0]);
+        }
+
+        const e = aeService.env || {};
+        if (e.POLL_SECONDS)                    setImportedValue('poll_seconds',    e.POLL_SECONDS);
+        if (e.STATE_DB_PATH)                   setImportedValue('state_db_path',   e.STATE_DB_PATH);
+        if (e.TZ)                              setImportedValue('timezone',        e.TZ);
+        if (e.USER_ALIASES)                    setImportedValue('user_aliases',    e.USER_ALIASES);
+        if (e.USER_ICONS)                      loadUserIconsFromValue(e.USER_ICONS);
+        if (e.USER_EMAILS)                     setImportedValue('user_emails',     e.USER_EMAILS);
+        if (e.XP_START_TIMESTAMP)              setImportedValue('xp_start',        e.XP_START_TIMESTAMP);
+        if (e.VERIFY_LISTEN_THRESHOLD)         setImportedValue('verify_threshold',e.VERIFY_LISTEN_THRESHOLD);
+        if (e.WRAPPED_YEAR)                    setImportedValue('wrapped_year',    e.WRAPPED_YEAR);
+        if (e.WRAPPED_BOSS_HP)                 setImportedValue('wrapped_boss_hp', e.WRAPPED_BOSS_HP);
+        if (e.WRAPPED_ENABLED)                 setImportedCheckbox('wrapped_enabled', e.WRAPPED_ENABLED === 'true');
+        if (e.DISCORD_PROXY_URL)               setImportedValue('discord_proxy_url', e.DISCORD_PROXY_URL);
+        if (e.BACKFILL_ONCE_KEY)               setImportedValue('backfill_key',    e.BACKFILL_ONCE_KEY);
+        if (e.ALLOWED_USERS)                   setImportedValue('allowed_users',   e.ALLOWED_USERS);
+        if (e.SMTP_HOST)                       setImportedValue('smtp_host',       e.SMTP_HOST);
+        if (e.SMTP_PORT)                       setImportedValue('smtp_port',       e.SMTP_PORT);
+        if (e.SMTP_USERNAME)                   setImportedValue('smtp_username',   e.SMTP_USERNAME);
+        if (e.SMTP_PASSWORD)                   setImportedValue('smtp_password',   e.SMTP_PASSWORD);
+        if (e.SMTP_FROM)                       setImportedValue('smtp_from',       e.SMTP_FROM);
+        if (e.SMTP_TO_OVERRIDE)                setImportedValue('smtp_to_override',e.SMTP_TO_OVERRIDE);
+        if (e.SEND_TEST_EMAIL)                 setImportedCheckbox('send_test_email', e.SEND_TEST_EMAIL === 'true');
+
+        if (e.STRICT_VERIFICATION)             setImportedCheckbox('strict_verification',    e.STRICT_VERIFICATION === 'true');
+        if (e.REQUIRE_DURATION_FOR_CREDIT)     setImportedCheckbox('require_duration',        e.REQUIRE_DURATION_FOR_CREDIT === 'true');
+        if (e.REQUIRE_2026_SESSION_FOR_CREDIT) setImportedCheckbox('require_scope_session',   e.REQUIRE_2026_SESSION_FOR_CREDIT === 'true');
+        if (e.RUN_ACHIEVEMENT_BACKFILL)        setImportedCheckbox('run_backfill',             e.RUN_ACHIEVEMENT_BACKFILL === 'true');
+      } else {
+        missing.push('achievement-engine service not detected in file');
+      }
+
+      highlightMissingRequired();
+      liveUpdate();
+      return { filled, missing };
+    }
+
+    async function handleYmlFileSelected(event) {
+      const file = event?.target?.files?.[0];
+      const statusEl  = document.getElementById('import-status');
+      const missingEl = document.getElementById('import-missing');
+      if (!file) return;
+      event.target.value = '';
+
+      try {
+        const text = await file.text();
+        const parsed = parsePortainerYml(text);
+        const { filled, missing } = populateFromParsedYml(parsed);
+
+        statusEl.className = 'import-status ok';
+        statusEl.textContent = `Loaded ${file.name} — ${filled.length} field${filled.length !== 1 ? 's' : ''} populated: ${filled.join(', ') || 'none'}.`;
+        statusEl.style.display = 'block';
+
+        if (missing.length) {
+          missingEl.innerHTML = `<strong>Still needed:</strong><ul>${missing.map(m => `<li>${m}</li>`).join('')}</ul>`;
+          missingEl.style.display = 'block';
+        } else {
+          missingEl.style.display = 'none';
+        }
+      } catch (err) {
+        statusEl.className = 'import-status err';
+        statusEl.textContent = `Failed to load ${file.name}: ${err.message}`;
+        statusEl.style.display = 'block';
+        missingEl.style.display = 'none';
+      }
     }
 
     render();
