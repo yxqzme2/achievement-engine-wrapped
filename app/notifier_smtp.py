@@ -269,8 +269,8 @@ class EmailNotifier:
     # -----------------------------------------
     # Section 4: Send Plain Email
     # -----------------------------------------
-    def send_simple(self, to_addr: str, subject: str, body_text: str) -> None:
-        """Send a plain-text email. Used for series requests etc."""
+    def send_simple(self, to_addr: str, subject: str, body_text: str, cover_url: str = "") -> None:
+        """Send a plain-text (+ optional HTML with cover art) email."""
         if not self.enabled():
             raise RuntimeError("SMTP not configured")
 
@@ -283,6 +283,24 @@ class EmailNotifier:
         msg["From"] = self.from_addr
         msg["To"] = real_to
         msg.set_content(body_text)
+
+        # Build HTML alternative with cover image if provided
+        if cover_url:
+            cover_html = f'<img src="{cover_url}" alt="Series Cover" style="width:120px;height:120px;object-fit:cover;border-radius:4px;border:2px solid #635034;float:left;margin:0 18px 10px 0;">'
+            lines_html = "".join(
+                f"<div style='margin:4px 0;color:#d1d1d1;font-size:14px;'>{line}</div>" if line
+                else "<br>"
+                for line in body_text.splitlines()
+            )
+            html = f"""<html><body style="background:#1a1a1a;padding:24px;font-family:sans-serif;">
+                <div style="background:#2b251d;border:2px solid #635034;border-radius:6px;padding:18px;max-width:520px;">
+                    {cover_html}
+                    <div style="overflow:hidden;">{lines_html}</div>
+                    <div style="clear:both;"></div>
+                </div>
+                <p style="color:#444;font-size:11px;margin-top:16px;">— Achievement Engine</p>
+            </body></html>"""
+            msg.add_alternative(html, subtype="html")
 
         timeout = int(os.getenv("SMTP_TIMEOUT", "30"))
         tls_context = ssl.create_default_context()

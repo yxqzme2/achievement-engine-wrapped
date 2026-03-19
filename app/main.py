@@ -2952,6 +2952,7 @@ async def request_submit(request: Request):
     series_name = (body.get("series_name") or "").strip()
     series_asin = (body.get("series_asin") or "").strip()
     author      = (body.get("author") or "").strip()
+    cover_url   = (body.get("cover_url") or "").strip()
     note        = (body.get("note") or "").strip()
 
     if not series_name:
@@ -2970,7 +2971,7 @@ async def request_submit(request: Request):
     if note:        lines += ["", f"Note: {note}"]
 
     try:
-        notifier.send_simple(cfg.admin_email, subject, "\n".join(lines))
+        notifier.send_simple(cfg.admin_email, subject, "\n".join(lines), cover_url=cover_url)
         return JSONResponse({"ok": True})
     except Exception as e:
         return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
