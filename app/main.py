@@ -200,8 +200,16 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 # Serve CSS, JS, and shared assets from /static/
-# Checks the volume-mounted /static first, falls back to the baked-in /app/static
-_STATIC_DIR = "/static" if os.path.isdir("/static") else "/app/static"
+# Use the volume-mounted /static only if it actually has files; otherwise use the
+# baked-in /app/static. Docker creates the bind-mount dir as an empty directory
+# BEFORE setup.sh runs, so os.path.isdir() alone would always pick the empty dir.
+def _static_dir_has_content(path: str) -> bool:
+    try:
+        return bool(os.listdir(path))
+    except Exception:
+        return False
+
+_STATIC_DIR = "/static" if _static_dir_has_content("/static") else "/app/static"
 app.mount("/static", StaticFiles(directory=_STATIC_DIR), name="static_assets")
 
 # -----------------------------------------
