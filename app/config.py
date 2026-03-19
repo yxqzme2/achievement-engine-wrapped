@@ -37,6 +37,7 @@ class Settings(BaseModel):
     run_achievement_backfill: bool = Field(default=False)
     backfill_once_key: str = Field(default="ach_backfill_v1")
     allowed_users: str = Field(default="")
+    radar_check_interval_hours: int = Field(default=12)
 
 
 def _find_achievements_path(configured_path: str) -> str:
@@ -107,6 +108,7 @@ def load_settings() -> Settings:
         run_achievement_backfill=b("RUN_ACHIEVEMENT_BACKFILL", False),
         backfill_once_key=os.getenv("BACKFILL_ONCE_KEY", "ach_backfill_v1").strip() or "ach_backfill_v1",
         allowed_users=os.getenv("ALLOWED_USERS", "").strip(),
+        radar_check_interval_hours=i("RADAR_CHECK_INTERVAL_HOURS", 12),
     )
 
 

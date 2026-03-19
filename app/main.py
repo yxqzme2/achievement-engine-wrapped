@@ -40,6 +40,10 @@ from .gear_engine import (
     xp_from_hours, xp_from_quests, xp_from_achievements, level_from_xp,
     random_item_round_robin,
 )
+from .release_radar import (
+    search_series_candidates, check_all_series as radar_check_all,
+    generate_ics, radar_worker, seed_from_abs, check_library_status,
+)
 
 # -----------------------------------------
 # Section 2: Global Configuration & Initialization
@@ -175,6 +179,20 @@ async def lifespan(app: FastAPI):
     # Start the background thread on startup
     t = threading.Thread(target=achievement_engine_worker, daemon=True)
     t.start()
+
+    # Start the Release Radar background thread
+    radar_t = threading.Thread(
+        target=radar_worker,
+        kwargs={
+            "state": store,
+            "discord_proxy_url": cfg.discord_proxy_url,
+            "absstats_base_url": cfg.absstats_base_url,
+            "check_interval_hours": cfg.radar_check_interval_hours,
+        },
+        daemon=True,
+    )
+    radar_t.start()
+
     yield
     # nothing on shutdown
 
@@ -269,6 +287,7 @@ PLAYLIST_PATH = _get_static_path("playlist.html")
 ROSTER_PATH = _get_static_path("roster.html")
 CHARACTER_SHEET_PATH = _get_static_path("character_sheet.html")
 DAY_1_PATH = _get_static_path("day_1.html")
+RADAR_PATH = _get_static_path("radar.html")
 
 # Integration Launch Date (January 01, 2026 00:00 AM UTC)
 LAUNCH_TIMESTAMP = int(cfg.xp_start_timestamp)
@@ -771,6 +790,10 @@ def read_playlist_root():
     return FileResponse(_get_static_path("playlist.html"))
 
 @app.get("/forge")
+@app.get("/admin/radar")
+def read_radar_admin():
+    return FileResponse(_get_static_path("admin/radar.html"))
+
 @app.get("/admin/forge")
 def read_achievement_tester_root():
     return FileResponse(_get_static_path("admin/forge.html"))
@@ -2821,6 +2844,103 @@ def api_ui_config():
             icons[key.strip()] = val.strip()
 
     return JSONResponse({"aliases": aliases, "icons": icons, "wrapped_enabled": _wrapped_is_enabled()})
+
+
+# -----------------------------------------
+# Section 5b: Release Radar Routes
+# -----------------------------------------
+
+@app.get("/radar")
+def read_radar():
+    return FileResponse(RADAR_PATH)
+
+
+@app.get("/radar/api/series")
+def radar_get_series():
+    """Return all tracked series."""
+    return JSONResponse({"series": store.get_tracked_series()})
+
+
+@app.post("/radar/api/series")
+async def radar_add_series(request: Request):
+    """
+    Add a series to track.
+    Body: { series_asin, series_name, author, cover_url }
+    """
+    body = await request.json()
+    series_asin = (body.get("series_asin") or "").strip()
+    series_name = (body.get("series_name") or "").strip()
+    author      = (body.get("author") or "").strip()
+    cover_url   = (body.get("cover_url") or "").strip()
+
+    if not series_asin or not series_name:
+        raise HTTPException(status_code=400, detail="series_asin and series_name are required")
+
+    row_id = store.add_tracked_series(series_name, series_asin, author, cover_url)
+    return JSONResponse({"ok": True, "id": row_id})
+
+
+@app.delete("/radar/api/series/{series_id}")
+def radar_delete_series(series_id: int):
+    # Look up the ASIN before deleting so we can ignore it
+    series = store.get_tracked_series_by_id(series_id)
+    if series:
+        store.ignore_series(series["series_asin"])
+    store.delete_tracked_series(series_id)
+    return JSONResponse({"ok": True})
+
+
+@app.get("/radar/api/releases")
+def radar_get_releases(days_back: int = 90):
+    """Return upcoming + recent releases."""
+    releases = store.get_releases(days_back=days_back)
+    return JSONResponse({"releases": releases})
+
+
+@app.get("/radar/releases.ics")
+def radar_ics():
+    """Downloadable/subscribable ICS calendar feed."""
+    releases = store.get_releases(days_back=30)
+    ics_content = generate_ics(releases)
+    return Response(
+        content=ics_content,
+        media_type="text/calendar; charset=utf-8",
+        headers={"Content-Disposition": "inline; filename=audiobook-releases.ics"},
+    )
+
+
+@app.get("/radar/api/search")
+def radar_search(q: str = ""):
+    """Search Audible for series candidates to add."""
+    if not q.strip():
+        raise HTTPException(status_code=400, detail="q parameter required")
+    candidates = search_series_candidates(q.strip())
+    return JSONResponse({"candidates": candidates})
+
+
+@app.post("/radar/api/check")
+def radar_manual_check():
+    """Manually trigger a full series poll (runs synchronously, may be slow)."""
+    found = radar_check_all(store, cfg.discord_proxy_url)
+    return JSONResponse({"ok": True, "new_releases": found})
+
+
+@app.post("/radar/api/seed-from-abs")
+def radar_seed_from_abs():
+    """Pull all series from ABS and auto-add any not already tracked."""
+    added, unmatched = seed_from_abs(store, cfg.absstats_base_url)
+    return JSONResponse({"ok": True, "added": added, "unmatched": unmatched})
+
+
+@app.get("/radar/api/library-check")
+def radar_library_check():
+    """
+    Cross-check released books against the ABS library.
+    Returns {asin: bool|null} — true=in library, false=missing, null=unknown.
+    """
+    releases = store.get_releases(days_back=365)
+    status = check_library_status(releases, cfg.absstats_base_url)
+    return JSONResponse({"status": status})
 
 
 # -----------------------------------------

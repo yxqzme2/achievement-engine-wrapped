@@ -48,10 +48,10 @@ If your user runs Portainer instead of raw Compose or Unraid templates, use the 
 - [Direct download](https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/portainer-stack-builder.html)
 
 It generates:
-- One Portainer-ready stack YAML for both containers
+- One Portainer-ready stack YAML for both containers, defaulting to portable Docker named volumes
 - An optional `user_xp_start.json` file for per-user progression start dates
 
-Open the builder, fill in the same options exposed by the Unraid templates, then paste the generated YAML into **Portainer → Stacks → Add stack**.
+Open the builder, keep the default named-volume mode for the most portable stack, or switch to bind mounts if you need host-specific paths, then paste the generated YAML into **Portainer → Stacks → Add stack**.
 
 ---
 
@@ -62,7 +62,8 @@ Open the builder, fill in the same options exposed by the Unraid templates, then
 | **322 achievements** | Milestones, campaigns, streaks, social overlap, behavior, and more |
 | **LitRPG progression** | XP, levels, stat points (STR / MAG / DEF / HP), gear, and Combat Power |
 | **Year-end Wrapped** | 9-slide animated boss battle driven by your real listening data and gear |
-| **14+ portal pages** | Dashboard, character sheet, leaderboard, quests, loot compendium, tier list |
+| **15+ portal pages** | Dashboard, character sheet, leaderboard, quests, loot compendium, tier list, Release Radar |
+| **Release Radar** | Audiobook series tracker — upcoming releases, `.ics` calendar feed, Discord alerts |
 | **Multi-user** | Track a family or group with individual API tokens |
 | **User avatars** | Per-user portrait images on the Roster, Character Sheet, and Wrapped win screen |
 | **Notifications** | Discord webhook and SMTP email |
@@ -74,6 +75,37 @@ Open the builder, fill in the same options exposed by the Unraid templates, then
 - Running [Audiobookshelf](https://www.audiobookshelf.org/) server
 - API token per user &nbsp;(**ABS → Settings → Users → [user] → API Token**)
 - Docker and Docker Compose, or Unraid with Community Applications
+
+---
+
+## Release Radar
+
+Release Radar tracks upcoming and recent audiobook releases across your favourite series. It polls the Audible public catalog API automatically and cross-checks releases against your ABS library to flag books you haven't added yet.
+
+**Key features:**
+- Auto-seeds tracked series from your existing ABS library on startup
+- Polls Audible every 12 hours by default (`RADAR_CHECK_INTERVAL_HOURS` env var)
+- Grid view (upcoming / recent) and monthly calendar view
+- Subscribe to a live `.ics` feed in any calendar app (Google Calendar, Outlook, Apple Calendar)
+- Discord notifications when new releases are discovered
+- "Released / Missing" badge for audiobooks not yet in your ABS library
+
+**Routes:**
+- `GET /radar` — public release view (grid + calendar)
+- `GET /admin/radar` — management page (track series, sync, check now)
+- `GET /radar/releases.ics` — calendar feed subscription
+- `GET /radar/api/releases` — JSON releases (query: `days_back=365`)
+- `GET /radar/api/series` — tracked series list
+- `POST /radar/api/series` — add a series
+- `DELETE /radar/api/series/{id}` — stop tracking a series
+- `POST /radar/api/seed-from-abs` — sync series from ABS library
+- `POST /radar/api/check` — trigger a manual release check
+- `GET /radar/api/search?q=` — search Audible for series candidates
+- `GET /radar/api/library-check` — cross-check releases against ABS
+
+**New env var:** `RADAR_CHECK_INTERVAL_HOURS` (default: `12`) — how often the background worker polls Audible.
+
+**Storage:** all radar data is stored in the existing `state.db` SQLite database (`tracked_series`, `radar_releases`, `radar_ignored_series` tables).
 
 ---
 

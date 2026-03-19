@@ -332,6 +332,7 @@
     <a href="/admin/template">Template</a>
     <a href="/admin/setup" class="active">Script</a>
     <a href="/admin/ops">Ops</a>
+    <a href="/admin/radar">Radar</a>
   </div>
 </nav>
 
@@ -577,10 +578,27 @@
       </div>
     </div>
 
-    <!-- ── SECTION 6: SMTP ── -->
+    <!-- ── SECTION 6: RELEASE RADAR ── -->
+    <div class="section-card" id="sec-radar">
+      <div class="section-header" onclick="toggleSection('sec-radar')">
+        <span class="section-title">06 // Release Radar <span style="font-size:.7em;color:var(--text-muted);letter-spacing:0;font-family:'Share Tech Mono',monospace;text-transform:none"> // optional</span></span>
+        <span class="section-chevron">[ ▼ ]</span>
+      </div>
+      <div class="section-body">
+        <div class="two-col field-row">
+          <div>
+            <label class="field-label" for="radar_interval">Radar Check Interval (hours)</label>
+            <p class="field-desc">How often the Release Radar background worker polls Audible for new releases in tracked series. Default: 12</p>
+            <input type="number" id="radar_interval" value="12" oninput="liveUpdate()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 7: SMTP ── -->
     <div class="section-card" id="sec6">
       <div class="section-header" onclick="toggleSection('sec6')">
-        <span class="section-title">06 // Email / SMTP <span style="font-size:.7em;color:var(--text-muted);letter-spacing:0;font-family:'Share Tech Mono',monospace;text-transform:none"> // optional</span></span>
+        <span class="section-title">07 // Email / SMTP <span style="font-size:.7em;color:var(--text-muted);letter-spacing:0;font-family:'Share Tech Mono',monospace;text-transform:none"> // optional</span></span>
         <span class="section-chevron">[ ▼ ]</span>
       </div>
       <div class="section-body">
@@ -904,6 +922,9 @@
       line('WRAPPED_YEAR',    val('wrapped_year')    || '2026'),
       line('WRAPPED_BOSS_HP', val('wrapped_boss_hp') || '250000'),
       '',
+      '# ─── Release Radar ─────────────────────────────────────',
+      line('RADAR_CHECK_INTERVAL_HOURS', val('radar_interval') || '12'),
+      '',
     ];
 
     if (smtpHost) {
@@ -1120,6 +1141,7 @@
       'REQUIRE_2026_SESSION_FOR_CREDIT': ['require_2026_session',  'bool',   'Require In-Scope Session'],
       'WRAPPED_YEAR':                    ['wrapped_year',          'number', 'Wrapped Year'],
       'WRAPPED_BOSS_HP':                 ['wrapped_boss_hp',       'number', 'Boss HP'],
+      'RADAR_CHECK_INTERVAL_HOURS':      ['radar_interval',        'number', 'Radar Check Interval'],
       'SMTP_HOST':                       ['smtp_host',             'text',   'SMTP Host'],
       'SMTP_PORT':                       ['smtp_port',             'number', 'SMTP Port'],
       'SMTP_USERNAME':                   ['smtp_username',         'text',   'SMTP Username'],

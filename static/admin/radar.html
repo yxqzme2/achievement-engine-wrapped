@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release Radar Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue:   #00f2ff;
+            --neon-green:  #00ff88;
+            --neon-gold:   #ffd27d;
+            --bg-dark:     #050505;
+            --card-bg:     #111;
+            --card-bg2:    #0d0d0d;
+            --input-bg:    #0a0a0a;
+            --border-dim:  #2a2a2a;
+            --border-mid:  #1e3a3f;
+            --text:        #e0e0e0;
+            --text-muted:  #666;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Admin Nav ── */
+        .admin-nav {
+            width: 100%;
+            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+            border-bottom: 1px solid var(--neon-blue);
+            box-shadow: 0 0 12px rgba(0,242,255,.16);
+        }
+        .admin-nav-inner {
+            max-width: 1200px; margin: 0 auto; padding: 10px 14px;
+            display: flex; justify-content: center; gap: 8px; align-items: center; flex-wrap: wrap;
+        }
+        .admin-nav a {
+            text-decoration: none; font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+            color: #9ad8df; padding: 6px 10px; border: 1px solid #2b4448; transition: all 0.2s ease;
+        }
+        .admin-nav a.brand { color: var(--neon-blue); border-color: transparent; padding-left: 0; margin-right: 4px; }
+        .admin-nav a:hover { color: #001215; background: var(--neon-blue); border-color: var(--neon-blue); }
+        .admin-nav a.active { color: #001215; background: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0,242,255,.35); }
+
+        /* ── Scanline ── */
+        .scanline {
+            width: 100%; height: 100px; z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255,255,255,.05) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1; position: fixed; bottom: 100%; left: 0;
+            pointer-events: none; animation: scanline 10s linear infinite;
+        }
+        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
+
+        /* ── Header ── */
+        header {
+            background: #111; padding: 15px;
+            border-bottom: 2px solid var(--neon-blue);
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; box-sizing: border-box;
+        }
+        header h1 {
+            font-family: 'Orbitron', sans-serif; letter-spacing: 5px;
+            text-transform: uppercase; margin: 0; color: var(--neon-blue);
+        }
+        header a {
+            color: var(--neon-blue); text-decoration: none; font-size: 0.8rem;
+            border: 1px solid var(--neon-blue); padding: 5px 12px; transition: all .2s;
+        }
+        header a:hover { background: var(--neon-blue); color: #001215; }
+
+        /* ── Page layout ── */
+        .page-wrap {
+            max-width: 1100px; margin: 32px auto; padding: 0 20px 80px;
+        }
+
+        /* ── Toolbar ── */
+        .toolbar {
+            display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px;
+        }
+        .btn {
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem;
+            letter-spacing: 1px; text-transform: uppercase;
+            padding: 9px 18px; border: 1px solid var(--neon-blue);
+            color: var(--neon-blue); background: transparent;
+            cursor: pointer; transition: all .2s; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn:hover { background: var(--neon-blue); color: #001215; }
+        .btn:disabled { opacity: .4; cursor: default; pointer-events: none; }
+        .btn-green { border-color: var(--neon-green); color: var(--neon-green); }
+        .btn-green:hover { background: var(--neon-green); color: #001215; }
+        .btn-gold { border-color: var(--neon-gold); color: var(--neon-gold); }
+        .btn-gold:hover { background: var(--neon-gold); color: #001215; }
+
+        /* ── Section heading ── */
+        .section-label {
+            font-family: 'Orbitron', sans-serif; font-size: 0.7rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--neon-blue); border-bottom: 1px solid var(--border-mid);
+            padding-bottom: 7px; margin-bottom: 16px;
+        }
+
+        /* ── Tracked chips ── */
+        .tracked-panel {
+            background: var(--card-bg); border: 1px solid var(--border-mid);
+            padding: 18px; margin-bottom: 32px; min-height: 72px;
+        }
+        .tracked-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tracked-chip {
+            display: flex; align-items: center; gap: 8px;
+            background: #0d1a1e; border: 1px solid #1e3a3f;
+            padding: 5px 10px 5px 5px; font-size: 0.75rem; color: #9ad8df;
+        }
+        .tracked-chip img {
+            width: 26px; height: 26px; object-fit: cover;
+            background: #0a0a0a; flex-shrink: 0;
+        }
+        .tracked-chip .chip-name {
+            font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
+            color: var(--neon-blue); letter-spacing: .5px;
+        }
+        .tracked-chip .chip-author { font-size: 0.68rem; color: var(--text-muted); }
+        .tracked-chip button {
+            background: none; border: none; color: #3a5a5f; cursor: pointer;
+            font-size: 0.85rem; line-height: 1; padding: 0 0 0 6px; transition: color .15s;
+        }
+        .tracked-chip button:hover { color: #ff4455; }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,.85); z-index: 1000;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: #0d0d0d; border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0,242,255,.2);
+            width: 100%; max-width: 560px; max-height: 80vh;
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; border-bottom: 1px solid var(--border-mid);
+            background: #111;
+        }
+        .modal-header h2 {
+            font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+            color: var(--neon-blue); letter-spacing: 2px; text-transform: uppercase;
+        }
+        .modal-close {
+            background: none; border: none; color: #9ad8df;
+            font-size: 1.2rem; cursor: pointer; line-height: 1; padding: 0;
+        }
+        .modal-close:hover { color: #fff; }
+        .modal-body { padding: 18px; overflow-y: auto; flex: 1; }
+        .search-row { display: flex; gap: 8px; margin-bottom: 14px; }
+        .search-row input {
+            flex: 1; background: var(--input-bg); border: 1px solid #1e3a3f;
+            color: var(--neon-blue); padding: 9px 12px;
+            font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; outline: none;
+        }
+        .search-row input:focus { border-color: var(--neon-blue); box-shadow: 0 0 6px rgba(0,242,255,.2); }
+        .search-row input::placeholder { color: var(--text-muted); }
+        .candidate-list { display: flex; flex-direction: column; gap: 8px; }
+        .candidate-row {
+            display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+            background: #0d1a1e; border: 1px solid var(--border-mid); transition: background .15s;
+        }
+        .candidate-row:hover { background: #122228; }
+        .candidate-row img { width: 40px; height: 40px; object-fit: cover; background: var(--input-bg); flex-shrink: 0; }
+        .candidate-info { flex: 1; min-width: 0; }
+        .candidate-series { font-family: 'Orbitron', sans-serif; font-size: 0.72rem; color: var(--neon-blue); letter-spacing: .5px; }
+        .candidate-author { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+        .candidate-add {
+            font-family: 'Orbitron', sans-serif; font-size: 0.65rem; letter-spacing: 1px;
+            color: var(--neon-green); border: 1px solid var(--neon-green); background: none;
+            padding: 4px 10px; cursor: pointer; transition: all .15s; text-transform: uppercase;
+        }
+        .candidate-add:hover { background: var(--neon-green); color: #001215; }
+        .modal-status { color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 8px 0; font-style: italic; }
+        .modal-status.error { color: #ff4455; }
+
+        /* ── Spinner ── */
+        .spinner {
+            display: inline-block; width: 14px; height: 14px;
+            border: 2px solid rgba(0,242,255,.2); border-top-color: var(--neon-blue);
+            border-radius: 50%; animation: spin .7s linear infinite;
+            vertical-align: middle; margin-left: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Toast ── */
+        #toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: #111; color: var(--neon-blue); border: 1px solid var(--neon-blue);
+            padding: 10px 22px; font-family: 'Orbitron', sans-serif; font-size: .75rem;
+            letter-spacing: 1px; z-index: 9999; pointer-events: none;
+            opacity: 0; transition: opacity .4s; white-space: nowrap;
+        }
+        #toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<nav class="admin-nav">
+    <div class="admin-nav-inner">
+        <a href="/admin" class="brand">System Admin</a>
+        <a href="/admin">Hub</a>
+        <a href="/admin/forge">Forge</a>
+        <a href="/admin/loot">Armory</a>
+        <a href="/admin/quest">Bounties</a>
+        <a href="/admin/template">Template</a>
+        <a href="/admin/setup">Script</a>
+        <a href="/admin/ops">Ops</a>
+        <a href="/admin/radar" class="active">Radar</a>
+    </div>
+</nav>
+
+<div class="scanline"></div>
+
+<header>
+    <h1>Release Radar</h1>
+    <a href="/radar">[ VIEW PUBLIC RADAR ]</a>
+</header>
+
+<div class="page-wrap">
+
+    <div class="toolbar">
+        <button class="btn btn-green" onclick="openAddModal()">+ Track Series</button>
+        <button class="btn" onclick="seedFromAbs()" id="btn-seed">&#128196; Sync from Library</button>
+        <button class="btn" onclick="manualCheck()" id="btn-check">&#8635; Check Now</button>
+    </div>
+
+    <div class="section-label">// Tracked Series</div>
+    <div class="tracked-panel">
+        <div id="tracked-list" class="tracked-list">
+            <span style="color:var(--text-muted);font-size:.8rem">Loading&hellip;</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- Add Series Modal -->
+<div class="modal-overlay" id="add-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Track a Series</h2>
+            <button class="modal-close" onclick="closeAddModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="search-row">
+                <input type="text" id="search-input" placeholder="Search Audible (e.g. Cradle Will Wight)" />
+                <button class="btn" onclick="doSearch()">Search</button>
+            </div>
+            <div id="modal-status" class="modal-status" style="display:none"></div>
+            <div id="candidate-list" class="candidate-list"></div>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+async function loadTracked() {
+    try {
+        const resp = await fetch('/radar/api/series');
+        const data = await resp.json();
+        renderTracked(data.series || []);
+    } catch (e) { console.error(e); }
+}
+
+function renderTracked(series) {
+    const container = document.getElementById('tracked-list');
+    if (!series.length) {
+        container.innerHTML = '<span style="color:var(--text-muted);font-size:.8rem">No series tracked yet. Use &ldquo;+ Track Series&rdquo; or &ldquo;Sync from Library&rdquo; to get started.</span>';
+        return;
+    }
+    container.innerHTML = '';
+    series.forEach(s => {
+        const chip = document.createElement('div');
+        chip.className = 'tracked-chip';
+        const coverHtml = s.cover_url
+            ? `<img src="${escHtml(s.cover_url)}" alt="">`
+            : `<div style="width:26px;height:26px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:.7rem">&#127911;</div>`;
+        chip.innerHTML = `
+            ${coverHtml}
+            <div>
+                <div class="chip-name">${escHtml(s.series_name)}</div>
+                ${s.author ? `<div class="chip-author">${escHtml(s.author)}</div>` : ''}
+            </div>
+            <button title="Stop tracking" onclick="deleteSeries(${s.id}, this)">&#10005;</button>`;
+        container.appendChild(chip);
+    });
+}
+
+async function deleteSeries(id, btn) {
+    if (!confirm('Stop tracking this series?')) return;
+    try {
+        const resp = await fetch(`/radar/api/series/${id}`, { method: 'DELETE' });
+        if (resp.ok) {
+            btn.closest('.tracked-chip').remove();
+            const c = document.getElementById('tracked-list');
+            if (!c.querySelector('.tracked-chip'))
+                c.innerHTML = '<span style="color:var(--text-muted);font-size:.8rem">No series tracked yet.</span>';
+        }
+    } catch (e) { console.error(e); }
+}
+
+async function seedFromAbs() {
+    const btn = document.getElementById('btn-seed');
+    btn.disabled = true;
+    btn.innerHTML = `&#128196; Syncing&hellip;<span class="spinner"></span>`;
+    try {
+        const resp = await fetch('/radar/api/seed-from-abs', { method: 'POST' });
+        const data = await resp.json();
+        btn.innerHTML = `&#128196; Sync from Library`;
+        showToast(data.added > 0
+            ? `Added ${data.added} series.${data.unmatched > 0 ? ` ${data.unmatched} unmatched.` : ''}`
+            : `Up to date.${data.unmatched > 0 ? ` ${data.unmatched} unmatched.` : ''}`);
+        if (data.added > 0) await loadTracked();
+    } catch (e) { btn.innerHTML = `&#128196; Sync from Library`; console.error(e); }
+    btn.disabled = false;
+}
+
+async function manualCheck() {
+    const btn = document.getElementById('btn-check');
+    btn.disabled = true;
+    btn.innerHTML = `&#8635; Checking&hellip;<span class="spinner"></span>`;
+    try {
+        const resp = await fetch('/radar/api/check', { method: 'POST' });
+        const data = await resp.json();
+        btn.innerHTML = `&#8635; Check Now`;
+        showToast(data.new_releases > 0
+            ? `Found ${data.new_releases} new release${data.new_releases > 1 ? 's' : ''}!`
+            : 'All caught up.');
+    } catch (e) { btn.innerHTML = `&#8635; Check Now`; console.error(e); }
+    btn.disabled = false;
+}
+
+function openAddModal() {
+    document.getElementById('add-modal').classList.add('open');
+    document.getElementById('search-input').focus();
+}
+function closeAddModal() {
+    document.getElementById('add-modal').classList.remove('open');
+    document.getElementById('candidate-list').innerHTML = '';
+    document.getElementById('modal-status').style.display = 'none';
+    document.getElementById('search-input').value = '';
+}
+document.getElementById('add-modal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeAddModal();
+});
+document.getElementById('search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+});
+
+async function doSearch() {
+    const q = document.getElementById('search-input').value.trim();
+    if (!q) return;
+    const status = document.getElementById('modal-status');
+    const list   = document.getElementById('candidate-list');
+    list.innerHTML = '';
+    status.className = 'modal-status';
+    status.style.display = '';
+    status.innerHTML = `Searching Audible&hellip;<span class="spinner"></span>`;
+    try {
+        const resp = await fetch(`/radar/api/search?q=${encodeURIComponent(q)}`);
+        const data = await resp.json();
+        const candidates = data.candidates || [];
+        if (!candidates.length) { status.textContent = 'No series found.'; return; }
+        status.style.display = 'none';
+        candidates.forEach(c => {
+            const row = document.createElement('div');
+            row.className = 'candidate-row';
+            row.innerHTML = `
+                <img src="${escHtml(c.cover_url || '')}" onerror="this.style.display='none'" alt="">
+                <div class="candidate-info">
+                    <div class="candidate-series">${escHtml(c.series_name)}</div>
+                    <div class="candidate-author">${escHtml(c.author)}</div>
+                </div>
+                <button class="candidate-add" onclick="addSeries(this,
+                    '${escAttr(c.series_asin)}','${escAttr(c.series_name)}',
+                    '${escAttr(c.author)}','${escAttr(c.cover_url || '')}')">+ Track</button>`;
+            list.appendChild(row);
+        });
+    } catch (e) {
+        status.className = 'modal-status error';
+        status.textContent = 'Search failed.';
+        console.error(e);
+    }
+}
+
+async function addSeries(btn, seriesAsin, seriesName, author, coverUrl) {
+    btn.disabled = true; btn.textContent = '…';
+    try {
+        const resp = await fetch('/radar/api/series', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ series_asin: seriesAsin, series_name: seriesName, author, cover_url: coverUrl }),
+        });
+        const data = await resp.json();
+        if (data.ok) {
+            btn.textContent = '✓ Added';
+            btn.style.cssText = 'background:var(--neon-green);color:#001215;border-color:var(--neon-green)';
+            await loadTracked();
+        } else { btn.textContent = 'Failed'; btn.disabled = false; }
+    } catch (e) { btn.textContent = 'Error'; btn.disabled = false; console.error(e); }
+}
+
+let _toastTimer;
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function escHtml(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+    return String(s || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+}
+
+loadTracked();
+</script>
+</body>
+</html>

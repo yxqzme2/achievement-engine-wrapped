@@ -1,6 +1,7 @@
 import sqlite3
 import json
 import time
+import datetime
 from typing import Dict, List, Tuple, Optional
 
 SCHEMA = """
@@ -57,6 +58,40 @@ CREATE TABLE IF NOT EXISTS tier_lists (
   list_name  TEXT NOT NULL,
   query      TEXT NOT NULL,
   updated_at INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tracked_series (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  series_name  TEXT NOT NULL,
+  series_asin  TEXT NOT NULL UNIQUE,
+  author       TEXT,
+  last_asin    TEXT,
+  last_title   TEXT,
+  last_sequence TEXT,
+  last_release_date TEXT,
+  last_checked INTEGER,
+  cover_url    TEXT,
+  added_at     INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS radar_releases (
+  asin         TEXT PRIMARY KEY,
+  series_asin  TEXT NOT NULL,
+  series_name  TEXT NOT NULL,
+  title        TEXT NOT NULL,
+  sequence     TEXT,
+  author       TEXT,
+  narrator     TEXT,
+  release_date TEXT NOT NULL,
+  cover_url    TEXT,
+  is_preorder  INTEGER DEFAULT 0,
+  discovered_at INTEGER NOT NULL,
+  notified     INTEGER DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS radar_ignored_series (
+  series_asin TEXT PRIMARY KEY,
+  ignored_at  INTEGER NOT NULL
 );
 
 """
@@ -331,3 +366,117 @@ class StateStore:
     def delete_tier_list(self, user_id: str):
         with self._conn() as c:
             c.execute("DELETE FROM tier_lists WHERE user_id=?", (user_id,))
+
+    # -----------------------------------------
+    # Release Radar: Tracked Series
+    # -----------------------------------------
+
+    def add_tracked_series(self, series_name: str, series_asin: str, author: str = "",
+                           cover_url: str = "") -> int:
+        with self._conn() as c:
+            cur = c.execute(
+                "INSERT INTO tracked_series (series_name, series_asin, author, cover_url, added_at) "
+                "VALUES (?, ?, ?, ?, ?) ON CONFLICT(series_asin) DO NOTHING",
+                (series_name, series_asin, author, cover_url, int(time.time())),
+            )
+            return cur.lastrowid or 0
+
+    def get_tracked_series(self) -> List[Dict]:
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            rows = c.execute(
+                "SELECT * FROM tracked_series ORDER BY series_name COLLATE NOCASE"
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def update_series_last_seen(self, series_asin: str, asin: str, title: str,
+                                sequence: str, release_date: str) -> None:
+        with self._conn() as c:
+            c.execute(
+                "UPDATE tracked_series SET last_asin=?, last_title=?, last_sequence=?, "
+                "last_release_date=?, last_checked=? WHERE series_asin=?",
+                (asin, title, sequence, release_date, int(time.time()), series_asin),
+            )
+
+    def touch_series_checked(self, series_asin: str) -> None:
+        with self._conn() as c:
+            c.execute(
+                "UPDATE tracked_series SET last_checked=? WHERE series_asin=?",
+                (int(time.time()), series_asin),
+            )
+
+    def get_tracked_series_by_id(self, series_id: int) -> Optional[Dict]:
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            row = c.execute(
+                "SELECT * FROM tracked_series WHERE id=?", (series_id,)
+            ).fetchone()
+            return dict(row) if row else None
+
+    def delete_tracked_series(self, series_id: int) -> None:
+        with self._conn() as c:
+            c.execute("DELETE FROM tracked_series WHERE id=?", (series_id,))
+
+    # -----------------------------------------
+    # Release Radar: Ignored Series
+    # -----------------------------------------
+
+    def ignore_series(self, series_asin: str) -> None:
+        """Mark a series as manually removed so seed_from_abs won't re-add it."""
+        with self._conn() as c:
+            c.execute(
+                "INSERT OR REPLACE INTO radar_ignored_series (series_asin, ignored_at) VALUES (?, ?)",
+                (series_asin, int(time.time())),
+            )
+
+    def get_ignored_asins(self) -> set:
+        with self._conn() as c:
+            rows = c.execute("SELECT series_asin FROM radar_ignored_series").fetchall()
+            return {r[0] for r in rows}
+
+    def unignore_series(self, series_asin: str) -> None:
+        """Allow a previously removed series to be re-added by seeding."""
+        with self._conn() as c:
+            c.execute("DELETE FROM radar_ignored_series WHERE series_asin=?", (series_asin,))
+
+    # -----------------------------------------
+    # Release Radar: Releases
+    # -----------------------------------------
+
+    def upsert_release(self, asin: str, series_asin: str, series_name: str, title: str,
+                       sequence: str, author: str, narrator: str, release_date: str,
+                       cover_url: str, is_preorder: bool) -> bool:
+        """Insert or ignore. Returns True if this is a new record."""
+        with self._conn() as c:
+            cur = c.execute(
+                "INSERT INTO radar_releases (asin, series_asin, series_name, title, sequence, "
+                "author, narrator, release_date, cover_url, is_preorder, discovered_at) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(asin) DO NOTHING",
+                (asin, series_asin, series_name, title, sequence, author, narrator,
+                 release_date, cover_url, int(is_preorder), int(time.time())),
+            )
+            return (cur.rowcount or 0) > 0
+
+    def get_releases(self, days_back: int = 90) -> List[Dict]:
+        """Return all upcoming releases plus those within days_back days."""
+        cutoff = (datetime.date.today() - datetime.timedelta(days=days_back)).isoformat()
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            rows = c.execute(
+                "SELECT * FROM radar_releases WHERE release_date >= ? "
+                "ORDER BY release_date ASC",
+                (cutoff,),
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def get_unnotified_releases(self) -> List[Dict]:
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            rows = c.execute(
+                "SELECT * FROM radar_releases WHERE notified=0 ORDER BY release_date ASC"
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def mark_release_notified(self, asin: str) -> None:
+        with self._conn() as c:
+            c.execute("UPDATE radar_releases SET notified=1 WHERE asin=?", (asin,))
