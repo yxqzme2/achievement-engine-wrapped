@@ -2940,7 +2940,40 @@ def read_request():
 
 @app.get("/api/request-config")
 def api_request_config():
-    return JSONResponse({"admin_email": cfg.admin_email})
+    return JSONResponse({
+        "admin_email": cfg.admin_email,
+        "smtp_enabled": notifier.enabled() and bool(cfg.admin_email),
+    })
+
+
+@app.post("/request/submit")
+async def request_submit(request: Request):
+    body = await request.json()
+    series_name = (body.get("series_name") or "").strip()
+    series_asin = (body.get("series_asin") or "").strip()
+    author      = (body.get("author") or "").strip()
+    note        = (body.get("note") or "").strip()
+
+    if not series_name:
+        return JSONResponse({"ok": False, "error": "Series name is required."}, status_code=400)
+    if not cfg.admin_email:
+        return JSONResponse({"ok": False, "error": "Requests are not configured on this server."}, status_code=503)
+    if not notifier.enabled():
+        return JSONResponse({"ok": False, "error": "Email is not configured on this server."}, status_code=503)
+
+    subject = f"Series Request: {series_name}"
+    lines = ["A user has requested the following series be added to Release Radar:", ""]
+    lines.append(f"Series: {series_name}")
+    if author:      lines.append(f"Author: {author}")
+    if series_asin: lines.append(f"Audible ASIN: {series_asin}")
+    if series_asin: lines.append(f"Link: https://www.audible.com/series/{series_asin}")
+    if note:        lines += ["", f"Note: {note}"]
+
+    try:
+        notifier.send_simple(cfg.admin_email, subject, "\n".join(lines))
+        return JSONResponse({"ok": True})
+    except Exception as e:
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
 
 
 @app.get("/radar/api/library-check")

@@ -270,14 +270,21 @@
     <!-- Step 3: Send -->
     <div class="step-section" id="send-section" style="display:none">
         <div class="step-label">Step 3 — Send Request</div>
-        <button class="btn-send" onclick="sendRequest()">&#9993; Send Request via Email</button>
-        <div class="send-hint">Opens your email client with a pre-filled message. Your request goes directly to the admin.</div>
+        <button class="btn-send" id="send-btn" onclick="sendRequest()">&#9993; Send Request</button>
+        <div class="send-hint" id="send-hint">Your request will be sent directly to the admin.</div>
+    </div>
+
+    <!-- Success state -->
+    <div id="success-section" class="step-section" style="display:none">
+        <div style="background:rgba(30,124,52,.15);border:2px solid #1e7c34;border-radius:6px;padding:20px 24px;color:#a8e6b8;font-size:.95rem;line-height:1.6;">
+            &#10003; Request sent! The admin has been notified and will review your submission.
+        </div>
     </div>
 
 </div>
 
 <script>
-let adminEmail   = '';
+let smtpEnabled  = false;
 let selectedSeries = null; // {series_name, series_asin, author, cover_url}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
@@ -285,8 +292,8 @@ let selectedSeries = null; // {series_name, series_asin, author, cover_url}
     try {
         const resp = await fetch('/api/request-config');
         const data = await resp.json();
-        adminEmail = data.admin_email || '';
-        if (!adminEmail) document.getElementById('no-config-notice').style.display = '';
+        smtpEnabled = data.smtp_enabled || false;
+        if (!smtpEnabled) document.getElementById('no-config-notice').style.display = '';
     } catch (e) {
         document.getElementById('no-config-notice').style.display = '';
     }
@@ -372,27 +379,46 @@ function onManualInput() {
 }
 
 // ── Send ──────────────────────────────────────────────────────────────────────
-function sendRequest() {
+async function sendRequest() {
     if (!selectedSeries) return;
-    if (!adminEmail) {
-        alert('Requests are not configured on this server. Contact the admin directly.');
+    if (!smtpEnabled) {
+        document.getElementById('no-config-notice').style.display = '';
         return;
     }
 
-    const name = selectedSeries.series_name;
-    const asin = selectedSeries.series_asin;
-    const auth = selectedSeries.author;
-    const note = document.getElementById('note-input').value.trim();
+    const btn  = document.getElementById('send-btn');
+    const hint = document.getElementById('send-hint');
+    btn.disabled = true;
+    btn.innerHTML = `Sending&hellip;<span class="spinner"></span>`;
 
-    const subject = `Series Request: ${name}`;
-    let body = `I'd like to request the following audiobook series be added to Release Radar:\n\n`;
-    body += `Series: ${name}\n`;
-    if (auth) body += `Author: ${auth}\n`;
-    if (asin) body += `Audible ASIN: ${asin}\n`;
-    if (asin) body += `Link: https://www.audible.com/series/${asin}\n`;
-    if (note) body += `\nNote: ${note}\n`;
-
-    window.location.href = `mailto:${encodeURIComponent(adminEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+        const resp = await fetch('/request/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                series_name: selectedSeries.series_name,
+                series_asin: selectedSeries.series_asin,
+                author:      selectedSeries.author,
+                note:        document.getElementById('note-input').value.trim(),
+            }),
+        });
+        const data = await resp.json();
+        if (data.ok) {
+            document.getElementById('send-section').style.display = 'none';
+            document.getElementById('form-section').style.display = 'none';
+            document.getElementById('success-section').style.display = '';
+        } else {
+            hint.style.color = '#c0392b';
+            hint.textContent = data.error || 'Something went wrong. Please try again.';
+            btn.disabled = false;
+            btn.innerHTML = '✉ Send Request';
+        }
+    } catch (e) {
+        hint.style.color = '#c0392b';
+        hint.textContent = 'Network error. Please try again.';
+        btn.disabled = false;
+        btn.innerHTML = '✉ Send Request';
+    }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

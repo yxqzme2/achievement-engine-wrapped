@@ -265,3 +265,49 @@ class EmailNotifier:
 
         except Exception as e:
             print(f"Failed to send email: {e}")
+
+    # -----------------------------------------
+    # Section 4: Send Plain Email
+    # -----------------------------------------
+    def send_simple(self, to_addr: str, subject: str, body_text: str) -> None:
+        """Send a plain-text email. Used for series requests etc."""
+        if not self.enabled():
+            raise RuntimeError("SMTP not configured")
+
+        real_to = self.to_override or (to_addr or "").strip()
+        if not real_to:
+            raise RuntimeError("No recipient address")
+
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"] = self.from_addr
+        msg["To"] = real_to
+        msg.set_content(body_text)
+
+        timeout = int(os.getenv("SMTP_TIMEOUT", "30"))
+        tls_context = ssl.create_default_context()
+
+        try:
+            ipv4 = self._pick_ipv4(self.host, self.port)
+
+            if self.port == 465:
+                with smtplib.SMTP_SSL(ipv4, self.port, timeout=timeout, context=tls_context) as server:
+                    server._host = self.host
+                    if self.username and self.password:
+                        server.login(self.username, self.password)
+                    server.send_message(msg)
+                return
+
+            with smtplib.SMTP(ipv4, self.port, timeout=timeout) as server:
+                server._host = self.host
+                server.ehlo()
+                if self.port == 587:
+                    server.starttls(context=tls_context)
+                    server.ehlo()
+                if self.username and self.password:
+                    server.login(self.username, self.password)
+                server.send_message(msg)
+
+        except Exception as e:
+            print(f"[request] Failed to send email: {e}")
+            raise
