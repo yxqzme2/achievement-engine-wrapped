@@ -62,8 +62,9 @@ Open the builder, keep the default named-volume mode for the most portable stack
 | **322 achievements** | Milestones, campaigns, streaks, social overlap, behavior, and more |
 | **LitRPG progression** | XP, levels, stat points (STR / MAG / DEF / HP), gear, and Combat Power |
 | **Year-end Wrapped** | 9-slide animated boss battle driven by your real listening data and gear |
-| **15+ portal pages** | Dashboard, character sheet, leaderboard, quests, loot compendium, tier list, Release Radar |
+| **17+ portal pages** | Dashboard, character sheet, leaderboard, quests, loot compendium, tier list, Release Radar, Series Request |
 | **Release Radar** | Audiobook series tracker — upcoming releases, `.ics` calendar feed, Discord alerts |
+| **Series Request** | Users search Audible and submit series requests directly to the admin via SMTP email |
 | **Multi-user** | Track a family or group with individual API tokens |
 | **User avatars** | Per-user portrait images on the Roster, Character Sheet, and Wrapped win screen |
 | **Notifications** | Discord webhook and SMTP email |
@@ -103,9 +104,30 @@ Release Radar tracks upcoming and recent audiobook releases across your favourit
 - `GET /radar/api/search?q=` — search Audible for series candidates
 - `GET /radar/api/library-check` — cross-check releases against ABS
 
-**New env var:** `RADAR_CHECK_INTERVAL_HOURS` (default: `12`) — how often the background worker polls Audible.
+**New env vars:**
+- `RADAR_CHECK_INTERVAL_HOURS` (default: `12`) — how often the background worker polls Audible
+- `ADMIN_EMAIL` — admin email address; required for the Series Request page to send emails
 
 **Storage:** all radar data is stored in the existing `state.db` SQLite database (`tracked_series`, `radar_releases`, `radar_ignored_series` tables).
+
+---
+
+## Series Request
+
+The Series Request page (`/request`) lets users search the Audible catalog and submit a request for a new series to be tracked in Release Radar. No admin access required — it's a public-facing form.
+
+**How it works:**
+1. User searches for a series by name — results come from the same Audible search used by the admin radar page
+2. User selects a result (or types a name manually if not found)
+3. User optionally adds a note, then clicks **Send Request**
+4. The server sends an email to the admin via the existing SMTP configuration, including the series cover art
+
+**Requirements:** `ADMIN_EMAIL` env var set, and SMTP configured (`SMTP_HOST`, `SMTP_FROM`, etc.). If either is missing the page shows a notice instead of the form.
+
+**Routes:**
+- `GET /request` — public request form
+- `POST /request/submit` — submit handler (server-side SMTP send)
+- `GET /api/request-config` — returns `smtp_enabled` flag used by the frontend
 
 ---
 
