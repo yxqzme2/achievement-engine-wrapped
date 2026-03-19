@@ -26,6 +26,9 @@ COPY covers/ /defaults/covers/
 # --- PREPARE CORE APP ---
 COPY app/ /app/app/
 COPY static/ /app/static/
+COPY csv/ /app/csv/
+COPY json/ /app/json/
+COPY icons/ /app/icons/
 
 # --- STARTUP SCRIPT ---
 COPY setup.sh /app/setup.sh

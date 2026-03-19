@@ -237,10 +237,11 @@ def _get_data_path(filename):
     # PREFERRED: Look in /data subfolders first (The Master Mount model)
     ext = os.path.splitext(filename)[1].lower()
     subfolder = "json" if ext == ".json" else "csv" if ext == ".csv" else ""
-    
+
     paths = [
         os.path.join("/data", subfolder, filename),
         os.path.join("/data", filename),
+        os.path.join("/app", subfolder, filename),  # baked-in fallback
         os.path.join("/app/data", filename),
         filename
     ]
@@ -254,6 +255,7 @@ def _find_dir(dirname, default_container_path):
     candidates = [
         os.path.join("/data", dirname),       # Master Mount: /data/icons, /data/covers
         default_container_path,              # e.g. /data/covers
+        os.path.join("/app", dirname),        # baked-in fallback: /app/icons
         os.path.join("./data", dirname),      # ./data/covers
         os.path.join(".", dirname),           # ./covers
     ]
