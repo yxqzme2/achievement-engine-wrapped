@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Request</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark:      #121212;
+            --window-bg:    #e8dbc3;
+            --border-color: #4a3b2a;
+            --gold-accent:  #b89548;
+            --ink:          #2b2018;
+            --ink-muted:    #665243;
+            --tab-bg:       #3d2f24;
+            --tab-text:     #a89582;
+            --tab-hover:    #4f3d2f;
+            --font-title:   'Cinzel', serif;
+            --font-body:    'Lato', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--ink);
+            font-family: var(--font-body);
+            min-height: 100vh;
+        }
+
+        /* ── Nav ── */
+        .nav-bar { display:flex; justify-content:space-between; align-items:center; padding:12px 40px; background:var(--tab-bg); border-bottom:3px solid #2a2118; background-image:linear-gradient(to bottom,rgba(255,255,255,.05),rgba(0,0,0,.2)); flex-wrap:wrap; gap:6px; width:100%; box-sizing:border-box; }
+        .nav-bar a { color:var(--tab-text); text-decoration:none; font-family:var(--font-title); font-size:.95rem; padding:6px 16px; border-radius:4px; transition:all .2s; }
+        .nav-bar a:hover { background:#4f3d2f; color:#dccaa5; }
+        .nav-bar a.active { color:var(--gold-accent); font-weight:700; }
+        .nav-bar a.nav-title { color:var(--gold-accent); font-size:1.1rem; font-weight:700; letter-spacing:1px; padding:0; background:none; }
+        .nav-bar a.nav-title:hover { background:none; color:#dccaa5; }
+        @media(max-width:768px){ .nav-bar{ padding:10px 15px; } .nav-bar a{ font-size:.8rem; padding:4px 10px; } .nav-bar a.nav-title{ font-size:.9rem; } }
+
+        /* ── Page layout ── */
+        .page-content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* ── Page header ── */
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-header h1 {
+            font-family: var(--font-title);
+            color: var(--gold-accent);
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .page-header p { color: var(--tab-text); font-size: .95rem; }
+
+        /* ── Config warning ── */
+        .config-notice {
+            background: rgba(139, 58, 16, 0.15);
+            border: 2px solid #8b3a10;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            color: #ffd5b0;
+            font-size: .9rem;
+            line-height: 1.5;
+        }
+
+        /* ── Step sections ── */
+        .step-section { margin-bottom: 32px; }
+        .step-label {
+            font-family: var(--font-title);
+            font-size: .78rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-accent);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+        }
+
+        /* ── Search row ── */
+        .search-row { display: flex; gap: 10px; }
+        .search-row input {
+            flex: 1;
+            background: var(--window-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            padding: 10px 14px;
+            font-family: var(--font-body);
+            font-size: .95rem;
+            color: var(--ink);
+            outline: none;
+        }
+        .search-row input:focus { border-color: var(--gold-accent); }
+        .btn {
+            font-family: var(--font-title);
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+            padding: 10px 22px;
+            background: var(--tab-bg);
+            border: 2px solid var(--border-color);
+            color: var(--gold-accent);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+        .btn:hover { background: var(--tab-hover); border-color: var(--gold-accent); }
+        .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+        /* ── Search status ── */
+        .search-status { margin-top: 10px; font-size: .85rem; color: var(--ink-muted); min-height: 20px; }
+
+        /* ── Result cards ── */
+        .results-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+        .result-card {
+            display: flex; align-items: center; gap: 14px;
+            background: var(--window-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: all .15s;
+        }
+        .result-card:hover { border-color: var(--gold-accent); background: #ede0c8; }
+        .result-card.selected {
+            border-color: var(--gold-accent);
+            background: #ede0c8;
+            box-shadow: 0 0 0 3px rgba(184,149,72,.2);
+        }
+        .result-cover {
+            width: 52px; height: 52px; object-fit: cover;
+            border-radius: 4px; border: 1px solid var(--border-color);
+            flex-shrink: 0; background: var(--tab-bg);
+        }
+        .result-cover-ph {
+            width: 52px; height: 52px; border-radius: 4px;
+            border: 1px solid var(--border-color); flex-shrink: 0;
+            background: var(--tab-bg); display: flex; align-items: center;
+            justify-content: center; font-size: 1.4rem;
+        }
+        .result-info { flex: 1; min-width: 0; }
+        .result-series { font-family: var(--font-title); font-size: .88rem; font-weight: 700; color: var(--ink); }
+        .result-author { font-size: .8rem; color: var(--ink-muted); margin-top: 2px; }
+        .result-check { color: var(--gold-accent); font-size: 1.2rem; flex-shrink: 0; opacity: 0; transition: opacity .15s; }
+        .result-card.selected .result-check { opacity: 1; }
+
+        /* ── Manual entry ── */
+        .manual-toggle { margin-top: 14px; font-size: .82rem; color: var(--ink-muted); }
+        .manual-toggle a { color: var(--gold-accent); cursor: pointer; text-decoration: none; border-bottom: 1px dashed var(--gold-accent); }
+        .manual-entry { margin-top: 12px; }
+        .manual-entry input {
+            width: 100%;
+            background: var(--window-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            padding: 10px 14px;
+            font-family: var(--font-body);
+            font-size: .95rem;
+            color: var(--ink);
+            outline: none;
+        }
+        .manual-entry input:focus { border-color: var(--gold-accent); }
+
+        /* ── Notes textarea ── */
+        .notes-field {
+            width: 100%;
+            background: var(--window-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            padding: 12px 14px;
+            font-family: var(--font-body);
+            font-size: .92rem;
+            color: var(--ink);
+            resize: vertical;
+            min-height: 100px;
+            outline: none;
+            line-height: 1.5;
+        }
+        .notes-field:focus { border-color: var(--gold-accent); }
+
+        /* ── Send button ── */
+        .btn-send {
+            font-family: var(--font-title);
+            font-size: .88rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 13px 36px;
+            background: var(--tab-bg);
+            border: 2px solid var(--gold-accent);
+            color: var(--gold-accent);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .btn-send:hover { background: var(--gold-accent); color: #1a1208; }
+        .send-hint { margin-top: 8px; font-size: .78rem; color: var(--ink-muted); font-style: italic; }
+
+        /* ── Spinner ── */
+        .spinner {
+            display: inline-block; width: 14px; height: 14px;
+            border: 2px solid rgba(184,149,72,.3); border-top-color: var(--gold-accent);
+            border-radius: 50%; animation: spin .7s linear infinite;
+            vertical-align: middle; margin-left: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+    <a href="/" class="nav-title">The Listener's Sanctum</a>
+    <div>
+        <a href="/journal">Journal</a>
+        <a href="/champions">Leaderboard</a>
+        <a href="/roster">Roster</a>
+        <a href="/timeline">Timeline</a>
+        <a href="/archives">Stats</a>
+        <a href="/playlist">Playlist</a>
+        <a href="/tier">Tier List</a>
+        <a href="/loot">Loot</a>
+        <a href="/quests">Quests</a>
+        <a href="/radar">Radar</a>
+        <a href="/request" class="active">Request</a>
+    </div>
+</nav>
+
+<div class="page-content">
+
+    <div class="page-header">
+        <h1>Series Request</h1>
+        <p>Search for an audiobook series you'd like tracked in Release Radar</p>
+    </div>
+
+    <div id="no-config-notice" class="config-notice" style="display:none">
+        Requests are not currently configured on this server. Contact the admin directly to request a new series.
+    </div>
+
+    <!-- Step 1: Search -->
+    <div class="step-section">
+        <div class="step-label">Step 1 — Find Your Series</div>
+        <div class="search-row">
+            <input type="text" id="search-input" placeholder="Search Audible for a series..."
+                   autocomplete="off" onkeydown="if(event.key==='Enter') doSearch()">
+            <button class="btn" id="search-btn" onclick="doSearch()">Search</button>
+        </div>
+        <div class="search-status" id="search-status"></div>
+        <div class="results-list" id="results-list"></div>
+        <div class="manual-toggle" id="manual-toggle">
+            Can't find it? <a onclick="toggleManual()">Enter the series name manually</a>
+        </div>
+        <div class="manual-entry" id="manual-entry" style="display:none">
+            <input type="text" id="manual-input" placeholder="Series name"
+                   oninput="onManualInput()" autocomplete="off">
+        </div>
+    </div>
+
+    <!-- Step 2: Note -->
+    <div class="step-section" id="form-section" style="display:none">
+        <div class="step-label">Step 2 — Add a Note <span style="font-weight:400;letter-spacing:0;text-transform:none;font-size:.72rem;color:var(--ink-muted)">(optional)</span></div>
+        <textarea class="notes-field" id="note-input"
+            placeholder="e.g. I'm on book 3 and can't wait for the next one!"></textarea>
+    </div>
+
+    <!-- Step 3: Send -->
+    <div class="step-section" id="send-section" style="display:none">
+        <div class="step-label">Step 3 — Send Request</div>
+        <button class="btn-send" onclick="sendRequest()">&#9993; Send Request via Email</button>
+        <div class="send-hint">Opens your email client with a pre-filled message. Your request goes directly to the admin.</div>
+    </div>
+
+</div>
+
+<script>
+let adminEmail   = '';
+let selectedSeries = null; // {series_name, series_asin, author, cover_url}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+(async function init() {
+    try {
+        const resp = await fetch('/api/request-config');
+        const data = await resp.json();
+        adminEmail = data.admin_email || '';
+        if (!adminEmail) document.getElementById('no-config-notice').style.display = '';
+    } catch (e) {
+        document.getElementById('no-config-notice').style.display = '';
+    }
+})();
+
+// ── Search ────────────────────────────────────────────────────────────────────
+async function doSearch() {
+    const q      = document.getElementById('search-input').value.trim();
+    if (!q) return;
+    const status = document.getElementById('search-status');
+    const list   = document.getElementById('results-list');
+    const btn    = document.getElementById('search-btn');
+
+    list.innerHTML = '';
+    status.innerHTML = `Searching Audible&hellip;<span class="spinner"></span>`;
+    btn.disabled = true;
+
+    try {
+        const resp       = await fetch(`/radar/api/search?q=${encodeURIComponent(q)}`);
+        const data       = await resp.json();
+        const candidates = data.candidates || [];
+        if (!candidates.length) {
+            status.textContent = 'No series found. Try a different search term, or enter the name manually below.';
+        } else {
+            status.textContent = `${candidates.length} series found — click one to select it.`;
+            candidates.forEach(c => list.appendChild(buildResultCard(c)));
+        }
+    } catch (e) {
+        status.textContent = 'Search failed. Please try again or enter the name manually.';
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+function buildResultCard(c) {
+    const div = document.createElement('div');
+    div.className = 'result-card';
+    const coverHtml = c.cover_url
+        ? `<img class="result-cover" src="${escHtml(c.cover_url)}" alt=""
+               onerror="this.outerHTML='<div class=result-cover-ph>📚</div>'">`
+        : `<div class="result-cover-ph">📚</div>`;
+    div.innerHTML = `
+        ${coverHtml}
+        <div class="result-info">
+            <div class="result-series">${escHtml(c.series_name)}</div>
+            <div class="result-author">${escHtml(c.author || '')}</div>
+        </div>
+        <span class="result-check">&#10003;</span>`;
+    div.addEventListener('click', () => selectSeries({
+        series_name: c.series_name,
+        series_asin: c.series_asin || '',
+        author:      c.author || '',
+        cover_url:   c.cover_url || '',
+    }, div));
+    return div;
+}
+
+function selectSeries(series, cardEl) {
+    document.querySelectorAll('.result-card.selected').forEach(el => el.classList.remove('selected'));
+    if (cardEl) cardEl.classList.add('selected');
+    selectedSeries = series;
+    document.getElementById('form-section').style.display = '';
+    document.getElementById('send-section').style.display = '';
+    document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── Manual entry ──────────────────────────────────────────────────────────────
+function toggleManual() {
+    const el = document.getElementById('manual-entry');
+    el.style.display = el.style.display === 'none' ? '' : 'none';
+    if (el.style.display !== 'none') document.getElementById('manual-input').focus();
+}
+
+function onManualInput() {
+    const name = document.getElementById('manual-input').value.trim();
+    if (name) {
+        selectSeries({ series_name: name, series_asin: '', author: '', cover_url: '' }, null);
+    } else {
+        selectedSeries = null;
+        document.getElementById('form-section').style.display = 'none';
+        document.getElementById('send-section').style.display = 'none';
+    }
+}
+
+// ── Send ──────────────────────────────────────────────────────────────────────
+function sendRequest() {
+    if (!selectedSeries) return;
+    if (!adminEmail) {
+        alert('Requests are not configured on this server. Contact the admin directly.');
+        return;
+    }
+
+    const name = selectedSeries.series_name;
+    const asin = selectedSeries.series_asin;
+    const auth = selectedSeries.author;
+    const note = document.getElementById('note-input').value.trim();
+
+    const subject = `Series Request: ${name}`;
+    let body = `I'd like to request the following audiobook series be added to Release Radar:\n\n`;
+    body += `Series: ${name}\n`;
+    if (auth) body += `Author: ${auth}\n`;
+    if (asin) body += `Audible ASIN: ${asin}\n`;
+    if (asin) body += `Link: https://www.audible.com/series/${asin}\n`;
+    if (note) body += `\nNote: ${note}\n`;
+
+    window.location.href = `mailto:${encodeURIComponent(adminEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function escHtml(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

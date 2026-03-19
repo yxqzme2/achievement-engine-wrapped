@@ -288,6 +288,7 @@ ROSTER_PATH = _get_static_path("roster.html")
 CHARACTER_SHEET_PATH = _get_static_path("character_sheet.html")
 DAY_1_PATH = _get_static_path("day_1.html")
 RADAR_PATH = _get_static_path("radar.html")
+REQUEST_PATH = _get_static_path("request.html")
 
 # Integration Launch Date (January 01, 2026 00:00 AM UTC)
 LAUNCH_TIMESTAMP = int(cfg.xp_start_timestamp)
@@ -2930,6 +2931,16 @@ def radar_seed_from_abs():
     """Pull all series from ABS and auto-add any not already tracked."""
     added, unmatched = seed_from_abs(store, cfg.absstats_base_url)
     return JSONResponse({"ok": True, "added": added, "unmatched": unmatched})
+
+
+@app.get("/request")
+def read_request():
+    return FileResponse(REQUEST_PATH)
+
+
+@app.get("/api/request-config")
+def api_request_config():
+    return JSONResponse({"admin_email": cfg.admin_email})
 
 
 @app.get("/radar/api/library-check")

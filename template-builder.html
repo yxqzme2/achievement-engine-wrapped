@@ -1030,6 +1030,7 @@
             setFieldValue('var-wrapped-enabled', getConfigValue(xmlDoc, 'WRAPPED_ENABLED', 'WRAPPED_ENABLED'));
             setFieldValue('var-wrapped-year', getConfigValue(xmlDoc, 'WRAPPED_YEAR', 'WRAPPED_YEAR'));
             setFieldValue('var-radar-interval', getConfigValue(xmlDoc, 'RADAR_CHECK_INTERVAL_HOURS', 'RADAR_CHECK_INTERVAL_HOURS'));
+            setFieldValue('var-admin-email', getConfigValue(xmlDoc, 'ADMIN_EMAIL', 'ADMIN_EMAIL'));
 
             setFieldValue('var-backfill', getConfigValue(xmlDoc, 'RUN_ACHIEVEMENT_BACKFILL', 'RUN_ACHIEVEMENT_BACKFILL'));
             setFieldValue('var-backfill-key', getConfigValue(xmlDoc, 'BACKFILL_ONCE_KEY', 'BACKFILL_ONCE_KEY'));
@@ -1146,6 +1147,7 @@
             const wrappedEnabled = document.getElementById('var-wrapped-enabled').value;
             const wrappedYear = document.getElementById('var-wrapped-year').value;
             const radarInterval = document.getElementById('var-radar-interval').value;
+            const adminEmailVar = document.getElementById('var-admin-email').value;
 
             const backfill = document.getElementById('var-backfill').value;
             const backfillKey = document.getElementById('var-backfill-key').value;
@@ -1203,6 +1205,7 @@ After both containers are running, open the portal at http://&lt;unraid-ip&gt;:8
   <Config Name="WRAPPED_ENABLED" Target="WRAPPED_ENABLED" Default="" Mode="" Description="Enable or disable Wrapped pages and links." Type="Variable" Display="always" Required="false" Mask="false">${wrappedEnabled}</Config>
   <Config Name="WRAPPED_YEAR" Target="WRAPPED_YEAR" Default="" Mode="" Description="Admin-only override for Wrapped report year (e.g., 2026, 2027)." Type="Variable" Display="always" Required="false" Mask="false">${wrappedYear}</Config>
   <Config Name="RADAR_CHECK_INTERVAL_HOURS" Target="RADAR_CHECK_INTERVAL_HOURS" Default="12" Mode="" Description="How often Release Radar polls Audible for new releases in tracked series (hours). Default: 12" Type="Variable" Display="always" Required="false" Mask="false">${radarInterval}</Config>
+  <Config Name="ADMIN_EMAIL" Target="ADMIN_EMAIL" Default="" Mode="" Description="Email address for user Series Request submissions via /request page." Type="Variable" Display="always" Required="false" Mask="false">${adminEmailVar}</Config>
   <Config Name="RUN_ACHIEVEMENT_BACKFILL" Target="RUN_ACHIEVEMENT_BACKFILL" Default="" Mode="" Description="One-shot startup backfill for all-time achievements. Set true for one boot, then false." Type="Variable" Display="always" Required="false" Mask="false">${backfill}</Config>
   <Config Name="BACKFILL_ONCE_KEY" Target="BACKFILL_ONCE_KEY" Default="" Mode="" Description="Marker ID stored in DB so backfill only runs once per key." Type="Variable" Display="always" Required="false" Mask="false">${backfillKey}</Config>
   <Config Name="SMTP_HOST" Target="SMTP_HOST" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">${smtpHost}</Config>

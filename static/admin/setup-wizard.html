@@ -591,6 +591,11 @@
             <p class="field-desc">How often the Release Radar background worker polls Audible for new releases in tracked series. Default: 12</p>
             <input type="number" id="radar_interval" value="12" oninput="liveUpdate()" />
           </div>
+          <div>
+            <label class="field-label" for="admin_email">Admin Email</label>
+            <p class="field-desc">Email address for user Series Request submissions via the /request page. Leave blank to disable.</p>
+            <input type="email" id="admin_email" placeholder="admin@example.com" oninput="liveUpdate()" />
+          </div>
         </div>
       </div>
     </div>
@@ -924,6 +929,7 @@
       '',
       '# ─── Release Radar ─────────────────────────────────────',
       line('RADAR_CHECK_INTERVAL_HOURS', val('radar_interval') || '12'),
+      line('ADMIN_EMAIL',               val('admin_email')    || ''),
       '',
     ];
 
@@ -1142,6 +1148,7 @@
       'WRAPPED_YEAR':                    ['wrapped_year',          'number', 'Wrapped Year'],
       'WRAPPED_BOSS_HP':                 ['wrapped_boss_hp',       'number', 'Boss HP'],
       'RADAR_CHECK_INTERVAL_HOURS':      ['radar_interval',        'number', 'Radar Check Interval'],
+      'ADMIN_EMAIL':                     ['admin_email',           'text',   'Admin Email'],
       'SMTP_HOST':                       ['smtp_host',             'text',   'SMTP Host'],
       'SMTP_PORT':                       ['smtp_port',             'number', 'SMTP Port'],
       'SMTP_USERNAME':                   ['smtp_username',         'text',   'SMTP Username'],

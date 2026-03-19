@@ -575,6 +575,11 @@
                 <div class="hint">How often Release Radar polls Audible for new releases (default: 12)</div>
               </div>
               <div class="field">
+                <label for="admin_email">Admin Email</label>
+                <input id="admin_email" type="email" placeholder="admin@example.com" oninput="liveUpdate()" />
+                <div class="hint">Email address for user Series Request submissions via /request page.</div>
+              </div>
+              <div class="field">
                 <label for="backfill_key">Backfill Once Key</label>
                 <input id="backfill_key" type="text" value="ach_backfill_v1" oninput="liveUpdate()" />
               </div>
@@ -920,6 +925,7 @@
       pushEnv(lines, 'WRAPPED_ENABLED', bool('wrapped_enabled'));
       pushEnv(lines, 'DISCORD_PROXY_URL', val('discord_proxy_url'));
       pushEnv(lines, 'RADAR_CHECK_INTERVAL_HOURS', val('radar_interval') || '12');
+      pushEnv(lines, 'ADMIN_EMAIL', val('admin_email') || '');
       pushEnv(lines, 'RUN_ACHIEVEMENT_BACKFILL', bool('run_backfill'));
       pushEnv(lines, 'BACKFILL_ONCE_KEY', val('backfill_key') || 'ach_backfill_v1');
 
