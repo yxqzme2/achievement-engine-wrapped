@@ -2709,9 +2709,7 @@ def api_awards_all_users():
             continue
 
         uname = user_map.get(str(user_id), "")
-        print(f"[DEBUG-QUEST] Processing {achievement_id} for user_id={user_id!r} uname={uname!r} allowed={_user_is_allowed(uname)}")
         if not _user_is_allowed(uname):
-            print(f"[DEBUG-QUEST] SKIPPED: not allowed")
             continue
 
         payload = a.get("payload") or {}
@@ -2719,9 +2717,9 @@ def api_awards_all_users():
         earned_at = _coerce_event_ts(payload.get("_timestamp"), awarded_at)
 
         effective_start = _resolve_user_effective_start(str(user_id), uname)
-        print(f"[DEBUG-QUEST] earned_at={earned_at} effective_start={effective_start} scope={cfg.progression_scope} filtered={cfg.progression_scope != 'all_time' and earned_at < effective_start}")
-        if cfg.progression_scope != "all_time" and earned_at < effective_start:
-            print(f"[DEBUG-QUEST] SKIPPED: scope filter")
+        # For quests, use awarded_at (when recorded) not earned_at (series completion date)
+        # This prevents filtering when series was completed before user's effective_start
+        if cfg.progression_scope != "all_time" and awarded_at < effective_start:
             continue
 
         if user_id not in users_map:
