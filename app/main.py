@@ -2639,7 +2639,54 @@ def api_awards_all_users():
         }
         users_map[uid]["awards"].append(gear_event)
 
-    # 5. Final Sort & Formatting
+    # 5. Process Quest Completions (Awards Table — quest: prefix)
+    quests_by_id = gc.get("quests_by_id") or {}
+    for a in awards:
+        user_id = a.get("user_id")
+        if user_id == "SYSTEM":
+            continue
+        achievement_id = str(a.get("achievement_id") or "")
+        if not achievement_id.startswith("quest:"):
+            continue
+
+        uname = user_map.get(str(user_id), "")
+        if not _user_is_allowed(uname):
+            continue
+
+        payload = a.get("payload") or {}
+        awarded_at = int(a.get("awarded_at") or 0)
+        earned_at = _coerce_event_ts(payload.get("_timestamp"), awarded_at)
+
+        effective_start = _resolve_user_effective_start(str(user_id), uname)
+        if cfg.progression_scope != "all_time" and earned_at < effective_start:
+            continue
+
+        if user_id not in users_map:
+            users_map[user_id] = {
+                "user_id": user_id,
+                "username": uname,
+                "points": 0,
+                "earned_count": 0,
+                "awards": []
+            }
+
+        quest_event = {
+            "type": "quest",
+            "achievement_id": achievement_id,
+            "awarded_at": awarded_at,
+            "earned_at": earned_at,
+            "points": int(payload.get("xp_reward") or 0),
+            "category": "quest",
+            "achievement": payload.get("quest_name") or achievement_id,
+            "title": payload.get("quest_name") or achievement_id,
+            "flavorText": payload.get("target_name") or "",
+            "iconPath": "",
+            "rarity": "common",
+            "payload": payload,
+        }
+        users_map[user_id]["awards"].append(quest_event)
+
+    # 6. Final Sort & Formatting
     for u in users_map.values():
         u["awards"].sort(key=lambda x: int(x.get("earned_at") or x.get("awarded_at") or 0), reverse=True)
 
