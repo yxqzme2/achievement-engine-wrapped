@@ -166,23 +166,74 @@ def _clean_text(v) -> str:
 
 def xp_from_hours(total_hours: float, user_sessions: List[dict] = None) -> int:
     """
-    BALANCED ECONOMY: 250 XP per hour of listening.
+    PRIMARY XP SOURCE: 500 XP per hour of listening.
     ONLY 2026+ data is used. Pre-2026 is ignored.
+    At 8 hrs/day for a year this yields ~1,460,000 XP (~79% of level 100).
     """
     if not user_sessions:
-        # If no session data, we can't verify 2026 status, so 0 XP
         return 0
 
     new_sec = 0
     for s in user_sessions:
-        # sessions from abs-stats are in milliseconds
         ts = int(s.get("startedAt", 0)) / 1000
         dur = int(s.get("timeListening", s.get("duration", 0)))
         if ts >= SYSTEM_INTEGRATION_TIMESTAMP:
             new_sec += dur
-    
+
     new_hours = new_sec / 3600.0
-    return int(new_hours * 250)
+    return int(new_hours * 500)
+
+
+def _book_quest_xp(duration_seconds: float) -> int:
+    """XP reward for completing a single book, tiered by audiobook duration."""
+    hours = duration_seconds / 3600.0 if duration_seconds else 0
+    if hours >= 20:
+        return 2000
+    elif hours >= 12:
+        return 1500
+    elif hours >= 6:
+        return 1000
+    else:
+        return 500
+
+
+def _series_quest_xp(book_count: int) -> int:
+    """XP reward for completing an entire series, tiered by number of books."""
+    if book_count >= 16:
+        return 10000
+    elif book_count >= 11:
+        return 7500
+    elif book_count >= 7:
+        return 5000
+    elif book_count >= 4:
+        return 3000
+    else:
+        return 1500
+
+
+def _book_quest_rarity(duration_seconds: float) -> str:
+    """Rarity for a book quest based on audiobook duration."""
+    hours = duration_seconds / 3600.0 if duration_seconds else 0
+    if hours >= 20:
+        return "Epic"
+    elif hours >= 12:
+        return "Rare"
+    elif hours >= 6:
+        return "Uncommon"
+    else:
+        return "Common"
+
+
+def _series_quest_rarity(book_count: int) -> str:
+    """Rarity for a series quest based on number of books."""
+    if book_count >= 16:
+        return "Legendary"
+    elif book_count >= 7:
+        return "Epic"
+    elif book_count >= 4:
+        return "Rare"
+    else:
+        return "Uncommon"
 
 
 def xp_from_quests(
@@ -192,42 +243,59 @@ def xp_from_quests(
     quests_by_series: Dict[str, dict],
 ) -> int:
     """
-    Sum quest XP for all completed series quests and individual books.
-    BALANCED ECONOMY: 15,000 XP per Book, 100,000 XP per Series.
+    SECONDARY XP SOURCE: Quest completions (~21% of total XP).
+    Book quest XP is tiered by audiobook duration.
+    Series quest XP is tiered by number of books in the series.
+    Hand-crafted CSV entries override auto-calculated values.
     STRICT 2026 FILTER: Completions with missing or 0 timestamps are IGNORED.
     """
     total = 0
-    
-    # 1. BOOK COMPLETION XP
-    for bid, ts in finished_dates.items():
-        # Only count if timestamp is explicit and in 2026+
-        if ts and ts >= SYSTEM_INTEGRATION_TIMESTAMP:
-            total += 15000 
 
-    # 2. SERIES COMPLETION XP
+    # Build a lookup: book_id -> {duration, series_name} from series_index
+    book_info: Dict[str, dict] = {}
+    for s in series_index:
+        for b in (s.get("books") or []):
+            bid = b.get("libraryItemId")
+            if bid:
+                book_info[bid] = {
+                    "duration": float(b.get("duration") or 0),
+                    "title": b.get("title") or "",
+                    "series": s.get("seriesName") or "",
+                }
+
+    # 1. BOOK COMPLETION XP (tiered by duration)
+    for bid, ts in finished_dates.items():
+        if ts and ts >= SYSTEM_INTEGRATION_TIMESTAMP:
+            info = book_info.get(bid, {})
+            dur = info.get("duration", 0)
+            total += _book_quest_xp(dur)
+
+    # 2. SERIES COMPLETION XP (tiered by book count)
     seen_series: Set[str] = set()
     for s in series_index:
         series_name = s.get("seriesName", "")
         books = s.get("books") or []
         book_ids = [b.get("libraryItemId") for b in books if b.get("libraryItemId")]
-        
-        # Must have finished all books
+
         if not book_ids or not all(bid in finished_ids for bid in book_ids):
             continue
-        
+
         norm_s = _norm(series_name)
         if norm_s not in seen_series:
-            # Determine if this was a 2026+ completion
-            # A series is completed in 2026 only if its LATEST book was finished in 2026
             ts_values = [finished_dates.get(bid, 0) for bid in book_ids]
             valid_ts = [t for t in ts_values if t and t > 0]
-            
+
             if valid_ts:
                 completion_ts = max(valid_ts)
                 if completion_ts >= SYSTEM_INTEGRATION_TIMESTAMP:
-                    total += 100000 
+                    # Use CSV override XP if available, otherwise auto-calculate
+                    quest = quests_by_series.get(norm_s)
+                    if quest and quest.get("xp_reward"):
+                        total += int(quest["xp_reward"])
+                    else:
+                        total += _series_quest_xp(len(book_ids))
                     seen_series.add(norm_s)
-            
+
     return total
 
 
@@ -236,30 +304,11 @@ def xp_from_achievements(
     achievements_def: Dict[str, dict],
 ) -> int:
     """
-    Calculate total XP from earned achievements.
-    ONLY 2026+ awards are counted.
-    ANTI-DOUBLE-DIP: achievements in 'quest' or 'series_complete' categories 
-    are ignored here, as their XP is handled by the hardcoded xp_from_quests logic.
+    Achievements grant ZERO XP. They are cosmetic badges with points
+    for leaderboard display only. All real XP comes from listening
+    time (500 XP/hr) and quest completions (book/series).
     """
-    total = 0
-    for a in user_awards:
-        ach_id = str(a.get("achievement_id"))
-        awarded_at = a.get("awarded_at", 0)
-        
-        if awarded_at < SYSTEM_INTEGRATION_TIMESTAMP:
-            continue
-            
-        d = achievements_def.get(ach_id, {})
-        
-        # Filter categories to prevent double-dipping
-        category = d.get("category", "").lower()
-        if category in ["quest", "series_complete"]:
-            continue
-
-        # Prioritize xp_reward, fallback to points if not present
-        xp_val = int(d.get("xp_reward", d.get("points", d.get("point", 0))))
-        total += xp_val
-    return total
+    return 0
 
 
 def get_verified_book_ids(
@@ -638,44 +687,87 @@ def evaluate_gear_for_user(
                 owned_ids.add(loot_id)
                 newly_awarded.append(loot_id)
 
-        # Record quest completion for series (independent of loot — catches backfill too)
+        # Record quest completion for series — auto-generate if no CSV entry
         if quest:
             quest_key = f"quest:series:{quest['quest_id']}"
-            if not store.is_awarded(user_id, quest_key):
-                print(f"[gear] Recording quest completion: {user_id} -> {quest['quest_name']} ({series_name})")
-                store.record_awards(user_id, [(
-                    quest_key,
-                    {
-                        "quest_id": quest["quest_id"],
-                        "quest_name": quest["quest_name"],
-                        "target_type": "series",
-                        "target_name": quest["target_name"],
-                        "xp_reward": quest["xp_reward"],
-                        "series": series_name,
-                        "_timestamp": ts,
-                    },
-                )])
+            quest_name = quest["quest_name"]
+            quest_xp = int(quest.get("xp_reward") or _series_quest_xp(len(book_ids)))
+        else:
+            # Auto-generated quest for series not in CSV
+            auto_id = f"auto_{_norm(series_name)}"
+            quest_key = f"quest:series:{auto_id}"
+            quest_name = f"{series_name} Completionist"
+            quest_xp = _series_quest_xp(len(book_ids))
 
-    # B) INDIVIDUAL BOOK DROPS (New!)
-    # Award one piece of loot for EVERY book finished.
+        if not store.is_awarded(user_id, quest_key):
+            print(f"[gear] Recording quest completion: {user_id} -> {quest_name} ({series_name})")
+            store.record_awards(user_id, [(
+                quest_key,
+                {
+                    "quest_name": quest_name,
+                    "target_type": "series",
+                    "target_name": series_name,
+                    "xp_reward": quest_xp,
+                    "rarity": _series_quest_rarity(len(book_ids)),
+                    "book_count": len(book_ids),
+                    "series": series_name,
+                    "_timestamp": ts,
+                },
+            )])
+
+    # B) INDIVIDUAL BOOK DROPS — loot + auto-quest for every book finished
+    # Build book info lookup from series_index for duration-based rarity
+    _book_lookup: Dict[str, dict] = {}
+    for s in series_index:
+        for b in (s.get("books") or []):
+            bid = b.get("libraryItemId")
+            if bid:
+                _book_lookup[bid] = {
+                    "duration": float(b.get("duration") or 0),
+                    "title": b.get("title") or "",
+                    "series": s.get("seriesName") or "",
+                }
+
     if hasattr(snap, "finished_ids"):
-        # We need durations to determine rarity. We'll use a best-effort approach.
-        # Ideally we'd pass durations here, but for now we'll roll "Uncommon" as base for single books.
         for bid in snap.finished_ids:
+            info = _book_lookup.get(bid, {})
+            dur = info.get("duration", 0)
+            book_title = info.get("title", bid)
+
+            # B1) Loot drop — rarity based on audiobook duration
             drop_key = f"gear:book:{bid}"
             if not store.is_awarded(user_id, drop_key):
+                preferred_rarity = _book_quest_rarity(dur)
                 loot_id, slot = random_item_round_robin(
-                    gear_catalog, owned_ids, preferred_rarity="Uncommon"
+                    gear_catalog, owned_ids, preferred_rarity=preferred_rarity
                 )
                 if loot_id:
                     ts = snap.finished_dates.get(bid, int(time.time()))
                     store.add_inventory_item(user_id, loot_id, f"book_completion:{bid}", ts)
                     store.record_awards(user_id, [(
                         drop_key,
-                        {"loot_id": loot_id, "item_id": bid, "slot": slot, "_timestamp": ts},
+                        {"loot_id": loot_id, "item_id": bid, "title": book_title, "slot": slot, "_timestamp": ts},
                     )])
                     owned_ids.add(loot_id)
                     newly_awarded.append(loot_id)
+
+            # B2) Auto-quest completion for book
+            quest_key = f"quest:book:{bid}"
+            if not store.is_awarded(user_id, quest_key):
+                ts = snap.finished_dates.get(bid, int(time.time()))
+                xp = _book_quest_xp(dur)
+                store.record_awards(user_id, [(
+                    quest_key,
+                    {
+                        "quest_name": f"{book_title}",
+                        "target_type": "book",
+                        "target_name": book_title,
+                        "xp_reward": xp,
+                        "rarity": _book_quest_rarity(dur),
+                        "series": info.get("series", ""),
+                        "_timestamp": ts,
+                    },
+                )])
 
 
     # C) LEVEL MILESTONES (every 5 levels, round-robin slot order)

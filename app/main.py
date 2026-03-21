@@ -2742,7 +2742,7 @@ def api_awards_all_users():
             "title": payload.get("quest_name") or achievement_id,
             "flavorText": payload.get("target_name") or "",
             "iconPath": "",
-            "rarity": "common",
+            "rarity": str(payload.get("rarity") or "Common").lower(),
             "payload": payload,
         }
         users_map[user_id]["awards"].append(quest_event)
