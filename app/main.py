@@ -2903,14 +2903,13 @@ def api_reading_history():
 
     base = cfg.absstats_base_url.rstrip("/")
 
-    # Completions
+    # client.get_completed() returns List[UserSnapshot] — iterate directly
     try:
-        comp_data = client.get_completed(cfg.completed_endpoint)
-        users_raw = comp_data.get("users") or []
+        snapshots = client.get_completed(cfg.completed_endpoint)
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"Completions unavailable: {e}")
 
-    # User map
+    # User map (uuid -> username)
     try:
         user_map = _json.loads(
             _req.urlopen(_req.Request(base + "/api/usernames"), timeout=10).read()
@@ -2947,7 +2946,6 @@ def api_reading_history():
                 seq_f = float(b.get("seriesSequence") or 0)
             except Exception:
                 seq_f = 0.0
-            # Format sequence: "1" not "1.0", "1.5" stays "1.5"
             seq_str = (str(int(seq_f)) if seq_f > 0 and seq_f == int(seq_f) else str(seq_f)) if seq_f > 0 else ""
             book_lookup[bid] = {
                 "title":        (b.get("title") or "").strip(),
@@ -2962,16 +2960,15 @@ def api_reading_history():
 
     result_users = []
 
-    for u in users_raw:
-        uid = str(u.get("userId") or u.get("id") or "")
-        if not uid:
-            continue
-        uname = user_map.get(uid, str(u.get("username") or uid))
-        if not _user_is_allowed(uname):
+    # Iterate over UserSnapshot objects returned by client.get_completed()
+    for snap in snapshots:
+        uid   = str(snap.user_id or "")
+        uname = str(snap.username or user_map.get(uid, uid))
+        if not uid or not _user_is_allowed(uname):
             continue
 
-        fd_raw = u.get("finishedDates") or {}
-        finished_dates_raw = {k: int(v) // 1000 for k, v in fd_raw.items() if v}
+        # snap.finished_dates is already in seconds (client converts ms → s)
+        finished_dates_raw = snap.finished_dates or {}
         raw_sessions = all_sessions_map.get(uid) or []
 
         finished_dates, finished_ids, user_sessions, effective_start = _filter_progression_for_user(
