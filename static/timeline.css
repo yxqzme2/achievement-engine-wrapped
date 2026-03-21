@@ -314,13 +314,44 @@ body {
     vertical-align: middle;
 }
 
-
 .tl-ach-name-loot {
     font-weight: 900;
 }
 
 .tl-points-loot {
     letter-spacing: 0.8px;
+}
+
+.tl-entry.is-quest {
+    border-left: 4px solid rgba(76, 175, 80, 0.55);
+    background: rgba(76, 175, 80, 0.10);
+}
+
+.tl-entry.is-quest:hover {
+    background: rgba(76, 175, 80, 0.18);
+}
+
+.tl-quest-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 0.62rem;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    font-family: var(--font-title);
+    color: #1a3a1a;
+    background: rgba(76, 175, 80, 0.45);
+    border: 1px solid rgba(74, 59, 42, 0.35);
+    vertical-align: middle;
+}
+
+.tl-ach-name-quest {
+    font-weight: 700;
+}
+
+.tl-points-quest {
+    letter-spacing: 0.6px;
 }.loader {
     text-align: center;
     padding: 60px;

@@ -135,28 +135,53 @@ async function load() {
                 const ts = entryTs(a);
                 if (!ts) continue;
 
-                const def = defMap.get(String(a.achievement_id));
-                const rarity = String(a.rarity || def?.rarity || "common").toLowerCase();
-                const type = String(a.type || "achievement").toLowerCase();
+                const payload = a.payload || {};
+                const achId = String(a.achievement_id);
 
-                allEntries.push({
-                    uid,
-                    username,
-                    type,
-                    achId: a.achievement_id,
-                    name: a.achievement || a.title || def?.achievement || def?.title || a.achievement_id,
-                    flavor: a.flavorText || def?.flavorText || "",
-                    icon: a.iconPath || def?.iconPath || def?.icon || "",
-                    rarity,
-                    points: Number(a.points ?? def?.points ?? 0) || 0,
-                    ts,
-                    slot: cleanItemText(a.slot ?? a.payload?.slot),
-                    str: Number(a.str || 0) || 0,
-                    mag: Number(a.mag || 0) || 0,
-                    def: Number((a.def ?? a.payload?.def ?? 0)) || 0,
-                    hp: Number(a.hp || 0) || 0,
-                    specialAbility: cleanItemText(a.special_ability ?? a.specialAbility ?? a.payload?.special_ability ?? a.payload?.specialAbility),
-                });
+                // Detect quest from achievement_id or payload
+                const isQuest = achId.startsWith("quest:");
+
+                if (isQuest) {
+                    // Quest completion
+                    allEntries.push({
+                        uid,
+                        username,
+                        type: "quest",
+                        achId,
+                        name: payload.quest_name || achId,
+                        flavor: payload.target_name || "",
+                        icon: "/icons/quest.png",
+                        rarity: "common",
+                        points: Number(payload.xp_reward || 0) || 0,
+                        ts,
+                        questId: payload.quest_id || "",
+                        targetType: payload.target_type || "series",
+                    });
+                } else {
+                    // Achievement or loot
+                    const def = defMap.get(achId);
+                    const rarity = String(a.rarity || def?.rarity || "common").toLowerCase();
+                    const type = String(a.type || "achievement").toLowerCase();
+
+                    allEntries.push({
+                        uid,
+                        username,
+                        type,
+                        achId,
+                        name: a.achievement || a.title || def?.achievement || def?.title || achId,
+                        flavor: a.flavorText || def?.flavorText || "",
+                        icon: a.iconPath || def?.iconPath || def?.icon || "",
+                        rarity,
+                        points: Number(a.points ?? def?.points ?? 0) || 0,
+                        ts,
+                        slot: cleanItemText(a.slot ?? payload?.slot),
+                        str: Number(a.str || 0) || 0,
+                        mag: Number(a.mag || 0) || 0,
+                        def: Number((a.def ?? payload?.def ?? 0)) || 0,
+                        hp: Number(a.hp || 0) || 0,
+                        specialAbility: cleanItemText(a.special_ability ?? a.specialAbility ?? payload?.special_ability ?? payload?.specialAbility),
+                    });
+                }
             }
         }
 
@@ -194,11 +219,12 @@ function render() {
     let html = "";
     for (const dateStr of sortedDates) {
         const dayEntries = groups[dateStr];
+        const entryLabel = dayEntries.length === 1 ? "deed" : "deeds";
         html += `
             <div class="day-group">
                 <div class="day-header">
                     <span>${fmtDayHeader(dateStr)}</span>
-                    <span class="day-count">${dayEntries.length} achievement${dayEntries.length !== 1 ? "s" : ""}</span>
+                    <span class="day-count">${dayEntries.length} ${entryLabel}</span>
                 </div>
                 <div class="tl-line">
         `;
@@ -215,24 +241,26 @@ function render() {
                 ? `<img class="tl-avatar" src="${avSrc}" onerror="this.style.background='#2a2118'">`
                 : `<div class="tl-avatar" style="display:flex;align-items:center;justify-content:center;font-size:1rem;background:#2a2118;color:#a89582">?</div>`;
 
-            const flavorHtml = e.flavor ? `<div class="tl-flavor">"${e.flavor}"</div>` : "";
             const isLoot = e.type === "gear";
+            const isQuest = e.type === "quest";
+            const flavorHtml = e.flavor ? `<div class="tl-flavor">${e.flavor}</div>` : "";
             const lootMeta = isLoot ? buildLootMeta(e) : "";
             const lootMetaHtml = lootMeta ? `<div class="tl-loot-meta">${lootMeta}</div>` : "";
             const lootBadgeHtml = isLoot ? `<span class="tl-loot-badge">Loot</span>` : "";
+            const questBadgeHtml = isQuest ? `<span class="tl-quest-badge">Quest</span>` : "";
 
             html += `
-                <div class="tl-entry r-${e.rarity} ${isLoot ? "is-loot" : ""}">
+                <div class="tl-entry r-${e.rarity} ${isLoot ? "is-loot" : ""} ${isQuest ? "is-quest" : ""}">
                     ${avatarHtml}
                     ${iconHtml}
                     <div class="tl-info">
-                        <div class="tl-ach-name ${isLoot ? "tl-ach-name-loot" : ""}" style="color:${c}">${e.name} ${lootBadgeHtml}</div>
+                        <div class="tl-ach-name ${isLoot ? "tl-ach-name-loot" : ""} ${isQuest ? "tl-ach-name-quest" : ""}" style="color:${c}">${e.name} ${lootBadgeHtml}${questBadgeHtml}</div>
                         ${flavorHtml}
                         ${lootMetaHtml}
                         <div class="tl-user">${displayName(e.username)}</div>
                     </div>
                     <div class="tl-right">
-                        <div class="tl-points ${isLoot ? "tl-points-loot" : ""}" style="color:${isLoot ? c : c}">${isLoot ? "LOOT" : `+${e.points}`}</div>
+                        <div class="tl-points ${isLoot ? "tl-points-loot" : ""} ${isQuest ? "tl-points-quest" : ""}" style="color:${isLoot ? c : c}">${isLoot ? "LOOT" : isQuest ? `+${e.points} XP` : `+${e.points}`}</div>
                         <div class="tl-time">${fmtTime(e.ts)}</div>
                     </div>
                 </div>

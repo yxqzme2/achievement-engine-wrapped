@@ -622,7 +622,7 @@ def evaluate_gear_for_user(
 
         quest = quests_by_series.get(_norm(series_name))
         drop_key = f"gear:series:{series_id}" if series_id else f"gear:seriesname:{_norm(series_name)}"
-        
+
         if not store.is_awarded(user_id, drop_key):
             preferred_rarity = rarity_for_book_count(len(book_ids))
             loot_id, slot = random_item_round_robin(
@@ -636,6 +636,23 @@ def evaluate_gear_for_user(
                 )])
                 owned_ids.add(loot_id)
                 newly_awarded.append(loot_id)
+
+            # Record quest completion for series
+            if quest:
+                quest_key = f"quest:series:{quest['quest_id']}"
+                if not store.is_awarded(user_id, quest_key):
+                    store.record_awards(user_id, [(
+                        quest_key,
+                        {
+                            "quest_id": quest["quest_id"],
+                            "quest_name": quest["quest_name"],
+                            "target_type": "series",
+                            "target_name": quest["target_name"],
+                            "xp_reward": quest["xp_reward"],
+                            "series": series_name,
+                            "_timestamp": ts,
+                        },
+                    )])
 
     # B) INDIVIDUAL BOOK DROPS (New!)
     # Award one piece of loot for EVERY book finished.
