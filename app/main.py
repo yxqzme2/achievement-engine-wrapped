@@ -1033,6 +1033,65 @@ async def api_admin_loot_add(request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/awards/api/admin/quest/backfill")
+def api_admin_quest_backfill():
+    """
+    One-time backfill: scan all gear:series awards, match against quest CSV by series name,
+    and record any missing quest completions. Safe to call multiple times (idempotent).
+    """
+    gc = _load_gear_cached()
+    quests_by_series = gc.get("quests_by_series") or {}
+
+    all_awards = store.get_all_awards()
+    recorded = 0
+    skipped = 0
+    no_quest = 0
+
+    for a in all_awards:
+        ach_id = str(a.get("achievement_id") or "")
+        if not ach_id.startswith("gear:series:"):
+            continue
+
+        user_id = str(a.get("user_id") or "")
+        if not user_id or user_id == "SYSTEM":
+            continue
+
+        payload = a.get("payload") or {}
+        series_name = payload.get("series") or ""
+        ts = int(payload.get("_timestamp") or a.get("awarded_at") or 0)
+
+        if not series_name:
+            skipped += 1
+            continue
+
+        from .gear_engine import _norm
+        quest = quests_by_series.get(_norm(series_name))
+        if not quest:
+            no_quest += 1
+            continue
+
+        quest_key = f"quest:series:{quest['quest_id']}"
+        if not store.is_awarded(user_id, quest_key):
+            store.record_awards(user_id, [(
+                quest_key,
+                {
+                    "quest_id": quest["quest_id"],
+                    "quest_name": quest["quest_name"],
+                    "target_type": "series",
+                    "target_name": quest["target_name"],
+                    "xp_reward": quest["xp_reward"],
+                    "series": series_name,
+                    "_timestamp": ts,
+                },
+            )])
+            print(f"[quest-backfill] {user_id} -> {quest['quest_name']} ({series_name})")
+            recorded += 1
+        else:
+            skipped += 1
+
+    return JSONResponse({"ok": True, "recorded": recorded, "skipped": skipped, "no_quest_defined": no_quest})
+
+
 @app.post("/awards/api/admin/quest/add")
 async def api_admin_quest_add(request: Request):
     data = await request.json()
