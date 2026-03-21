@@ -697,55 +697,123 @@ def _sanitize_cover_filename(title: str) -> str:
     return safe[:200] or "unknown"
 
 
+def _download_cover(absstats_base_url: str, item_id: str, dest: str) -> bool:
+    """Download a single cover by libraryItemId. Returns True on success."""
+    import urllib.request
+    cover_url = absstats_base_url.rstrip("/") + f"/api/cover/{item_id}"
+    try:
+        with urllib.request.urlopen(urllib.request.Request(cover_url), timeout=15) as resp:
+            if resp.status != 200:
+                return False
+            cover_data = resp.read()
+        if len(cover_data) > 100:
+            with open(dest, "wb") as f:
+                f.write(cover_data)
+            return True
+        return False
+    except Exception:
+        return False
+
+
 def _run_cover_sync(absstats_base_url: str, covers_dir: str, force: bool = False):
     import urllib.request, json as _json
 
     _SYNC_STATE.update({"running": True, "done": False, "total": 0,
                         "synced": 0, "skipped": 0, "errors": 0,
-                        "message": "Fetching item list from ABS…"})
+                        "message": "Fetching series list from ABS…"})
     try:
-        url = absstats_base_url.rstrip("/") + "/api/all-items"
-        with urllib.request.urlopen(urllib.request.Request(url), timeout=30) as resp:
-            data = _json.loads(resp.read())
-
-        items = data.get("items", [])
-        _SYNC_STATE["total"] = len(items)
-        _SYNC_STATE["message"] = f"Downloading {len(items)} covers…"
-
+        base = absstats_base_url.rstrip("/")
         os.makedirs(covers_dir, exist_ok=True)
 
-        for item in items:
-            item_id = item.get("libraryItemId", "")
-            title = item.get("title", "") or item_id
-            if not item_id:
+        # Step 1: Fetch series index — one cover per series (first book only)
+        try:
+            with urllib.request.urlopen(urllib.request.Request(base + "/api/series"), timeout=30) as resp:
+                series_data = _json.loads(resp.read())
+            series_list = series_data.get("series") or []
+        except Exception:
+            series_list = []
+
+        # Build set of all book IDs that belong to a series (to exclude from standalone sync)
+        series_book_ids: set = set()
+        # List of (series_name, first_book_item_id) to download
+        series_covers: list = []
+
+        for s in series_list:
+            series_name = (s.get("seriesName") or "").strip()
+            books = s.get("books") or []
+            if not series_name or not books:
                 continue
 
-            filename = _sanitize_cover_filename(title) + ".jpg"
-            dest = os.path.join(covers_dir, filename)
+            # Track all book IDs in this series
+            for b in books:
+                bid = b.get("libraryItemId")
+                if bid:
+                    series_book_ids.add(bid)
 
+            # Find first book by seriesSequence (numeric sort), fallback to list order
+            def _seq(b):
+                try:
+                    return float(b.get("seriesSequence") or 9999)
+                except Exception:
+                    return 9999.0
+
+            first_book = min(books, key=_seq)
+            first_id = first_book.get("libraryItemId")
+            if first_id:
+                series_covers.append((series_name, first_id))
+
+        # Step 2: Fetch all items — find standalones (not in any series)
+        _SYNC_STATE["message"] = "Fetching full item list for standalone books…"
+        try:
+            with urllib.request.urlopen(urllib.request.Request(base + "/api/all-items"), timeout=30) as resp:
+                items_data = _json.loads(resp.read())
+            all_items = items_data.get("items") or []
+        except Exception:
+            all_items = []
+
+        standalone_covers: list = []  # (title, item_id)
+        for item in all_items:
+            item_id = item.get("libraryItemId") or ""
+            if not item_id or item_id in series_book_ids:
+                continue
+            title = (item.get("title") or "").strip() or item_id
+            standalone_covers.append((title, item_id))
+
+        total = len(series_covers) + len(standalone_covers)
+        _SYNC_STATE["total"] = total
+        _SYNC_STATE["message"] = (
+            f"Downloading {len(series_covers)} series covers "
+            f"and {len(standalone_covers)} standalone covers…"
+        )
+
+        # Step 3: Download series covers — saved as {series_name}.jpg
+        for series_name, item_id in series_covers:
+            filename = _sanitize_cover_filename(series_name) + ".jpg"
+            dest = os.path.join(covers_dir, filename)
             if not force and os.path.exists(dest):
                 _SYNC_STATE["skipped"] += 1
                 continue
+            if _download_cover(base, item_id, dest):
+                _SYNC_STATE["synced"] += 1
+            else:
+                _SYNC_STATE["errors"] += 1
 
-            cover_url = absstats_base_url.rstrip("/") + f"/api/cover/{item_id}"
-            try:
-                with urllib.request.urlopen(urllib.request.Request(cover_url), timeout=15) as resp:
-                    if resp.status != 200:
-                        raise Exception(f"HTTP {resp.status}")
-                    cover_data = resp.read()
-                if len(cover_data) > 100:
-                    with open(dest, "wb") as f:
-                        f.write(cover_data)
-                    _SYNC_STATE["synced"] += 1
-                else:
-                    _SYNC_STATE["errors"] += 1
-            except Exception:
+        # Step 4: Download standalone covers — saved as {book_title}.jpg
+        for title, item_id in standalone_covers:
+            filename = _sanitize_cover_filename(title) + ".jpg"
+            dest = os.path.join(covers_dir, filename)
+            if not force and os.path.exists(dest):
+                _SYNC_STATE["skipped"] += 1
+                continue
+            if _download_cover(base, item_id, dest):
+                _SYNC_STATE["synced"] += 1
+            else:
                 _SYNC_STATE["errors"] += 1
 
         _SYNC_STATE["message"] = (
-            f"Done: {_SYNC_STATE['synced']} new, "
-            f"{_SYNC_STATE['skipped']} existing, "
-            f"{_SYNC_STATE['errors']} errors."
+            f"Done: {_SYNC_STATE['synced']} new"
+            f"{f', {_SYNC_STATE[\"skipped\"]} already existed' if _SYNC_STATE['skipped'] else ''}"
+            f"{f', {_SYNC_STATE[\"errors\"]} errors' if _SYNC_STATE['errors'] else ''}."
         )
     except Exception as e:
         _SYNC_STATE["message"] = f"Sync failed: {e}"
