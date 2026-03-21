@@ -115,6 +115,7 @@ def load_quests_csv(path: str) -> Tuple[Dict[str, dict], Dict[str, dict], Dict[s
                     by_series[norm_name] = q
                 elif q["target_type"] == "book":
                     by_book[norm_name] = q
+        print(f"[gear] Loaded {len(by_id)} quests from {path} ({len(by_series)} series, {len(by_book)} books)")
     except FileNotFoundError:
         print(f"[gear] quest.csv not found at {path}")
     except Exception as e:
@@ -641,6 +642,7 @@ def evaluate_gear_for_user(
             if quest:
                 quest_key = f"quest:series:{quest['quest_id']}"
                 if not store.is_awarded(user_id, quest_key):
+                    print(f"[gear] Recording quest completion: {user_id} -> {quest['quest_name']} ({series_name})")
                     store.record_awards(user_id, [(
                         quest_key,
                         {
@@ -653,6 +655,8 @@ def evaluate_gear_for_user(
                             "_timestamp": ts,
                         },
                     )])
+            else:
+                print(f"[gear] No quest found for series: {series_name} (normalized: {_norm(series_name)})")
 
     # B) INDIVIDUAL BOOK DROPS (New!)
     # Award one piece of loot for EVERY book finished.
