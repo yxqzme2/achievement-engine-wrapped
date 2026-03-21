@@ -1664,77 +1664,86 @@ def _run_monthly_review(snapshots, sessions_payload, store, gear_catalog):
 
 @app.get("/awards/api/gear/quests")
 def api_gear_quests():
-    """Return the full list of quests (Directives) from the new unified JSON."""
-    defs = _load_defs_cached()
-    if not defs["items"]:
-        raise HTTPException(status_code=503, detail="Directive catalog not loaded yet.")
-    
-    series_index = _SERIES_INDEX_CACHE["data"]
-    enriched = []
+    """
+    Return the full quest catalog built from the live ABS library (series index).
+    Produces one series quest per series and one book quest per book,
+    with XP/rarity derived from the same rules used by evaluate_gear_for_user.
+    """
+    from .gear_engine import _book_quest_xp, _book_quest_rarity, _series_quest_xp, _series_quest_rarity
 
-    def _norm_text(v: str) -> str:
-        return re.sub(r"[^a-z0-9]+", "", (v or "").lower())
+    series_index = _SERIES_INDEX_CACHE["data"] or []
+    if not series_index:
+        raise HTTPException(status_code=503, detail="Series index not available yet.")
 
-    series_by_norm = {}
-    for s in series_index or []:
-        name = (s or {}).get("seriesName") or ""
-        if name:
-            series_by_norm[_norm_text(name)] = s
+    quests: list = []
 
-    for q in defs["items"]:
-        eq = dict(q)
-        # Category Logic for Directive Board
-        cat = q.get("category", "")
-        tags = q.get("tags", "")
+    for s in series_index:
+        series_name = (s.get("seriesName") or "").strip()
+        if not series_name:
+            continue
 
-        # ELITE ECONOMY: Display the xp_reward or points as XP
-        eq["display_xp"] = q.get("xp_reward", q.get("points", 0))
+        books_in_series = s.get("books") or []
+        book_count = len(books_in_series)
 
-        # Determine Display Category
-        if "series" in tags or cat == "milestone_series" or "Campaign" in q.get("title", ""):
-            eq["directive_type"] = "World Quest (Campaign)"
-            eq["sort_priority"] = 1
-        elif "book" in tags or "Quest" in q.get("title", ""):
-            eq["directive_type"] = "Side Quest"
-            eq["sort_priority"] = 2
-        else:
-            eq["directive_type"] = "Standard Bounty"
-            eq["sort_priority"] = 3
+        # --- Series quest ---
+        s_xp     = _series_quest_xp(book_count)
+        s_rarity = _series_quest_rarity(book_count)
+        s_books  = [
+            {"title": b.get("title"), "cover": _sanitize_cover_filename(b.get("title", "")) + ".jpg"}
+            for b in books_in_series if b.get("title")
+        ]
+        quests.append({
+            "id":             f"quest:series:auto_{re.sub(r'[^a-z0-9]+', '_', series_name.lower()).strip('_')}",
+            "quest_name":     f"{series_name} Completionist",
+            "achievement":    f"{series_name} Completionist",
+            "title":          series_name,
+            "target_name":    series_name,
+            "target_type":    "series",
+            "directive_type": "World Quest (Campaign)",
+            "display_xp":     s_xp,
+            "rarity":         s_rarity,
+            "flavorText":     f"Complete all {book_count} book{'s' if book_count != 1 else ''} in the {series_name} series.",
+            "trigger":        f"Finish every book in {series_name}",
+            "tags":           "series",
+            "category":       "series_complete",
+            "book_count":     book_count,
+            "books":          s_books,
+            "sort_priority":  1,
+        })
 
-        # Enrich with covers for series targets or single-book quests
-        target = (q.get("title", "") or "").strip()
-        books = []
+        # --- Individual book quests ---
+        for b in books_in_series:
+            btitle = (b.get("title") or "").strip()
+            bdur   = float(b.get("duration") or 0)
+            bid    = b.get("libraryItemId") or ""
+            if not btitle:
+                continue
 
-        raw_tags = str(q.get("tags", "") or "")
-        tag_tokens = {t.strip().lower() for t in raw_tags.split(",") if t and t.strip()}
+            b_xp     = _book_quest_xp(bdur)
+            b_rarity = _book_quest_rarity(bdur)
+            hours    = round(bdur / 3600.0, 1) if bdur else 0
 
-        # Best-effort series match:
-        # 1) exact normalized title -> series name
-        # 2) normalized slug tags (e.g. the_good_guys) -> series name
-        series_match = series_by_norm.get(_norm_text(target))
-        if not series_match:
-            for tok in tag_tokens:
-                tok_norm = _norm_text(tok.replace("_", " "))
-                if tok_norm in series_by_norm:
-                    series_match = series_by_norm[tok_norm]
-                    break
+            quests.append({
+                "id":             f"quest:book:{bid}" if bid else f"quest:book:{re.sub(r'[^a-z0-9]+','_',btitle.lower())}",
+                "quest_name":     btitle,
+                "achievement":    btitle,
+                "title":          btitle,
+                "target_name":    btitle,
+                "target_type":    "book",
+                "directive_type": "Side Quest",
+                "display_xp":     b_xp,
+                "rarity":         b_rarity,
+                "flavorText":     f"{series_name} · {hours}h" if hours else series_name,
+                "trigger":        f"Finish listening to {btitle}",
+                "tags":           "book",
+                "category":       "quest",
+                "books":          [{"title": btitle, "cover": _sanitize_cover_filename(btitle) + ".jpg"}],
+                "sort_priority":  2,
+            })
 
-        if series_match and ("series" in tag_tokens or q.get("category") in {"campaign", "series_complete", "milestone_series", "series_shape"}):
-            for b in series_match.get("books", []) or []:
-                bt = b.get("title")
-                if bt:
-                    books.append({"title": bt, "cover": _sanitize_cover_filename(bt) + ".jpg"})
-
-        # Book quests generally target one concrete title.
-        if not books and "book" in tag_tokens and target:
-            books.append({"title": target, "cover": _sanitize_cover_filename(target) + ".jpg"})
-
-        eq["books"] = books
-        enriched.append(eq)
-
-    # Sort by priority then XP value
-    enriched.sort(key=lambda x: (x.get("sort_priority", 9), -x.get("display_xp", 0)))
-    return JSONResponse(enriched)
+    # Sort: series quests first, then by XP descending within each group
+    quests.sort(key=lambda x: (x["sort_priority"], -x["display_xp"]))
+    return JSONResponse(quests)
 
 
 @app.get("/awards/api/gear/catalog")

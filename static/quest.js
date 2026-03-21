@@ -88,7 +88,7 @@ function renderQuests() {
             <span class="q-target">${q.title}</span>
             <p class="q-desc">"${q.flavorText || q.description}"</p>
             <div class="q-rewards">
-                <span class="q-xp" style="color: ${xpVal >= 500000 ? '#ff3c00' : '#00e5ff'}">${xpVal.toLocaleString()} EXP</span>
+                <span class="q-xp" style="color: ${xpVal >= 5000 ? '#ff8000' : xpVal >= 2000 ? '#a335ee' : '#00e5ff'}">${xpVal.toLocaleString()} XP</span>
                 <span class="q-loot">${rewardLabel}</span>
             </div>
         `;
@@ -106,13 +106,8 @@ async function loadQuests() {
         const res = await fetch('/awards/api/gear/quests');
         currentQuests = await res.json();
 
-        currentQuests.sort((a, b) => {
-            const nameA = (a.achievement || a.quest_name || '').toUpperCase();
-            const nameB = (b.achievement || b.quest_name || '').toUpperCase();
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-            return 0;
-        });
+        // Server sends series quests first, then books, each group sorted by XP desc.
+        // Preserve that ordering — do not re-sort by name here.
 
         renderQuests();
     } catch (err) {

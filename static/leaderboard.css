@@ -323,6 +323,32 @@ body {
     color: var(--ink-muted);
     font-style: italic;
 }
+
+/* Level badge */
+.lvl-badge {
+    display: inline-block;
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.08);
+    color: var(--ink);
+    border: 1px solid rgba(0,0,0,0.15);
+}
+.lvl-badge.lvl-initiate { background: rgba(59, 210, 111, 0.12); color: #2a8f4a; border-color: rgba(59, 210, 111, 0.3); }
+.lvl-badge.lvl-veteran   { background: rgba(0, 112, 221, 0.12); color: #0055aa; border-color: rgba(0, 112, 221, 0.3); }
+.lvl-badge.lvl-elite     { background: rgba(163, 53, 238, 0.12); color: #7a22bb; border-color: rgba(163, 53, 238, 0.3); }
+.lvl-badge.lvl-apex      { background: rgba(255, 128, 0, 0.12); color: #c06000; border-color: rgba(255, 128, 0, 0.3); }
+
+/* Podium CP sub-label */
+.podium-cp {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    margin-bottom: 6px;
+}
 /* Tooltip */
 .tt {
     position: fixed;
