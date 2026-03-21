@@ -638,25 +638,23 @@ def evaluate_gear_for_user(
                 owned_ids.add(loot_id)
                 newly_awarded.append(loot_id)
 
-            # Record quest completion for series
-            if quest:
-                quest_key = f"quest:series:{quest['quest_id']}"
-                if not store.is_awarded(user_id, quest_key):
-                    print(f"[gear] Recording quest completion: {user_id} -> {quest['quest_name']} ({series_name})")
-                    store.record_awards(user_id, [(
-                        quest_key,
-                        {
-                            "quest_id": quest["quest_id"],
-                            "quest_name": quest["quest_name"],
-                            "target_type": "series",
-                            "target_name": quest["target_name"],
-                            "xp_reward": quest["xp_reward"],
-                            "series": series_name,
-                            "_timestamp": ts,
-                        },
-                    )])
-            else:
-                print(f"[gear] No quest found for series: {series_name} (normalized: {_norm(series_name)})")
+        # Record quest completion for series (independent of loot — catches backfill too)
+        if quest:
+            quest_key = f"quest:series:{quest['quest_id']}"
+            if not store.is_awarded(user_id, quest_key):
+                print(f"[gear] Recording quest completion: {user_id} -> {quest['quest_name']} ({series_name})")
+                store.record_awards(user_id, [(
+                    quest_key,
+                    {
+                        "quest_id": quest["quest_id"],
+                        "quest_name": quest["quest_name"],
+                        "target_type": "series",
+                        "target_name": quest["target_name"],
+                        "xp_reward": quest["xp_reward"],
+                        "series": series_name,
+                        "_timestamp": ts,
+                    },
+                )])
 
     # B) INDIVIDUAL BOOK DROPS (New!)
     # Award one piece of loot for EVERY book finished.
