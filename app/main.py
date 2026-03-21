@@ -810,11 +810,9 @@ def _run_cover_sync(absstats_base_url: str, covers_dir: str, force: bool = False
             else:
                 _SYNC_STATE["errors"] += 1
 
-        _SYNC_STATE["message"] = (
-            f"Done: {_SYNC_STATE['synced']} new"
-            f"{f', {_SYNC_STATE[\"skipped\"]} already existed' if _SYNC_STATE['skipped'] else ''}"
-            f"{f', {_SYNC_STATE[\"errors\"]} errors' if _SYNC_STATE['errors'] else ''}."
-        )
+        skipped_part = f", {_SYNC_STATE['skipped']} already existed" if _SYNC_STATE["skipped"] else ""
+        errors_part  = f", {_SYNC_STATE['errors']} errors" if _SYNC_STATE["errors"] else ""
+        _SYNC_STATE["message"] = f"Done: {_SYNC_STATE['synced']} new{skipped_part}{errors_part}."
     except Exception as e:
         _SYNC_STATE["message"] = f"Sync failed: {e}"
     finally:
@@ -867,6 +865,11 @@ def read_leaderboard_root():
 @app.get("/timeline")
 def read_timeline_root():
     return FileResponse(_get_static_path("timeline.html"))
+
+@app.get("/chronicle")
+@app.get("/awards/chronicle")
+def read_chronicle_root():
+    return FileResponse(_get_static_path("chronicle.html"))
 
 @app.get("/archives")
 def read_archives_root():
@@ -2886,6 +2889,158 @@ def api_users_root():
 @app.get("/api/usernames")
 def api_usernames_root():
     return awards_proxy_usernames()
+
+
+@app.get("/awards/api/reading-history")
+@app.get("/api/reading-history")
+def api_reading_history():
+    """
+    Per-user book/series completion history, enriched with series membership,
+    duration, rarity tier, and series-completion markers.
+    Respects ALLOWED_USERS and progression scope filters.
+    """
+    import urllib.request as _req, json as _json
+
+    base = cfg.absstats_base_url.rstrip("/")
+
+    # Completions
+    try:
+        comp_data = client.get_completed(cfg.completed_endpoint)
+        users_raw = comp_data.get("users") or []
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Completions unavailable: {e}")
+
+    # User map
+    try:
+        user_map = _json.loads(
+            _req.urlopen(_req.Request(base + "/api/usernames"), timeout=10).read()
+        ).get("map") or {}
+    except Exception:
+        user_map = {}
+
+    # Sessions (for 95% threshold via _filter_progression_for_user)
+    try:
+        s_data = client.get_listening_sessions()
+        all_sessions_map = {str(u.get("userId")): u.get("sessions") for u in s_data.get("users", [])}
+    except Exception:
+        all_sessions_map = {}
+
+    # Series index — use cache, fall back to fresh fetch
+    series_index = _SERIES_INDEX_CACHE["data"] or _fetch_abs_series_index()
+
+    # Build book lookup: libraryItemId -> metadata
+    book_lookup: Dict[str, dict] = {}
+    series_book_sets: Dict[str, set] = {}  # series_name -> all libraryItemIds in series
+
+    for s in series_index:
+        sname = (s.get("seriesName") or "").strip()
+        books = s.get("books") or []
+        if not sname:
+            continue
+        bids: set = set()
+        for b in books:
+            bid = b.get("libraryItemId")
+            if not bid:
+                continue
+            bids.add(bid)
+            try:
+                seq_f = float(b.get("seriesSequence") or 0)
+            except Exception:
+                seq_f = 0.0
+            # Format sequence: "1" not "1.0", "1.5" stays "1.5"
+            seq_str = (str(int(seq_f)) if seq_f > 0 and seq_f == int(seq_f) else str(seq_f)) if seq_f > 0 else ""
+            book_lookup[bid] = {
+                "title":        (b.get("title") or "").strip(),
+                "series_name":  sname,
+                "sequence":     seq_f,
+                "sequence_str": seq_str,
+                "duration":     float(b.get("duration") or 0),
+                "series_total": len(books),
+                "cover":        _sanitize_cover_filename(sname) + ".jpg",
+            }
+        series_book_sets[sname] = bids
+
+    result_users = []
+
+    for u in users_raw:
+        uid = str(u.get("userId") or u.get("id") or "")
+        if not uid:
+            continue
+        uname = user_map.get(uid, str(u.get("username") or uid))
+        if not _user_is_allowed(uname):
+            continue
+
+        fd_raw = u.get("finishedDates") or {}
+        finished_dates_raw = {k: int(v) // 1000 for k, v in fd_raw.items() if v}
+        raw_sessions = all_sessions_map.get(uid) or []
+
+        finished_dates, finished_ids, user_sessions, effective_start = _filter_progression_for_user(
+            user_id=uid,
+            username=uname,
+            finished_dates_raw=finished_dates_raw,
+            user_sessions_all=raw_sessions,
+        )
+
+        # Build per-book entries
+        books_out = []
+        for bid, ts in finished_dates.items():
+            info = book_lookup.get(bid, {})
+            title = info.get("title") or bid
+            sname = info.get("series_name") or ""
+            dur   = float(info.get("duration") or 0)
+            books_out.append({
+                "book_id":          bid,
+                "title":            title,
+                "series_name":      sname,
+                "sequence":         info.get("sequence") or 0,
+                "sequence_str":     info.get("sequence_str") or "",
+                "duration_seconds": dur,
+                "duration_hours":   round(dur / 3600, 1),
+                "series_total":     info.get("series_total") or 0,
+                "finished_at":      ts,
+                "cover":            info.get("cover") or (_sanitize_cover_filename(title) + ".jpg"),
+            })
+
+        books_out.sort(key=lambda x: x["finished_at"], reverse=True)
+
+        # Determine completed series + their completion timestamp/metadata
+        completed_series = []
+        for sname, bids in series_book_sets.items():
+            if not bids or not bids.issubset(finished_ids):
+                continue
+            # Completion timestamp = when the LAST book in the series was finished
+            completed_ts = max((finished_dates.get(bid, 0) for bid in bids), default=0)
+            total_dur = sum(book_lookup.get(bid, {}).get("duration") or 0 for bid in bids)
+            # Books sorted by sequence for display
+            s_books = sorted(
+                [book_lookup[bid] for bid in bids if bid in book_lookup],
+                key=lambda b: float(b.get("sequence") or 9999),
+            )
+            completed_series.append({
+                "series_name":  sname,
+                "completed_at": completed_ts,
+                "book_count":   len(bids),
+                "total_hours":  round(total_dur / 3600, 1),
+                "cover":        _sanitize_cover_filename(sname) + ".jpg",
+                "books":        [b.get("title") for b in s_books],
+            })
+
+        completed_series.sort(key=lambda s: s["completed_at"], reverse=True)
+        total_hours = sum(b["duration_seconds"] for b in books_out) / 3600.0
+
+        result_users.append({
+            "user_id":         uid,
+            "username":        uname,
+            "books":           books_out,
+            "completed_series": completed_series,
+            "stats": {
+                "total_books":      len(books_out),
+                "total_hours":      round(total_hours, 1),
+                "series_completed": len(completed_series),
+            },
+        })
+
+    return JSONResponse({"users": result_users, "user_map": user_map})
 
 
 @app.get("/awards/api/progress")
