@@ -36,7 +36,7 @@ from .evaluator_series_shape import evaluate_series_shape
 from .gear_engine import (
     load_loot_csv, load_quests_csv, load_xp_curve,
     evaluate_gear_for_user, grandfather_init, build_character_sheet,
-    build_boss_stats, generate_combat_log, get_verified_book_ids,
+    build_boss_stats, generate_combat_log, get_verified_book_ids, find_nearly_complete_books,
     xp_from_hours, xp_from_quests, xp_from_achievements, level_from_xp,
     random_item_round_robin,
 )
@@ -569,6 +569,18 @@ def _filter_progression_for_user(user_id: str, username: str, finished_dates_raw
             require_integration_session_for_credit=cfg.require_2026_session_for_credit,
         )
         finished_dates = {k: v for k, v in finished_dates.items() if k in finished_ids}
+
+    # Phase 5: 95% Completion Threshold
+    # Merge books that hit the threshold into finished_ids even if ABS hasn't marked them done.
+    nearly_done = find_nearly_complete_books(
+        finished_ids,
+        user_sessions_all or [],
+        threshold=cfg.completion_threshold,
+        integration_timestamp=effective_start,
+    )
+    for bid, ts in nearly_done.items():
+        finished_ids.add(bid)
+        finished_dates[bid] = ts
 
     # Listening-time XP uses global launch scope (2026-01-01+), while
     # book/series progression remains gated by per-user effective_start.

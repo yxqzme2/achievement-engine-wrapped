@@ -27,6 +27,7 @@ class Settings(BaseModel):
     achievements_scope: str = Field(default="all_time")
     progression_scope: str = Field(default="since_xp_start")
     verify_listen_threshold: float = Field(default=0.80)
+    completion_threshold: float = Field(default=0.95)
     strict_verification: bool = Field(default=False)
     require_duration_for_credit: bool = Field(default=True)
     require_2026_session_for_credit: bool = Field(default=True)
@@ -99,6 +100,7 @@ def load_settings() -> Settings:
         achievements_scope=os.getenv("ACHIEVEMENTS_SCOPE", "all_time").strip().lower(),
         progression_scope=os.getenv("PROGRESSION_SCOPE", "since_xp_start").strip().lower(),
         verify_listen_threshold=float(os.getenv("VERIFY_LISTEN_THRESHOLD", "0.80")),
+        completion_threshold=float(os.getenv("COMPLETION_THRESHOLD", "0.95")),
         strict_verification=b("STRICT_VERIFICATION", False),
         require_duration_for_credit=b("REQUIRE_DURATION_FOR_CREDIT", True),
         require_2026_session_for_credit=b("REQUIRE_2026_SESSION_FOR_CREDIT", True),

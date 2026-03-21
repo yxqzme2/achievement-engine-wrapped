@@ -403,6 +403,81 @@ def get_verified_book_ids(
 
     return verified
 
+def find_nearly_complete_books(
+    finished_ids: Set[str],
+    user_sessions: List[dict],
+    threshold: float = 0.95,
+    integration_timestamp: int = 0,
+) -> Dict[str, int]:
+    """
+    Phase 5: 95% Completion Threshold.
+
+    Scans listening sessions for books NOT already in finished_ids where
+    the user has listened to >= threshold (default 95%) of the total duration.
+    Returns a dict of {book_id: last_session_timestamp} for nearly-complete books.
+
+    These are merged into finished_dates/finished_ids so they get quest,
+    loot, and XP credit exactly like ABS-marked completions.
+
+    Rationale: Audiobooks often end with credits, previews, or author notes
+    that users skip. Nobody gets to 95% and intentionally stops.
+    ABS "finished" flag always takes priority; this is an additional path.
+    """
+    if not user_sessions:
+        return {}
+
+    def _epoch_seconds(v) -> int:
+        try:
+            n = float(v or 0)
+        except (TypeError, ValueError):
+            return 0
+        if n <= 0:
+            return 0
+        if n >= 10_000_000_000:
+            return int(n / 1000)
+        return int(n)
+
+    # Build per-book stats across ALL sessions (not just 2026+)
+    # We need total duration regardless of when they started listening
+    book_stats: Dict[str, dict] = {}
+    for s in user_sessions:
+        book_id = str(s.get("libraryItemId") or "")
+        if not book_id or book_id in finished_ids:
+            continue  # skip already-finished books
+
+        stats = book_stats.setdefault(book_id, {
+            "total_listened": 0.0,
+            "book_duration": 0.0,
+            "last_session_ts": 0,
+        })
+
+        duration = float(s.get("duration") or 0)
+        if duration > stats["book_duration"]:
+            stats["book_duration"] = duration
+
+        stats["total_listened"] += float(s.get("timeListening") or 0)
+
+        session_ts = _epoch_seconds(s.get("startedAt") or s.get("startTime") or s.get("started_at"))
+        if session_ts > stats["last_session_ts"]:
+            stats["last_session_ts"] = session_ts
+
+    nearly_complete: Dict[str, int] = {}
+    for book_id, stats in book_stats.items():
+        if stats["book_duration"] <= 0:
+            continue  # can't compute ratio without duration
+
+        ratio = stats["total_listened"] / stats["book_duration"]
+        if ratio >= threshold:
+            ts = stats["last_session_ts"] or int(time.time())
+            # Only count if within integration scope
+            if integration_timestamp and ts < integration_timestamp:
+                continue
+            nearly_complete[book_id] = ts
+            print(f"[95%] {book_id} at {ratio:.1%} — treating as complete (ts={ts})")
+
+    return nearly_complete
+
+
 def level_from_xp(total_xp: int, xp_per_level: List[int]) -> Tuple[int, int, int]:
     """
     Returns (level, xp_into_current_level, xp_needed_for_next_level).
