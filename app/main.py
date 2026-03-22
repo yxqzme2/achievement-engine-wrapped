@@ -2998,6 +2998,12 @@ def api_reading_history():
         finished_dates = {str(bid): int(ts) for bid, ts in (snap.finished_dates or {}).items()}
         finished_ids = set(finished_dates.keys())
 
+        # Calculate total listening hours from user's sessions (all-time)
+        # This matches the stats page calculation
+        user_sessions = all_sessions_map.get(uid) or []
+        user_listening_seconds = sum(int(s.get("timeListening", s.get("duration", 0))) for s in user_sessions)
+        user_listening_hours = user_listening_seconds / 3600.0
+
         # Build per-book entries
         books_out = []
         for bid, ts in finished_dates.items():
@@ -3043,7 +3049,6 @@ def api_reading_history():
             })
 
         completed_series.sort(key=lambda s: s["completed_at"], reverse=True)
-        total_hours = sum(b["duration_seconds"] for b in books_out) / 3600.0
 
         result_users.append({
             "user_id":         uid,
@@ -3052,7 +3057,7 @@ def api_reading_history():
             "completed_series": completed_series,
             "stats": {
                 "total_books":      len(books_out),
-                "total_hours":      round(total_hours, 1),
+                "total_hours":      round(user_listening_hours, 1),
                 "series_completed": len(completed_series),
             },
         })
