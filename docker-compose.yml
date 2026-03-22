@@ -8,6 +8,8 @@ services:
     build: ./abs-stats
     ports:
       - "3000:3000"
+    volumes:
+      - ./abs-stats:/app
     environment:
       - ENGINE_URL=http://achievement-engine:8000
       # Set these in docker-compose.override.yml (created by setup.sh) or uncomment here:

@@ -1292,13 +1292,20 @@ app.get("/api/all-items", async (req, res) => {
         const meta = item?.media?.metadata || {};
         const title = meta?.title || item?.title || "";
         const author = formatAuthors(meta);
+        // Duration is available in item.media.duration (in seconds from ABS)
+        const durationSeconds = item?.media?.duration || 0;
+        // Convert to milliseconds for consistency with other endpoints
+        const duration = durationSeconds * 1000;
         if (item.id && title) {
-          allItems.push({ 
-            libraryItemId: item.id, 
-            title, 
+          allItems.push({
+            libraryItemId: item.id,
+            title,
             author,
             seriesName: meta.seriesName || "",
-            seriesSequence: meta.seriesSequence || ""
+            seriesSequence: meta.seriesSequence || "",
+            duration,  // milliseconds (ABS standard)
+            durationSeconds,  // also include seconds for convenience
+            durationHours: +(durationSeconds / 3600).toFixed(2)
           });
         }
       }
