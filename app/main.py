@@ -2927,31 +2927,25 @@ def api_reading_history():
     # Series index — use cache, fall back to fresh fetch
     series_index = _SERIES_INDEX_CACHE["data"] or _fetch_abs_series_index()
 
-    # Duration lookup from listening sessions (sum timeListening per book)
-    # Series index doesn't carry duration, so we compute it from actual listening sessions
-    duration_lookup: Dict[str, float] = {}
-    title_lookup: Dict[str, str] = {}
+    # Book metadata lookup: libraryItemId -> {duration, title}
+    # Duration = actual book length from ABS, not listening time
+    book_metadata: Dict[str, dict] = {}  # {libraryItemId: {duration: float(seconds), title: str}}
 
-    # Build duration from sessions: sum of timeListening per libraryItemId
-    for uid_str, sessions in all_sessions_map.items():
-        for session in (sessions or []):
-            bid = str(session.get("libraryItemId") or "")
-            if not bid:
-                continue
-            # timeListening is in milliseconds; convert to seconds
-            _time_ms = int(session.get("timeListening") or 0)
-            duration_lookup[bid] = duration_lookup.get(bid, 0.0) + (_time_ms / 1000.0)
-
-    # Also try all-items for title lookup
+    # Fetch from all-items for accurate book duration and titles
     try:
         with _req.urlopen(_req.Request(base + "/api/all-items"), timeout=15) as _r:
             _items_data = _json.loads(_r.read())
         for _item in (_items_data.get("items") or []):
             _iid = _item.get("libraryItemId") or ""
-            if _iid and _iid not in title_lookup:
-                title_lookup[_iid] = (_item.get("title") or "").strip()
+            if _iid:
+                # Duration from ABS is in milliseconds
+                _dur_ms = int(_item.get("duration") or 0)
+                book_metadata[_iid] = {
+                    "duration": _dur_ms / 1000.0,  # convert to seconds
+                    "title": (_item.get("title") or "").strip(),
+                }
     except Exception:
-        pass  # title lookup will fall back to bid if unavailable
+        pass  # will fall back to series index data
 
     # Build book lookup: libraryItemId -> metadata
     book_lookup: Dict[str, dict] = {}
@@ -2973,12 +2967,16 @@ def api_reading_history():
             except Exception:
                 seq_f = 0.0
             seq_str = (str(int(seq_f)) if seq_f > 0 and seq_f == int(seq_f) else str(seq_f)) if seq_f > 0 else ""
+            # Use book_metadata for accurate duration; fall back to series index
+            book_dur = book_metadata.get(bid, {}).get("duration", float(b.get("duration") or 0))
+            book_title = book_metadata.get(bid, {}).get("title") or (b.get("title") or "").strip()
+
             book_lookup[bid] = {
-                "title":        (b.get("title") or title_lookup.get(bid) or "").strip(),
+                "title":        book_title,
                 "series_name":  sname,
                 "sequence":     seq_f,
                 "sequence_str": seq_str,
-                "duration":     duration_lookup.get(bid, float(b.get("duration") or 0)),
+                "duration":     book_dur,
                 "series_total": len(books),
                 "cover":        _sanitize_cover_filename(sname) + ".jpg",
             }
@@ -3008,9 +3006,9 @@ def api_reading_history():
         books_out = []
         for bid, ts in finished_dates.items():
             info  = book_lookup.get(bid, {})
-            title = info.get("title") or title_lookup.get(bid) or bid
+            title = info.get("title") or book_metadata.get(bid, {}).get("title") or bid
             sname = info.get("series_name") or ""
-            dur   = info.get("duration") or duration_lookup.get(bid, 0.0)
+            dur   = info.get("duration") or book_metadata.get(bid, {}).get("duration", 0.0)
             books_out.append({
                 "book_id":          bid,
                 "title":            title,
@@ -3033,7 +3031,8 @@ def api_reading_history():
                 continue
             # Completion timestamp = when the LAST book in the series was finished
             completed_ts = max((finished_dates.get(bid, 0) for bid in bids), default=0)
-            total_dur = sum(book_lookup.get(bid, {}).get("duration") or duration_lookup.get(bid, 0) for bid in bids)
+            # Sum actual book durations (not listening time) for series total
+            total_dur = sum(book_lookup.get(bid, {}).get("duration") or book_metadata.get(bid, {}).get("duration", 0.0) for bid in bids)
             # Books sorted by sequence for display
             s_books = sorted(
                 [book_lookup[bid] for bid in bids if bid in book_lookup],
