@@ -2938,13 +2938,15 @@ def api_reading_history():
         for _item in (_items_data.get("items") or []):
             _iid = _item.get("libraryItemId") or ""
             if _iid:
-                # Duration from ABS is in milliseconds
-                _dur_ms = int(_item.get("duration") or 0)
+                # Try multiple possible duration field names (duration, durationMs, durationHours)
+                _dur = _item.get("duration") or _item.get("durationMs") or 0
+                _dur_sec = float(_dur) / 1000.0 if isinstance(_dur, (int, float)) else 0.0
                 book_metadata[_iid] = {
-                    "duration": _dur_ms / 1000.0,  # convert to seconds
+                    "duration": _dur_sec,  # convert to seconds
                     "title": (_item.get("title") or "").strip(),
                 }
-    except Exception:
+    except Exception as e:
+        print(f"[reading-history] all-items fetch failed: {e}")
         pass  # will fall back to series index data
 
     # Build book lookup: libraryItemId -> metadata
@@ -2968,7 +2970,11 @@ def api_reading_history():
                 seq_f = 0.0
             seq_str = (str(int(seq_f)) if seq_f > 0 and seq_f == int(seq_f) else str(seq_f)) if seq_f > 0 else ""
             # Use book_metadata for accurate duration; fall back to series index
-            book_dur = book_metadata.get(bid, {}).get("duration", float(b.get("duration") or 0))
+            # Try multiple duration field names (duration, durationMs, durationHours)
+            _dur_fallback = float(b.get("duration") or b.get("durationMs") or 0)
+            if b.get("durationHours"):
+                _dur_fallback = float(b.get("durationHours")) * 3600.0  # convert hours to seconds
+            book_dur = book_metadata.get(bid, {}).get("duration", _dur_fallback)
             book_title = book_metadata.get(bid, {}).get("title") or (b.get("title") or "").strip()
 
             book_lookup[bid] = {
