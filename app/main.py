@@ -2927,6 +2927,32 @@ def api_reading_history():
     # Series index — use cache, fall back to fresh fetch
     series_index = _SERIES_INDEX_CACHE["data"] or _fetch_abs_series_index()
 
+    # Duration lookup from listening sessions (sum timeListening per book)
+    # Series index doesn't carry duration, so we compute it from actual listening sessions
+    duration_lookup: Dict[str, float] = {}
+    title_lookup: Dict[str, str] = {}
+
+    # Build duration from sessions: sum of timeListening per libraryItemId
+    for uid_str, sessions in all_sessions_map.items():
+        for session in (sessions or []):
+            bid = str(session.get("libraryItemId") or "")
+            if not bid:
+                continue
+            # timeListening is in milliseconds; convert to seconds
+            _time_ms = int(session.get("timeListening") or 0)
+            duration_lookup[bid] = duration_lookup.get(bid, 0.0) + (_time_ms / 1000.0)
+
+    # Also try all-items for title lookup
+    try:
+        with _req.urlopen(_req.Request(base + "/api/all-items"), timeout=15) as _r:
+            _items_data = _json.loads(_r.read())
+        for _item in (_items_data.get("items") or []):
+            _iid = _item.get("libraryItemId") or ""
+            if _iid and _iid not in title_lookup:
+                title_lookup[_iid] = (_item.get("title") or "").strip()
+    except Exception:
+        pass  # title lookup will fall back to bid if unavailable
+
     # Build book lookup: libraryItemId -> metadata
     book_lookup: Dict[str, dict] = {}
     series_book_sets: Dict[str, set] = {}  # series_name -> all libraryItemIds in series
@@ -2948,11 +2974,11 @@ def api_reading_history():
                 seq_f = 0.0
             seq_str = (str(int(seq_f)) if seq_f > 0 and seq_f == int(seq_f) else str(seq_f)) if seq_f > 0 else ""
             book_lookup[bid] = {
-                "title":        (b.get("title") or "").strip(),
+                "title":        (b.get("title") or title_lookup.get(bid) or "").strip(),
                 "series_name":  sname,
                 "sequence":     seq_f,
                 "sequence_str": seq_str,
-                "duration":     float(b.get("duration") or 0),
+                "duration":     duration_lookup.get(bid, float(b.get("duration") or 0)),
                 "series_total": len(books),
                 "cover":        _sanitize_cover_filename(sname) + ".jpg",
             }
@@ -2968,23 +2994,17 @@ def api_reading_history():
             continue
 
         # snap.finished_dates is already in seconds (client converts ms → s)
-        finished_dates_raw = snap.finished_dates or {}
-        raw_sessions = all_sessions_map.get(uid) or []
-
-        finished_dates, finished_ids, user_sessions, effective_start = _filter_progression_for_user(
-            user_id=uid,
-            username=uname,
-            finished_dates_raw=finished_dates_raw,
-            user_sessions_all=raw_sessions,
-        )
+        # Chronicle shows ALL-TIME reading history, not filtered by XP scope
+        finished_dates = {str(bid): int(ts) for bid, ts in (snap.finished_dates or {}).items()}
+        finished_ids = set(finished_dates.keys())
 
         # Build per-book entries
         books_out = []
         for bid, ts in finished_dates.items():
-            info = book_lookup.get(bid, {})
-            title = info.get("title") or bid
+            info  = book_lookup.get(bid, {})
+            title = info.get("title") or title_lookup.get(bid) or bid
             sname = info.get("series_name") or ""
-            dur   = float(info.get("duration") or 0)
+            dur   = info.get("duration") or duration_lookup.get(bid, 0.0)
             books_out.append({
                 "book_id":          bid,
                 "title":            title,
@@ -2995,7 +3015,7 @@ def api_reading_history():
                 "duration_hours":   round(dur / 3600, 1),
                 "series_total":     info.get("series_total") or 0,
                 "finished_at":      ts,
-                "cover":            info.get("cover") or (_sanitize_cover_filename(title) + ".jpg"),
+                "cover":            info.get("cover") or (_sanitize_cover_filename(sname or title) + ".jpg"),
             })
 
         books_out.sort(key=lambda x: x["finished_at"], reverse=True)
@@ -3007,7 +3027,7 @@ def api_reading_history():
                 continue
             # Completion timestamp = when the LAST book in the series was finished
             completed_ts = max((finished_dates.get(bid, 0) for bid in bids), default=0)
-            total_dur = sum(book_lookup.get(bid, {}).get("duration") or 0 for bid in bids)
+            total_dur = sum(book_lookup.get(bid, {}).get("duration") or duration_lookup.get(bid, 0) for bid in bids)
             # Books sorted by sequence for display
             s_books = sorted(
                 [book_lookup[bid] for bid in bids if bid in book_lookup],
