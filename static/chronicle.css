@@ -297,8 +297,8 @@ body {
 
 .campaign-cover-wrap { flex-shrink: 0; }
 .campaign-cover {
-    width: 86px;
-    height: 124px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
     border-radius: 4px;
     border: 1px solid rgba(184,149,72,.35);
@@ -383,8 +383,8 @@ body {
     padding: 10px 12px 10px 10px;
 }
 .book-cover {
-    width: 40px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     object-fit: cover;
     border-radius: 3px;
     border: 1px solid rgba(255,255,255,.1);
@@ -482,7 +482,7 @@ body {
     .page-header h1 { font-size: 1.5rem; letter-spacing: 3px; }
     .stats-banner { padding: 16px 8px; }
     .stat-num { font-size: 1.6rem; }
-    .campaign-cover { width: 64px; height: 92px; }
+    .campaign-cover { width: 80px; height: 80px; }
     .campaign-title { font-size: 1rem; }
     .controls-row { flex-direction: column; align-items: flex-start; }
     .book-title { font-size: .85rem; }
