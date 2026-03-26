@@ -169,6 +169,12 @@ def achievement_engine_worker():
 async def lifespan(app: FastAPI):
     _seed_user_xp_start_overrides_file()
 
+    # Backfill tier-lists.json from DB on every startup
+    try:
+        _sync_tier_lists_json()
+    except Exception as e:
+        print(f"[tier-lists] startup JSON sync failed: {e}")
+
     # Optional one-shot legacy achievement backfill
     if cfg.run_achievement_backfill:
         try:
