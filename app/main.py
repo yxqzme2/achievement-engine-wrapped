@@ -786,7 +786,19 @@ def _run_cover_sync(absstats_base_url: str, covers_dir: str, force: bool = False
             f"and {len(standalone_covers)} standalone covers…"
         )
 
+        # Build covers-meta: filename -> {series, books}
+        covers_meta: dict = {}
+
         # Step 3: Download series covers — saved as {series_name}.jpg
+        for s in series_list:
+            series_name = (s.get("seriesName") or "").strip()
+            books = s.get("books") or []
+            if not series_name or not books:
+                continue
+            filename = _sanitize_cover_filename(series_name) + ".jpg"
+            book_titles = [b.get("title", "").strip() for b in books if b.get("title")]
+            covers_meta[filename] = {"series": series_name, "books": book_titles}
+
         for series_name, item_id in series_covers:
             filename = _sanitize_cover_filename(series_name) + ".jpg"
             dest = os.path.join(covers_dir, filename)
@@ -802,6 +814,7 @@ def _run_cover_sync(absstats_base_url: str, covers_dir: str, force: bool = False
         for title, item_id in standalone_covers:
             filename = _sanitize_cover_filename(title) + ".jpg"
             dest = os.path.join(covers_dir, filename)
+            covers_meta[filename] = {"series": None, "books": [title]}
             if not force and os.path.exists(dest):
                 _SYNC_STATE["skipped"] += 1
                 continue
@@ -809,6 +822,14 @@ def _run_cover_sync(absstats_base_url: str, covers_dir: str, force: bool = False
                 _SYNC_STATE["synced"] += 1
             else:
                 _SYNC_STATE["errors"] += 1
+
+        # Write covers-meta.json sidecar for tier page book-title search
+        try:
+            meta_path = os.path.join(covers_dir, "covers-meta.json")
+            with open(meta_path, "w", encoding="utf-8") as mf:
+                _json.dump(covers_meta, mf, ensure_ascii=False)
+        except Exception:
+            pass
 
         skipped_part = f", {_SYNC_STATE['skipped']} already existed" if _SYNC_STATE["skipped"] else ""
         errors_part  = f", {_SYNC_STATE['errors']} errors" if _SYNC_STATE["errors"] else ""
@@ -832,6 +853,20 @@ def start_cover_sync(force: bool = False):
 @app.get("/awards/api/sync-covers/status")
 def cover_sync_status():
     return JSONResponse(dict(_SYNC_STATE))
+
+
+@app.get("/awards/api/covers-meta")
+def covers_meta_endpoint():
+    """Return covers-meta.json — maps cover filename to series name + book titles."""
+    import json as _json
+    meta_path = os.path.join(COVERS_DIR, "covers-meta.json")
+    if not os.path.exists(meta_path):
+        return JSONResponse({})
+    try:
+        with open(meta_path, "r", encoding="utf-8") as f:
+            return JSONResponse(_json.load(f))
+    except Exception:
+        return JSONResponse({})
 
 
 @app.get("/")
@@ -1262,6 +1297,29 @@ def api_tier_users_root():
     return api_tier_users()
 
 
+TIER_LISTS_JSON = "/data/tier-lists.json"
+
+def _sync_tier_lists_json():
+    """Write all saved tier lists to /data/tier-lists.json as a human-readable mirror."""
+    import json as _json
+    try:
+        rows = store.get_tier_lists()
+        out = []
+        for r in rows:
+            out.append({
+                "user_id":    str(r.get("user_id") or ""),
+                "username":   str(r.get("username") or ""),
+                "list_name":  str(r.get("list_name") or "Tier List"),
+                "query":      str(r.get("query") or ""),
+                "updated_at": int(r.get("updated_at") or 0),
+            })
+        os.makedirs(os.path.dirname(TIER_LISTS_JSON), exist_ok=True)
+        with open(TIER_LISTS_JSON, "w", encoding="utf-8") as f:
+            _json.dump(out, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"[tier-lists] failed to write JSON mirror: {e}")
+
+
 @app.get("/awards/api/tier-lists")
 def api_tier_lists():
     user_map = _get_user_map_best_effort()
@@ -1326,6 +1384,7 @@ async def api_tier_lists_save(request: Request):
     list_name = raw_name or f"{username}'s Tier List"
     ts = int(time.time())
     store.upsert_tier_list(user_id=user_id, username=username, list_name=list_name, query=raw_query, updated_at=ts)
+    _sync_tier_lists_json()
     return JSONResponse({
         "ok": True,
         "list": {
@@ -1358,12 +1417,49 @@ async def api_tier_lists_delete(user_id: str, request: Request):
         raise HTTPException(status_code=401, detail="Invalid PIN.")
 
     store.delete_tier_list(target_uid)
+    _sync_tier_lists_json()
     return JSONResponse({"ok": True})
 
 
 @app.post("/api/tier-lists/{user_id}/delete")
 async def api_tier_lists_delete_root(user_id: str, request: Request):
     return await api_tier_lists_delete(user_id=user_id, request=request)
+
+
+@app.post("/awards/api/tier-lists/import-json")
+def api_tier_lists_import_json():
+    """
+    Re-import tier-lists.json from /data/ into the database.
+    Overwrites any existing row for each user_id found in the file.
+    Useful after manually editing the JSON file.
+    """
+    import json as _json
+    if not os.path.exists(TIER_LISTS_JSON):
+        raise HTTPException(status_code=404, detail="tier-lists.json not found in /data/")
+    try:
+        with open(TIER_LISTS_JSON, "r", encoding="utf-8") as f:
+            rows = _json.load(f)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to parse tier-lists.json: {e}")
+
+    if not isinstance(rows, list):
+        raise HTTPException(status_code=400, detail="tier-lists.json must be a JSON array")
+
+    imported = 0
+    for row in rows:
+        uid  = str(row.get("user_id") or "").strip()
+        uname = str(row.get("username") or uid).strip()
+        lname = str(row.get("list_name") or "Tier List").strip()
+        query = str(row.get("query") or "").strip()
+        ts    = int(row.get("updated_at") or int(time.time()))
+        if not uid or not query:
+            continue
+        store.upsert_tier_list(user_id=uid, username=uname, list_name=lname, query=query, updated_at=ts)
+        imported += 1
+
+    return JSONResponse({"ok": True, "imported": imported})
+
+
 @app.get("/awards/api/character/{user_id}")
 def api_character(user_id: str, admin: bool = False):
     """

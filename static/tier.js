@@ -114,6 +114,7 @@ async function loadLibrary() {
         .replace(/\.(webp|png|jpg|jpeg)$/i, '')
         .replace(/_/g, ' ')
         .toLowerCase();
+      img.dataset._fname = file.name;
 
       img.addEventListener('dragstart', e => {
         e.dataTransfer.setData('text/plain', img.id);
@@ -129,6 +130,21 @@ async function loadLibrary() {
     });
 
     setStatus(`Loaded ${imgFiles.length} covers.`);
+
+    // Augment images with book titles from meta (for search), then parse URL
+    try {
+      const metaRes = await fetch('/awards/api/covers-meta', { cache: 'no-store' });
+      if (metaRes.ok) {
+        const meta = await metaRes.json();
+        document.querySelectorAll('#library .book').forEach(img => {
+          const entry = meta[img.dataset._fname] || null;
+          if (entry && Array.isArray(entry.books)) {
+            img.dataset.books = entry.books.map(t => t.toLowerCase()).join(' | ');
+          }
+        });
+      }
+    } catch (_) {}
+
     parseUrlParams();
   } catch (err) {
     console.error('Covers scan failed:', err);
@@ -148,11 +164,18 @@ function parseUrlParams() {
   });
 }
 
+function _bookMatches(book, query) {
+  if (!query) return true;
+  if ((book.dataset.name || '').includes(query)) return true;
+  if ((book.dataset.books || '').includes(query)) return true;
+  return false;
+}
+
 function filterLibrary() {
   const input = document.getElementById('search-bar');
   const query = (input.value || '').toLowerCase().trim();
   document.querySelectorAll('#library .book').forEach(book => {
-    book.style.display = book.dataset.name.includes(query) ? 'block' : 'none';
+    book.style.display = _bookMatches(book, query) ? 'block' : 'none';
   });
   renderSearchPopover(query);
 }
@@ -175,7 +198,7 @@ function renderSearchPopover(query) {
   }
 
   const all = Array.from(document.querySelectorAll('.book'));
-  const matches = all.filter(img => (img.dataset.name || '').includes(query));
+  const matches = all.filter(img => _bookMatches(img, query));
   const MAX = 24;
   const shown = matches.slice(0, MAX);
 
