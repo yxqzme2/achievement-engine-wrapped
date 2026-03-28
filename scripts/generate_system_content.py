@@ -4,6 +4,7 @@ import os
 import re
 import random
 import glob
+import sys
 
 # --- CONFIGURATION ---
 # Paths inside the container
@@ -216,12 +217,22 @@ def run():
 
     # ASK FOR MERGE
     print(f"\nCreated {len(achievements)} achievements and {len(loot_rows)} loot items.")
-    confirm = input("Would you like to AUTOMATICALLY merge these into the System files? (y/n): ")
-    
+
+    # Check for --auto-merge flag or fallback to prompt if stdin is available
+    if "--auto-merge" in sys.argv:
+        confirm = "y"
+        print("Auto-merge enabled (--auto-merge flag detected)")
+    else:
+        try:
+            confirm = input("Would you like to AUTOMATICALLY merge these into the System files? (y/n): ")
+        except EOFError:
+            print("ERROR: No interactive input available. Use --auto-merge flag to auto-merge, or --draft to save drafts.")
+            return
+
     if confirm.lower() == 'y':
         merge_content(achievements, loot_rows)
         print("\nSUCCESS: System updated and backups created.")
-    else:
+    elif "--draft" in sys.argv or confirm.lower() == 'n':
         # Just write snippets for manual review
         with open("draft_achievements.json", "w", encoding="utf-8") as f:
             json.dump(achievements, f, indent=2)
