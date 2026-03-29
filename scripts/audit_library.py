@@ -32,29 +32,31 @@ def fetch_json(endpoint):
     with urllib.request.urlopen(req, timeout=120) as response:
         return json.loads(response.read())
 
-def get_existing_records():
+def get_existing_series_achievements():
     """
-    Collects slugs for all existing titles, achievements, and triggers 
-    to robustly identify what has already been added.
+    Collects series names that already have completion achievements.
+    Only looks for series completion achievements, not individual books.
+    Format: "Complete the [Series Name] series" or "Complete all books in [Series Name]"
     """
-    existing_slugs = set()
-    
+    existing_series = set()
+
     # Check multiple potential paths for the JSON file
     paths = [
         os.getenv("ACHIEVEMENTS_PATH", ""),
+        "/data/json/achievements.points.json",
         "/data/achievements.points.json",
         "/data/data/achievements.points.json",
         "./data/achievements.points.json",
         "data/achievements.points.json",
         "achievements.points.json"
     ]
-    
+
     json_path = None
     for p in paths:
         if p and os.path.exists(p):
             json_path = p
             break
-            
+
     if json_path:
         print(f"[audit] Found achievements at: {json_path}")
         try:
@@ -62,32 +64,40 @@ def get_existing_records():
                 data = json.load(f)
                 achs = data.get("achievements") if isinstance(data, dict) else data
                 for a in achs:
-                    # Slugify everything that might identify the series/author
-                    for field in ['title', 'achievement', 'trigger', 'id']:
-                        val = a.get(field)
-                        if val:
-                            existing_slugs.add(slugify(val))
-                            # Also check if the slug contains common patterns
-                            # e.g. "Complete all books in Dungeon Crawler Carl" -> "dungeon_crawler_carl"
-                            clean_val = str(val).lower()
-                            if "complete all books in " in clean_val:
-                                name = clean_val.replace("complete all books in ", "").strip()
-                                existing_slugs.add(slugify(name))
-                            if "complete the " in clean_val and " series" in clean_val:
-                                name = clean_val.replace("complete the ", "").replace(" series", "").strip()
-                                existing_slugs.add(slugify(name))
+                    trigger = a.get("trigger", "").lower()
+                    title = a.get("title", "").lower()
+
+                    # Look for series completion triggers
+                    # Pattern 1: "Complete the [Series] series."
+                    if "complete the " in trigger and " series" in trigger:
+                        name = trigger.replace("complete the ", "").replace(" series.", "").replace(" series", "").strip()
+                        if name:
+                            existing_series.add(slugify(name))
+
+                    # Pattern 2: "Complete all books in [Series]"
+                    if "complete all books in " in trigger:
+                        name = trigger.replace("complete all books in ", "").strip().rstrip('.')
+                        if name:
+                            existing_series.add(slugify(name))
+
+                    # Also check title field as fallback
+                    if "completionist" in title or "series complete" in a.get("category", ""):
+                        title_val = a.get("title", "").strip()
+                        if title_val:
+                            existing_series.add(slugify(title_val))
+
         except Exception as e:
             print(f"[audit] Error reading JSON: {e}")
     else:
-        print("[audit] Warning: Could not find achievements.points.json. All items will be marked 'New'.")
-        
-    return existing_slugs
+        print("[audit] Warning: Could not find achievements.points.json. All series will be marked 'New'.")
+
+    return existing_series
 
 def run_audit():
     try:
         print("--- Starting Comprehensive Library Audit ---")
-        existing_slugs = get_existing_records()
-        
+        existing_series = get_existing_series_achievements()
+
         print("Fetching full series index...")
         series_data = fetch_json("/api/series")
         series_list = series_data.get("series", [])
@@ -103,10 +113,10 @@ def run_audit():
         for i, s in enumerate(series_list):
             s_name = s.get('seriesName', 'Unknown')
             s_slug = slugify(s_name)
-            
-            # Determine if the series is new
-            is_new_series = s_slug not in existing_slugs
-            status = "NEW" if is_new_series else "Existing"
+
+            # Determine if the series completion achievement already exists
+            is_new_series = s_slug not in existing_series
+            series_status = "NEW" if is_new_series else "Existing"
             
             books = s.get('books', [])
             if i % 10 == 0:
@@ -120,7 +130,7 @@ def run_audit():
             for b in books:
                 bid = b.get('libraryItemId')
                 if not bid: continue
-                
+
                 # Fetch detailed book info if not in cache
                 if bid not in book_details_cache:
                     try:
@@ -128,21 +138,23 @@ def run_audit():
                         book_details_cache[bid] = details
                     except:
                         book_details_cache[bid] = {}
-                
+
                 details = book_details_cache[bid]
-                
+
                 b_title = b.get('title', 'Unknown Title')
                 b_seq = b.get('sequence', '')
                 b_dur_raw = details.get('duration', 0)
                 b_dur_fmt = format_duration(b_dur_raw)
-                
+
                 # Collect authors and narrators
                 authors = details.get('authors', [])
                 narrators = details.get('narrators', [])
-                
+
                 for a in authors: series_authors.add(a)
                 for n in narrators: series_narrators.add(n)
-                
+
+                # Status is based on whether the series completion achievement exists
+                # (All books in a NEW series will be marked NEW for quest generation)
                 series_books_data.append({
                     'Series Name': s_name,
                     'Author(s)': ", ".join(authors),
@@ -152,7 +164,7 @@ def run_audit():
                     'Duration': b_dur_fmt,
                     'Duration Seconds': b_dur_raw,
                     'Book ID': bid,
-                    'Status': status
+                    'Status': series_status
                 })
             
             results.extend(series_books_data)

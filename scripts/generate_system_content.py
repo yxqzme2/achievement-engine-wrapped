@@ -8,9 +8,10 @@ import sys
 
 # --- CONFIGURATION ---
 # Paths inside the container
-ICON_DIR = "/data/icons" # As mapped in docker-compose
-ACHIEVEMENTS_PATH = "/data/data/achievements.points.json"
-LOOT_PATH = "/app/csv/loot.csv" # Path inside the container
+ICON_DIR = "/data/icons"
+ACHIEVEMENTS_PATH = "/data/json/achievements.points.json"
+QUESTS_PATH = "/app/csv/quest.csv"
+LOOT_PATH = "/app/csv/loot.csv"
 
 def slugify(text):
     if not text: return "unknown"
@@ -21,12 +22,11 @@ def pick_random_icon(prefix):
     Looks into the icon directory and finds all files matching the prefix.
     Returns just the filename.
     """
-    # Search pattern: prefix*.png
     pattern = os.path.join(ICON_DIR, f"{prefix}*.png")
     matches = glob.glob(pattern)
     if not matches:
-        return "inv_misc_questionmark.png" # System fallback
-    
+        return "inv_misc_questionmark.png"
+
     chosen_path = random.choice(matches)
     return os.path.basename(chosen_path)
 
@@ -68,6 +68,16 @@ SYSTEM_SNARK = [
     "Slightly better than nothing. Only slightly."
 ]
 
+QUEST_REWARDS = [
+    "The System notes your progress.",
+    "One step closer to literary immortality.",
+    "Another spine on the shelf of your achievements.",
+    "The System is mildly impressed.",
+    "You survived this one. The next might kill you.",
+    "A tale added to your legend.",
+    "Your reward: more books to read."
+]
+
 def generate_creative_name(title):
     title_low = title.lower()
     prefix = "Standard"
@@ -75,18 +85,15 @@ def generate_creative_name(title):
         if key in title_low:
             prefix = random.choice(options)
             break
-    
-    # Decide item category based on title keywords or random
+
     if "sword" in title_low or "blade" in title_low: cat = "Weapon"
     elif "ring" in title_low: cat = "Ring"
     elif "amulet" in title_low or "necklace" in title_low: cat = "Neck"
     elif "trinket" in title_low or "charm" in title_low: cat = "Trinket"
     elif "helm" in title_low or "cowl" in title_low: cat = "Head"
     else: cat = random.choice(list(ITEM_TYPES.keys()))
-    
+
     sub_type_prefix = random.choice(ITEM_TYPES[cat])
-    
-    # Create name based on suffix of prefix (e.g. weapon_sword_ -> Sword)
     suffix = sub_type_prefix.split('_')[1].capitalize()
     return f"{prefix} {suffix}", cat, sub_type_prefix
 
@@ -94,11 +101,10 @@ def generate_loot_row(book, index):
     series_name = book['Series Name']
     series_slug = slugify(series_name)
     book_title = book['Book Title']
-    
+
     item_name, category, prefix = generate_creative_name(book_title)
     icon_file = pick_random_icon(prefix)
-    
-    # Rarity logic
+
     rarity_roll = random.random()
     if rarity_roll > 0.95: rarity = "Epic"
     elif rarity_roll > 0.80: rarity = "Rare"
@@ -108,7 +114,7 @@ def generate_loot_row(book, index):
     multiplier = {"Common": 1, "Uncommon": 2, "Rare": 4, "Epic": 8}[rarity]
     str_val = (5 + index) * multiplier
     hp_val = (10 + (index * 2)) * multiplier
-    
+
     return {
         "item_id": f"loot_{series_slug}_{index+1:03d}",
         "item_name": item_name,
@@ -124,50 +130,68 @@ def generate_loot_row(book, index):
         "icon": f"/icons/{icon_file}"
     }
 
-def generate_book_achievement(book):
+def generate_book_quest(book, series_slug):
+    """Generate a quest for completing a specific book."""
     title = book['Book Title']
     series = book['Series Name']
+    sequence = book.get('Sequence', '')
     icon_file = pick_random_icon("icons_quest_books_")
-    
+
+    seq_display = f"#{sequence}" if sequence else "Book"
+
     return {
-        "title": title,
-        "achievement": f"{series}: {title}",
-        "flavorText": random.choice(SYSTEM_SNARK),
-        "trigger": f"Finish the book: {title}",
-        "id": f"q_book_{slugify(title)}",
-        "category": "quest",
-        "tags": f"book,quest,{slugify(series)}",
-        "points": 5,
-        "xp_reward": 15000,
-        "iconPath": f"/icons/{icon_file}",
-        "rarity": "Common"
+        "quest_id": f"q_book_{series_slug}_{slugify(title)}",
+        "title": f"{series} - {title}",
+        "description": f"Finish the book: {title}",
+        "quest_type": "book",
+        "series_tag": series,
+        "sequence": sequence or "0",
+        "reward_xp": 1000,
+        "reward_points": 5,
+        "icon": f"/icons/{icon_file}"
     }
 
 def generate_series_achievement(series_name):
+    """Generate a series completion achievement (not a quest)."""
     series_slug = slugify(series_name)
     icon_file = pick_random_icon("icons_quest_scroll_")
+
     return {
         "title": series_name,
         "achievement": f"{series_name} Completionist",
         "flavorText": f"The entire {series_name} series has been cataloged. You are a monster of focus.",
-        "trigger": f"Complete all books in {series_name}",
+        "trigger": f"Complete the {series_name} series.",
         "id": f"q_series_{series_slug}",
         "category": "series_complete",
         "tags": "series,campaign",
         "points": 25,
-        "xp_reward": 100000,
+        "xp_reward": 10000,
         "iconPath": f"/icons/{icon_file}",
         "rarity": "Epic"
     }
 
-def merge_content(new_achievements, new_loot):
-    # 1. Backups
-    print("Creating backups...")
-    os.system(f"cp {ACHIEVEMENTS_PATH} {ACHIEVEMENTS_PATH}.bak")
-    os.system(f"cp {LOOT_PATH} {LOOT_PATH}.bak")
+def generate_series_quest(series_name):
+    """Generate a quest for completing an entire series."""
+    series_slug = slugify(series_name)
+    icon_file = pick_random_icon("icons_quest_scroll_")
 
-    # 2. Merge Achievements
-    print(f"Merging {len(new_achievements)} achievements...")
+    return {
+        "quest_id": f"q_series_complete_{series_slug}",
+        "title": f"Complete {series_name}",
+        "description": f"Finish all books in the {series_name} series.",
+        "quest_type": "series",
+        "series_tag": series_name,
+        "reward_xp": 25000,
+        "reward_points": 100,
+        "icon": f"/icons/{icon_file}"
+    }
+
+def merge_achievements(new_achievements):
+    """Append new achievements to achievements.points.json with backup."""
+    print("Creating backup...")
+    os.system(f"cp {ACHIEVEMENTS_PATH} {ACHIEVEMENTS_PATH}.bak")
+
+    print(f"Merging {len(new_achievements)} series completion achievements...")
     with open(ACHIEVEMENTS_PATH, 'r+', encoding='utf-8') as f:
         data = json.load(f)
         if isinstance(data, dict) and "achievements" in data:
@@ -178,11 +202,17 @@ def merge_content(new_achievements, new_loot):
         json.dump(data, f, indent=2)
         f.truncate()
 
-    # 3. Merge Loot
-    print(f"Merging {len(new_loot)} loot items...")
-    with open(LOOT_PATH, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=["item_id","item_name","slot","str","mag","def","hp","special_ability","rarity","flavor_text","series_tag","icon"])
-        writer.writerows(new_loot)
+def merge_quests(new_quests):
+    """Append new quests to quest.csv with backup."""
+    print("Creating quest backup...")
+    os.system(f"cp {QUESTS_PATH} {QUESTS_PATH}.bak 2>/dev/null || true")
+
+    print(f"Merging {len(new_quests)} quests...")
+    fieldnames = ["quest_id", "title", "description", "quest_type", "series_tag", "sequence", "reward_xp", "reward_points", "icon"]
+
+    with open(QUESTS_PATH, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writerows(new_quests)
 
 def run():
     discovery_path = "new_library_discovery.csv"
@@ -192,55 +222,87 @@ def run():
 
     with open(discovery_path, mode='r', encoding='utf-8') as f:
         data = list(csv.DictReader(f))
-        
+
     new_items = [row for row in data if row['Status'] == 'NEW']
-    
+
     if not new_items:
-        print("No new books found in discovery file.")
+        print("No new series found in discovery file.")
         return
 
+    # Group by series to identify unique new series
     series_map = {}
     for b in new_items:
         s_name = b['Series Name']
         if s_name not in series_map: series_map[s_name] = []
         series_map[s_name].append(b)
 
-    achievements = []
+    new_achievements = []  # Series completion achievements only
+    new_quests = []        # Book quests + series quests
     loot_rows = []
 
-    for s_name, books in series_map.items():
-        print(f"Processing: {s_name}...")
-        for idx, b in enumerate(books):
-            achievements.append(generate_book_achievement(b))
-            loot_rows.append(generate_loot_row(b, idx))
-        achievements.append(generate_series_achievement(s_name))
+    print(f"Processing {len(series_map)} NEW series...")
+    for s_idx, (s_name, books) in enumerate(series_map.items(), 1):
+        print(f"  [{s_idx}/{len(series_map)}] {s_name} ({len(books)} books)")
+        s_slug = slugify(s_name)
 
-    # ASK FOR MERGE
-    print(f"\nCreated {len(achievements)} achievements and {len(loot_rows)} loot items.")
+        # Create ONE series completion achievement
+        new_achievements.append(generate_series_achievement(s_name))
 
-    # Check for --auto-merge flag or fallback to prompt if stdin is available
-    if "--auto-merge" in sys.argv:
-        confirm = "y"
-        print("Auto-merge enabled (--auto-merge flag detected)")
-    else:
-        try:
-            confirm = input("Would you like to AUTOMATICALLY merge these into the System files? (y/n): ")
-        except EOFError:
-            print("ERROR: No interactive input available. Use --auto-merge flag to auto-merge, or --draft to save drafts.")
-            return
+        # Create series completion quest
+        new_quests.append(generate_series_quest(s_name))
 
-    if confirm.lower() == 'y':
-        merge_content(achievements, loot_rows)
-        print("\nSUCCESS: System updated and backups created.")
-    elif "--draft" in sys.argv or confirm.lower() == 'n':
-        # Just write snippets for manual review
+        # Create a quest for each book in the series
+        for book_idx, book in enumerate(books):
+            new_quests.append(generate_book_quest(book, s_slug))
+            loot_rows.append(generate_loot_row(book, book_idx))
+
+    # Summary
+    print(f"\nCreated {len(new_achievements)} series achievements and {len(new_quests)} quests.")
+    print(f"Also created {len(loot_rows)} loot items.")
+
+    # Check for command-line flags first
+    if "--draft" in sys.argv:
+        # Save as drafts
         with open("draft_achievements.json", "w", encoding="utf-8") as f:
-            json.dump(achievements, f, indent=2)
+            json.dump(new_achievements, f, indent=2)
+        with open("draft_quests.csv", "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=["quest_id", "title", "description", "quest_type", "series_tag", "sequence", "reward_xp", "reward_points", "icon"])
+            writer.writeheader()
+            writer.writerows(new_quests)
         with open("draft_loot.csv", "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["item_id","item_name","slot","str","mag","def","hp","special_ability","rarity","flavor_text","series_tag","icon"])
             writer.writeheader()
             writer.writerows(loot_rows)
-        print("\nDrafts saved to draft_achievements.json and draft_loot.csv for manual review.")
+        print("\nDrafts saved to draft_achievements.json, draft_quests.csv, and draft_loot.csv for manual review.")
+        return
+
+    # Determine if stdin is interactive
+    is_interactive = sys.stdin.isatty()
+
+    if "--auto-merge" in sys.argv or not is_interactive:
+        # Auto-merge if flag is set OR if running non-interactively (e.g., from web)
+        confirm = "y"
+        if "--auto-merge" in sys.argv:
+            print("Auto-merge enabled (--auto-merge flag detected)")
+        else:
+            print("Running non-interactively: auto-merging by default")
+    else:
+        try:
+            confirm = input("Would you like to AUTOMATICALLY merge these into the System files? (y/n): ")
+        except EOFError:
+            print("Running non-interactively: auto-merging by default")
+            confirm = "y"
+
+    if confirm.lower() == 'y':
+        merge_achievements(new_achievements)
+        merge_quests(new_quests)
+        if loot_rows:
+            print(f"Merging {len(loot_rows)} loot items...")
+            os.system(f"cp {LOOT_PATH} {LOOT_PATH}.bak")
+            with open(LOOT_PATH, 'a', newline='', encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=["item_id","item_name","slot","str","mag","def","hp","special_ability","rarity","flavor_text","series_tag","icon"])
+                writer.writerows(loot_rows)
+        print("\nSUCCESS: System updated and backups created.")
 
 if __name__ == "__main__":
     run()
