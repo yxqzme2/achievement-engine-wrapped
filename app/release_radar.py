@@ -75,6 +75,7 @@ def find_newest_in_series(products: List[Dict], series_asin: str) -> Optional[Di
     From a list of Audible products, return the one that:
       - belongs to the given series_asin
       - has the most recent release_date
+      - prefers released books over pre-orders (same logic as `check_one_series`)
     Returns None if no matching product found.
     """
     candidates = []
@@ -86,12 +87,17 @@ def find_newest_in_series(products: List[Dict], series_asin: str) -> Optional[Di
     if not candidates:
         return None
 
-    def sort_key(p):
-        # Sort by release_date descending; fall back to publication_datetime
-        rd = p.get("release_date") or p.get("publication_datetime", "")
-        return rd
+    today = datetime.date.today().isoformat()
 
-    return max(candidates, key=sort_key)
+    # Separate released books from pre-orders
+    released = [p for p in candidates if (p.get("release_date") or "") <= today]
+
+    if released:
+        # Return the most recent released book
+        return max(released, key=lambda p: p.get("release_date") or p.get("publication_datetime", ""))
+    else:
+        # Fallback: if all are pre-orders, return the earliest pre-order (soonest)
+        return min(candidates, key=lambda p: p.get("release_date") or p.get("publication_datetime", ""))
 
 
 def _product_to_release(product: Dict, series_asin: str, series_name: str) -> Dict:
