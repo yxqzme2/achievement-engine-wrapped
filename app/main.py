@@ -3429,6 +3429,42 @@ def read_request():
     return FileResponse(REQUEST_PATH)
 
 
+@app.get("/request/api/library-check")
+def request_library_check(series_name: str = ""):
+    """
+    Check if a series already exists in the ABS library.
+    Uses the cached series index (populated by background worker).
+    Returns {"exists": bool, "matched_name": str|null}
+    """
+    import re as _re2
+
+    q = series_name.strip()
+    if not q:
+        return JSONResponse({"exists": False, "matched_name": None})
+
+    def _norm(s: str) -> str:
+        s = s.lower()
+        s = _re2.sub(r"[^a-z0-9 ]", " ", s)
+        return _re2.sub(r"\s+", " ", s).strip()
+
+    abs_series = _SERIES_INDEX_CACHE["data"] or _fetch_abs_series_index()
+    qn = _norm(q)
+
+    for s in abs_series:
+        raw = (s.get("seriesName") or "").strip()
+        if not raw:
+            continue
+        sn = _norm(raw)
+        if qn == sn or qn in sn or sn in qn:
+            return JSONResponse({"exists": True, "matched_name": raw})
+        wq, ws = set(qn.split()), set(sn.split())
+        shorter = min(len(wq), len(ws))
+        if shorter > 0 and len(wq & ws) / shorter >= 0.8:
+            return JSONResponse({"exists": True, "matched_name": raw})
+
+    return JSONResponse({"exists": False, "matched_name": None})
+
+
 @app.get("/api/request-config")
 def api_request_config():
     return JSONResponse({

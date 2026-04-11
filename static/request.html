@@ -150,6 +150,23 @@
         .result-check { color: var(--gold-accent); font-size: 1.2rem; flex-shrink: 0; opacity: 0; transition: opacity .15s; }
         .result-card.selected .result-check { opacity: 1; }
 
+        /* ── Library status pill ── */
+        .lib-pill {
+            font-size: .72rem; font-weight: 700; letter-spacing: .5px;
+            padding: 3px 9px; border-radius: 20px; flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .lib-pill.exists  { background: rgba(30,124,52,.2); color: #1e7c34; border: 1px solid #1e7c34; }
+        .lib-pill.missing { background: rgba(192,57,43,.15); color: #c0392b; border: 1px solid #c0392b; }
+        .lib-pill.checking { background: rgba(100,100,100,.1); color: var(--ink-muted); border: 1px solid var(--ink-muted); }
+
+        /* ── Library exists warning ── */
+        .lib-warning {
+            background: rgba(30,124,52,.12); border: 2px solid #1e7c34;
+            border-radius: 5px; padding: 12px 16px; margin-bottom: 12px;
+            color: #1a5c2a; font-size: .88rem; line-height: 1.5; display: none;
+        }
+
         /* ── Manual entry ── */
         .manual-toggle { margin-top: 14px; font-size: .82rem; color: var(--ink-muted); }
         .manual-toggle a { color: var(--gold-accent); cursor: pointer; text-decoration: none; border-bottom: 1px dashed var(--gold-accent); }
@@ -271,6 +288,9 @@
     <!-- Step 3: Send -->
     <div class="step-section" id="send-section" style="display:none">
         <div class="step-label">Step 3 — Send Request</div>
+        <div class="lib-warning" id="lib-warning">
+            &#10003; This series appears to already be in the library. You can still send the request if you think something is missing or wrong.
+        </div>
         <button class="btn-send" id="send-btn" onclick="sendRequest()">&#9993; Send Request</button>
         <div class="send-hint" id="send-hint">Your request will be sent directly to the admin.</div>
     </div>
@@ -287,6 +307,7 @@
 <script>
 let smtpEnabled  = false;
 let selectedSeries = null; // {series_name, series_asin, author, cover_url}
+let selectedExists = false; // whether selected series is already in library
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 (async function init() {
@@ -320,12 +341,37 @@ async function doSearch() {
             status.textContent = 'No series found. Try a different search term, or enter the name manually below.';
         } else {
             status.textContent = `${candidates.length} series found — click one to select it.`;
-            candidates.forEach(c => list.appendChild(buildResultCard(c)));
+            const cards = candidates.map(c => {
+                const card = buildResultCard(c);
+                list.appendChild(card);
+                return { c, card };
+            });
+            // Fire library checks in parallel, update pills as they resolve
+            cards.forEach(({ c, card }) => checkLibraryForCard(c.series_name, card));
         }
     } catch (e) {
         status.textContent = 'Search failed. Please try again or enter the name manually.';
     } finally {
         btn.disabled = false;
+    }
+}
+
+async function checkLibraryForCard(series_name, cardEl) {
+    const pill = cardEl.querySelector('.lib-pill');
+    try {
+        const resp = await fetch(`/request/api/library-check?series_name=${encodeURIComponent(series_name)}`);
+        const data = await resp.json();
+        if (data.exists) {
+            pill.textContent = 'Exists';
+            pill.className   = 'lib-pill exists';
+            cardEl.dataset.libExists = 'true';
+        } else {
+            pill.textContent = 'Missing';
+            pill.className   = 'lib-pill missing';
+            cardEl.dataset.libExists = 'false';
+        }
+    } catch (e) {
+        pill.remove();
     }
 }
 
@@ -342,6 +388,7 @@ function buildResultCard(c) {
             <div class="result-series">${escHtml(c.series_name)}</div>
             <div class="result-author">${escHtml(c.author || '')}</div>
         </div>
+        <span class="lib-pill checking">Checking…</span>
         <span class="result-check">&#10003;</span>`;
     div.addEventListener('click', () => selectSeries({
         series_name: c.series_name,
@@ -356,6 +403,11 @@ function selectSeries(series, cardEl) {
     document.querySelectorAll('.result-card.selected').forEach(el => el.classList.remove('selected'));
     if (cardEl) cardEl.classList.add('selected');
     selectedSeries = series;
+    selectedExists = cardEl ? cardEl.dataset.libExists === 'true' : false;
+
+    const warning = document.getElementById('lib-warning');
+    warning.style.display = selectedExists ? '' : 'none';
+
     document.getElementById('form-section').style.display = '';
     document.getElementById('send-section').style.display = '';
     document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
