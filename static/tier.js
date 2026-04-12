@@ -5,7 +5,7 @@ const tiers = [
   { id: 'C', name: 'C', desc: 'Average',          color: 'c' },
   { id: 'D', name: 'D', desc: 'Poor',             color: 'd' },
   { id: 'E', name: 'E', desc: 'Dropped',          color: 'e' },
-  { id: 'F', name: 'F', desc: 'Dropped Hard',     color: 'f' }
+  { id: 'F', name: 'F', desc: 'Did Not Finish',   color: 'f' }
 ];
 
 const board = document.getElementById('board');
