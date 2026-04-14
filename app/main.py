@@ -924,6 +924,10 @@ def read_tier_root():
 def read_playlist_root():
     return FileResponse(_get_static_path("playlist.html"))
 
+@app.get("/review")
+def read_review_root():
+    return FileResponse(_get_static_path("review.html"))
+
 @app.get("/forge")
 @app.get("/admin/radar")
 def read_radar_admin():

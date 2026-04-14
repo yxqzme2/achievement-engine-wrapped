@@ -15,13 +15,6 @@
     --tab-hover: #4f3d2f;
     --font-title: "Cinzel", serif;
     --font-body: "Lato", sans-serif;
-
-    /* Rarity Colors */
-    --r-common: #a0a0a0;
-    --r-uncommon: #3bd26f;
-    --r-rare: #0070dd;
-    --r-epic: #a335ee;
-    --r-legendary: #ff8000;
 }
 
 body {
@@ -46,16 +39,24 @@ body {
 .nav-bar a.nav-title:hover { background:none; color:#dccaa5; }
 @media(max-width:768px){ .nav-bar{ padding:10px 15px; } .nav-bar a{ font-size:.8rem; padding:4px 10px; } .nav-bar a.nav-title{ font-size:.9rem; } }
 
+/* --- PAGE BODY --- */
+.page-body {
+    width: 100%;
+    max-width: 1160px;
+    padding: 50px 30px 80px;
+    box-sizing: border-box;
+}
+
 /* --- HEADER --- */
 .sanctum-header {
     text-align: center;
-    margin-bottom: 50px;
-    animation: fadeInDown 1s ease-out;
+    margin-bottom: 52px;
+    animation: fadeInDown 0.9s ease-out;
 }
 
 .sanctum-title {
     font-family: var(--font-title);
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     color: var(--gold-accent);
     margin: 0;
     text-shadow: 0 4px 20px rgba(184, 149, 72, 0.3);
@@ -63,37 +64,80 @@ body {
 }
 
 .sanctum-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--tab-text);
     opacity: 0.8;
     margin-top: 10px;
     font-style: italic;
 }
 
+/* --- SECTION GROUPING --- */
+.portal-section {
+    margin-bottom: 48px;
+}
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-accent);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(184, 149, 72, 0.25);
+}
+
+.section-label::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 14px;
+    background: var(--gold-accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(184, 149, 72, 0.5);
+}
+
+.section-icon {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
 /* --- PORTAL GRID --- */
 .portal-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    max-width: 1100px;
-    width: 90%;
-    padding: 20px;
+    gap: 20px;
+}
+
+/* For sections with only 2 cards — keep them balanced, not stretched full-width */
+.portal-grid--narrow {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 720px;
+}
+
+/* 5-card sections: 3 + 2 layout */
+.portal-grid:has(> :nth-child(5):last-child) {
+    grid-template-columns: repeat(3, 1fr);
 }
 
 /* --- CARDS --- */
 .portal-card {
     background: var(--tab-bg);
     background-image: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(0,0,0,0.3));
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 30px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 24px 18px;
     text-align: center;
     text-decoration: none;
     color: var(--tab-text);
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,24 +148,24 @@ body {
     position: absolute;
     top: 0; left: -100%;
     width: 50%; height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(184, 149, 72, 0.1) 50%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(184, 149, 72, 0.08) 50%, rgba(255,255,255,0) 100%);
     transform: skewX(-25deg);
-    transition: all 0.7s ease;
+    transition: all 0.6s ease;
 }
 
 .portal-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     border-color: var(--gold-accent);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 15px rgba(184, 149, 72, 0.3);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 12px rgba(184, 149, 72, 0.2);
     color: #dccaa5;
 }
 
 .portal-card:hover::before { left: 200%; }
 
 .portal-icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+    font-size: 2.4rem;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
     transition: transform 0.3s;
 }
 
@@ -129,95 +173,70 @@ body {
 
 .portal-name {
     font-family: var(--font-title);
-    font-size: 1.4rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--gold-accent);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    line-height: 1.3;
 }
 
 .portal-desc {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    opacity: 0.8;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    opacity: 0.75;
 }
 
-/* --- SPECIFIC CARD STYLING --- */
-.card-admin {
-    border-style: dashed;
-    background-image: linear-gradient(to bottom, rgba(255, 128, 0, 0.05), rgba(0,0,0,0.4));
-}
-
-/* --- GLITCH TILE --- */
-.card-glitch {
-    background: rgba(40, 0, 0, 0.6) !important;
-    border: 2px solid #ff0000 !important;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4) !important;
-    animation: glitch-shake 0.5s infinite alternate;
-    cursor: not-allowed !important;
-}
-
-.card-glitch:hover {
-    transform: none !important;
-    box-shadow: 0 0 40px rgba(255, 0, 0, 0.8) !important;
-}
-
-.glitch-icon {
-    color: #ff0000;
-    text-shadow: 0 0 10px #ff0000;
-    animation: flicker 0.1s infinite;
-}
-
-.glitch-name {
-    color: #ff0000 !important;
-    font-family: 'Courier New', Courier, monospace !important;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    animation: glitch-text 0.2s infinite;
-}
-
-.glitch-desc {
-    color: #ffaaaa !important;
-    font-family: 'Courier New', Courier, monospace !important;
-    font-size: 0.85rem !important;
-    font-weight: bold;
-    text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-}
-
-/* --- NEW FEATURE GLOW --- */
+/* --- NEW FEATURE CARD --- */
 .card-new-feature {
-    border-color: #00e5ff !important;
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(0, 229, 255, 0.1) !important;
-    animation: system-pulse 2s infinite ease-in-out;
+    border-color: rgba(0, 229, 255, 0.5) !important;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.2), inset 0 0 8px rgba(0, 229, 255, 0.05) !important;
+    animation: system-pulse 2.5s infinite ease-in-out;
 }
 
 .card-new-feature:hover {
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.2) !important;
-    border-color: #fff !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 20px rgba(0, 229, 255, 0.4) !important;
+    border-color: rgba(0, 229, 255, 0.9) !important;
 }
 
-.new-feature-icon { color: #00e5ff; text-shadow: 0 0 15px rgba(0, 229, 255, 0.6); }
+.new-feature-icon {
+    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.5));
+}
 
 .new-tag {
     position: absolute;
-    top: 10px; right: 10px;
+    top: 9px; right: 9px;
     background: #00e5ff;
     color: #000;
-    font-size: 0.7rem;
+    font-size: 0.62rem;
     font-weight: 900;
-    padding: 2px 8px;
-    border-radius: 4px;
+    padding: 2px 7px;
+    border-radius: 3px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    font-family: var(--font-title);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes system-pulse {
+    0%, 100% { box-shadow: 0 0 12px rgba(0, 229, 255, 0.2), inset 0 0 8px rgba(0, 229, 255, 0.05); }
+    50%       { box-shadow: 0 0 20px rgba(0, 229, 255, 0.35), inset 0 0 12px rgba(0, 229, 255, 0.1); }
 }
 
 /* --- RESPONSIVE --- */
-@media (max-width: 900px) {
+@media (max-width: 960px) {
     .portal-grid { grid-template-columns: repeat(2, 1fr); }
-    .sanctum-title { font-size: 2.8rem; }
+    .portal-grid--narrow { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
+    .sanctum-title { font-size: 2.6rem; }
 }
 
-@media (max-width: 600px) {
-    .portal-grid { grid-template-columns: 1fr; }
-    .sanctum-title { font-size: 2.2rem; }
+@media (max-width: 580px) {
+    .portal-grid,
+    .portal-grid--narrow { grid-template-columns: 1fr; }
+    .sanctum-title { font-size: 2rem; }
+    .page-body { padding: 30px 16px 60px; }
 }
