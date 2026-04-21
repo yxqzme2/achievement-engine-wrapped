@@ -42,7 +42,8 @@ from .gear_engine import (
 )
 from .release_radar import (
     search_series_candidates, check_all_series as radar_check_all,
-    check_one_series, _product_to_release, generate_ics, radar_worker, seed_from_abs, check_library_status,
+    check_one_series, _product_to_release, search_audible, find_newest_in_series,
+    generate_ics, radar_worker, seed_from_abs, check_library_status,
 )
 
 # -----------------------------------------
@@ -3423,7 +3424,7 @@ def radar_manual_check():
 
 @app.post("/radar/api/check/{series_asin}")
 def radar_check_single_series(series_asin: str):
-    """Check a single series for updates. Returns {status, next_book, last_checked}."""
+    """Check a single series for updates. Returns {status, next_book, last_checked, debug}."""
     import time
 
     series = None
@@ -3436,18 +3437,49 @@ def radar_check_single_series(series_asin: str):
         raise HTTPException(status_code=404, detail="Series not found")
 
     try:
-        newest = check_one_series(series)
+        # Debug: capture what the API returns
+        products = search_audible(series["series_name"])
+        debug_info = {
+            "query": series["series_name"],
+            "api_returned": len(products),
+            "candidates": [],
+            "chosen": None,
+        }
+
+        # Find matching products
+        for p in products:
+            from .release_radar import _extract_series_info
+            series_info = _extract_series_info(p)
+            is_match = series_info and series_info.get("asin") == series_asin
+            debug_info["candidates"].append({
+                "title": p.get("title", "?"),
+                "asin": p.get("asin", "?"),
+                "series_asin": series_info.get("asin", "?") if series_info else "?",
+                "sequence": series_info.get("sequence", "?") if series_info else "?",
+                "release_date": p.get("release_date", "?"),
+                "matches": is_match,
+            })
+
+        newest = find_newest_in_series(products, series_asin)
         store.touch_series_checked(series_asin)
 
         if newest is None:
+            debug_info["reason"] = "No products matched series_asin"
             return JSONResponse({
                 "status": "no_new_releases",
                 "next_book": None,
                 "last_checked": int(time.time()),
+                "debug": debug_info,
             })
 
         release = _product_to_release(newest, series_asin, series["series_name"])
         is_new = store.upsert_release(**release)
+        debug_info["chosen"] = {
+            "title": release["title"],
+            "sequence": release["sequence"],
+            "release_date": release["release_date"],
+            "is_new": is_new,
+        }
 
         if is_new:
             store.update_series_last_seen(
@@ -3465,12 +3497,15 @@ def radar_check_single_series(series_asin: str):
             },
             "last_checked": int(time.time()),
             "is_new": is_new,
+            "debug": debug_info,
         })
     except Exception as e:
+        import traceback
         return JSONResponse({
             "status": "error",
             "error": str(e),
             "last_checked": int(time.time()),
+            "debug": {"traceback": traceback.format_exc()},
         })
 
 

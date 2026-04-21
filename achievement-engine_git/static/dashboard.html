@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Listener's Journal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/dashboard.css?v=1">
+</head>
+<body>
+
+<div id="cursorTooltip" class="custom-tooltip">Tooltip</div>
+
+<nav class="nav-bar">
+    <a href="/" class="nav-title">The Listener's Sanctum</a>
+    <div>
+        <a href="/journal" class="active">Journal</a>
+        <a href="/champions">Leaderboard</a>
+        <a href="/roster">Roster</a>
+        <a href="/timeline">Timeline</a>
+        <a href="/archives">Stats</a>
+        <a href="/playlist">Playlist</a>
+        <a href="/tier">Tier List</a>
+        <a href="/loot">Loot</a>
+        <a href="/quests">Quests</a>
+        </div>
+        </nav>
+<div class="layout-anchor">
+
+    <div class="side-tabs-container">
+        <div class="side-tab active" onclick="setFilter('all', this)">
+            <span class="side-tab-icon">❖</span><span class="side-tab-label">All Records</span>
+        </div>
+        <div class="side-tab" onclick="setFilter('recommended', this)">
+            <span class="side-tab-icon">★</span><span class="side-tab-label">Recommended</span>
+        </div>
+        <div class="side-tab" onclick="setFilter('near', this)">
+            <span class="side-tab-icon">⏳</span><span class="side-tab-label">Near Comp.</span>
+        </div>
+        <div class="side-tab" onclick="setFilter('earned', this)">
+            <span class="side-tab-icon">✔</span><span class="side-tab-label">Completed</span>
+        </div>
+        <div class="side-tab" onclick="setFilter('unearned', this)">
+            <span class="side-tab-icon">🔒</span><span class="side-tab-label">Locked</span>
+        </div>
+    </div>
+
+    <div class="right-tabs-container" id="userTabShelf"></div>
+
+    <div class="main-window">
+
+        <!-- Mobile user strip (hidden on desktop) -->
+        <div class="mobile-user-strip" id="mobileUserStrip"></div>
+
+        <!-- Mobile filter bar (hidden on desktop) -->
+        <div class="mobile-filter-bar" id="mobileFilterBar">
+            <div class="mobile-filter-btn active" onclick="mobileSetFilter('all', this)">All</div>
+            <div class="mobile-filter-btn" onclick="mobileSetFilter('recommended', this)">★ Rec</div>
+            <div class="mobile-filter-btn" onclick="mobileSetFilter('near', this)">⏳ Near</div>
+            <div class="mobile-filter-btn" onclick="mobileSetFilter('earned', this)">✔ Done</div>
+            <div class="mobile-filter-btn" onclick="mobileSetFilter('unearned', this)">🔒 Locked</div>
+            <div class="mobile-sidebar-toggle" onclick="toggleMobileSidebar()">☰ Filters</div>
+        </div>
+
+        <!-- Sidebar overlay for mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+        <div style="display:flex;flex:1;overflow:hidden;">
+        <div class="sidebar">
+            <div class="search-container">
+                <input type="text" id="searchBox" class="vintage-input" placeholder="Search..." oninput="handleSearch()">
+            </div>
+
+            <div class="rarity-row">
+                <div class="rarity-icon r-all active" data-rarity="All" onclick="toggleRarity(null, this)">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h18v-2H3v2zm0-7v2h18V6H3zm0 12h18v-2H3v2z"/></svg>
+                </div>
+                <div class="rarity-icon r-common" data-rarity="Common" onclick="toggleRarity('Common', this)">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+                </div>
+                <div class="rarity-icon r-uncommon" data-rarity="Uncommon" onclick="toggleRarity('Uncommon', this)">
+                    <svg viewBox="0 0 24 24"><path d="M12 4l-10 16h20z"/></svg>
+                </div>
+                <div class="rarity-icon r-rare" data-rarity="Rare" onclick="toggleRarity('Rare', this)">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l10 10-10 10-10-10z"/></svg>
+                </div>
+                <div class="rarity-icon r-epic" data-rarity="Epic" onclick="toggleRarity('Epic', this)">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5v-10z"/></svg>
+                </div>
+                <div class="rarity-icon r-legendary" data-rarity="Legendary" onclick="toggleRarity('Legendary', this)">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5-6.5 4.5 2-7-5.5-4h7z"/></svg>
+                </div>
+            </div>
+
+            <div class="sidebar-header">Categories</div>
+            <div id="categoryList" class="category-list">
+                <div class="loader" style="font-size:0.8rem">Loading...</div>
+            </div>
+        </div>
+
+        <div class="content-pane">
+            <div class="content-header">
+                <h1 id="pageTitle">All Records</h1>
+                <div class="stats-display">
+                    <span class="points-total" id="userPoints">0</span>
+                    <span>Achievement Points</span>
+                </div>
+            </div>
+
+            <div class="scroll-container">
+                <div id="achievementList">
+                    <div class="loader">Opening tome...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="/static/dashboard.js?v=1"></script>
+</body>
+</html>

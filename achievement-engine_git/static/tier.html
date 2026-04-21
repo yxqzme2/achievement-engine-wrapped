@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LitRPG Tier List Maker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="/static/tier.css?v=4">
+</head>
+
+<body>
+  <nav class="nav-bar">
+    <a href="/" class="nav-title">The Listener's Sanctum</a>
+    <div>
+      <a href="/journal">Journal</a>
+      <a href="/champions">Leaderboard</a>
+      <a href="/roster">Roster</a>
+      <a href="/timeline">Timeline</a>
+      <a href="/archives">Stats</a>
+      <a href="/playlist">Playlist</a>
+      <a href="/tier" class="active">Tier List</a>
+      <a href="/loot">Loot</a>
+      <a href="/quests">Quests</a>
+      </div>
+      </nav>  <img id="picked-ghost" alt="" />
+
+  <div class="btn-container">
+    <div class="search-wrap"><input type="text" id="search-bar" placeholder="Search covers..." oninput="filterLibrary()" autocomplete="off" /><div id="search-results" role="listbox" aria-label="Search results">  <div class="sr-head">    <div class="sr-title">Matches</div>    <div class="sr-hint">Click to pick up • Esc to close</div>  </div>  <div class="sr-grid" id="sr-grid"></div></div></div>
+    <button onclick="saveCurrentList()">💾 Save List</button>
+    <button onclick="generateShareLink()">🔗 Share Link</button>
+    <button onclick="exportTierList()">📸 Save Image</button>
+    <button id="sync-btn" onclick="syncCovers()">🔄 Sync Covers</button>
+    <button onclick="clearProgress()" style="background:#6b2020;border-color:#8b3030;">Reset</button>
+    <span id="status" style="margin-left:auto; font-size:12px; color:var(--tab-text); user-select:none; font-family:var(--font-title);">Ready</span>
+  </div>
+
+  <div class="tier-workspace">
+    <div id="capture-area">
+      <h2 style="text-align:center; margin:10px 0; color:var(--ink);">LITRPG SERIES RANKINGS</h2>
+      <div id="board"></div>
+    </div>
+
+    <div class="sidebar-right">
+      <div class="sidebar-header-title">SAVED LISTS</div>
+      <div id="saved-lists" class="saved-lists-container">
+        <!-- Buttons will be injected here -->
+        <div class="no-saves">No saved lists yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="library-section">
+    <h3>Library <span style="font-size:12px; color:#888;">(Right-click or long-press to send back)</span></h3>
+    <div id="library" class="items"></div>
+  </div>
+
+  <div id="save-modal" class="modal-backdrop" style="display:none;">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="save-modal-title">
+      <div class="modal-title" id="save-modal-title">Secure Save</div>
+      <label class="modal-label" for="save-user-select">User</label>
+      <select id="save-user-select" class="modal-input"></select>
+      <label class="modal-label" for="save-list-name">List Name</label>
+      <input id="save-list-name" class="modal-input" type="text" maxlength="80" placeholder="Tier list name" />
+      <label class="modal-label" for="save-user-pin">PIN</label>
+      <input id="save-user-pin" class="modal-input" type="password" inputmode="numeric" maxlength="20" placeholder="Enter user PIN" />
+      <div class="modal-actions">
+        <button type="button" onclick="closeSaveModal()">Cancel</button>
+        <button type="button" onclick="confirmSaveModal()">Save</button>
+      </div>
+    </div>
+  </div>
+  <script src="/static/tier.js?v=6"></script>
+</body>
+</html>
+
+
+
+

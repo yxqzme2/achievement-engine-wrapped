@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="42%" r="70%">
+      <stop offset="0%" stop-color="#1e1a04"/>
+      <stop offset="100%" stop-color="#08080e"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5e090"/>
+      <stop offset="50%" stop-color="#c9a84c"/>
+      <stop offset="100%" stop-color="#8a6e2a"/>
+    </linearGradient>
+    <linearGradient id="goldV" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0d878"/>
+      <stop offset="100%" stop-color="#a07828"/>
+    </linearGradient>
+    <linearGradient id="barFill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c9a84c"/>
+      <stop offset="100%" stop-color="#f0d070"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowStrong" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="roundClip">
+      <rect width="512" height="512" rx="80"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="url(#bgGrad)"/>
+
+  <!-- Subtle inner vignette -->
+  <rect width="512" height="512" rx="80" fill="none" stroke="#c9a84c" stroke-width="2.5" opacity="0.35"/>
+  <rect x="14" y="14" width="484" height="484" rx="68" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.15"/>
+
+  <!-- Corner brackets -->
+  <path d="M46 90 L46 46 L90 46" fill="none" stroke="#c9a84c" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+  <path d="M422 46 L466 46 L466 90" fill="none" stroke="#c9a84c" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+  <path d="M46 422 L46 466 L90 466" fill="none" stroke="#c9a84c" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+  <path d="M422 466 L466 466 L466 422" fill="none" stroke="#c9a84c" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- ── OPEN BOOK ── -->
+  <!-- Left page -->
+  <path d="M256 148 C220 142 162 152 118 170 L108 355 C152 334 216 326 256 336 Z"
+        fill="#0f1120" stroke="url(#gold)" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Right page -->
+  <path d="M256 148 C292 142 350 152 394 170 L404 355 C360 334 296 326 256 336 Z"
+        fill="#0f1120" stroke="url(#gold)" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Spine -->
+  <line x1="256" y1="148" x2="256" y2="336" stroke="url(#goldV)" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
+
+  <!-- Text lines — left page -->
+  <line x1="148" y1="205" x2="238" y2="198" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="145" y1="226" x2="235" y2="219" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.40"/>
+  <line x1="142" y1="247" x2="232" y2="240" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/>
+  <line x1="139" y1="268" x2="229" y2="261" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.30"/>
+  <line x1="136" y1="289" x2="200" y2="283" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.25"/>
+
+  <!-- Text lines — right page -->
+  <line x1="274" y1="198" x2="364" y2="205" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.45"/>
+  <line x1="277" y1="219" x2="367" y2="226" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.40"/>
+  <line x1="280" y1="240" x2="370" y2="247" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/>
+  <line x1="283" y1="261" x2="373" y2="268" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.30"/>
+  <line x1="286" y1="283" x2="350" y2="289" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.25"/>
+
+  <!-- ── SWORD overlaid on spine ── -->
+  <!-- Blade -->
+  <rect x="251" y="90" width="10" height="185" rx="3" fill="url(#goldV)" filter="url(#glow)"/>
+  <!-- Tip -->
+  <polygon points="256,68 251,92 261,92" fill="url(#gold)" filter="url(#glow)"/>
+  <!-- Cross-guard -->
+  <rect x="224" y="264" width="64" height="11" rx="5.5" fill="url(#gold)" filter="url(#glow)"/>
+  <!-- Grip -->
+  <rect x="252.5" y="275" width="7" height="34" rx="3" fill="#7a5c20"/>
+  <!-- Pommel -->
+  <ellipse cx="256" cy="313" rx="10" ry="7" fill="url(#gold)" filter="url(#glow)"/>
+
+  <!-- ── XP BAR ── -->
+  <!-- Track -->
+  <rect x="96" y="374" width="320" height="18" rx="9" fill="#0c0e18"/>
+  <rect x="96" y="374" width="320" height="18" rx="9" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.4"/>
+  <!-- Fill — ~70% -->
+  <rect x="96" y="374" width="224" height="18" rx="9" fill="url(#barFill)" opacity="0.9"/>
+  <!-- Shine -->
+  <rect x="102" y="376" width="100" height="5" rx="2.5" fill="white" opacity="0.12"/>
+
+  <!-- XP label -->
+  <text x="322" y="387" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="11" font-weight="bold" fill="#c9a84c" opacity="0.7" letter-spacing="2">XP</text>
+
+  <!-- ── LEVEL BADGE ── -->
+  <polygon points="256,406 266,418 256,430 246,418" fill="url(#gold)" filter="url(#glowStrong)"/>
+
+  <!-- ── TITLE ── -->
+  <text x="256" y="464" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="28" font-weight="bold" letter-spacing="7"
+        fill="url(#gold)" filter="url(#glow)" opacity="0.95">LitRPG</text>
+
+  <!-- Top diamond pip -->
+  <polygon points="256,106 261,114 256,122 251,114" fill="url(#gold)" filter="url(#glowStrong)" opacity="0.6"/>
+</svg>

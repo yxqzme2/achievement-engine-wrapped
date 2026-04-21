@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Administrator Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --bg-dark: #050505;
+            --card-bg: #111;
+            --text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+		header {
+			background: #111;
+			padding: 15px;
+			border-bottom: 2px solid #00f2ff; /* Using the hex for neon-blue */
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%; /* Ensures it spans the full width */
+			box-sizing: border-box;
+		}
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0;
+            color: var(--neon-blue);
+          }
+
+        .admin-nav {
+            width: 100%;
+            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+            border-bottom: 1px solid var(--neon-blue, var(--system-blue, #00f2ff));
+            box-shadow: 0 0 12px rgba(0, 242, 255, 0.16);
+        }
+
+		.admin-nav-inner {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 10px 14px;
+			display: flex;
+			justify-content: center; /* This centers the items horizontally */
+			gap: 8px;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+        .admin-nav a {
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #9ad8df;
+            padding: 6px 10px;
+            border: 1px solid #2b4448;
+            transition: all 0.2s ease;
+        }
+
+        .admin-nav a.brand {
+            color: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: transparent;
+            padding-left: 0;
+            margin-right: 4px;
+        }
+
+        .admin-nav a:hover {
+            color: #001215;
+            background: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+        }
+
+        .admin-nav a.active {
+            color: #001215;
+            background: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.35);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .admin-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue));
+            animation: borderFlow 3s linear infinite;
+        }
+
+        @keyframes borderFlow {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .btn-ops {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+        }
+
+        .btn-ops:hover {
+            background: var(--neon-pink);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        .status-footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #444;
+            border-top: 1px solid #222;
+            padding-top: 20px;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+            opacity: 0.1;
+            position: fixed;
+            bottom: 100%;
+            left: 0;
+            pointer-events: none;
+            animation: scanline 10s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
+        }
+    
+
+    </style>
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="admin-nav-inner">
+            <a href="/admin" class="brand">System Admin</a>
+            <a href="/admin">Hub</a>
+            <a href="/admin/forge">Forge</a>
+            <a href="/admin/loot">Armory</a>
+            <a href="/admin/quest">Bounties</a>
+            <a href="/admin/template" class="active">Template</a>
+            <a href="/admin/ops">Ops</a>
+        </div>
+    </nav>
+
+    <div class="scanline"></div>
+
+    <header>
+        <h1>System Command Deck</h1>
+        <div style="font-size: 0.7rem; color: var(--neon-blue); margin-top: 5px;">// STATUS: CONNECTED // LEVEL 0 ACCESS //</div>
+    </header>
+
+    <div class="container">
+        <!-- Achievement Forge -->
+        <div class="admin-card">
+            <div>
+                <span class="card-icon">⚡</span>
+                <h2>Achievement Forge</h2>
+                <p>Construct new milestones and validate reward triggers for the global achievement database.</p>
+            </div>
+            <a href="/admin/forge" class="btn">[ OPEN FORGE ]</a>
+        </div>
+
+        <!-- Item Armory -->
+        <div class="admin-card">
+            <div>
+                <span class="card-icon">⚔️</span>
+                <h2>Item Armory</h2>
+                <p>Manually forge new gear pieces. Define stats, rarity, and flavor text for the loot compendium.</p>
+            </div>
+            <a href="/admin/loot" class="btn">[ ENTER ARMORY ]</a>
+        </div>
+
+        <!-- Bounty Board -->
+        <div class="admin-card">
+            <div>
+                <span class="card-icon">📜</span>
+                <h2>Bounty Board</h2>
+                <p>Issue new directives and quests. Link book completions to massive XP yields and rewards.</p>
+            </div>
+            <a href="/admin/quest" class="btn">[ POST QUESTS ]</a>
+        </div>
+
+        <!-- Template Manager -->
+        <div class="admin-card">
+            <div>
+                <span class="card-icon">📝</span>
+                <h2>Template Manager</h2>
+                <p>Define global flavor text templates and dynamic description variables for system content.</p>
+            </div>
+            <a href="/admin/template" class="btn">[ EDIT TEMPLATES ]</a>
+        </div>
+
+        <!-- System Core -->
+        <div class="admin-card">
+            <div>
+                <span class="card-icon">🌀</span>
+                <h2>System Core</h2>
+                <p>Execute maintenance protocols. Run audits, library discovery, and database rebalancing scripts.</p>
+            </div>
+            <a href="/admin/ops" class="btn btn-ops">[ ACCESS CORE ]</a>
+        </div>
+
+    </div>
+    <div class="status-footer">
+        PROJECT: ACHIEVEMENT ENGINE // VERSION: 2.0.0-PROTOTYPE // AUTH: UNRESTRICTED
+    </div>
+
+</body>
+</html>

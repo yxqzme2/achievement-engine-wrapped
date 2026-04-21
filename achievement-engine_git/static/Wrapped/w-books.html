@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="/static/Wrapped/w-shared.css?v=4">
+  <link rel="stylesheet" href="/static/Wrapped/w-books.css?v=6">
+</head>
+<body>
+<div id="screen-fx"></div>
+<div id="progress-bar-row"></div>
+<div class="s3-grid-bg"></div>
+
+<div id="combat-ui">
+  <div class="hp-bar-container" id="boss-hp-container">
+    <div class="hp-label">💀💀 SYSTEM ADMINISTRATOR [ELITE✚✚]</div>
+    <div class="hp-fill" id="boss-hp-fill"></div>
+    <div class="hp-text" id="boss-hp-text">0 / 15,000</div>
+  </div>
+  <div id="user-stats-bar"></div>
+  <div class="hp-bar-container" id="user-hp-container">
+    <div id="user-shield"></div>
+    <div class="hp-label" id="hp-user-label">LISTENER</div>
+    <div class="hp-fill" id="user-hp-fill"></div>
+    <div class="hp-text" id="user-hp-text">0 / 1,500</div>
+  </div>
+</div>
+
+<canvas id="fireworks-canvas"></canvas>
+
+<div id="slide-content">
+  <div class="glass s3-content">
+    <div class="s3-label">The Arsenal</div>
+    <div class="s3-desc" id="s3-status">System charging quests completed...</div>
+    <div class="s3-covers" id="s-books-covers"></div>
+    <div class="s3-combat-text" id="s-books-combat-text">?-HIT COMBO!</div>
+  </div>
+</div>
+
+<div id="spine-tooltip"></div>
+<div id="tap-cue">tap anywhere to continue →</div>
+
+<script src="/static/Wrapped/w-shared.js?v=4"></script>
+<script src="/static/Wrapped/w-books.js?v=10"></script>
+</body>
+</html>

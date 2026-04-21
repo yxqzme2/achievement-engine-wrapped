@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="/static/Wrapped/w-shared.css?v=4">
+  <link rel="stylesheet" href="/static/Wrapped/w-author.css?v=4">
+</head>
+<body>
+<div id="screen-fx"></div>
+<div id="progress-bar-row"></div>
+<canvas id="stars-canvas" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+<div class="s4-landscape"></div>
+
+<div id="combat-ui">
+  <div class="hp-bar-container" id="boss-hp-container">
+    <div class="hp-label">💀💀 SYSTEM ADMINISTRATOR [ELITE✚✚]</div>
+    <div class="hp-fill" id="boss-hp-fill"></div>
+    <div class="hp-text" id="boss-hp-text">0 / 15,000</div>
+  </div>
+  <div id="user-stats-bar"></div>
+  <div class="hp-bar-container" id="user-hp-container">
+    <div id="user-shield"></div>
+    <div class="hp-label" id="hp-user-label">LISTENER</div>
+    <div class="hp-fill" id="user-hp-fill"></div>
+    <div class="hp-text" id="user-hp-text">0 / 1,500</div>
+  </div>
+</div>
+
+<canvas id="fireworks-canvas"></canvas>
+
+<div id="s4-summon-center" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:85;text-align:center;opacity:0;transition:opacity 0.5s;padding:60px 28px;">
+  <div style="font-family:var(--font-t);font-size:3rem;color:white;letter-spacing:5px;text-transform:uppercase;margin-bottom:40px;">Double Summon!!</div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:20px;flex-wrap:wrap;">
+    <span style="font-family:var(--font-b);font-size:1.2rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;">your top author ➡</span>
+    <span id="s4-author-name" style="font-family:var(--font-t);font-size:clamp(2rem,5vw,4rem);font-weight:900;color:#00e5ff;text-shadow:0 0 20px rgba(0,229,255,0.6);line-height:1;">---</span>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;">
+    <span id="s4-narrator-name" style="font-family:var(--font-t);font-size:clamp(2rem,5vw,4rem);font-weight:900;color:#ffaa00;text-shadow:0 0 20px rgba(255,170,0,0.6);line-height:1;">---</span>
+    <span style="font-family:var(--font-b);font-size:1.2rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;">⬅ your top narrator</span>
+  </div>
+</div>
+
+<div class="rpg-dialogue-left" id="s4-rpg-ui-left">
+  <div class="rpg-nameplate" id="s4-rpg-nameplate-left" style="color:#00e5ff;border-color:#00e5ff;">---</div>
+  <div class="rpg-box" style="border-color:#00e5ff;box-shadow:0 10px 30px rgba(0,0,0,0.8),inset 0 0 15px rgba(0,229,255,0.1);">
+    <span class="rpg-text" id="s4-rpg-text-left"></span><span class="rpg-cursor" style="background:#00e5ff;"></span>
+  </div>
+</div>
+
+<div class="rpg-dialogue-right" id="s4-rpg-ui-right">
+  <div class="rpg-nameplate" id="s4-rpg-nameplate-right" style="color:#ffaa00;border-color:#ffaa00;">---</div>
+  <div class="rpg-box" style="border-color:#ffaa00;box-shadow:0 10px 30px rgba(0,0,0,0.8),inset 0 0 15px rgba(255,170,0,0.1);">
+    <span class="rpg-text" id="s4-rpg-text-right"></span><span class="rpg-cursor" style="background:#ffaa00;"></span>
+  </div>
+</div>
+
+<div class="energy-projectile proj-left"  id="proj-left"></div>
+<div class="energy-projectile proj-right" id="proj-right"></div>
+
+<div id="tap-cue">tap anywhere to continue →</div>
+
+<script src="/static/Wrapped/w-shared.js?v=4"></script>
+<script src="/static/Wrapped/w-author.js?v=4"></script>
+</body>
+</html>

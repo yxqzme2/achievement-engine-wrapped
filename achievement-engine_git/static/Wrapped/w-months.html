@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="/static/Wrapped/w-shared.css?v=4">
+  <link rel="stylesheet" href="/static/Wrapped/w-months.css?v=4">
+</head>
+<body>
+<div id="screen-fx"></div>
+<div id="progress-bar-row"></div>
+<canvas id="grass-canvas" style="position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
+
+<div id="combat-ui">
+  <div class="hp-bar-container" id="boss-hp-container">
+    <div class="hp-label">💀💀 SYSTEM ADMINISTRATOR [ELITE✚✚]</div>
+    <div class="hp-fill" id="boss-hp-fill"></div>
+    <div class="hp-text" id="boss-hp-text">0 / 15,000</div>
+  </div>
+  <div id="user-stats-bar"></div>
+  <div class="hp-bar-container" id="user-hp-container">
+    <div id="user-shield"></div>
+    <div class="hp-label" id="hp-user-label">LISTENER</div>
+    <div class="hp-fill" id="user-hp-fill"></div>
+    <div class="hp-text" id="user-hp-text">0 / 1,500</div>
+  </div>
+</div>
+
+<canvas id="fireworks-canvas"></canvas>
+
+<div id="slide-content">
+  <div class="glass s5-content">
+    <div class="s5-label s5-hide" id="s5-l1">The Retaliation</div>
+    <div class="s5-desc s5-hide" id="s5-l2" style="font-style:italic;color:var(--gold-lt);margin-bottom:10px;">Did you really think it would be that easy?</div>
+    <div class="s5-desc s5-hide" id="s5-l3" style="letter-spacing:3px;font-weight:bold;text-transform:uppercase;color:#ff2a2a;">The System Administrator awakens.</div>
+    <div class="s5-month-name s5-hide" id="s5-l4">???</div>
+    <div class="s5-desc s5-hide" id="s5-l5" style="font-size:1.1rem;margin-top:10px;">The logs have been reviewed. Your peak month stands accused, and the System Administrator delivers judgment with <span style="color:#ff2a2a;font-weight:900;">FULL FORCE</span>.</div>
+    <div class="s5-desc s5-hide" id="s5-l6" style="margin-top:20px;border-top:1px solid rgba(212,175,55,0.2);padding-top:15px;font-size:1.15rem;color:#00e5ff;">Shields high, but your defenses strain under the coming strike.</div>
+  </div>
+</div>
+
+<div id="tap-cue">tap anywhere to continue →</div>
+
+<script src="/static/Wrapped/w-shared.js?v=4"></script>
+<script src="/static/Wrapped/w-months.js?v=5"></script>
+</body>
+</html>

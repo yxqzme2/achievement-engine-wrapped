@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Core - Operations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --neon-blue: #00f2ff;
+        --bg-dark: #050505;
+        --card-bg: #111;
+        --text: #e0e0e0;
+    }
+
+    body {
+        background-color: var(--bg-dark);
+        color: var(--text);
+        font-family: 'Share Tech Mono', monospace;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background: #111;
+        padding: 15px;
+        border-bottom: 2px solid var(--neon-blue);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        margin: 0;
+        color: var(--neon-blue);
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    .op-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .op-card {
+        background: #151515;
+        border: 1px solid #333;
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .op-card:hover {
+        border-color: var(--neon-blue);
+    }
+
+    h3 {
+        margin-top: 0;
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    .btn-run {
+        width: 100%;
+        padding: 10px;
+        background: transparent;
+        border: 1px solid var(--neon-blue);
+        color: var(--neon-blue);
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .btn-run:hover {
+        background: var(--neon-blue);
+        color: #000;
+    }
+
+    .btn-run:disabled {
+        border-color: #444;
+        color: #444;
+        cursor: not-allowed;
+    }
+
+    #console {
+        background: #000;
+        border: 1px solid #333;
+        padding: 20px;
+        height: 400px;
+        overflow-y: auto;
+        font-size: 0.9rem;
+        color: #00ff00;
+        white-space: pre-wrap;
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+    }
+
+    .console-header {
+        display: flex;
+        justify-content: space-between;
+        background: #222;
+        padding: 5px 15px;
+        font-size: 0.7rem;
+        border: 1px solid #333;
+        border-bottom: none;
+    }
+
+    .nav-back {
+        color: var(--neon-blue);
+        text-decoration: none;
+        font-size: 0.8rem;
+    }
+
+    .status-running {
+        color: var(--neon-blue);
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+
+    .admin-nav {
+        width: 100%;
+        background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+        border-bottom: 1px solid var(--neon-blue, var(--system-blue, #00f2ff));
+        box-shadow: 0 0 12px rgba(0, 242, 255, 0.16);
+    }
+
+    .admin-nav-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px 14px;
+        display: flex;
+        justify-content: center; /* This centers the items horizontally */
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .admin-nav a {
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #9ad8df;
+        padding: 6px 10px;
+        border: 1px solid #2b4448;
+        transition: all 0.2s ease;
+    }
+
+    .admin-nav a.brand {
+        color: var(--neon-blue, var(--system-blue, #00f2ff));
+        border-color: transparent;
+        padding-left: 0;
+        margin-right: 4px;
+    }
+
+    .admin-nav a:hover {
+        color: #001215;
+        background: var(--neon-blue, var(--system-blue, #00f2ff));
+        border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+    }
+
+    .admin-nav a.active {
+        color: #001215;
+        background: var(--neon-blue, var(--system-blue, #00f2ff));
+        border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+        box-shadow: 0 0 10px rgba(0, 242, 255, 0.35);
+    }
+    </style>
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="admin-nav-inner">
+            <a href="/admin" class="brand">System Admin</a>
+            <a href="/admin">Hub</a>
+            <a href="/admin/forge">Forge</a>
+            <a href="/admin/loot">Armory</a>
+            <a href="/admin/quest">Bounties</a>
+            <a href="/admin/template" class="active">Template</a>
+            <a href="/admin/ops">Ops</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>SYSTEM CORE // OPERATIONS</h1>
+        <a href="/admin" class="nav-back">[ RETURN TO HUB ]</a>
+    </header>
+
+    <div class="container">
+        <div class="op-grid">
+            <!-- Library Discovery -->
+            <div class="op-card">
+                <h3>Library Discovery</h3>
+                <p style="font-size: 0.7rem; color: #666;">Scans ABS for new books and series to generate discovery reports.<br></p>
+                <button class="btn-run" onclick="runScript('library_discovery', this)">START DISCOVERY</button>
+            </div>
+
+            <!-- Generate System Content -->
+            <div class="op-card">
+                <h3>Generate System Content</h3>
+                <p style="font-size: 0.7rem; color: #666;">Generates new achievement and gear content for newly discovered books and series.<br><span style="color: red;">Run Discovery First!</span></p>
+                <button class="btn-run" onclick="runScript('generate_system_content', this)">GENERATE CONTENT</button>
+            </div>
+
+            <!-- Achievement Summary -->
+            <div class="op-card">
+                <h3>Quick Achievement Summary</h3>
+                <p style="font-size: 0.7rem; color: #666;">Overview of achievement and gear counts for all users.<br></p>
+                <button class="btn-run" onclick="runScript('achievement_summary', this)">RUN SUMMARY</button>
+            </div>
+
+            <!-- System Chronicle -->
+            <div class="op-card">
+                <h3>System Chronicle</h3>
+                <p style="font-size: 0.7rem; color: #666;">Timeline of recent AI awards, loot claims, and system proclamations.</p>
+                <button class="btn-run" style="border-color: var(--neon-blue); color: var(--neon-blue);" onclick="runScript('system_chronicle', this)">VIEW CHRONICLE</button>
+            </div>
+
+            <!-- System Sanity -->
+            <div class="op-card">
+                <h3>System Sanity Check</h3>
+                <p style="font-size: 0.7rem; color: #666;">Pre-flight integrity scan for broken icons, duplicate IDs, and orphaned records.</p>
+                <button class="btn-run" style="border-color: var(--neon-blue); color: var(--neon-blue);" onclick="runScript('system_sanity', this)">RUN SANITY CHECK</button>
+            </div>
+
+            <!-- Fix Broken Icons -->
+            <div class="op-card">
+                <h3>Repair Broken Icons</h3>
+                <p style="font-size: 0.7rem; color: #666;">Automatically reassign missing icons to valid random ones based on gear slot.</p>
+                <button class="btn-run" style="border-color: var(--neon-blue); color: var(--neon-blue);" onclick="runScript('fix_icons', this)">FIX BROKEN ICONS</button>
+            </div>
+
+            <!-- Generate New Loot -->
+            <div class="op-card">
+                <h3>Generate New Loot</h3>
+                <p style="font-size: 0.7rem; color: #666;">Will generate 10 new loot items randomly following the implemented rules and flavor from the csv files.</p>
+                <button class="btn-run" style="border-color: var(--neon-blue); color: var(--neon-blue);" onclick="runScript('generate_10', this)">Generate Loot</button>
+            </div>
+
+            <!-- Manual System Poll -->
+            <div class="op-card">
+                <h3>Manual System Poll</h3>
+                <p style="font-size: 0.7rem; color: #666;">Force the engine to run exactly one pass across all users right now<br>.</p>
+                <button class="btn-run" style="border-color: var(--neon-blue); color: var(--neon-blue);" onclick="triggerPoll(this)">TRIGGER POLL</button>
+            </div>
+        </div>
+
+        <div class="console-header">
+            <span>TERMINAL OUTPUT</span>
+            <span id="status-text">READY</span>
+        </div>
+        <div id="console">> System initialized. Waiting for input...</div>
+    </div>
+
+    <script>
+        const consoleEl = document.getElementById('console');
+        const statusEl = document.getElementById('status-text');
+
+        function log(msg, isError = false) {
+            const timestamp = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.style.color = isError ? '#ff0055' : '#00ff00';
+            div.textContent = `[${timestamp}] ${msg}`;
+            consoleEl.appendChild(div);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        async function runScript(scriptId, btn) {
+            if (!confirm(`Execute protocol: ${scriptId}?`)) return;
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "RUNNING...";
+            statusEl.textContent = "EXECUTING PROTOCOL...";
+            statusEl.classList.add('status-running');
+            
+            log(`Initiating ${scriptId}...`);
+
+            try {
+                const resp = await fetch(`/awards/api/admin/run-script/${scriptId}`, {
+                    method: 'POST'
+                });
+                const data = await resp.json();
+
+                if (data.ok) {
+                    log(`${scriptId} completed successfully.`);
+                    if (data.stdout) log(data.stdout);
+                } else {
+                    log(`ERROR: ${data.error || 'Execution failed.'}`, true);
+                    if (data.stderr) log(data.stderr, true);
+                }
+            } catch (e) {
+                log(`Communication failure: ${e.message}`, true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                statusEl.textContent = "READY";
+                statusEl.classList.remove('status-running');
+            }
+        }
+
+        async function triggerPoll(btn) {
+            if (!confirm("Initiate global system poll? This will recalculate all user inventories.")) return;
+            
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "POLLING...";
+            log("Initiating manual poll pass...");
+
+            try {
+                const resp = await fetch('/system/poll');
+                const text = await resp.text();
+                log(text);
+            } catch (e) {
+                log(`Poll failed: ${e.message}`, true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+

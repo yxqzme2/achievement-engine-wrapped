@@ -1,0 +1,37 @@
+The Master Prompt
+
+    "Build a Python-based 'Audible Series Tracker' as an extension of my Achievement-Engine project. The tool will poll a list of book series from my SQLite database, search the Audible Search API (internal endpoint) twice daily for new releases, and compare results against a last_notified_book record. If a new pre-order or release is found, it will generate a Google Calendar event (via Service Account) or an .ics feed and send a Discord notification via my existing webhook system. The entire process should be containerized and run as a background task within my FastAPI app on Unraid."
+
+
+The 3-Phase Checklist
+Phase 1: Data Strategy & Scraping (The Foundation)
+
+    [ ] Database Schema Update: Add a tracked_series table to state.db with columns: id, series_name, author, last_book_title, and last_release_date.
+
+    [ ] Audible Search Logic: Write a Python function using httpx or requests that hits the Audible search results page with sort=pubdate-desc-rank.
+
+    [ ] Parsing Engine: Use BeautifulSoup4 to extract the Title, Release Date, and Pre-order Status from the first 3 results.
+
+    [ ] Change Detection: Create logic to compare the "Newest Found" title against the last_book_title in SQLite to prevent duplicate alerts.
+
+Phase 2: Integration & Automation (The Plumbing)
+
+    [ ] Calendar Service: * Option A: Set up a Google Cloud Service Account and download the credentials.json.
+
+        Option B: (Easier) Write a function to update a static releases.ics file in your /data volume.
+
+    [ ] Task Scheduling: Add an apscheduler (Advanced Python Scheduler) or a FastAPI RepeatTask to trigger the check at 08:00 and 20:00.
+
+    [ ] Discord Webhook: Hook into your existing notification logic to post an embed when a new book is found (include the Audible cover art URL if possible).
+
+    [ ] API Endpoint: Create a simple FastAPI route (/series/add) so you can add new series to track directly from your HTML dashboard.
+
+Phase 3: Deployment & Testing (The Finish Line)
+
+    [ ] Environment Variables: Add AUDIBLE_REGION (e.g., .com or .co.uk) and CALENDAR_ID to your Docker template in Unraid.
+
+    [ ] Logging: Implement a log rotation to track successful polls and "No New Updates" status so you can monitor health from the Unraid log viewer.
+
+    [ ] Dry Run: Test with a known upcoming release (like a popular LitRPG title with a confirmed pre-order) to ensure the calendar entry populates correctly.
+
+    [ ] UI Integration: Add a "Upcoming Releases" tab to your Achievement-Engine dashboard to show a countdown to the next book.

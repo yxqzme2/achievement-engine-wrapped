@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement Forge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #2bdc8a;
+            --neon-red: #ff4d6d;
+            --neon-amber: #ffae42;
+            --bg-dark: #050505;
+            --card-bg: #111;
+            --border: #333;
+            --text: #e0e0e0;
+            --text-muted: #888;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .admin-nav {
+            width: 100%;
+            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+            border-bottom: 1px solid var(--neon-blue);
+            box-shadow: 0 0 12px rgba(0, 242, 255, 0.16);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .admin-nav a {
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #9ad8df;
+            padding: 6px 10px;
+            border: 1px solid #2b4448;
+            transition: all 0.2s ease;
+        }
+
+        .admin-nav a.brand {
+            color: var(--neon-blue);
+            border-color: transparent;
+            padding-left: 0;
+            margin-right: 4px;
+        }
+
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            color: #001215;
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.35);
+        }
+
+        .scanline {
+            width: 100%; height: 100px; z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255,255,255,0.05) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1; position: fixed; bottom: 100%; left: 0; pointer-events: none;
+            animation: scanline 10s linear infinite;
+        }
+
+        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
+
+        header {
+            background: #111;
+            padding: 15px;
+            border-bottom: 2px solid var(--neon-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0;
+            color: var(--neon-blue);
+        }
+
+        .nav-back {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: 40px auto;
+            padding: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            box-shadow: 0 0 22px rgba(0, 242, 255, 0.1);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            border-left: 3px solid var(--neon-purple);
+            padding-left: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) { .form-grid { grid-template-columns: 1fr; } }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select, textarea {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+        }
+
+        textarea { min-height: 80px; }
+
+        .btn-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .btn-secondary { border-color: #666; color: #888; }
+        .btn-secondary:hover { background: #333; color: #fff; box-shadow: none; }
+
+        .btn-save { border-color: var(--neon-green); color: var(--neon-green); }
+        .btn-save:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 15px var(--neon-green); }
+
+        .results { margin-top: 25px; }
+        .result-header {
+            padding: 15px; border: 1px solid var(--border); border-bottom: none;
+            background: #151515; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px;
+        }
+        .result-header.pass { color: var(--neon-green); border-top: 2px solid var(--neon-green); }
+        .result-header.fail { color: var(--neon-red); border-top: 2px solid var(--neon-red); }
+        .result-header.warn { color: var(--neon-amber); border-top: 2px solid var(--neon-amber); }
+
+        .result-body { background: #0a0a0a; border: 1px solid var(--border); padding: 20px; font-size: 0.95rem; }
+        .result-section h3 { margin-bottom: 10px; color: var(--neon-purple); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .check-item { display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px solid #111; }
+        .check-item:last-child { border-bottom: none; }
+        .check-ok .check-icon { color: var(--neon-green); }
+        .check-fail .check-icon { color: var(--neon-red); }
+        .check-warn .check-icon { color: var(--neon-amber); }
+        .check-info .check-icon { color: var(--neon-blue); }
+
+        .cat-hint { background: #0a0a0a; border: 1px solid var(--neon-purple); color: #aaa; padding: 15px; font-size: 0.9rem; line-height: 1.5; }
+        .cat-hint code { background: #222; color: var(--neon-blue); padding: 2px 5px; }
+
+        .json-preview {
+            background: #000; border: 1px solid #222; color: #0f0;
+            padding: 20px; white-space: pre-wrap; margin-top: 15px;
+            font-family: 'Share Tech Mono', monospace; font-size: 0.9rem;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.05);
+        }
+
+        .icon-input-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-icon-picker {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 10px 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-icon-picker:hover {
+            background: var(--neon-blue);
+            color: #001215;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.35);
+        }
+
+        .icon-hint {
+            margin-top: 6px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        #forge-icon-preview {
+            width: 52px;
+            height: 52px;
+            border: 1px solid #31444a;
+            margin-top: 8px;
+            background: #000;
+            object-fit: contain;
+        }
+
+        .icon-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.76);
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .icon-modal.hidden { display: none; }
+
+        .icon-modal-panel {
+            width: min(1100px, 96vw);
+            max-height: 88vh;
+            background: #0f0f0f;
+            border: 1px solid #2f2f2f;
+            box-shadow: 0 0 28px rgba(0, 242, 255, 0.16);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-modal-head {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #2b2b2b;
+            padding: 12px;
+            flex-wrap: wrap;
+        }
+
+        .icon-modal-head strong {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            letter-spacing: 1px;
+            font-size: 0.86rem;
+            text-transform: uppercase;
+        }
+
+        #icon-filter { min-width: 240px; }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 12px;
+            overflow: auto;
+        }
+
+        .icon-card {
+            border: 1px solid #2f2f2f;
+            background: #171717;
+            color: #9bbec4;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-height: 110px;
+            text-align: center;
+            font-size: 0.64rem;
+            line-height: 1.2;
+        }
+
+        .icon-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+            color: #fff;
+        }
+
+        .icon-card img {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            background: #000;
+            border: 1px solid #343434;
+        }
+
+        .icon-status {
+            border-top: 1px solid #2b2b2b;
+            color: #8aa3a8;
+            padding: 10px 12px;
+            font-size: 0.72rem;
+        }
+
+        .status-footer {
+            margin-top: 50px; text-align: center; font-size: 0.8rem;
+            color: #444; border-top: 1px solid #222; padding-top: 20px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+
+    <nav class="admin-nav">
+        <div class="admin-nav-inner">
+            <a href="/admin" class="brand">System Admin</a>
+            <a href="/admin">Hub</a>
+            <a href="/admin/forge">Forge</a>
+            <a href="/admin/loot">Armory</a>
+            <a href="/admin/quest">Bounties</a>
+            <a href="/admin/template" class="active">Template</a>
+            <a href="/admin/ops">Ops</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Achievement Forge</h1>
+        <a href="/admin" class="nav-back">[ RETURN TO HUB ]</a>
+    </header>
+
+    <div class="container">
+        <div class="subtitle">Validate achievement definitions against evaluator logic before adding them to <code>achievements.points.json</code>.</div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>System ID</label>
+                <input type="text" id="f-id" placeholder="e.g. books_finished_10">
+            </div>
+            <div class="form-group">
+                <label>Category Logic</label>
+                <select id="f-category">
+                    <option value="">-- Select Evaluator --</option>
+                    <option value="milestone_books">milestone_books — Total books finished</option>
+                    <option value="milestone_series">milestone_series — Total series completed</option>
+                    <option value="milestone_time">milestone_time — Total listening hours</option>
+                    <option value="milestone_yearly">milestone_yearly — Books in a calendar year</option>
+                    <option value="series_complete">series_complete — Specific series completion</option>
+                    <option value="series_shape">series_shape — Series size/shape patterns</option>
+                    <option value="duration">duration — Book length (over/under X hours)</option>
+                    <option value="author">author — Author-based (loyalty, diversity, self-narrated)</option>
+                    <option value="narrator">narrator — Narrator loyalty</option>
+                    <option value="title_keyword">title_keyword — Keywords in book titles</option>
+                    <option value="social">social — Multi-user overlap</option>
+                    <option value="behavior_time">behavior_time — Time-of-day listening</option>
+                    <option value="behavior_session">behavior_session — Session duration/behavior</option>
+                    <option value="behavior_streak">behavior_streak — Streaks & monthly consistency</option>
+                    <option value="meta">meta — Meta (earn X achievements)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Display Title</label>
+                <input type="text" id="f-title" placeholder="The Achievement Name">
+            </div>
+            <div class="form-group">
+                <label>Achievement (Technical Name)</label>
+                <input type="text" id="f-achievement" placeholder="Internal name string">
+            </div>
+            <div class="form-group full">
+                <label>Trigger Condition (Requirement Text)</label>
+                <textarea id="f-trigger" placeholder="e.g. Finish 10 books in the military-fantasy genre."></textarea>
+            </div>
+            <div class="form-group full" id="cat-hint-container">
+                <div class="cat-hint hidden" id="cat-hint"></div>
+            </div>
+            <div class="form-group full">
+                <label>Lore / Flavor Text</label>
+                <textarea id="f-flavor" placeholder="A witty or descriptive lore snippet..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>XP / Point Reward</label>
+                <input type="number" id="f-points" value="10" min="0">
+            </div>
+            <div class="form-group">
+                <label>Rarity Tier</label>
+                <select id="f-rarity">
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Epic">Epic</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Visual Icon Path</label>
+                <div class="icon-input-row">
+                    <input type="text" id="f-icon" placeholder="/icons/ach_generic.png" oninput="updateIconPreview()">
+                    <button type="button" class="btn-icon-picker" onclick="openIconPicker()">Browse Icons</button>
+                </div>
+                <div class="icon-hint">Choose from live <code>/data/icons</code> via picker or type a path manually.</div>
+                <img id="forge-icon-preview" src="" alt="Select Icon">
+            </div>
+            <div class="form-group">
+                <label>Logic Keywords (Optional)</label>
+                <input type="text" id="f-keywords" placeholder="dragon, magic, sword">
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn" onclick="validate()">[ RUN VALIDATION ]</button>
+            <button class="btn btn-secondary" onclick="copyJson()">[ COPY JSON ]</button>
+            <button class="btn btn-secondary" onclick="clearForm()">[ CLEAR FORGE ]</button>
+            <button class="btn btn-save hidden" id="btn-save" onclick="saveAchievement()">[ SAVE TO DATABASE ]</button>
+        </div>
+
+        <div id="results" class="results hidden"></div>
+        <div id="json-out" class="hidden"></div>
+    </div>
+
+    <div id="icon-modal" class="icon-modal hidden" onclick="handleIconModalBackdrop(event)">
+        <div class="icon-modal-panel">
+            <div class="icon-modal-head">
+                <strong>Icon Arsenal</strong>
+                <input type="text" id="icon-filter" placeholder="Filter icons..." oninput="renderIconGrid()">
+                <button type="button" class="btn-icon-picker" onclick="closeIconPicker()">Close</button>
+            </div>
+            <div id="icon-grid" class="icon-grid"></div>
+            <div id="icon-status" class="icon-status">Idle.</div>
+        </div>
+    </div>
+
+    <div class="status-footer">
+        PROJECT: ACHIEVEMENT ENGINE // VERSION: 2.0.0-PROTOTYPE // AUTH: UNRESTRICTED
+    </div>
+
+    <script>
+        let iconCatalog = [];
+        let iconsLoaded = false;
+
+        function normalizeIconPath(path) {
+            const raw = (path || '').trim();
+            if (!raw) return '';
+            if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
+            if (raw.startsWith('/icons/')) return raw;
+            if (raw.startsWith('icons/')) return '/' + raw;
+            return '/icons/' + raw.replace(/^\/+/, '');
+        }
+
+        function updateIconPreview() {
+            const src = normalizeIconPath(document.getElementById('f-icon').value);
+            const img = document.getElementById('forge-icon-preview');
+            if (!img) return;
+            if (!src) {
+                img.removeAttribute('src');
+                return;
+            }
+            img.src = src;
+            img.onerror = () => img.removeAttribute('src');
+        }
+
+        async function loadIcons() {
+            if (iconsLoaded) return;
+            const status = document.getElementById('icon-status');
+            if (status) status.textContent = 'Loading icons...';
+
+            const endpoints = ['/awards/api/icons', '/api/icons'];
+            let payload = null;
+            let lastErr = '';
+            let usedEndpoint = '';
+
+            for (const ep of endpoints) {
+                try {
+                    const response = await fetch(ep, { cache: 'no-store' });
+                    if (!response.ok) {
+                        lastErr = `${ep} -> HTTP ${response.status}`;
+                        continue;
+                    }
+                    const bodyText = await response.text();
+                    let data = null;
+                    try {
+                        data = JSON.parse(bodyText);
+                    } catch (_e) {
+                        lastErr = `${ep} -> invalid JSON`;
+                        continue;
+                    }
+
+                    if (Array.isArray(data)) payload = { icons: data };
+                    else if (data && Array.isArray(data.icons)) payload = data;
+                    else {
+                        lastErr = `${ep} -> unexpected payload`;
+                        continue;
+                    }
+
+                    usedEndpoint = ep;
+                    break;
+                } catch (e) {
+                    lastErr = `${ep} -> ${e.message}`;
+                }
+            }
+
+            iconCatalog = Array.isArray(payload?.icons) ? payload.icons : [];
+            iconsLoaded = true;
+
+            if (status) {
+                status.textContent = iconCatalog.length
+                    ? `Loaded ${iconCatalog.length} icons via ${usedEndpoint}.`
+                    : `No icons loaded. ${lastErr || 'No working endpoint.'}`;
+            }
+        }
+
+        function iconName(path) {
+            const idx = path.lastIndexOf('/');
+            return idx >= 0 ? path.slice(idx + 1) : path;
+        }
+
+        function renderIconGrid() {
+            const grid = document.getElementById('icon-grid');
+            const status = document.getElementById('icon-status');
+            const filterInput = document.getElementById('icon-filter');
+            if (!grid || !status || !filterInput) return;
+
+            const q = filterInput.value.trim().toLowerCase();
+            const list = iconCatalog.filter(p => p.toLowerCase().includes(q));
+
+            grid.innerHTML = '';
+            if (!list.length) {
+                status.textContent = iconCatalog.length ? 'No matches for that filter.' : status.textContent;
+                return;
+            }
+
+            const frag = document.createDocumentFragment();
+            for (const path of list) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'icon-card';
+                btn.title = path;
+                btn.onclick = () => selectIcon(path);
+
+                const img = document.createElement('img');
+                img.src = path;
+                img.alt = iconName(path);
+
+                const txt = document.createElement('span');
+                txt.textContent = iconName(path);
+
+                btn.appendChild(img);
+                btn.appendChild(txt);
+                frag.appendChild(btn);
+            }
+            grid.appendChild(frag);
+            status.textContent = `${list.length} shown${q ? ` (filtered from ${iconCatalog.length})` : ''}.`;
+        }
+
+        async function openIconPicker() {
+            const modal = document.getElementById('icon-modal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            await loadIcons();
+            renderIconGrid();
+            const fi = document.getElementById('icon-filter');
+            if (fi) fi.focus();
+        }
+
+        function closeIconPicker() {
+            const modal = document.getElementById('icon-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleIconModalBackdrop(event) {
+            if (event.target && event.target.id === 'icon-modal') closeIconPicker();
+        }
+
+        function selectIcon(path) {
+            const input = document.getElementById('f-icon');
+            if (!input) return;
+            input.value = path;
+            updateIconPreview();
+            closeIconPicker();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateIconPreview();
+        });
+    </script>
+
+    <script src="/static/tester.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Archives – Playlists</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/playlist.css?v=1">
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a href="/" class="nav-title">The Listener's Sanctum</a>
+    <div>
+      <a href="/journal">Journal</a>
+      <a href="/champions">Leaderboard</a>
+      <a href="/roster">Roster</a>
+      <a href="/timeline">Timeline</a>
+      <a href="/archives">Stats</a>
+      <a href="/playlist" class="active">Playlist</a>
+      <a href="/tier">Tier List</a>
+      <a href="/loot">Loot</a>
+      <a href="/quests">Quests</a>
+      </div>
+      </nav>
+  <div class="wrap">
+    <div class="page-header">
+      <h1>🎧 The Archives</h1>
+      <div class="subtitle">Active playlists and reading progress across the realm</div>
+      <div class="realm-stats" id="realm-stats"></div>
+    </div>
+    <div id="playlists"></div>
+  </div>
+
+  <script src="/static/playlist.js?v=1"></script>
+</body>
+</html>

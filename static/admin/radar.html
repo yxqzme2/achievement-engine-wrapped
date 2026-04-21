@@ -393,6 +393,11 @@ async function checkOneSeries(seriesAsin, btn) {
             showToast(`Error: ${data.error}`);
         }
 
+        // Log full response for debugging
+        if (data.debug) {
+            console.log(`[${seriesAsin}] Debug:`, data.debug);
+        }
+
         // Reload series list to update timestamps
         await loadTracked();
     } catch (e) {

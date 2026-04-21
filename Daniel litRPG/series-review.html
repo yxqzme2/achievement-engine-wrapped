@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LitRPG Series Log</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dim: #7a6228;
+    --bg-deep: #0a0a0f;
+    --bg-panel: #10121a;
+    --bg-section: #14172200;
+    --border: #2a2d3a;
+    --border-gold: #3a3010;
+    --text: #c8cad8;
+    --text-dim: #6a6c7a;
+    --glow: rgba(201,168,76,0.15);
+    --glow-strong: rgba(201,168,76,0.35);
+    --red: #c0392b;
+    --green: #27ae60;
+    --blue: #2980b9;
+    --purple: #8e44ad;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg-deep);
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(40,30,10,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(20,10,40,0.4) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 17px;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .header::before, .header::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 16px 0;
+  }
+  .header-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold-light);
+    text-shadow: 0 0 30px var(--glow-strong), 0 0 60px rgba(201,168,76,0.1);
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-top: 6px;
+  }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+  }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(201,168,76,0.04);
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-icon {
+    font-size: 18px;
+    filter: drop-shadow(0 0 6px var(--gold));
+  }
+  .panel-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .panel-body {
+    padding: 24px 20px;
+  }
+
+  /* ── FORM ELEMENTS ── */
+  .field-group {
+    margin-bottom: 22px;
+  }
+  .field-group:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+  label .hint {
+    font-family: 'Crimson Text', serif;
+    text-transform: none;
+    letter-spacing: 0;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-left: 6px;
+  }
+
+  input[type="text"], textarea, select {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 16px;
+    padding: 10px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: var(--gold-dim);
+    box-shadow: 0 0 0 2px var(--glow);
+  }
+  input[type="text"]::placeholder, textarea::placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.5;
+  }
+  select option {
+    background: #1a1c28;
+  }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 500px) { .row-2 { grid-template-columns: 1fr; } }
+
+  /* ── TIER SELECTOR ── */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  .tier-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 10px 4px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: rgba(255,255,255,0.02);
+    user-select: none;
+  }
+  .tier-btn:hover { border-color: var(--gold-dim); background: var(--glow); }
+  .tier-btn.selected {
+    border-color: var(--gold);
+    box-shadow: 0 0 12px var(--glow-strong), inset 0 0 12px var(--glow);
+  }
+  .tier-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .tier-label {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: center;
+  }
+  .tier-S .tier-letter { color: #ff6b35; }
+  .tier-A .tier-letter { color: #f0a500; }
+  .tier-B .tier-letter { color: #d4e157; }
+  .tier-C .tier-letter { color: #66bb6a; }
+  .tier-D .tier-letter { color: #26c6da; }
+  .tier-E .tier-letter { color: #7986cb; }
+  .tier-F .tier-letter { color: #ef5350; }
+  .tier-S.selected { background: rgba(255,107,53,0.1); border-color: #ff6b35; box-shadow: 0 0 14px rgba(255,107,53,0.3); }
+  .tier-A.selected { background: rgba(240,165,0,0.1); border-color: #f0a500; box-shadow: 0 0 14px rgba(240,165,0,0.3); }
+  .tier-B.selected { background: rgba(212,225,87,0.1); border-color: #d4e157; box-shadow: 0 0 14px rgba(212,225,87,0.3); }
+  .tier-C.selected { background: rgba(102,187,106,0.1); border-color: #66bb6a; box-shadow: 0 0 14px rgba(102,187,106,0.3); }
+  .tier-D.selected { background: rgba(38,198,218,0.1); border-color: #26c6da; box-shadow: 0 0 14px rgba(38,198,218,0.3); }
+  .tier-E.selected { background: rgba(121,134,203,0.1); border-color: #7986cb; box-shadow: 0 0 14px rgba(121,134,203,0.3); }
+  .tier-F.selected { background: rgba(239,83,80,0.1); border-color: #ef5350; box-shadow: 0 0 14px rgba(239,83,80,0.3); }
+
+  /* ── STAT RATING (1–5 crystal orbs) ── */
+  .stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .stat-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: 16px;
+  }
+  @media (max-width: 520px) { .stat-item { grid-template-columns: 1fr; } }
+  .stat-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .orbs {
+    display: flex;
+    gap: 8px;
+  }
+  .orb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .orb::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 4px;
+    width: 8px; height: 5px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    transform: rotate(-30deg);
+  }
+  .orb:hover { border-color: var(--gold-dim); transform: scale(1.1); }
+  .orb.filled {
+    background: radial-gradient(circle at 35% 35%, var(--gold-light), var(--gold), var(--gold-dim));
+    border-color: var(--gold);
+    box-shadow: 0 0 8px var(--glow-strong);
+  }
+  .orb.filled::after { background: rgba(255,255,255,0.5); }
+
+  /* ── TOGGLE BUTTON GROUP ── */
+  .toggle-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .toggle-btn {
+    padding: 8px 18px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.02);
+    color: var(--text-dim);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .toggle-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+  .toggle-btn.selected {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: var(--glow);
+    box-shadow: 0 0 8px var(--glow);
+  }
+
+  /* ── CHECKBOX GRID ── */
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .check-item:hover { border-color: var(--gold-dim); background: var(--glow); }
+  .check-item.selected { border-color: var(--gold); background: var(--glow); }
+  .check-box {
+    width: 16px; height: 16px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: rgba(255,255,255,0.03);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    transition: all 0.15s;
+  }
+  .check-item.selected .check-box {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #000;
+  }
+  .check-label {
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  /* ── STATUS BAR (completion) ── */
+  .status-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  /* ── CONDITIONAL SECTION ── */
+  .conditional { display: none; }
+  .conditional.visible { display: block; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 20px 0;
+  }
+
+  /* ── GENERATE BUTTON ── */
+  .generate-wrap {
+    text-align: center;
+    margin: 36px 0 24px;
+  }
+  .btn-generate {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, #1a1500, #2a2000, #1a1500);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 20px rgba(201,168,76,0.1), inset 0 0 20px rgba(201,168,76,0.05);
+  }
+  .btn-generate:hover {
+    box-shadow: 0 0 30px var(--glow-strong), inset 0 0 30px var(--glow);
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #2a2200, #3a3000, #2a2200);
+  }
+  .btn-generate:active { transform: translateY(0); }
+
+  /* ── OUTPUT ── */
+  #output-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  #output-section.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .output-box {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    padding: 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #b0c0a0;
+    white-space: pre-wrap;
+    line-height: 1.7;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  .output-box::-webkit-scrollbar { width: 6px; }
+  .output-box::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+  .output-box::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+  .btn-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 24px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-copy:hover { background: var(--glow); border-color: var(--gold); }
+  .btn-copy.copied { color: #66bb6a; border-color: #66bb6a; background: rgba(102,187,106,0.1); }
+
+  .btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    margin-left: 10px;
+    padding: 10px 24px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-dim);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-reset:hover { border-color: var(--text-dim); color: var(--text); }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  /* ── SEARCH AUTOCOMPLETE ── */
+  .search-wrap { position: relative; }
+  .search-spinner {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  .search-wrap.loading .search-spinner { display: block; }
+  @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+  .autocomplete-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 100;
+    background: #13151f;
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 20px var(--glow);
+    max-height: 280px; overflow-y: auto;
+    display: none;
+  }
+  .autocomplete-dropdown.open { display: block; }
+  .ac-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+  }
+  .ac-item:last-child { border-bottom: none; }
+  .ac-item:hover, .ac-item.active { background: var(--glow); }
+  .ac-thumb {
+    width: 36px; height: 48px; object-fit: cover;
+    border-radius: 2px; flex-shrink: 0;
+    background: var(--border);
+  }
+  .ac-thumb-placeholder {
+    width: 36px; height: 48px; flex-shrink: 0;
+    background: var(--border); border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: var(--text-dim);
+  }
+  .ac-info { flex: 1; min-width: 0; }
+  .ac-title {
+    font-family: 'Cinzel', serif; font-size: 13px;
+    color: var(--gold-light); line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .ac-author { font-size: 13px; color: var(--text-dim); margin-top: 2px; font-style: italic; }
+  .ac-narrator { font-size: 12px; color: var(--gold-dim); margin-top: 2px; }
+  .ac-no-results { padding: 14px; color: var(--text-dim); font-style: italic; font-size: 14px; text-align: center; }
+
+  .field-filled input { border-color: var(--gold-dim); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">&#9670; System Interface Active &#9670;</div>
+    <h1>LitRPG Series Log</h1>
+    <div class="header-sub">Complete after finishing or dropping a series — paste output to Claude</div>
+  </div>
+
+  <!-- SECTION 1: IDENTIFICATION -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#128214;</span>
+      <span class="panel-title">Series Identification</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <label>Search Series Title <span class="hint">start typing to search</span></label>
+        <div class="search-wrap" id="search-wrap">
+          <input type="text" id="series-name" placeholder="e.g. Defiance of the Fall" autocomplete="off">
+          <div class="search-spinner" id="search-spinner"></div>
+          <div class="autocomplete-dropdown" id="ac-dropdown"></div>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field-group field-filled" id="author-field">
+          <label>Author</label>
+          <input type="text" id="author" placeholder="Auto-filled or type manually">
+        </div>
+        <div class="field-group field-filled" id="narrator-wrap">
+          <label>Narrator <span class="hint">if audiobook</span></label>
+          <input type="text" id="narrator" placeholder="Auto-filled or type manually">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Format Consumed</label>
+        <div class="toggle-group" id="format-group">
+          <div class="toggle-btn" data-value="Audiobook">&#127911; Audiobook</div>
+          <div class="toggle-btn" data-value="Ebook">&#128218; Ebook</div>
+          <div class="toggle-btn" data-value="Both">&#9889; Both</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: COMPLETION -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#9876;</span>
+      <span class="panel-title">Quest Status</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <label>Completion Status</label>
+        <div class="toggle-group" id="status-group">
+          <div class="toggle-btn" data-value="Completed">&#9989; Completed Series</div>
+          <div class="toggle-btn" data-value="Caught Up">&#9203; Caught Up / Ongoing</div>
+          <div class="toggle-btn" data-value="Dropped">&#10060; Dropped</div>
+          <div class="toggle-btn" data-value="On Hold">&#9208; On Hold</div>
+        </div>
+      </div>
+      <div class="conditional" id="drop-details">
+        <div class="row-2">
+          <div class="field-group">
+            <label>Dropped at Book #</label>
+            <input type="text" id="dropped-at" placeholder="e.g. Book 3">
+          </div>
+          <div class="field-group">
+            <label>Primary Reason for Dropping</label>
+            <input type="text" id="drop-reason" placeholder="e.g. MC too overpowered">
+          </div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Books Completed <span class="hint">total you finished</span></label>
+        <input type="text" id="books-read" placeholder="e.g. 4 of 7">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: TIER -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#127942;</span>
+      <span class="panel-title">Tier Classification</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <label>Where does this land on your tier list?</label>
+        <div class="tier-grid" id="tier-group">
+          <div class="tier-btn tier-S" data-value="S"><span class="tier-letter">S</span><span class="tier-label">Gold Standard</span></div>
+          <div class="tier-btn tier-A" data-value="A"><span class="tier-letter">A</span><span class="tier-label">Excellent</span></div>
+          <div class="tier-btn tier-B" data-value="B"><span class="tier-letter">B</span><span class="tier-label">Very Good</span></div>
+          <div class="tier-btn tier-C" data-value="C"><span class="tier-letter">C</span><span class="tier-label">Average</span></div>
+          <div class="tier-btn tier-D" data-value="D"><span class="tier-letter">D</span><span class="tier-label">Poor</span></div>
+          <div class="tier-btn tier-E" data-value="E"><span class="tier-letter">E</span><span class="tier-label">Dropped</span></div>
+          <div class="tier-btn tier-F" data-value="F"><span class="tier-letter">F</span><span class="tier-label">Dropped Hard</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: LITRPG MECHANICS -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#9000;</span>
+      <span class="panel-title">System Analysis — LitRPG Mechanics</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <label>LitRPG Classification</label>
+        <div class="toggle-group" id="litrpg-group">
+          <div class="toggle-btn" data-value="True LitRPG">True LitRPG</div>
+          <div class="toggle-btn" data-value="LitRPG-Adjacent">LitRPG-Adjacent</div>
+          <div class="toggle-btn" data-value="Progression Fantasy">Progression Fantasy</div>
+          <div class="toggle-btn" data-value="Not Really">Not Really</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="field-group">
+        <label>Rate the Stats <span class="hint">fill the orbs</span></label>
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-name">Progression Satisfaction</span>
+            <div class="orbs" data-stat="progression">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-name">System Uniqueness</span>
+            <div class="orbs" data-stat="system">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-name">Levels Feel Meaningful</span>
+            <div class="orbs" data-stat="levels">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: MC & STAKES -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#9876;</span>
+      <span class="panel-title">Combat Report — MC & Stakes</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <label>MC Power Level Feel</label>
+        <div class="toggle-group" id="power-group">
+          <div class="toggle-btn" data-value="Struggles Appropriately">Struggles Appropriately</div>
+          <div class="toggle-btn" data-value="Slightly OP">Slightly OP</div>
+          <div class="toggle-btn" data-value="Very OP">Very OP — No Real Danger</div>
+          <div class="toggle-btn" data-value="Too Weak">Too Weak / Frustrating</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="field-group">
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-name">Tension &amp; Stakes</span>
+            <div class="orbs" data-stat="tension">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-name">Character Growth</span>
+            <div class="orbs" data-stat="growth">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-name">Supporting Characters</span>
+            <div class="orbs" data-stat="characters">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: NARRATIVE -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#128221;</span>
+      <span class="panel-title">Narrative Quality</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-name">Writing Quality</span>
+            <div class="orbs" data-stat="writing">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-name">Pacing</span>
+            <div class="orbs" data-stat="pacing">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-name">World Building</span>
+            <div class="orbs" data-stat="world">
+              <div class="orb" data-val="1"></div><div class="orb" data-val="2"></div><div class="orb" data-val="3"></div><div class="orb" data-val="4"></div><div class="orb" data-val="5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="field-group">
+        <label>Humor Level</label>
+        <div class="toggle-group" id="humor-group">
+          <div class="toggle-btn" data-value="None">None</div>
+          <div class="toggle-btn" data-value="Subtle">Subtle</div>
+          <div class="toggle-btn" data-value="Well Balanced">Well Balanced</div>
+          <div class="toggle-btn" data-value="Too Much">Too Much</div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Adult / Sexual Content</label>
+        <div class="toggle-group" id="adult-group">
+          <div class="toggle-btn" data-value="None">None</div>
+          <div class="toggle-btn" data-value="Mild">Mild</div>
+          <div class="toggle-btn" data-value="Moderate">Moderate</div>
+          <div class="toggle-btn" data-value="Excessive">Excessive / Intrusive</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: AUDIOBOOK -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#127911;</span>
+      <span class="panel-title">Audiobook Narration</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <label>Narration Quality</label>
+        <div class="toggle-group" id="narration-group">
+          <div class="toggle-btn" data-value="N/A">N/A — Did Not Listen</div>
+          <div class="toggle-btn" data-value="Poor">Poor</div>
+          <div class="toggle-btn" data-value="Decent">Decent</div>
+          <div class="toggle-btn" data-value="Good">Good</div>
+          <div class="toggle-btn" data-value="Excellent">Excellent</div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Narration Notes <span class="hint">optional</span></label>
+        <input type="text" id="narration-notes" placeholder="e.g. Great character voices, keeps good pace...">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: FIELD NOTES -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-icon">&#128196;</span>
+      <span class="panel-title">Field Notes</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-group">
+        <label>What You Loved</label>
+        <textarea id="loved" placeholder="What made it stand out? What kept you going?"></textarea>
+      </div>
+      <div class="field-group">
+        <label>What You Disliked or What Held It Back</label>
+        <textarea id="disliked" placeholder="What frustrated you, felt weak, or made you consider dropping it?"></textarea>
+      </div>
+      <div class="divider"></div>
+      <div class="field-group">
+        <label>Felt Similar To <span class="hint">check all that apply</span></label>
+        <div class="check-grid" id="similar-group">
+          <div class="check-item" data-value="Dungeon Crawler Carl"><div class="check-box">&#10003;</div><span class="check-label">Dungeon Crawler Carl</span></div>
+          <div class="check-item" data-value="The Perfect Run"><div class="check-box">&#10003;</div><span class="check-label">The Perfect Run</span></div>
+          <div class="check-item" data-value="Shadeslinger / Ripple System"><div class="check-box">&#10003;</div><span class="check-label">Shadeslinger / Ripple System</span></div>
+          <div class="check-item" data-value="Noobtown"><div class="check-box">&#10003;</div><span class="check-label">Noobtown</span></div>
+          <div class="check-item" data-value="Discount Dan"><div class="check-box">&#10003;</div><span class="check-label">Discount Dan</span></div>
+          <div class="check-item" data-value="He Who Fights With Monsters"><div class="check-box">&#10003;</div><span class="check-label">He Who Fights With Monsters</span></div>
+          <div class="check-item" data-value="Apocalyptic Parenting"><div class="check-box">&#10003;</div><span class="check-label">Apocalyptic Parenting</span></div>
+          <div class="check-item" data-value="None of the above"><div class="check-box">&#10003;</div><span class="check-label">None of the above</span></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="field-group">
+        <label>Rec Me More Like This?</label>
+        <div class="toggle-group" id="more-group">
+          <div class="toggle-btn" data-value="Yes — Definitely">&#9989; Yes — Definitely</div>
+          <div class="toggle-btn" data-value="Maybe — With Caveats">&#10068; Maybe — With Caveats</div>
+          <div class="toggle-btn" data-value="No">&#10060; No</div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Anything Else for Claude <span class="hint">extra context, nuance, gut feelings</span></label>
+        <textarea id="extra" placeholder="Anything that doesn't fit the categories above..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATE -->
+  <div class="generate-wrap">
+    <button class="btn-generate" onclick="generateReport()">
+      &#9670; Generate Report &#9670;
+    </button>
+  </div>
+
+  <!-- OUTPUT -->
+  <div id="output-section">
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-icon">&#128200;</span>
+        <span class="panel-title">Report Output — Paste to Claude</span>
+      </div>
+      <div class="panel-body">
+        <div class="output-box" id="output-text"></div>
+        <button class="btn-copy" id="copy-btn" onclick="copyOutput()">&#128203; Copy to Clipboard</button>
+        <button class="btn-reset" onclick="resetForm()">&#8635; New Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">&#9670; &nbsp; LitRPG Series Log &nbsp; &#9670;</div>
+
+</div>
+
+<script>
+  // ── STATE ──
+  const state = {
+    format: null, status: null, tier: null, litrpg: null,
+    power: null, humor: null, adult: null, narration: null, more: null,
+    orbs: { progression: 0, system: 0, levels: 0, tension: 0, growth: 0, characters: 0, writing: 0, pacing: 0, world: 0 },
+    similar: []
+  };
+
+  // ── SEARCH / AUTOCOMPLETE ──
+  const AUDIBLE_NARRATORS = {
+    'dungeon crawler carl': 'Jeff Hays',
+    'the ripple system': 'Travis Baldree',
+    'shadeslinger': 'Travis Baldree',
+    'defiance of the fall': 'Travis Baldree',
+    'he who fights with monsters': 'Heath Miller',
+    'the completionist chronicles': 'Vikas Adam',
+    'primal hunter': 'Pavi Proczko',
+    'the perfect run': 'Alex Wyndham',
+    'mayor of noobtown': 'Doug Tisdale Jr.',
+    'noobtown': 'Doug Tisdale Jr.',
+    'discount dan': 'Garrett Weinman',
+    'apocalyptic parenting': 'Emily Woo Zeller',
+    'azarinth healer': 'Mariana Pereira',
+    'the new world': 'Travis Baldree',
+    'everybody loves large chests': 'Yours Truly',
+    'buymort': 'Gary Furlong',
+    'system universe': 'Travis Baldree',
+    'chrysalis': 'Dimitri MartinezMacLeod',
+    'mimic & me': 'Jonathan Waters',
+  };
+
+  let acTimeout = null;
+  let acResults = [];
+  let acIndex = -1;
+
+  const searchInput = document.getElementById('series-name');
+  const dropdown = document.getElementById('ac-dropdown');
+  const searchWrap = document.getElementById('search-wrap');
+
+  searchInput.addEventListener('input', () => {
+    clearTimeout(acTimeout);
+    const q = searchInput.value.trim();
+    if (q.length < 3) { closeDropdown(); return; }
+    acTimeout = setTimeout(() => fetchBooks(q), 350);
+  });
+
+  searchInput.addEventListener('keydown', e => {
+    const items = dropdown.querySelectorAll('.ac-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); acIndex = Math.min(acIndex + 1, items.length - 1); highlightItem(items); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); acIndex = Math.max(acIndex - 1, -1); highlightItem(items); }
+    else if (e.key === 'Enter' && acIndex >= 0) { e.preventDefault(); items[acIndex]?.click(); }
+    else if (e.key === 'Escape') closeDropdown();
+  });
+
+  document.addEventListener('click', e => {
+    if (!searchWrap.contains(e.target)) closeDropdown();
+  });
+
+  async function fetchBooks(q) {
+    searchWrap.classList.add('loading');
+    try {
+      // iTunes Audiobook API — audiobook-specific catalog, open CORS, works from file://
+      const url = `https://itunes.apple.com/search?term=${encodeURIComponent(q)}&media=audiobook&limit=9&entity=audiobook`;
+      const res = await fetch(url);
+      const data = await res.json();
+      renderDropdown(data.results || [], q);
+    } catch (err) {
+      dropdown.innerHTML = `<div class="ac-no-results">Search unavailable — fill in manually</div>`;
+      dropdown.classList.add('open');
+    } finally {
+      searchWrap.classList.remove('loading');
+    }
+  }
+
+  function renderDropdown(results, q) {
+    acIndex = -1;
+    if (!results.length) {
+      dropdown.innerHTML = `<div class="ac-no-results">No results — fill in manually below</div>`;
+      dropdown.classList.add('open');
+      return;
+    }
+    dropdown.innerHTML = results.map((item, i) => {
+      const title    = item.collectionName || item.trackName || '';
+      const author   = item.artistName || '';
+      // iTunes doesn't expose narrator as a field — use our lookup table
+      const narrator = guessNarrator(title.toLowerCase(), q.toLowerCase());
+      // iTunes returns 100x100 art — swap for 160x160
+      const thumb    = (item.artworkUrl100 || '').replace('100x100', '160x160');
+      const imgHtml  = thumb
+        ? `<img class="ac-thumb" src="${thumb}" alt="" onerror="this.outerHTML='<div class=ac-thumb-placeholder>📚</div>'">`
+        : `<div class="ac-thumb-placeholder">📚</div>`;
+      const narratorHtml = narrator ? `<div class="ac-narrator">🎙 ${narrator}</div>` : '';
+      return `<div class="ac-item" data-index="${i}" data-title="${escHtml(title)}" data-author="${escHtml(author)}" data-narrator="${escHtml(narrator)}">
+        ${imgHtml}
+        <div class="ac-info">
+          <div class="ac-title">${escHtml(title)}</div>
+          ${author ? `<div class="ac-author">${escHtml(author)}</div>` : ''}
+          ${narratorHtml}
+        </div>
+      </div>`;
+    }).join('');
+    dropdown.classList.add('open');
+    dropdown.querySelectorAll('.ac-item').forEach(el => {
+      el.addEventListener('click', () => selectResult(el));
+    });
+  }
+
+  function guessNarrator(titleKey, query) {
+    // Exact key match first
+    for (const [k, v] of Object.entries(AUDIBLE_NARRATORS)) {
+      if (titleKey.includes(k) || k.includes(query.toLowerCase())) return v;
+    }
+    return '';
+  }
+
+  function selectResult(el) {
+    searchInput.value = el.dataset.title;
+    document.getElementById('author').value = el.dataset.author;
+    if (el.dataset.narrator) document.getElementById('narrator').value = el.dataset.narrator;
+    closeDropdown();
+  }
+
+  function highlightItem(items) {
+    items.forEach((el, i) => el.classList.toggle('active', i === acIndex));
+    if (acIndex >= 0) items[acIndex]?.scrollIntoView({ block: 'nearest' });
+  }
+
+  function closeDropdown() { dropdown.classList.remove('open'); acIndex = -1; }
+  function escHtml(s) { return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ── TOGGLE GROUPS ──
+  document.querySelectorAll('.toggle-group').forEach(group => {
+    group.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        const key = group.id.replace('-group', '');
+        state[key] = btn.dataset.value;
+        // Show drop details
+        if (group.id === 'status-group') {
+          const dd = document.getElementById('drop-details');
+          dd.classList.toggle('visible', btn.dataset.value === 'Dropped');
+        }
+      });
+    });
+  });
+
+  // ── TIER ──
+  document.querySelectorAll('.tier-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.tier = btn.dataset.value;
+    });
+  });
+
+  // ── ORBS ──
+  document.querySelectorAll('.orbs').forEach(orbGroup => {
+    const stat = orbGroup.dataset.stat;
+    orbGroup.querySelectorAll('.orb').forEach(orb => {
+      orb.addEventListener('click', () => {
+        const val = parseInt(orb.dataset.val);
+        state.orbs[stat] = val;
+        orbGroup.querySelectorAll('.orb').forEach(o => {
+          o.classList.toggle('filled', parseInt(o.dataset.val) <= val);
+        });
+      });
+    });
+  });
+
+  // ── CHECKBOXES ──
+  document.querySelectorAll('.check-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('selected');
+      const val = item.dataset.value;
+      if (item.classList.contains('selected')) {
+        state.similar.push(val);
+      } else {
+        state.similar = state.similar.filter(v => v !== val);
+      }
+    });
+  });
+
+  // ── ORB DISPLAY ──
+  function orbDisplay(val) {
+    if (!val) return 'Not rated';
+    return '★'.repeat(val) + '☆'.repeat(5 - val) + ` (${val}/5)`;
+  }
+
+  // ── GENERATE ──
+  function generateReport() {
+    const name = document.getElementById('series-name').value.trim() || '(not provided)';
+    const author = document.getElementById('author').value.trim() || '(not provided)';
+    const narrator = document.getElementById('narrator').value.trim();
+    const booksRead = document.getElementById('books-read').value.trim();
+    const droppedAt = document.getElementById('dropped-at').value.trim();
+    const dropReason = document.getElementById('drop-reason').value.trim();
+    const narrationNotes = document.getElementById('narration-notes').value.trim();
+    const loved = document.getElementById('loved').value.trim();
+    const disliked = document.getElementById('disliked').value.trim();
+    const extra = document.getElementById('extra').value.trim();
+
+    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    let out = '';
+    out += `╔══════════════════════════════════════════════╗\n`;
+    out += `  LITRPG SERIES REVIEW LOG — ${date}\n`;
+    out += `╚══════════════════════════════════════════════╝\n\n`;
+
+    out += `■ SERIES IDENTIFICATION\n`;
+    out += `  Series   : ${name}\n`;
+    out += `  Author   : ${author}\n`;
+    out += `  Format   : ${state.format || 'Not specified'}\n`;
+    if (narrator) out += `  Narrator : ${narrator}\n`;
+    out += `\n`;
+
+    out += `■ QUEST STATUS\n`;
+    out += `  Status   : ${state.status || 'Not specified'}\n`;
+    if (booksRead) out += `  Books    : ${booksRead}\n`;
+    if (state.status === 'Dropped') {
+      if (droppedAt) out += `  Dropped  : ${droppedAt}\n`;
+      if (dropReason) out += `  Reason   : ${dropReason}\n`;
+    }
+    out += `\n`;
+
+    out += `■ TIER CLASSIFICATION\n`;
+    const tierLabels = { S:'S — Gold Standard', A:'A — Excellent', B:'B — Very Good', C:'C — Average', D:'D — Poor', E:'E — Dropped', F:'F — Dropped Hard' };
+    out += `  Tier     : ${state.tier ? tierLabels[state.tier] : 'Not selected'}\n\n`;
+
+    out += `■ SYSTEM ANALYSIS — LitRPG Mechanics\n`;
+    out += `  Classification     : ${state.litrpg || 'Not specified'}\n`;
+    out += `  Progression        : ${orbDisplay(state.orbs.progression)}\n`;
+    out += `  System Uniqueness  : ${orbDisplay(state.orbs.system)}\n`;
+    out += `  Levels Meaningful  : ${orbDisplay(state.orbs.levels)}\n\n`;
+
+    out += `■ COMBAT REPORT — MC & Stakes\n`;
+    out += `  MC Power Level     : ${state.power || 'Not specified'}\n`;
+    out += `  Tension & Stakes   : ${orbDisplay(state.orbs.tension)}\n`;
+    out += `  Character Growth   : ${orbDisplay(state.orbs.growth)}\n`;
+    out += `  Supporting Cast    : ${orbDisplay(state.orbs.characters)}\n\n`;
+
+    out += `■ NARRATIVE QUALITY\n`;
+    out += `  Writing            : ${orbDisplay(state.orbs.writing)}\n`;
+    out += `  Pacing             : ${orbDisplay(state.orbs.pacing)}\n`;
+    out += `  World Building     : ${orbDisplay(state.orbs.world)}\n`;
+    out += `  Humor              : ${state.humor || 'Not specified'}\n`;
+    out += `  Adult Content      : ${state.adult || 'Not specified'}\n\n`;
+
+    out += `■ AUDIOBOOK NARRATION\n`;
+    out += `  Quality            : ${state.narration || 'Not specified'}\n`;
+    if (narrationNotes) out += `  Notes              : ${narrationNotes}\n`;
+    out += `\n`;
+
+    out += `■ FIELD NOTES\n`;
+    if (loved) out += `  Loved:\n    ${loved.split('\n').join('\n    ')}\n\n`;
+    if (disliked) out += `  Disliked / Held Back:\n    ${disliked.split('\n').join('\n    ')}\n\n`;
+    if (state.similar.length) out += `  Felt Similar To    : ${state.similar.join(', ')}\n`;
+    out += `  Rec More Like This : ${state.more || 'Not specified'}\n`;
+    if (extra) out += `\n  Extra Notes:\n    ${extra.split('\n').join('\n    ')}\n`;
+
+    out += `\n══════════════════════════════════════════════`;
+
+    document.getElementById('output-text').textContent = out;
+    document.getElementById('output-section').classList.add('visible');
+    document.getElementById('output-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── COPY ──
+  function copyOutput() {
+    const text = document.getElementById('output-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '📋 Copy to Clipboard';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // ── RESET ──
+  function resetForm() {
+    document.querySelectorAll('.toggle-btn, .tier-btn, .check-item').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.orb').forEach(o => o.classList.remove('filled'));
+    document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
+    Object.keys(state).forEach(k => {
+      if (k === 'orbs') Object.keys(state.orbs).forEach(s => state.orbs[s] = 0);
+      else if (k === 'similar') state.similar = [];
+      else state[k] = null;
+    });
+    document.getElementById('drop-details').classList.remove('visible');
+    document.getElementById('output-section').classList.remove('visible');
+    closeDropdown();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

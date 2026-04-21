@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080604; --gold: #d4af37; --gold-lt: #f5e5a0; --gold-dk: #9a7520;
+      --parchment: #f0e6d0; --muted: #8c7b65;
+      --font-t: "Cinzel", serif; --font-b: "Lato", sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); font-family: var(--font-b); color: var(--parchment);
+      min-height: 100dvh; overflow: hidden; -webkit-tap-highlight-color: transparent;
+    }
+    #picker {
+      position: relative; z-index: 10; min-height: 100dvh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;
+    }
+    .picker-title { font-family: var(--font-t); font-size: 3rem; color: var(--gold); text-align: center; }
+    .picker-subtitle { color: var(--muted); margin-top: 12px; font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; text-align: center; }
+    .picker-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; margin-top: 40px; max-width: 560px; width: 100%; }
+    .picker-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.3); border-radius: 8px;
+      padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.2s;
+    }
+    .picker-card:hover { background: rgba(212,175,55,0.1); border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(212,175,55,0.2); }
+    .picker-card.loading { opacity: 0.5; pointer-events: none; }
+    .picker-avatar { font-size: 2.5rem; margin-bottom: 12px; line-height: 1; }
+    .picker-username { font-family: var(--font-t); font-size: 1rem; color: var(--parchment); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+    .picker-start { font-family: var(--font-b); font-size: 0.75rem; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; }
+    .picker-card:hover .picker-start { color: var(--gold); }
+    #loading-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999;
+      display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    }
+    #loading-overlay.visible { display: flex; }
+    .loading-text { font-family: var(--font-t); font-size: 1.2rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; }
+    .loading-sub { font-size: 0.85rem; color: var(--muted); letter-spacing: 2px; }
+    @media(max-width:560px){ .picker-grid{ grid-template-columns:1fr; max-width:280px; gap:14px; } .picker-title{ font-size:2rem; } }
+  </style>
+</head>
+<body>
+
+<div id="picker">
+  <div class="picker-title">✦ Sanctum Wrapped 2026 ✦</div>
+  <div class="picker-subtitle">Choose your adventurer</div>
+  <div class="picker-grid">
+    <div class="picker-card" id="card-mrlarue77" onclick="selectUser('mrlarue77')">
+      <div class="picker-avatar">⚔</div>
+      <div class="picker-username">mrlarue77</div>
+      <div class="picker-start">Begin →</div>
+    </div>
+    <div class="picker-card" id="card-mrlarue70" onclick="selectUser('mrlarue70')">
+      <div class="picker-avatar">🏹</div>
+      <div class="picker-username">mrlarue70</div>
+      <div class="picker-start">Begin →</div>
+    </div>
+    <div class="picker-card" id="card-mrsing81" onclick="selectUser('mrsing81')">
+      <div class="picker-avatar">✦</div>
+      <div class="picker-username">mrsing81</div>
+      <div class="picker-start">Begin →</div>
+    </div>
+    <div class="picker-card" id="card-mrhudson25" onclick="selectUser('mrhudson25')">
+      <div class="picker-avatar">🛡</div>
+      <div class="picker-username">mrhudson25</div>
+      <div class="picker-start">Begin →</div>
+    </div>
+  </div>
+</div>
+
+<div id="loading-overlay">
+  <div class="loading-text">Summoning your data...</div>
+  <div class="loading-sub">Consulting the System Administrator</div>
+</div>
+
+<script>
+const MONTH_NAMES = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+
+async function selectUser(userId) {
+  // Disable all cards
+  document.querySelectorAll('.picker-card').forEach(c => c.classList.add('loading'));
+  document.getElementById('loading-overlay').classList.add('visible');
+
+  // Fire both fetches in parallel
+  const [bossResult, wResult] = await Promise.all([
+    fetch(`/awards/api/gear/boss-stats?user_id=${encodeURIComponent(userId)}`).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch(`/awards/api/wrapped?user_id=${encodeURIComponent(userId)}`).then(r => r.ok ? r.json() : null).catch(() => null)
+  ]);
+
+  // Build state
+  const resolvedUserId = (bossResult && bossResult.user_sheet && bossResult.user_sheet.user_id)
+    || (wResult && wResult.userId)
+    || userId;
+  const state = { userId: resolvedUserId };
+
+  // Boss / user HP
+  const boss = bossResult && bossResult.boss;
+  const bossMaxHP = (boss && Number.isFinite(Number(boss.boss_hp))) ? Number(boss.boss_hp) : 250000;
+  state.bossMaxHP     = bossMaxHP;
+  state.bossCurrentHP = bossMaxHP;
+
+  if (bossResult && bossResult.user_sheet) {
+    const ts = bossResult.user_sheet.total_stats || {};
+    state.userMaxHP     = Math.max(1200, (ts.hp || 300) * 10);
+    state.userCurrentHP = state.userMaxHP;
+    state.userSheet     = bossResult.user_sheet;
+  } else {
+    state.userMaxHP     = 3000;
+    state.userCurrentHP = 3000;
+  }
+
+  state.inventory = (bossResult && bossResult.inventory) ? bossResult.inventory : [];
+
+  // Wrapped stats
+  if (wResult) {
+    state.username = wResult.username || userId;
+    state.stats    = wResult.stats    || {};
+  } else {
+    state.username = userId;
+    state.stats    = {};
+  }
+
+  state.win = false;
+
+  sessionStorage.setItem('w_state', JSON.stringify(state));
+  window.location.href = '/wrapped/intro';
+}
+</script>
+</body>
+</html>
+

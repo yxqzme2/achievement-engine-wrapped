@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ABS Stats</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#121212;
+      --panel:#1a1510;
+      --panel2:#211c14;
+      --line:#4a3b2a;
+      --text:#2b2018;
+      --muted:#665243;
+      --accent:#b89548;
+      --good:#4f8f00;
+      --bad:#a33;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --window-bg: #e8dbc3;
+      --sidebar-bg: #dccaa5;
+      --tab-bg: #3d2f24;
+      --tab-text: #a89582;
+      --gold-accent: #b89548;
+      --font-title: "Cinzel", serif;
+      --font-body: "Lato", sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      background-image: radial-gradient(circle at center, #1f1f1f 0%, #050505 100%);
+      color:var(--text);
+    }
+	.wrap{
+	  max-width:1200px;
+	  margin:0 auto;
+	  padding:28px max(18px, env(safe-area-inset-right)) 60px max(18px, env(safe-area-inset-left));
+	}
+    .title{
+      display:flex;flex-direction:column;gap:6px;
+    }
+    h1{margin:0;font-size:28px;letter-spacing:.5px;font-family:var(--font-title);color:var(--gold-accent)}
+    .sub{color:var(--muted);font-size:13px;line-height:1.3}
+    .pill{
+      background: var(--tab-bg);
+      background-image: linear-gradient(to bottom, rgba(255,255,255,.05), rgba(0,0,0,.2));
+      border:1px solid #2a2118;
+      border-radius:999px;
+      padding:10px 12px;
+      color:var(--tab-text);
+      font-size:12px;
+      display:flex;gap:8px;align-items:center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+
+    .userCard{
+      background: var(--window-bg);
+      border:2px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/></filter><rect width="200" height="200" filter="url(%23n)" opacity="0.04"/></svg>');
+    }
+    .userTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:16px 16px 12px;
+      background: var(--sidebar-bg);
+      border-bottom:2px solid rgba(74,59,42,0.2);
+    }
+    .userName{
+      display:flex;flex-direction:column;gap:4px;min-width:200px;
+    }
+    .userName .u{
+      font-size:18px;font-weight:700;letter-spacing:.3px;font-family:var(--font-title);color:#2b1b00
+    }
+    .userName .meta{
+      color:var(--muted);font-size:12px
+    }
+    .kpis{
+      display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;
+    }
+    .kpi{
+      background: rgba(255,255,255,.3);
+      border:1px solid rgba(74,59,42,0.15);
+      border-radius: 14px;
+      padding:10px 12px;
+      min-width:140px;
+    }
+    .kpi .label{color:var(--muted);font-size:11px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.12em;font-family:var(--font-title)}
+    .kpi .value{font-size:18px;font-weight:700;color:#2b1b00;font-family:var(--font-title)}
+    .kpi .small{color:var(--muted);font-size:11px;margin-top:4px}
+
+    .userBody{
+      padding:14px 16px 18px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    @media (min-width: 900px){
+      .userBody{grid-template-columns: 1.2fr .8fr}
+    }
+	@media (max-width: 640px) {
+	  .wrap{
+		padding-left: max(20px, env(safe-area-inset-left));
+		padding-right: max(20px, env(safe-area-inset-right));
+	  }
+	}
+
+    .panel{
+      background: rgba(255,255,255,.25);
+      border:1px solid rgba(74,59,42,0.15);
+      border-radius: 18px;
+      padding:14px;
+    }
+    .panel h3{
+      margin:0 0 10px;
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-family:var(--font-title);
+    }
+
+    .row{
+      display:flex;gap:14px;align-items:flex-start;
+    }
+    .cover{
+      width:90px;height:90px;border-radius:14px;flex:0 0 auto;
+      background: rgba(42,33,24,0.15);
+      border:1px solid rgba(74,59,42,0.2);
+      overflow:hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      position:relative;
+    }
+    .cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .cover .ph{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      padding:10px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.2;
+    }
+	/* bigger cover ONLY for currently reading */
+	.panel.currently-reading .cover{
+	  width: 240px;
+	  height: 240px;
+	  border-radius: 16px;
+	}
+
+	.panel.currently-reading .cover img{
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	}
+
+    .book{
+      min-width:0;
+      display:flex;flex-direction:column;gap:6px;
+    }
+	.title {
+	  white-space: normal !important;       /* Overrides nowrap to allow new lines */
+	  word-wrap: break-word;                /* Breaks long words if they don't fit */
+	  display: -webkit-box;
+	  -webkit-line-clamp: 2;               /* Limits the title to 2 lines (optional) */
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  line-height: 1.2;
+	  max-height: 2.4em;                   /* Ensures the container stays tidy */
+	}
+
+	/* Ensure the 'Now Playing' container can grow with the text */
+	.now-playing {
+	  height: auto !important;             /* Allows the area to expand for wrapped text */
+	  min-height: 60px;                    /* Maintains a consistent look for shorter titles */
+	}
+    .book .st, .book .au{
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .bar{
+      height:10px;border-radius:999px;background: rgba(74,59,42,0.1);
+	  width: 100%;
+      border:1px solid rgba(74,59,42,0.15);
+      overflow:hidden;
+      margin-top:6px;
+    }
+    .bar > div{
+      height:100%;
+      background: linear-gradient(90deg, var(--gold-accent), rgba(184,149,72,.55));
+      width:0%;
+    }
+    .bookline{
+      display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;
+    }
+    .sessionline{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .sessionline .dot{opacity:.7}
+    .muted{color:var(--muted)}
+    .empty{
+      color:var(--muted);
+      font-size:13px;
+      padding:10px 0 0;
+    }
+
+    .rightStack{
+      display:grid;gap:12px;
+    }
+
+    .mini{
+      display:flex;justify-content:space-between;gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.3);
+      border:1px solid rgba(74,59,42,0.1);
+    }
+    .mini .l{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-family:var(--font-title)}
+    .mini .r{font-weight:800;color:#2b1b00}
+	
+	.currently-reading img {
+	  width: 180px;
+	  height: auto;
+	  border-radius: 12px;
+	  box-shadow:
+		0 20px 40px rgba(0,0,0,0.45),
+		0 0 0 1px rgba(74,59,42,0.2);
+	}
+
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      font-family:var(--font-title);
+    }
+  
+
+    /* ---------- Mobile / small screens ---------- */
+    @media (max-width: 900px){
+      header{
+        padding: 18px 16px;
+      }
+      header .top{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      header h1{
+        font-size: 22px;
+        line-height: 1.1;
+      }
+      header .subtitle{
+        max-width: 100%;
+      }
+      .container{
+        padding: 14px 14px 40px;
+      }
+
+      /* cards stack */
+      .card{
+        padding: 14px;
+      }
+      .grid{
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      /* per-user layout: stack panels */
+      .usergrid{
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+      }
+
+      /* KPI row becomes 1 per line */
+      .kpis{
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+      }
+      .kpi{
+        padding: 12px;
+      }
+      .kpi .value{
+        font-size: 22px;
+      }
+
+      /* Book blocks: image smaller, text wraps better */
+      .book{
+        grid-template-columns: 92px 1fr !important;
+        gap: 12px;
+      }
+      .cover{
+        width: 92px !important;
+        height: 138px !important;
+        border-radius: 14px;
+      }
+      .panel.currently-reading .cover{
+        width: 110px !important;
+        height: 165px !important;
+      }
+
+      /* Avoid tiny columns for quick facts */
+      .mini{
+        padding: 10px 10px;
+      }
+      .mini .l, .mini .r{
+        font-size: 13px;
+      }
+
+      /* Progress bar + session line */
+      .bar{
+        height: 10px;
+      }
+      .sessionline{
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 420px){
+      .book{
+        grid-template-columns: 78px 1fr !important;
+      }
+      .cover{
+        width: 78px !important;
+        height: 118px !important;
+      }
+      .panel.currently-reading .cover{
+        width: 92px !important;
+        height: 138px !important;
+      }
+      .kpi .value{
+        font-size: 20px;
+      }
+    }
+
+@media (max-width: 720px){
+  .userTop{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .kpis{
+    width: 100%;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .kpi{
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Mobile: center-align KPI text inside the 3 stat boxes */
+  .kpis .kpi{ text-align:left; }
+  .kpis .kpi .kpiLabel,
+  .kpis .kpi .label,
+  .kpis .kpi .kpiTitle{ justify-content:flex-end; text-align:center; }
+  .kpis .kpi .kpiValue,
+  .kpis .kpi .value{ text-align:center; }
+  .kpis .kpi .kpiSub,
+  .kpis .kpi .sub{ text-align:center; }
+
+}
+
+/* ===== NAV BAR ===== */
+.nav-bar { display:flex; justify-content:space-between; align-items:center; padding:12px 40px; background:var(--tab-bg); border-bottom:3px solid #2a2118; background-image:linear-gradient(to bottom,rgba(255,255,255,.05),rgba(0,0,0,.2)); flex-wrap:wrap; gap:6px; }
+.nav-bar a { color:var(--tab-text); text-decoration:none; font-family:var(--font-title); font-size:.95rem; padding:6px 16px; border-radius:4px; transition:all .2s; }
+.nav-bar a:hover { background:#4f3d2f; color:#dccaa5; }
+.nav-bar a.active { color:var(--gold-accent); font-weight:700; }
+.nav-bar a.nav-title { color:var(--gold-accent); font-size:1.1rem; font-weight:700; letter-spacing:1px; padding:0; background:none; }
+.nav-bar a.nav-title:hover { background:none; color:#dccaa5; }
+@media(max-width:768px){ .nav-bar{ padding:10px 15px; } .nav-bar a{ font-size:.8rem; padding:4px 10px; } .nav-bar a.nav-title{ font-size:.9rem; } }
+
+</style>
+</head>
+<body>
+  <nav class="nav-bar">
+    <a href="/" class="nav-title">The Listener's Sanctum</a>
+    <div>
+      <a href="/journal">Journal</a>
+      <a href="/champions">Leaderboard</a>
+      <a href="/roster">Roster</a>
+      <a href="/timeline">Timeline</a>
+      <a href="/archives" class="active">Stats</a>
+      <a href="/playlist">Playlist</a>
+      <a href="/tier">Tier List</a>
+      <a href="/loot">Loot</a>
+      <a href="/quests">Quests</a>
+      </div>
+      </nav>  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>AudioBookShelf Stats</h1>
+        
+      </div>
+      <div class="pill" id="updated">Loading…</div>
+    </header>
+
+    <div class="grid" id="grid"></div>
+
+    <footer>
+      Data source: <span class="muted">./api/users</span>
+    </footer>
+  </div>
+
+<script>
+  const $ = (sel) => document.querySelector(sel);
+
+  // Username aliases
+  const USER_ALIASES = {
+    "mrlarue77": "Daniel",
+    "mrlarue70": "Darrell",
+    "mrsing81": "Andy",
+	"mrhudson25": "Germaine"
+  };
+
+  function displayName(username){
+    return USER_ALIASES[username] || username;
+  }
+
+  // Cover fallback chain:
+  // 1) ./covers/<id>_600.webp
+  // 2) ./covers/<id>_400.webp
+  // 3) ./api/cover/<id>   (proxy)
+  // 4) placeholder
+  window.__absCoverFallback = function(img, id){
+    const step = img.dataset.step || "0";
+    if (step === "0"){
+      img.dataset.step = "1";
+      img.src = `/awards/covers/${id}_400.webp`;
+      return;
+    }
+    if (step === "1"){
+      img.dataset.step = "2";
+      img.src = `/awards/api/cover/${id}`;
+      return;
+    }
+    // final: remove broken img and show placeholder
+    const wrap = img.closest(".cover");
+    if (wrap){
+      img.remove();
+      const ph = document.createElement("div");
+      ph.className = "ph";
+      ph.textContent = "No cover";
+      wrap.appendChild(ph);
+    }
+  };
+
+  function fmtDurationFromSeconds(sec){
+    sec = Math.max(0, Number(sec) || 0);
+    const totalMin = Math.round(sec / 60);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    return h > 0 ? `${h}h ${m}m` : `${m}m`;
+  }
+
+  function fmtShortDate(ms){
+    if (!ms) return "—";
+    try { return new Date(ms).toLocaleDateString(); }
+    catch(e){ return "—"; }
+  }
+
+  function fmtHoursMinutesFromSeconds(sec){
+    sec = Math.max(0, Number(sec) || 0);
+    const totalMin = Math.floor(sec / 60);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    return `${h}h ${m}m`;
+  }
+
+  function fmtMinutes(min){
+    if (min == null) return "—";
+    min = Number(min) || 0;
+    const h = Math.floor(min / 60);
+    const m = Math.round(min % 60);
+    if (h <= 0) return `${m} min`;
+    return `${h}h ${m}m`;
+  }
+
+  function fmtDate(ms){
+    if (!ms) return "—";
+    try{
+      const d = new Date(ms);
+      return d.toLocaleString();
+    }catch(e){ return "—"; }
+  }
+
+  function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+  function coverImgTag(libraryItemId){
+    if (!libraryItemId) return `<div class="ph">No cover</div>`;
+    // Start at _600.webp (your Option A)
+    return `<img loading="lazy"
+      data-step="0"
+      src="/awards/covers/${libraryItemId}_600.webp"
+      onerror="window.__absCoverFallback(this,'${libraryItemId}')"
+      alt="">`;
+  }
+
+  function bookBlock(item, type){
+    if (!item){
+      return `<div class="empty">${
+        type === "current" ? "Nothing in progress right now." : "No finished item found in progress history."
+      }</div>`;
+    }
+
+    const pct = clamp(Math.round((Number(item.progress)||0)*100), 0, 100);
+    const subtitle = item.subtitle ? item.subtitle : "";
+    const author = item.authorText ? item.authorText : "";
+
+    const line2 = type === "current"
+      ? `<div class="bookline"><span>${pct}%</span><span>${fmtHoursMinutesFromSeconds((Number(item.duration)||0))} total</span></div>`
+      : `<div class="bookline"><span>Finished</span><span>${fmtDate(item.finishedAt)}</span></div>`;
+
+    const bar = type === "current"
+      ? `<div class="bar"><div style="width:${pct}%"></div></div>`
+      : "";
+
+    const sessionHtml = (type === "current" && item.lastSession && (item.lastSession.startedAt || item.lastSession.timeListening))
+      ? `<div class="sessionline">
+          <span>Last session: ${fmtShortDate(item.lastSession.startedAt)}</span>
+          <span class="dot">•</span>
+          <span>${fmtDurationFromSeconds(item.lastSession.timeListening)}</span>
+          ${item.lastSession.device ? `<span class="dot">•</span><span>${item.lastSession.device}</span>` : ""}
+        </div>`
+      : "";
+
+    return `
+      <div class="row">
+        <div class="cover">
+          ${coverImgTag(item.libraryItemId)}
+        </div>
+        <div class="book">
+          <div class="t" title="${item.title || ""}">${item.title || "Unknown title"}</div>
+          ${subtitle ? `<div class="st" title="${subtitle}">${subtitle}</div>` : `<div class="st">&nbsp;</div>`}
+          ${author ? `<div class="au" title="${author}">${author}</div>` : `<div class="au">&nbsp;</div>`}
+          ${line2}
+          ${bar}
+          ${sessionHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function userCard(u){
+    const lastSeenText = u.lastSeen ? `Last seen: ${new Date(u.lastSeen).toLocaleDateString()}` : "Last seen: —";
+    const yearTime = fmtHoursMinutesFromSeconds(u.yearSeconds);
+    const lifetime = fmtMinutes(u.lifetimeMinutes);
+    const name = displayName(u.username);
+
+    return `
+      <section class="userCard">
+        <div class="userTop">
+          <div class="userName">
+            <div class="u">${name}</div>
+            <div class="meta">${lastSeenText}</div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">This year</div>
+              <div class="value">${yearTime}</div>
+              <div class="small">Listening time</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Lifetime</div>
+              <div class="value">${lifetime}</div>
+              <div class="small">Total time</div>
+            </div>
+          
+            <div class="kpi">
+              <div class="label">Avg daily (30d)</div>
+              <div class="value">${u.avgDaily30Minutes == null ? "—" : fmtMinutes(u.avgDaily30Minutes)}</div>
+              <div class="small">Listening pace</div>
+            </div>
+</div>
+        </div>
+
+        <div class="userBody">
+			<div class="panel currently-reading">
+			  <h3>Currently reading</h3>
+			  ${bookBlock(u.currentlyReading, "current")}
+			</div>
+
+
+          <div class="rightStack">
+		<div class="panel last-finished">
+		  <h3>Last finished</h3>
+		  ${bookBlock(u.lastFinished, "finished")}
+		</div>
+            <div class="panel">
+              <h3>Quick facts</h3>
+              <div class="mini">
+                <div class="l">ABS user</div>
+                <div class="r">${u.username}</div>
+              </div>
+              <div class="mini">
+                <div class="l">Top author (YTD)</div>
+                <div class="r">${u.topAuthorYTD?.name || "—"}</div>
+              </div>
+              <div class="mini">
+                <div class="l">Top author (Life)</div>
+                <div class="r">${u.topAuthorLifetime?.name || "—"}</div>
+              </div>
+              <div class="mini">
+                <div class="l">Last 7 days</div>
+                <div class="r">${u.last7Minutes == null ? "—" : fmtMinutes(u.last7Minutes)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  async function load(){
+    const grid = $("#grid");
+    grid.innerHTML = "";
+
+    let data;
+    try{
+      const r = await fetch("/awards/api/users", { cache: "no-store" });
+      const text = await r.text();
+      try { data = JSON.parse(text); }
+      catch(e){ throw new Error(text.slice(0, 200)); }
+      if (!r.ok) throw new Error(data?.message || "Failed");
+    }catch(e){
+      $("#updated").textContent = "Error loading ./api/users";
+      grid.innerHTML = `<div class="panel"><h3>Error</h3><div class="muted">${String(e.message || e)}</div></div>`;
+      return;
+    }
+
+    $("#updated").textContent = `Updated ${new Date(data.updatedAt).toLocaleString()}`;
+
+    const users = Array.isArray(data.users) ? data.users : [];
+    if (!users.length){
+      grid.innerHTML = `<div class="panel"><h3>No users</h3><div class="muted">No users returned from the API. Check /api/users output and container logs.</div></div>`;
+      return;
+    }
+
+    grid.innerHTML = users.map(userCard).join("");
+  }
+
+  load();
+  setInterval(load, 60_000);
+</script>
+</body>
+</html>

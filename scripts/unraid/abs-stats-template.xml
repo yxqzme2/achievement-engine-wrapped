@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>abs-stats</Name>
+  <Repository>ghcr.io/yxqzme2/abs-stats:latest</Repository>
+  <Registry>https://github.com/yxqzme2/achievement-engine-wrapped/pkgs/container/abs-stats</Registry>
+  <Network>laruenet</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/yxqzme2/achievement-engine-wrapped/issues</Support>
+  <Project>https://github.com/yxqzme2/achievement-engine-wrapped</Project>
+  <Overview>Companion service for Achievement Engine. Connects to your Audiobookshelf server, aggregates listening data, and exposes it as a REST API that Achievement Engine polls.&#xD;&#xA;&#xD;&#xA;This container is REQUIRED for Achievement Engine to function. You will need an Audiobookshelf API token for each user you want to track.</Overview>
+  <Category>MediaApp:Other Tools:</Category>
+  <WebUI/>
+  <TemplateURL>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/templates/abs-stats.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/yxqzme2/achievement-engine-wrapped/main/icons/abs-stats.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1773918148</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>Audiobookshelf must be running and accessible from this server. You need API tokens for each user you want to track.</Requires>
+  <Config Name="data" Target="/data" Default="" Mode="rw" Description="Host folder for abs-stats appdata. Creates the /mnt/user/appdata/abs-stats directory in Unraid." Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/abs-stats</Config>
+  <Config Name="API Port" Target="3000" Default="3000" Mode="tcp" Description="The port abs-stats listens on. Other containers (like Achievement Engine) connect to this port to fetch listening data. Change the host port if 3000 is already in use." Type="Port" Display="always" Required="true" Mask="false">8789</Config>
+  <Config Name="ABS_URL" Target="ABS_URL" Default="http://audiobookshelf:13378" Mode="" Description="The full URL of your Audiobookshelf server, including the port. Example: http://192.168.1.50:13378" Type="Variable" Display="always" Required="true" Mask="false">http://10.10.10.125:13378</Config>
+  <Config Name="ABS_TOKEN" Target="ABS_TOKEN" Default="" Mode="" Description="A single Audiobookshelf API token for single-user setups. Get it from: Audiobookshelf &gt; Settings &gt; Users &gt; your user &gt; API Token. Leave empty if using ABS_TOKENS for multiple users." Type="Variable" Display="always" Required="false" Mask="true">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlJZCI6IjBhNmYzYWJiLTZiYWMtNDliNi1iZWVlLTI5OWU3ZWZjZTA1ZCIsIm5hbWUiOiJwbGF5bGlzdF9kYW4iLCJ0eXBlIjoiYXBpIiwiaWF0IjoxNzY5OTYwNzA2fQ.XwokJIMlVr40NlbcaxgU3VKP2EYRd7u3AX2ymJbgKyM</Config>
+  <Config Name="ABS_TOKENS" Target="ABS_TOKENS" Default="" Mode="" Description="Multi-user API tokens. Format: username1:token1,username2:token2 — one entry per user. Leave empty if using ABS_TOKEN for single-user mode." Type="Variable" Display="always" Required="false" Mask="true">mrlarue77:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlJZCI6IjBhNmYzYWJiLTZiYWMtNDliNi1iZWVlLTI5OWU3ZWZjZTA1ZCIsIm5hbWUiOiJwbGF5bGlzdF9kYW4iLCJ0eXBlIjoiYXBpIiwiaWF0IjoxNzY5OTYwNzA2fQ.XwokJIMlVr40NlbcaxgU3VKP2EYRd7u3AX2ymJbgKyM,mrlarue70:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlJZCI6ImFlMWZhODVlLTAzYWItNGU4OC05OTg5LWNjMjkzYzdhODI4MSIsIm5hbWUiOiJwbGF5bGlzdF9kYXIiLCJ0eXBlIjoiYXBpIiwiaWF0IjoxNzY5OTYwNzM4fQ.pE6fdc_tTx5zK2_gmA2sQbSwv35GfuVaFPDs87H7dN4,mrsing81:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlJZCI6ImUyMWY5ZTk0LTdkNDAtNDllYS04NzVmLWMzNDE0YjNiMjdlNSIsIm5hbWUiOiJwbGF5bGlzdF9hbmR5IiwidHlwZSI6ImFwaSIsImlhdCI6MTc2OTk2MDc2M30.3zzMQZv4PBASJX3b39v_97fFYHg3NF_XWlsEpK_KsMs,mrhudson25:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlJZCI6IjEwYjM5MTI3LWYzMjItNDE3Ni04NDlhLWJlZjU0YzQxMDlhZSIsIm5hbWUiOiJwbGF5bGlzdF9nZXIiLCJ0eXBlIjoiYXBpIiwiaWF0IjoxNzY5OTYwODA4fQ.k_qgQq2fKrB_9TUyw9t9ksH3QygnwN2_W8d-Ko254JU</Config>
+  <Config Name="ENGINE_URL" Target="ENGINE_URL" Default="http://achievement-engine:8000" Mode="" Description="Internal URL of the Achievement Engine container. If both containers are on the same Docker network, use the container name (e.g. http://achievement-engine:8000)." Type="Variable" Display="always" Required="true" Mask="false">http://achievement-engine:8000</Config>
+  <Config Name="ALLOWED_USERNAMES" Target="ALLOWED_USERNAMES" Default="*" Mode="" Description="Comma-separated list of Audiobookshelf usernames to track. Set to * or leave empty to track all users." Type="Variable" Display="always" Required="false" Mask="false">mrsing81, mrlarue77, mrlarue70, mrhudson25</Config>
+  <Config Name="DISCORD_WEBHOOK_URL" Target="DISCORD_WEBHOOK_URL" Default="" Mode="" Description="Discord webhook URL for posting achievement notifications. Leave empty to disable Discord notifications." Type="Variable" Display="always" Required="false" Mask="true">https://discord.com/api/webhooks/1472200660715049133/ZgszFvsTpg5UD-iO_PGJZpcVHBZuvOTsNe8yIhLQsZSraoIBKKaxHhKuAktlH_ei-4FM</Config>
+</Container>

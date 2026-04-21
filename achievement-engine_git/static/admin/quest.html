@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bounty Board - Post Quests</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --bg-dark: #050505;
+            --card-bg: #111;
+            --text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #111;
+            padding: 15px;
+            border-bottom: 2px solid var(--neon-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0;
+            color: var(--neon-blue);
+
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #111;
+            border: 1px solid #333;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 0.8rem;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        input, select, textarea {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--neon-blue);
+            outline: none;
+        }
+
+        .btn-post {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-post:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .nav-back {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 5px;
+        }
+    
+        .admin-nav {
+            width: 100%;
+            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+            border-bottom: 1px solid var(--neon-blue, var(--system-blue, #00f2ff));
+            box-shadow: 0 0 12px rgba(0, 242, 255, 0.16);
+        }
+
+		.admin-nav-inner {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 10px 14px;
+			display: flex;
+			justify-content: center; /* This centers the items horizontally */
+			gap: 8px;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+        .admin-nav a {
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #9ad8df;
+            padding: 6px 10px;
+            border: 1px solid #2b4448;
+            transition: all 0.2s ease;
+        }
+
+        .admin-nav a.brand {
+            color: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: transparent;
+            padding-left: 0;
+            margin-right: 4px;
+        }
+
+        .admin-nav a:hover {
+            color: #001215;
+            background: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+        }
+
+        .admin-nav a.active {
+            color: #001215;
+            background: var(--neon-blue, var(--system-blue, #00f2ff));
+            border-color: var(--neon-blue, var(--system-blue, #00f2ff));
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.35);
+        }
+    </style>
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="admin-nav-inner">
+            <a href="/admin" class="brand">System Admin</a>
+            <a href="/admin">Hub</a>
+            <a href="/admin/forge">Forge</a>
+            <a href="/admin/loot">Armory</a>
+            <a href="/admin/quest">Bounties</a>
+            <a href="/admin/template" class="active">Template</a>
+            <a href="/admin/ops">Ops</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>BOUNTY BOARD // QUEST DISPATCH</h1>
+        <a href="/admin" class="nav-back">[ RETURN TO HUB ]</a>
+    </header>
+
+    <div class="container">
+        <div class="form-group">
+            <label>Quest Name</label>
+            <input type="text" id="quest_name" placeholder="e.g. The Martian Chronicles">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-group">
+                <label>Target Type</label>
+                <select id="target_type">
+                    <option value="series">Series Completion</option>
+                    <option value="book">Single Book</option>
+                    <option value="milestone">Generic Milestone</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Target Name / ID</label>
+                <input type="text" id="target_name" placeholder="e.g. Red Rising">
+                <span class="hint">Exact match for Series Name or Book ID.</span>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-group">
+                <label>XP Reward</label>
+                <input type="number" id="xp_reward" value="1000" min="0">
+            </div>
+            <div class="form-group">
+                <label>Bonus Loot Rarity (Optional)</label>
+                <select id="loot_rarity">
+                    <option value="">No Loot</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Epic">Epic</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Flavor Text / Directive</label>
+            <textarea id="flavor_text" rows="4" placeholder="Enter the lore or instruction for this bounty..."></textarea>
+        </div>
+
+        <button class="btn-post" onclick="postQuest()">[ DISPATCH DIRECTIVE ]</button>
+    </div>
+
+    <script>
+        async function postQuest() {
+            const quest = {
+                quest_name: document.getElementById('quest_name').value,
+                target_type: document.getElementById('target_type').value,
+                target_name: document.getElementById('target_name').value,
+                xp_reward: parseInt(document.getElementById('xp_reward').value) || 0,
+                loot_rarity: document.getElementById('loot_rarity').value,
+                flavor_text: document.getElementById('flavor_text').value
+            };
+
+            if (!quest.quest_name || !quest.target_name) {
+                alert("Quest Name and Target Name are required.");
+                return;
+            }
+
+            try {
+                const resp = await fetch('/awards/api/admin/quest/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(quest)
+                });
+                const data = await resp.json();
+                if (data.ok) {
+                    alert(`Directive dispatched successfully. ID: ${data.id}`);
+                    window.location.href = "/admin";
+                } else {
+                    alert("Dispatch failed: " + data.detail);
+                }
+            } catch (e) {
+                alert("Communication failure: " + e.message);
+            }
+        }
+    </script>
+</body>
+</html>

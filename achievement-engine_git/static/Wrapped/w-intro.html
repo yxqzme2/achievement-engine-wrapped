@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sanctum Wrapped 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="/static/Wrapped/w-shared.css?v=4">
+  <link rel="stylesheet" href="/static/Wrapped/w-intro.css?v=4">
+</head>
+<body>
+<div id="screen-fx"></div>
+<div id="progress-bar-row"></div>
+<canvas id="ls-canvas" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
+<div id="combat-ui">
+  <div class="hp-bar-container" id="boss-hp-container">
+    <div class="hp-label">💀💀 SYSTEM ADMINISTRATOR [ELITE✚✚]</div>
+    <div class="hp-fill" id="boss-hp-fill"></div>
+    <div class="hp-text" id="boss-hp-text">0 / 15,000</div>
+  </div>
+  <div id="user-stats-bar"></div>
+  <div class="hp-bar-container" id="user-hp-container">
+    <div id="user-shield"></div>
+    <div class="hp-label" id="hp-user-label">LISTENER</div>
+    <div class="hp-fill" id="user-hp-fill"></div>
+    <div class="hp-text" id="user-hp-text">0 / 1,500</div>
+  </div>
+</div>
+
+<canvas id="fireworks-canvas"></canvas>
+
+<div id="slide-content">
+  <div class="glass" style="position:relative;z-index:1;border-color:rgba(255,42,42,0.5);box-shadow:0 0 40px rgba(255,0,0,0.3),inset 0 0 20px rgba(255,0,0,0.1);">
+    <div class="lbl" style="color:#ff5555;font-size:1.1rem;letter-spacing:5px;">System Directive: Purge</div>
+    <div class="big-text" id="slam-name" style="color:#ff712a;font-size:clamp(2.5rem,8vw,4.5rem);text-transform:uppercase;margin:15px 0;opacity:0;">LISTENER</div>
+    <div class="sub-text" style="color:#e0e0e0;font-size:1.1rem;line-height:1.8;margin-top:20px;">
+      Your audio consumption has been analyzed.<br>
+      <div class="verdict-container">
+        <span class="verdict-label">VERDICT:</span>
+        <span class="verdict-unworthy">UNWORTHY</span>
+      </div>
+      The System has scheduled your avatar for immediate liquidation.<br><br>
+      Prepare to face the<br>
+      <span class="elite-boss-name">☠ System Administrator ☠</span>
+    </div>
+  </div>
+</div>
+
+<div id="tap-cue">tap anywhere to continue →</div>
+
+<script src="/static/Wrapped/w-shared.js?v=4"></script>
+<script src="/static/Wrapped/w-intro.js?v=4"></script>
+</body>
+</html>
