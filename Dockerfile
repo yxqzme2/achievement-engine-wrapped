@@ -31,7 +31,7 @@ COPY json/ /app/json/
 COPY icons/ /app/icons/
 
 # --- STARTUP SCRIPT ---
-COPY setup.sh /app/setup.sh
+COPY scripts/setup.sh /app/setup.sh
 RUN chmod +x /app/setup.sh
 
 EXPOSE 8000
