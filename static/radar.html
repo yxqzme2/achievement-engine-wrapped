@@ -777,7 +777,12 @@ window.addEventListener('resize', () => {
     if (document.getElementById('cal-view').style.display !== 'none') squareCells();
 });
 
-loadAll();
+(async () => {
+    await loadAll();
+    // Build calendar since it's the default view
+    buildCalendar();
+    squareCells();
+})();
 </script>
 </body>
 </html>
