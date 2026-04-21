@@ -113,26 +113,45 @@
             background: var(--card-bg); border: 1px solid var(--border-mid);
             padding: 18px; margin-bottom: 32px; min-height: 72px;
         }
-        .tracked-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tracked-list { display: flex; flex-direction: column; gap: 12px; }
         .tracked-chip {
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: flex-start; gap: 12px;
             background: #0d1a1e; border: 1px solid #1e3a3f;
-            padding: 5px 10px 5px 5px; font-size: 0.75rem; color: #9ad8df;
+            padding: 12px; font-size: 0.75rem; color: #9ad8df;
+            border-radius: 4px; transition: background .15s;
         }
+        .tracked-chip:hover { background: #122228; }
         .tracked-chip img {
-            width: 26px; height: 26px; object-fit: cover;
-            background: #0a0a0a; flex-shrink: 0;
+            width: 40px; height: 40px; object-fit: cover;
+            background: #0a0a0a; flex-shrink: 0; border-radius: 3px;
         }
+        .tracked-chip .chip-content { flex: 1; min-width: 0; }
+        .tracked-chip .chip-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
         .tracked-chip .chip-name {
-            font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
-            color: var(--neon-blue); letter-spacing: .5px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.75rem;
+            color: var(--neon-blue); letter-spacing: .5px; font-weight: 700;
         }
         .tracked-chip .chip-author { font-size: 0.68rem; color: var(--text-muted); }
-        .tracked-chip button {
-            background: none; border: none; color: #3a5a5f; cursor: pointer;
-            font-size: 0.85rem; line-height: 1; padding: 0 0 0 6px; transition: color .15s;
+        .tracked-chip .chip-status { font-size: 0.68rem; margin-top: 4px; line-height: 1.4; }
+        .tracked-chip .status-badge {
+            display: inline-block; padding: 2px 6px; border-radius: 3px;
+            font-size: 0.63rem; font-family: 'Orbitron', sans-serif; font-weight: 700;
+            margin-right: 4px; text-transform: uppercase;
         }
-        .tracked-chip button:hover { color: #ff4455; }
+        .status-found { background: var(--neon-green); color: #001215; }
+        .status-no-new { background: #4a6a6f; color: #fff; }
+        .status-error { background: #8b3a10; color: #ffd5b0; }
+        .status-checking { background: #4a4a00; color: #ffff88; }
+        .chip-actions { display: flex; gap: 6px; align-items: center; }
+        .chip-check { background: none; border: 1px solid #3a5a5f; color: #9ad8df; cursor: pointer;
+            font-size: 0.65rem; padding: 3px 8px; border-radius: 3px; transition: all .15s;
+        }
+        .chip-check:hover:not(:disabled) { border-color: var(--neon-blue); color: var(--neon-blue); }
+        .chip-check:disabled { opacity: .5; cursor: default; }
+        .chip-delete { background: none; border: none; color: #3a5a5f; cursor: pointer;
+            font-size: 0.85rem; line-height: 1; padding: 0; transition: color .15s;
+        }
+        .chip-delete:hover { color: #ff4455; }
 
         /* ── Modal ── */
         .modal-overlay {
@@ -290,16 +309,97 @@ function renderTracked(series) {
         chip.className = 'tracked-chip';
         const coverHtml = s.cover_url
             ? `<img src="${escHtml(s.cover_url)}" alt="">`
-            : `<div style="width:26px;height:26px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:.7rem">&#127911;</div>`;
+            : `<div style="width:40px;height:40px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:1.2rem;border-radius:3px">&#127911;</div>`;
+
+        const statusHtml = buildSeriesStatus(s);
+
         chip.innerHTML = `
             ${coverHtml}
-            <div>
-                <div class="chip-name">${escHtml(s.series_name)}</div>
-                ${s.author ? `<div class="chip-author">${escHtml(s.author)}</div>` : ''}
+            <div class="chip-content">
+                <div class="chip-header">
+                    <div>
+                        <div class="chip-name">${escHtml(s.series_name)}</div>
+                        ${s.author ? `<div class="chip-author">${escHtml(s.author)}</div>` : ''}
+                    </div>
+                </div>
+                <div class="chip-status">${statusHtml}</div>
             </div>
-            <button title="Stop tracking" onclick="deleteSeries(${s.id}, this)">&#10005;</button>`;
+            <div class="chip-actions">
+                <button class="chip-check" onclick="checkOneSeries('${escAttr(s.series_asin)}', this)" title="Check this series now">CHECK</button>
+                <button class="chip-delete" title="Stop tracking" onclick="deleteSeries(${s.id}, this)">&#10005;</button>
+            </div>`;
         container.appendChild(chip);
     });
+}
+
+function buildSeriesStatus(s) {
+    const now = Math.floor(Date.now() / 1000);
+    const lastChecked = s.last_checked || 0;
+    const hoursSince = lastChecked ? Math.floor((now - lastChecked) / 3600) : null;
+
+    let timeStr = '';
+    if (hoursSince === null) {
+        timeStr = 'Never checked';
+    } else if (hoursSince === 0) {
+        timeStr = 'Just now';
+    } else if (hoursSince < 24) {
+        timeStr = `${hoursSince}h ago`;
+    } else {
+        const days = Math.floor(hoursSince / 24);
+        timeStr = `${days}d ago`;
+    }
+
+    let status = `<span style="color:var(--text-muted)">Last: ${timeStr}</span>`;
+
+    if (s.last_release_date && s.last_title) {
+        const today = new Date().toISOString().slice(0, 10);
+        const isUpcoming = s.last_release_date > today;
+        const badge = isUpcoming ? '<span class="status-badge status-found">UPCOMING</span>' : '<span class="status-badge status-found">FOUND</span>';
+        const dateDisplay = formatDateShort(s.last_release_date);
+        status += `<br>${badge} <strong>${escHtml(s.last_title)}</strong>`;
+        if (s.last_sequence) status += ` #${escHtml(s.last_sequence)}`;
+        status += ` on ${dateDisplay}`;
+    } else {
+        status += '<br><span class="status-badge status-no-new">NO RELEASES</span> No upcoming releases found';
+    }
+
+    return status;
+}
+
+function formatDateShort(iso) {
+    if (!iso) return '—';
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+async function checkOneSeries(seriesAsin, btn) {
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'CHECKING...';
+
+    try {
+        const resp = await fetch(`/radar/api/check/${encodeURIComponent(seriesAsin)}`, { method: 'POST' });
+        const data = await resp.json();
+
+        btn.textContent = originalText;
+
+        if (data.status === 'found') {
+            const bookStr = data.next_book.title + (data.next_book.sequence ? ` #${data.next_book.sequence}` : '');
+            const msg = data.is_new ? `Found: ${bookStr}` : `Confirmed: ${bookStr}`;
+            showToast(msg);
+        } else if (data.status === 'no_new_releases') {
+            showToast('No new releases for this series');
+        } else if (data.status === 'error') {
+            showToast(`Error: ${data.error}`);
+        }
+
+        // Reload series list to update timestamps
+        await loadTracked();
+    } catch (e) {
+        btn.textContent = originalText;
+        btn.disabled = false;
+        console.error(e);
+    }
 }
 
 async function deleteSeries(id, btn) {

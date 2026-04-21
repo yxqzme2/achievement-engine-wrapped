@@ -42,7 +42,7 @@ from .gear_engine import (
 )
 from .release_radar import (
     search_series_candidates, check_all_series as radar_check_all,
-    generate_ics, radar_worker, seed_from_abs, check_library_status,
+    check_one_series, _product_to_release, generate_ics, radar_worker, seed_from_abs, check_library_status,
 )
 
 # -----------------------------------------
@@ -3419,6 +3419,59 @@ def radar_manual_check():
     """Manually trigger a full series poll (runs synchronously, may be slow)."""
     found = radar_check_all(store, cfg.discord_proxy_url)
     return JSONResponse({"ok": True, "new_releases": found})
+
+
+@app.post("/radar/api/check/{series_asin}")
+def radar_check_single_series(series_asin: str):
+    """Check a single series for updates. Returns {status, next_book, last_checked}."""
+    import time
+
+    series = None
+    for s in store.get_tracked_series():
+        if s["series_asin"] == series_asin:
+            series = s
+            break
+
+    if not series:
+        raise HTTPException(status_code=404, detail="Series not found")
+
+    try:
+        newest = check_one_series(series)
+        store.touch_series_checked(series_asin)
+
+        if newest is None:
+            return JSONResponse({
+                "status": "no_new_releases",
+                "next_book": None,
+                "last_checked": int(time.time()),
+            })
+
+        release = _product_to_release(newest, series_asin, series["series_name"])
+        is_new = store.upsert_release(**release)
+
+        if is_new:
+            store.update_series_last_seen(
+                series_asin, release["asin"], release["title"],
+                release["sequence"], release["release_date"]
+            )
+
+        return JSONResponse({
+            "status": "found",
+            "next_book": {
+                "title": release["title"],
+                "sequence": release["sequence"],
+                "release_date": release["release_date"],
+                "is_preorder": release["is_preorder"],
+            },
+            "last_checked": int(time.time()),
+            "is_new": is_new,
+        })
+    except Exception as e:
+        return JSONResponse({
+            "status": "error",
+            "error": str(e),
+            "last_checked": int(time.time()),
+        })
 
 
 @app.post("/radar/api/seed-from-abs")

@@ -358,12 +358,12 @@
 
     <!-- View toggle -->
     <div class="view-toggle">
-        <button class="view-tab active" id="tab-grid" onclick="setView('grid')">&#8862; Grid</button>
-        <button class="view-tab"        id="tab-cal"  onclick="setView('cal')">&#128197; Calendar</button>
+        <button class="view-tab" id="tab-grid" onclick="setView('grid')">&#8862; Grid</button>
+        <button class="view-tab active"        id="tab-cal"  onclick="setView('cal')">&#128197; Calendar</button>
     </div>
 
     <!-- ── Grid view ── -->
-    <div id="grid-view">
+    <div id="grid-view" style="display:none">
         <div class="section-heading">Upcoming Releases</div>
         <div id="upcoming-grid" class="release-grid">
             <div class="empty-state" id="upcoming-empty" style="display:none">
