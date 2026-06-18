@@ -82,7 +82,11 @@ function applyBadges() {
 }
 
 async function loadSeriesProgress(userId) {
-  if (!userId) return;
+  if (!userId) {
+    _seriesProgress = {};
+    applyBadges();
+    return;
+  }
   try {
     const res = await fetch(`/awards/api/tier/series-progress?user_id=${encodeURIComponent(userId)}`, { cache: 'no-store' });
     if (!res.ok) return;
@@ -92,6 +96,32 @@ async function loadSeriesProgress(userId) {
       applyBadges();
     }
   } catch (_) {}
+}
+
+async function populateBadgeUserSelect() {
+  const sel = document.getElementById('badge-user-select');
+  if (!sel) return;
+  try {
+    const res = await fetch(API_TIER_USERS, { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const users = Array.isArray(data?.users) ? data.users : [];
+    users.forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u.user_id;
+      opt.textContent = u.username;
+      sel.appendChild(opt);
+    });
+    // Auto-select if userId already in URL
+    const urlUserId = new URLSearchParams(window.location.search).get('userId') || '';
+    if (urlUserId && users.find(u => u.user_id === urlUserId)) {
+      sel.value = urlUserId;
+    }
+  } catch (_) {}
+}
+
+function onBadgeUserChange(userId) {
+  loadSeriesProgress(userId);
 }
 
 async function loadLibrary() {
@@ -634,6 +664,7 @@ function _startSyncPoll(btn) {
 }
 
 // Global exposure
+window.onBadgeUserChange = onBadgeUserChange;
 window.filterLibrary = filterLibrary;
 window.generateShareLink = generateShareLink;
 window.exportTierList = exportTierList;
@@ -647,6 +678,7 @@ window.confirmSaveModal = confirmSaveModal;
 document.addEventListener('DOMContentLoaded', () => {
     loadLibrary();
     renderSavedLists();
+    populateBadgeUserSelect();
     const _sb = document.getElementById('search-bar');
     if (_sb) {
         _sb.addEventListener('focus', () => {

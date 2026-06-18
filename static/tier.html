@@ -6,7 +6,7 @@
   <title>LitRPG Tier List Maker</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <link rel="stylesheet" href="/static/tier.css?v=5">
+  <link rel="stylesheet" href="/static/tier.css?v=6">
 </head>
 
 <body>
@@ -31,6 +31,12 @@
 
   <div class="btn-container">
     <div class="search-wrap"><input type="text" id="search-bar" placeholder="Search covers..." oninput="filterLibrary()" autocomplete="off" /><div id="search-results" role="listbox" aria-label="Search results">  <div class="sr-head">    <div class="sr-title">Matches</div>    <div class="sr-hint">Click to pick up • Esc to close</div>  </div>  <div class="sr-grid" id="sr-grid"></div></div></div>
+    <div class="badge-user-wrap">
+      <label for="badge-user-select">📖 Badges for:</label>
+      <select id="badge-user-select" onchange="onBadgeUserChange(this.value)">
+        <option value="">— off —</option>
+      </select>
+    </div>
     <button onclick="saveCurrentList()">💾 Save List</button>
     <button onclick="generateShareLink()">🔗 Share Link</button>
     <button onclick="exportTierList()">📸 Save Image</button>
@@ -74,7 +80,7 @@
       </div>
     </div>
   </div>
-  <script src="/static/tier.js?v=7"></script>
+  <script src="/static/tier.js?v=8"></script>
 </body>
 </html>
 
