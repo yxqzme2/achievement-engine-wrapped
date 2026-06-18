@@ -876,6 +876,63 @@ def covers_meta_endpoint():
         return JSONResponse({})
 
 
+@app.get("/awards/api/tier/series-progress")
+def api_tier_series_progress(user_id: str = ""):
+    """
+    Return per-cover completed book counts for a user.
+    Used by the tier list page to overlay completion badges on series covers.
+    Returns { "filename.jpg": count } for series with at least 1 book finished.
+    """
+    import json as _json
+
+    if not user_id:
+        return JSONResponse({})
+
+    try:
+        snapshots = client.get_all_user_snapshots()
+    except Exception:
+        return JSONResponse({}, status_code=503)
+
+    user_snap = next((s for s in snapshots if str(s.user_id) == str(user_id)), None)
+    if not user_snap:
+        return JSONResponse({})
+
+    finished_ids = user_snap.finished_ids  # set of libraryItemId strings
+
+    series_index = _SERIES_INDEX_CACHE.get("data") or []
+
+    # series name (lowercased) -> count of finished books in that series
+    series_counts: dict = {}
+    for s in series_index:
+        sname = (s.get("seriesName") or "").strip()
+        if not sname:
+            continue
+        books = s.get("books") or []
+        count = sum(1 for b in books if str(b.get("libraryItemId", "")) in finished_ids)
+        if count > 0:
+            series_counts[sname.lower()] = count
+
+    meta_path = os.path.join(COVERS_DIR, "covers-meta.json")
+    covers_meta: dict = {}
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path, "r", encoding="utf-8") as mf:
+                covers_meta = _json.load(mf)
+        except Exception:
+            pass
+
+    result: dict = {}
+    for filename, meta in covers_meta.items():
+        sname = (meta.get("series") or "").strip()
+        if not sname:
+            continue
+        count = series_counts.get(sname.lower(), 0)
+        if count > 0:
+            result[filename] = count
+
+    return JSONResponse(result)
+
+
 @app.get("/")
 def root_redirect():
     now = int(time.time())
