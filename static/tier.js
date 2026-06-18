@@ -30,7 +30,7 @@ function setStatus(msg, isBad = false) {
   el.style.color = isBad ? '#ffb3b3' : '#b7ffb7';
 }
 
-function attachLongPressToReturn(el) {
+function attachLongPressToReturn(img) {
   let timer = null;
   let moved = false;
 
@@ -38,7 +38,7 @@ function attachLongPressToReturn(el) {
     moved = false;
     if (e.pointerType === 'mouse') return;
     timer = setTimeout(() => {
-      if (!moved) sendToLibrary(el);
+      if (!moved) sendToLibrary(img);
     }, 600);
   };
 
@@ -47,81 +47,17 @@ function attachLongPressToReturn(el) {
     timer = null;
   };
 
-  el.addEventListener('pointerdown', (e) => start(e));
-  el.addEventListener('pointermove', () => { moved = true; cancel(); });
-  el.addEventListener('pointerup', cancel);
-  el.addEventListener('pointercancel', cancel);
-  el.addEventListener('pointerleave', cancel);
+  img.addEventListener('pointerdown', (e) => start(e));
+  img.addEventListener('pointermove', () => { moved = true; cancel(); });
+  img.addEventListener('pointerup', cancel);
+  img.addEventListener('pointercancel', cancel);
+  img.addEventListener('pointerleave', cancel);
 }
 
-function sendToLibrary(el) {
+function sendToLibrary(img) {
   const lib = document.getElementById('library');
-  if (lib) lib.appendChild(el);
+  if (lib) lib.appendChild(img);
   clearPicked();
-}
-
-// Series-progress badge counts: filename -> number
-let _seriesProgress = {};
-
-function applyBadges() {
-  document.querySelectorAll('.book-wrap').forEach(wrap => {
-    const fname = wrap.dataset._fname || '';
-    const count = _seriesProgress[fname] || 0;
-    let badge = wrap.querySelector('.book-badge');
-    if (count > 0) {
-      if (!badge) {
-        badge = document.createElement('div');
-        badge.className = 'book-badge';
-        wrap.appendChild(badge);
-      }
-      badge.textContent = count;
-    } else if (badge) {
-      badge.remove();
-    }
-  });
-}
-
-async function loadSeriesProgress(userId) {
-  if (!userId) {
-    _seriesProgress = {};
-    applyBadges();
-    return;
-  }
-  try {
-    const res = await fetch(`/awards/api/tier/series-progress?user_id=${encodeURIComponent(userId)}`, { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
-    if (data && typeof data === 'object') {
-      _seriesProgress = data;
-      applyBadges();
-    }
-  } catch (_) {}
-}
-
-async function populateBadgeUserSelect() {
-  const sel = document.getElementById('badge-user-select');
-  if (!sel) return;
-  try {
-    const res = await fetch(API_TIER_USERS, { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
-    const users = Array.isArray(data?.users) ? data.users : [];
-    users.forEach(u => {
-      const opt = document.createElement('option');
-      opt.value = u.user_id;
-      opt.textContent = u.username;
-      sel.appendChild(opt);
-    });
-    // Auto-select if userId already in URL
-    const urlUserId = new URLSearchParams(window.location.search).get('userId') || '';
-    if (urlUserId && users.find(u => u.user_id === urlUserId)) {
-      sel.value = urlUserId;
-    }
-  } catch (_) {}
-}
-
-function onBadgeUserChange(userId) {
-  loadSeriesProgress(userId);
 }
 
 async function loadLibrary() {
@@ -164,63 +100,52 @@ async function loadLibrary() {
     }
 
     imgFiles.forEach(file => {
-      // Wrapper div is the drag/click target
-      const wrap = document.createElement('div');
-      wrap.className = 'book-wrap';
-      wrap.draggable = true;
-      wrap.id = btoa(unescape(encodeURIComponent(file.name)))
+      const img = document.createElement('img');
+      const encoded = encodeURIComponent(file.name).replace(/%2F/g, '/');
+      img.src = `/awards/covers/${encoded}`;
+      img.className = 'book';
+      img.draggable = true;
+      img.id = btoa(unescape(encodeURIComponent(file.name)))
         .replace(/=/g, '')
         .replace(/\+/g, '-')
         .replace(/\//g, '_');
 
-      wrap.dataset.name = file.name
+      img.dataset.name = file.name
         .replace(/\.(webp|png|jpg|jpeg)$/i, '')
         .replace(/_/g, ' ')
         .toLowerCase();
-      wrap.dataset._fname = file.name;
+      img.dataset._fname = file.name;
 
-      const img = document.createElement('img');
-      const encoded = encodeURIComponent(file.name).replace(/%2F/g, '/');
-      img.src = `/awards/covers/${encoded}`;
-      img.alt = wrap.dataset.name;
-      img.draggable = false;
-      wrap.appendChild(img);
-
-      wrap.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', wrap.id);
+      img.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', img.id);
       });
 
-      wrap.addEventListener('contextmenu', e => {
+      img.addEventListener('contextmenu', e => {
         e.preventDefault();
-        sendToLibrary(wrap);
+        sendToLibrary(img);
       });
 
-      attachLongPressToReturn(wrap);
-      lib.appendChild(wrap);
+      attachLongPressToReturn(img);
+      lib.appendChild(img);
     });
 
     setStatus(`Loaded ${imgFiles.length} covers.`);
 
-    // Augment wrappers with book titles from meta (for search)
+    // Augment images with book titles from meta (for search), then parse URL
     try {
       const metaRes = await fetch('/awards/api/covers-meta', { cache: 'no-store' });
       if (metaRes.ok) {
         const meta = await metaRes.json();
-        document.querySelectorAll('#library .book-wrap').forEach(wrap => {
-          const entry = meta[wrap.dataset._fname] || null;
+        document.querySelectorAll('#library .book').forEach(img => {
+          const entry = meta[img.dataset._fname] || null;
           if (entry && Array.isArray(entry.books)) {
-            wrap.dataset.books = entry.books.map(t => t.toLowerCase()).join(' | ');
+            img.dataset.books = entry.books.map(t => t.toLowerCase()).join(' | ');
           }
         });
       }
     } catch (_) {}
 
     parseUrlParams();
-
-    // Load badges if userId is in URL
-    const userId = new URLSearchParams(window.location.search).get('userId') || '';
-    if (userId) await loadSeriesProgress(userId);
-
   } catch (err) {
     console.error('Covers scan failed:', err);
     setStatus('Cover scan failed (check ./covers/).', true);
@@ -230,7 +155,6 @@ async function loadLibrary() {
 function parseUrlParams() {
   const params = new URLSearchParams(window.location.search);
   params.forEach((value, key) => {
-    if (key === 'userId') return;
     const zone = document.getElementById(`tier-${key}`);
     const bookIds = value.split(',');
     bookIds.forEach(id => {
@@ -240,18 +164,18 @@ function parseUrlParams() {
   });
 }
 
-function _bookMatches(wrap, query) {
+function _bookMatches(book, query) {
   if (!query) return true;
-  if ((wrap.dataset.name || '').includes(query)) return true;
-  if ((wrap.dataset.books || '').includes(query)) return true;
+  if ((book.dataset.name || '').includes(query)) return true;
+  if ((book.dataset.books || '').includes(query)) return true;
   return false;
 }
 
 function filterLibrary() {
   const input = document.getElementById('search-bar');
   const query = (input.value || '').toLowerCase().trim();
-  document.querySelectorAll('#library .book-wrap').forEach(wrap => {
-    wrap.style.display = _bookMatches(wrap, query) ? 'flex' : 'none';
+  document.querySelectorAll('#library .book').forEach(book => {
+    book.style.display = _bookMatches(book, query) ? 'block' : 'none';
   });
   renderSearchPopover(query);
 }
@@ -273,29 +197,28 @@ function renderSearchPopover(query) {
     return;
   }
 
-  const all = Array.from(document.querySelectorAll('.book-wrap'));
-  const matches = all.filter(wrap => _bookMatches(wrap, query));
+  const all = Array.from(document.querySelectorAll('.book'));
+  const matches = all.filter(img => _bookMatches(img, query));
   const MAX = 24;
   const shown = matches.slice(0, MAX);
 
   grid.innerHTML = '';
-  shown.forEach(wrap => {
+  shown.forEach(img => {
     const item = document.createElement('div');
     item.className = 'sr-item';
     item.setAttribute('role', 'option');
     const thumb = document.createElement('img');
     thumb.className = 'sr-thumb';
-    const innerImg = wrap.querySelector('img');
-    thumb.src = innerImg ? innerImg.src : '';
+    thumb.src = img.src;
     thumb.alt = '';
     const name = document.createElement('div');
     name.className = 'sr-name';
-    name.textContent = niceNameFromDataset(wrap.dataset.name);
+    name.textContent = niceNameFromDataset(img.dataset.name);
     item.appendChild(thumb);
     item.appendChild(name);
     item.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
-      setPicked(wrap, window.innerWidth / 2, 100);
+      setPicked(img, window.innerWidth / 2, 100);
       const target = document.getElementById('capture-area');
       if (target) {
         const y = target.getBoundingClientRect().top + window.scrollY + 55;
@@ -325,7 +248,7 @@ function generateShareLink() {
   const params = new URLSearchParams();
   document.querySelectorAll('.items').forEach(zone => {
     if (zone.id === 'library') return;
-    const bookIds = Array.from(zone.children).map(el => el.id).filter(Boolean);
+    const bookIds = Array.from(zone.children).map(img => img.id);
     if (bookIds.length > 0) params.set(zone.id.replace('tier-', ''), bookIds.join(','));
   });
   const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
@@ -380,7 +303,7 @@ async function saveCurrentList() {
   const params = new URLSearchParams();
   document.querySelectorAll('.items').forEach(zone => {
     if (zone.id === 'library') return;
-    const bookIds = Array.from(zone.children).map(el => el.id).filter(Boolean);
+    const bookIds = Array.from(zone.children).map(img => img.id);
     if (bookIds.length > 0) params.set(zone.id.replace('tier-', ''), bookIds.join(','));
   });
 
@@ -431,7 +354,6 @@ function closeSaveModal() {
   const modal = document.getElementById('save-modal');
   if (modal) modal.style.display = 'none';
 }
-
 async function confirmSaveModal() {
   const userSel = document.getElementById('save-user-select');
   const nameEl = document.getElementById('save-list-name');
@@ -502,13 +424,12 @@ function loadSavedListByQuery(save) {
   if (!save || !save.query) return;
 
   const lib = document.getElementById('library');
-  document.querySelectorAll('.tier-row .items .book-wrap').forEach(wrap => {
-    lib.appendChild(wrap);
+  document.querySelectorAll('.tier-row .items .book').forEach(book => {
+    lib.appendChild(book);
   });
 
   const params = new URLSearchParams(save.query);
   params.forEach((value, key) => {
-    if (key === 'userId') return;
     const zone = document.getElementById(`tier-${key}`);
     const bookIds = value.split(',');
     bookIds.forEach(id => {
@@ -591,13 +512,12 @@ function clearPicked() {
   }
 }
 
-function setPicked(el, x, y) {
+function setPicked(img, x, y) {
   if (picked) picked.classList.remove('selected');
-  picked = el;
+  picked = img;
   picked.classList.add('selected');
   if (ghost) {
-    const innerImg = el.querySelector('img');
-    ghost.src = innerImg ? innerImg.src : '';
+    ghost.src = picked.src;
     ghost.style.display = 'block';
     ghost.style.left = x + 'px';
     ghost.style.top = y + 'px';
@@ -664,7 +584,6 @@ function _startSyncPoll(btn) {
 }
 
 // Global exposure
-window.onBadgeUserChange = onBadgeUserChange;
 window.filterLibrary = filterLibrary;
 window.generateShareLink = generateShareLink;
 window.exportTierList = exportTierList;
@@ -678,7 +597,6 @@ window.confirmSaveModal = confirmSaveModal;
 document.addEventListener('DOMContentLoaded', () => {
     loadLibrary();
     renderSavedLists();
-    populateBadgeUserSelect();
     const _sb = document.getElementById('search-bar');
     if (_sb) {
         _sb.addEventListener('focus', () => {
@@ -693,24 +611,23 @@ document.addEventListener('DOMContentLoaded', () => {
       ghost.style.top = e.clientY + 'px';
     }, { passive: true });
     document.addEventListener('click', (e) => {
-      // Find the nearest .book-wrap ancestor (covers clicks on inner img or badge)
-      const wrap = e.target.closest ? e.target.closest('.book-wrap') : null;
-      if (!wrap) {
+      const img = (e.target && e.target.classList && e.target.classList.contains('book')) ? e.target : null;
+      if (!img) {
         if (picked) {
             const zone = e.target.closest && e.target.closest('.items');
-            if (zone && zone.id !== 'library' && !e.target.closest('.book-wrap')) {
+            if (zone && zone.id !== 'library' && !e.target.classList.contains('book')) {
                 zone.appendChild(picked);
                 clearPicked();
             }
         }
-        const searchWrap = document.querySelector('.search-wrap');
-        if (searchWrap && !searchWrap.contains(e.target)) closeSearchPopover();
+        const wrap = document.querySelector('.search-wrap');
+        if (wrap && !wrap.contains(e.target)) closeSearchPopover();
         return;
       }
-      if (picked && picked === wrap) { clearPicked(); return; }
-      setPicked(wrap, e.clientX, e.clientY);
+      if (picked && picked === img) { clearPicked(); return; }
+      setPicked(img, e.clientX, e.clientY);
       const lib = document.getElementById('library');
-      if (lib && lib.contains(wrap)) {
+      if (lib && lib.contains(img)) {
         const target = document.getElementById('capture-area');
         if (target) {
           const y = target.getBoundingClientRect().top + window.scrollY + 55;
@@ -736,3 +653,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 });
+
+
+
+
+
+
