@@ -201,6 +201,32 @@
         }
         .notes-field:focus { border-color: var(--gold-accent); }
 
+        /* ── Request type toggle ── */
+        .type-toggle { display: flex; gap: 0; margin-bottom: 20px; }
+        .type-toggle button {
+            flex: 1; padding: 10px 16px;
+            font-family: var(--font-title); font-size: .82rem; font-weight: 700;
+            letter-spacing: .5px; border: 2px solid var(--border-color);
+            background: var(--tab-bg); color: var(--tab-text); cursor: pointer;
+            transition: all .2s;
+        }
+        .type-toggle button:first-child { border-radius: 5px 0 0 5px; }
+        .type-toggle button:last-child  { border-radius: 0 5px 5px 0; border-left: none; }
+        .type-toggle button.active { background: var(--gold-accent); color: #1a1208; border-color: var(--gold-accent); }
+
+        /* ── Book title field ── */
+        .book-field { margin-top: 12px; }
+        .book-field label {
+            display: block; font-family: var(--font-title); font-size: .78rem;
+            letter-spacing: 1px; color: var(--gold-accent); margin-bottom: 6px;
+        }
+        .book-field input {
+            width: 100%; background: var(--window-bg); border: 2px solid var(--border-color);
+            border-radius: 5px; padding: 10px 14px; font-family: var(--font-body);
+            font-size: .95rem; color: var(--ink); outline: none;
+        }
+        .book-field input:focus { border-color: var(--gold-accent); }
+
         /* ── Send button ── */
         .btn-send {
             font-family: var(--font-title);
@@ -252,12 +278,21 @@
 <div class="page-content">
 
     <div class="page-header">
-        <h1>Series Request</h1>
-        <p>Search for an audiobook series you'd like tracked in Release Radar</p>
+        <h1>Request</h1>
+        <p>Request a series or specific book to be added to the library</p>
     </div>
 
     <div id="no-config-notice" class="config-notice" style="display:none">
         Requests are not currently configured on this server. Contact the admin directly to request a new series.
+    </div>
+
+    <!-- Request type toggle -->
+    <div class="step-section">
+        <div class="step-label">What are you requesting?</div>
+        <div class="type-toggle">
+            <button class="active" id="type-series-btn" onclick="setRequestType('series')">Entire Series</button>
+            <button id="type-book-btn" onclick="setRequestType('book')">Specific Book</button>
+        </div>
     </div>
 
     <!-- Step 1: Search -->
@@ -279,9 +314,18 @@
         </div>
     </div>
 
-    <!-- Step 2: Note -->
+    <!-- Book title (only for specific book requests) -->
+    <div class="step-section" id="book-section" style="display:none">
+        <div class="step-label">Step 2 — Which Book?</div>
+        <div class="book-field">
+            <label>Book title or number in the series</label>
+            <input type="text" id="book-input" placeholder="e.g. Book 7, or The Final Empire" autocomplete="off">
+        </div>
+    </div>
+
+    <!-- Note -->
     <div class="step-section" id="form-section" style="display:none">
-        <div class="step-label">Step 2 — Add a Note <span style="font-weight:400;letter-spacing:0;text-transform:none;font-size:.72rem;color:var(--ink-muted)">(optional)</span></div>
+        <div class="step-label" id="note-step-label">Step 2 — Add a Note <span style="font-weight:400;letter-spacing:0;text-transform:none;font-size:.72rem;color:var(--ink-muted)">(optional)</span></div>
         <textarea class="notes-field" id="note-input"
             placeholder="e.g. I'm on book 3 and can't wait for the next one!"></textarea>
     </div>
@@ -309,6 +353,7 @@
 let smtpEnabled  = false;
 let selectedSeries = null; // {series_name, series_asin, author, cover_url}
 let selectedExists = false; // whether selected series is already in library
+let requestType = 'series'; // 'series' or 'book'
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 (async function init() {
@@ -316,11 +361,24 @@ let selectedExists = false; // whether selected series is already in library
         const resp = await fetch('/api/request-config');
         const data = await resp.json();
         smtpEnabled = data.smtp_enabled || false;
-        if (!smtpEnabled) document.getElementById('no-config-notice').style.display = '';
-    } catch (e) {
-        document.getElementById('no-config-notice').style.display = '';
-    }
+    } catch (e) {}
 })();
+
+// ── Request type toggle ──────────────────────────────────────────────────────
+function setRequestType(type) {
+    requestType = type;
+    document.getElementById('type-series-btn').classList.toggle('active', type === 'series');
+    document.getElementById('type-book-btn').classList.toggle('active', type === 'book');
+    const bookSection = document.getElementById('book-section');
+    const noteLabel = document.getElementById('note-step-label');
+    if (type === 'book') {
+        if (selectedSeries) bookSection.style.display = '';
+        noteLabel.innerHTML = 'Step 3 — Add a Note <span style="font-weight:400;letter-spacing:0;text-transform:none;font-size:.72rem;color:var(--ink-muted)">(optional)</span>';
+    } else {
+        bookSection.style.display = 'none';
+        noteLabel.innerHTML = 'Step 2 — Add a Note <span style="font-weight:400;letter-spacing:0;text-transform:none;font-size:.72rem;color:var(--ink-muted)">(optional)</span>';
+    }
+}
 
 // ── Search ────────────────────────────────────────────────────────────────────
 async function doSearch() {
@@ -409,9 +467,11 @@ function selectSeries(series, cardEl) {
     const warning = document.getElementById('lib-warning');
     warning.style.display = selectedExists ? '' : 'none';
 
+    document.getElementById('book-section').style.display = (requestType === 'book') ? '' : 'none';
     document.getElementById('form-section').style.display = '';
     document.getElementById('send-section').style.display = '';
-    document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const scrollTarget = (requestType === 'book') ? 'book-section' : 'form-section';
+    document.getElementById(scrollTarget).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // ── Manual entry ──────────────────────────────────────────────────────────────
@@ -435,10 +495,6 @@ function onManualInput() {
 // ── Send ──────────────────────────────────────────────────────────────────────
 async function sendRequest() {
     if (!selectedSeries) return;
-    if (!smtpEnabled) {
-        document.getElementById('no-config-notice').style.display = '';
-        return;
-    }
 
     const btn  = document.getElementById('send-btn');
     const hint = document.getElementById('send-hint');
@@ -454,6 +510,7 @@ async function sendRequest() {
                 series_asin: selectedSeries.series_asin,
                 author:      selectedSeries.author,
                 cover_url:   selectedSeries.cover_url,
+                book_title:  (requestType === 'book') ? document.getElementById('book-input').value.trim() : '',
                 note:        document.getElementById('note-input').value.trim(),
             }),
         });

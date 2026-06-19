@@ -94,6 +94,19 @@ CREATE TABLE IF NOT EXISTS radar_ignored_series (
   ignored_at  INTEGER NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS requests (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  series_name   TEXT NOT NULL,
+  series_asin   TEXT,
+  author        TEXT,
+  cover_url     TEXT,
+  book_title    TEXT,
+  note          TEXT,
+  status        TEXT NOT NULL DEFAULT 'pending',
+  fulfilled_at  INTEGER,
+  created_at    INTEGER NOT NULL
+);
+
 """
 
 class StateStore:
@@ -480,3 +493,51 @@ class StateStore:
     def mark_release_notified(self, asin: str) -> None:
         with self._conn() as c:
             c.execute("UPDATE radar_releases SET notified=1 WHERE asin=?", (asin,))
+
+    # -----------------------------------------
+    # Requests
+    # -----------------------------------------
+
+    def add_request(self, series_name: str, series_asin: str = "", author: str = "",
+                    cover_url: str = "", book_title: str = "", note: str = "") -> int:
+        with self._conn() as c:
+            cur = c.execute(
+                "INSERT INTO requests (series_name, series_asin, author, cover_url, book_title, note, status, created_at) "
+                "VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)",
+                (series_name, series_asin, author, cover_url, book_title, note, int(time.time())),
+            )
+            return cur.lastrowid or 0
+
+    def get_active_requests(self) -> List[Dict]:
+        cutoff = int(time.time()) - (7 * 86400)
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            rows = c.execute(
+                "SELECT * FROM requests WHERE status='pending' OR (status='fulfilled' AND fulfilled_at >= ?) "
+                "ORDER BY CASE WHEN status='pending' THEN 0 ELSE 1 END, created_at DESC",
+                (cutoff,),
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def set_request_status(self, request_id: int, status: str) -> bool:
+        fulfilled_at = int(time.time()) if status == "fulfilled" else None
+        with self._conn() as c:
+            cur = c.execute(
+                "UPDATE requests SET status=?, fulfilled_at=? WHERE id=?",
+                (status, fulfilled_at, request_id),
+            )
+            return (cur.rowcount or 0) > 0
+
+    def delete_request(self, request_id: int) -> bool:
+        with self._conn() as c:
+            cur = c.execute("DELETE FROM requests WHERE id=?", (request_id,))
+            return (cur.rowcount or 0) > 0
+
+    def purge_old_fulfilled_requests(self) -> int:
+        cutoff = int(time.time()) - (7 * 86400)
+        with self._conn() as c:
+            cur = c.execute(
+                "DELETE FROM requests WHERE status='fulfilled' AND fulfilled_at < ?",
+                (cutoff,),
+            )
+            return cur.rowcount or 0

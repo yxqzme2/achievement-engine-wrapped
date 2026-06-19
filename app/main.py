@@ -930,6 +930,10 @@ def read_review_root():
     return FileResponse(_get_static_path("review.html"))
 
 @app.get("/forge")
+@app.get("/admin/requests")
+def read_requests_admin():
+    return FileResponse(_get_static_path("admin/requests.html"))
+
 @app.get("/admin/radar")
 def read_radar_admin():
     return FileResponse(_get_static_path("admin/radar.html"))
@@ -3572,28 +3576,127 @@ async def request_submit(request: Request):
     series_asin = (body.get("series_asin") or "").strip()
     author      = (body.get("author") or "").strip()
     cover_url   = (body.get("cover_url") or "").strip()
+    book_title  = (body.get("book_title") or "").strip()
     note        = (body.get("note") or "").strip()
 
     if not series_name:
         return JSONResponse({"ok": False, "error": "Series name is required."}, status_code=400)
-    if not cfg.admin_email:
-        return JSONResponse({"ok": False, "error": "Requests are not configured on this server."}, status_code=503)
-    if not notifier.enabled():
-        return JSONResponse({"ok": False, "error": "Email is not configured on this server."}, status_code=503)
 
-    subject = f"Series Request: {series_name}"
-    lines = ["A user has requested the following series be added to Release Radar:", ""]
-    lines.append(f"Series: {series_name}")
-    if author:      lines.append(f"Author: {author}")
-    if series_asin: lines.append(f"Audible ASIN: {series_asin}")
-    if series_asin: lines.append(f"Link: https://www.audible.com/series/{series_asin}")
-    if note:        lines += ["", f"Note: {note}"]
+    req_id = store.add_request(
+        series_name=series_name, series_asin=series_asin, author=author,
+        cover_url=cover_url, book_title=book_title, note=note,
+    )
 
+    if notifier.enabled() and cfg.admin_email:
+        subject = f"Series Request: {series_name}"
+        if book_title:
+            subject = f"Book Request: {book_title} ({series_name})"
+        lines = ["A user has requested the following be added to Release Radar:", ""]
+        lines.append(f"Series: {series_name}")
+        if book_title:  lines.append(f"Book: {book_title}")
+        if author:      lines.append(f"Author: {author}")
+        if series_asin: lines.append(f"Audible ASIN: {series_asin}")
+        if series_asin: lines.append(f"Link: https://www.audible.com/series/{series_asin}")
+        if note:        lines += ["", f"Note: {note}"]
+        try:
+            notifier.send_simple(cfg.admin_email, subject, "\n".join(lines), cover_url=cover_url)
+        except Exception:
+            pass
+
+    return JSONResponse({"ok": True, "id": req_id})
+
+
+@app.get("/admin/api/requests")
+def admin_get_requests():
+    store.purge_old_fulfilled_requests()
+    items = store.get_active_requests()
+    return JSONResponse({"requests": items})
+
+
+@app.post("/admin/api/requests/{request_id}/check")
+def admin_check_request(request_id: int):
+    ok = store.set_request_status(request_id, "fulfilled")
+    if not ok:
+        return JSONResponse({"ok": False, "error": "Not found"}, status_code=404)
+    return JSONResponse({"ok": True})
+
+
+@app.post("/admin/api/requests/{request_id}/uncheck")
+def admin_uncheck_request(request_id: int):
+    ok = store.set_request_status(request_id, "pending")
+    if not ok:
+        return JSONResponse({"ok": False, "error": "Not found"}, status_code=404)
+    return JSONResponse({"ok": True})
+
+
+@app.delete("/admin/api/requests/{request_id}")
+def admin_delete_request(request_id: int):
+    ok = store.delete_request(request_id)
+    if not ok:
+        return JSONResponse({"ok": False, "error": "Not found"}, status_code=404)
+    return JSONResponse({"ok": True})
+
+
+@app.post("/admin/api/requests/verify")
+def admin_verify_requests():
+    import re as _re3
+    items = store.get_active_requests()
+    pending = [r for r in items if r["status"] == "pending"]
+    if not pending:
+        return JSONResponse({"ok": True, "checked": 0, "fulfilled": 0})
+
+    abs_series = _SERIES_INDEX_CACHE["data"] or _fetch_abs_series_index()
+
+    all_items_cache = []
     try:
-        notifier.send_simple(cfg.admin_email, subject, "\n".join(lines), cover_url=cover_url)
-        return JSONResponse({"ok": True})
-    except Exception as e:
-        return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
+        base = cfg.absstats_base_url.rstrip("/")
+        import urllib.request, json as _json2
+        req = urllib.request.Request(base + "/api/all-items", headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            payload = _json2.loads(r.read())
+        all_items_cache = payload.get("items") or payload if isinstance(payload, list) else []
+    except Exception:
+        pass
+
+    def _norm(s: str) -> str:
+        s = s.lower()
+        s = _re3.sub(r"[^a-z0-9 ]", " ", s)
+        return _re3.sub(r"\s+", " ", s).strip()
+
+    def series_exists(name: str) -> bool:
+        qn = _norm(name)
+        for s in abs_series:
+            raw = (s.get("seriesName") or "").strip()
+            if not raw: continue
+            sn = _norm(raw)
+            if qn == sn or qn in sn or sn in qn:
+                return True
+            wq, ws = set(qn.split()), set(sn.split())
+            shorter = min(len(wq), len(ws))
+            if shorter > 0 and len(wq & ws) / shorter >= 0.8:
+                return True
+        return False
+
+    def book_exists(title: str) -> bool:
+        qn = _norm(title)
+        for item in all_items_cache:
+            t = _norm(item.get("title") or "")
+            if qn == t or qn in t or t in qn:
+                return True
+        return False
+
+    fulfilled_count = 0
+    for r in pending:
+        found = False
+        if r.get("book_title"):
+            found = book_exists(r["book_title"])
+        else:
+            found = series_exists(r["series_name"])
+        if found:
+            store.set_request_status(r["id"], "fulfilled")
+            fulfilled_count += 1
+
+    return JSONResponse({"ok": True, "checked": len(pending), "fulfilled": fulfilled_count})
 
 
 @app.get("/radar/api/library-check")
