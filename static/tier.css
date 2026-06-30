@@ -1,6 +1,6 @@
 :root {
   --bg: #121212;
-  --row-h: 170px;
+  --row-h: 135px;
   --tier-w: 1150px;
   --line: #4a3b2a;
   --window-bg: #e8dbc3;
@@ -44,7 +44,7 @@ h2 {
 }
 
 /* Desktop Layout */
-.tier-row { display: flex; width: var(--tier-w); min-height: var(--row-h); margin-bottom: 3px; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+.tier-row { display: flex; width: var(--tier-w); min-height: var(--row-h); margin-bottom: 3px; border: 1px solid var(--border-color); border-radius: 4px; overflow: visible; }
 .tier-header {
   width: 180px;
   display: flex;
@@ -56,6 +56,7 @@ h2 {
   text-align: center;
   flex-shrink: 0;
   user-select: none;
+  border-radius: 3px 0 0 3px;
 }
 .label { font-size: 32px; font-weight: 900; line-height: 1; font-family: var(--font-title); }
 .description { font-size: 11px; font-weight: 800; text-transform: uppercase; opacity: 0.85; font-family: var(--font-title); letter-spacing: 0.5px; }
@@ -75,8 +76,8 @@ h2 {
 .c { background: #bfff7f; } .d { background: #7ffff0; } .e { background: #83a2ff; } .f { background: #7f7f7f; }
 
 .book {
-  width: 140px;
-  height: 140px;
+  width: 110px;
+  height: 110px;
   object-fit: cover;
   cursor: grab;
   border-radius: 3px;
@@ -291,7 +292,7 @@ button:active { transform: translateY(1px); }
   .tier-header { width: auto; height: 50px; flex-direction: row; gap: 10px; }
   .label { font-size: 20px; }
   .items { min-height: 100px; }
-  .book { width: 90px; height: 90px; }
+  .book { width: 75px; height: 75px; }
   #capture-area { padding: 5px; width: 100%; box-sizing: border-box; }
   body { padding: 5px; }
 }
