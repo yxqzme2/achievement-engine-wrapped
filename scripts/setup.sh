@@ -15,7 +15,7 @@ if [ ! -f "/data/json/achievements.points.json" ]; then
     cp -rv /defaults/. /data/
 
     # Set default permissions (Unraid Friendly)
-    chmod -R 777 /data
+    chmod -R 775 /data
     echo "[BOOTSTRAP] Seeding complete. All subfolders (static/admin, etc.) are live in /data."
 else
     echo "[BOOTSTRAP] Existing data found in /data. Syncing static files from image..."
@@ -25,7 +25,7 @@ else
     # State files (state.db, json/, covers/) are untouched.
     mkdir -p /data/static
     cp -rf /defaults/static/. /data/static/
-    chmod -R 777 /data/static
+    chmod -R 775 /data/static
     echo "[BOOTSTRAP] Static files synced."
 fi
 

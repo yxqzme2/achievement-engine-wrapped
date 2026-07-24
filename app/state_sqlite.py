@@ -2,6 +2,9 @@ import sqlite3
 import json
 import time
 import datetime
+import hashlib
+import hmac
+import secrets
 from typing import Dict, List, Tuple, Optional
 
 SCHEMA = """
@@ -235,17 +238,45 @@ class StateStore:
     # -----------------------------------------
 
     def get_pin(self, user_id: str) -> Optional[str]:
+        """Returns the stored (hashed) PIN record, or None if unset. Existence
+        check only — never compare this value directly; use verify_pin()."""
         with self._conn() as c:
             row = c.execute("SELECT pin FROM user_pins WHERE user_id=?", (user_id,)).fetchone()
             return row[0] if row else None
 
+    @staticmethod
+    def _hash_pin(pin: str, salt: bytes) -> str:
+        digest = hashlib.pbkdf2_hmac("sha256", pin.encode("utf-8"), salt, 200_000)
+        return f"pbkdf2$200000${salt.hex()}${digest.hex()}"
+
     def set_pin(self, user_id: str, pin: str) -> None:
+        salt = secrets.token_bytes(16)
+        stored = self._hash_pin(pin, salt)
         with self._conn() as c:
             c.execute(
                 "INSERT INTO user_pins(user_id, pin) VALUES(?,?) "
                 "ON CONFLICT(user_id) DO UPDATE SET pin=excluded.pin",
-                (user_id, pin),
+                (user_id, stored),
             )
+
+    def verify_pin(self, user_id: str, candidate: str) -> bool:
+        """Constant-time verification against the stored PIN hash. Also
+        accepts legacy plaintext rows (pre-hash) and transparently
+        upgrades them to a hash on successful match."""
+        stored = self.get_pin(user_id)
+        if stored is None:
+            return False
+        parts = stored.split("$")
+        if len(parts) == 4 and parts[0] == "pbkdf2":
+            _, iters_s, salt_hex, digest_hex = parts
+            salt = bytes.fromhex(salt_hex)
+            digest = hashlib.pbkdf2_hmac("sha256", candidate.encode("utf-8"), salt, int(iters_s))
+            return hmac.compare_digest(digest.hex(), digest_hex)
+        # Legacy plaintext PIN row — verify directly, then upgrade in place.
+        if hmac.compare_digest(stored, candidate):
+            self.set_pin(user_id, candidate)
+            return True
+        return False
 
     # -----------------------------------------
     # Gear: Base Stats

@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from typing import List, Tuple, Dict, Optional
 
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response, RedirectResponse
+from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response, RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 # Your existing logic imports
@@ -168,6 +168,9 @@ def achievement_engine_worker():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from . import admin_auth
+    admin_auth.startup_notice()
+
     _seed_user_xp_start_overrides_file()
 
     # Backfill tier-lists.json from DB on every startup
@@ -205,6 +208,89 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+# -----------------------------------------
+# Admin session gate
+# -----------------------------------------
+# Every route with "admin" in its path — pages and APIs alike — requires a
+# valid signed session cookie. This is a structural, path-pattern gate
+# rather than a per-route Depends() so a future route can't accidentally
+# ship unauthenticated just because someone forgot to add the dependency.
+from . import admin_auth as _admin_auth
+
+_ADMIN_GATE_EXEMPT = {"/admin/login", "/admin/logout"}
+
+
+@app.middleware("http")
+async def _admin_session_gate(request: Request, call_next):
+    path = request.url.path
+    if "admin" in path.lower() and path not in _ADMIN_GATE_EXEMPT:
+        token = request.cookies.get(_admin_auth.COOKIE_NAME, "")
+        if not _admin_auth.is_valid_session_token(token):
+            is_api = "/api/" in path
+            if request.method == "GET" and not is_api:
+                from urllib.parse import quote
+                return RedirectResponse(url=f"/admin/login?next={quote(path)}", status_code=302)
+            return JSONResponse({"detail": "Admin authentication required."}, status_code=401)
+    return await call_next(request)
+
+
+_LOGIN_PAGE = """<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>Admin Login</title>
+<style>
+body{{background:#0e0a1c;color:#e8dfc8;font-family:monospace;display:flex;
+     min-height:100vh;align-items:center;justify-content:center;margin:0}}
+form{{background:#1a1030;border:1px solid #4a3d63;padding:32px;border-radius:6px;
+     display:flex;flex-direction:column;gap:14px;min-width:280px}}
+h1{{font-size:14px;letter-spacing:3px;color:#d4af37;margin:0 0 8px}}
+input{{background:#241d33;border:1px solid #4a3d63;color:#e8dfc8;padding:10px;
+      font-family:monospace;font-size:13px}}
+button{{background:#d4af37;color:#1a1030;border:none;padding:10px;font-weight:bold;
+       letter-spacing:2px;cursor:pointer}}
+.err{{color:#ff6b6b;font-size:12px}}
+</style></head><body>
+<form method="post" action="/admin/login?next={next_q}">
+<h1>ADMIN LOGIN</h1>
+{error_html}
+<input type="password" name="password" placeholder="Admin password" autofocus>
+<button type="submit">Enter</button>
+</form></body></html>"""
+
+
+@app.get("/admin/login")
+def admin_login_page(next: str = "/admin"):
+    from urllib.parse import quote
+    return HTMLResponse(_LOGIN_PAGE.format(next_q=quote(next), error_html=""))
+
+
+@app.post("/admin/login")
+async def admin_login_submit(request: Request, next: str = "/admin"):
+    form = await request.form()
+    password = str(form.get("password", ""))
+    if not _admin_auth.check_password(password):
+        from urllib.parse import quote
+        body = _LOGIN_PAGE.format(
+            next_q=quote(next),
+            error_html='<div class="err">Incorrect password.</div>',
+        )
+        return HTMLResponse(body, status_code=401)
+    resp = RedirectResponse(url=next or "/admin", status_code=302)
+    resp.set_cookie(
+        _admin_auth.COOKIE_NAME,
+        _admin_auth.make_session_token(),
+        max_age=_admin_auth.SESSION_TTL_SECONDS,
+        httponly=True,
+        samesite="lax",
+    )
+    return resp
+
+
+@app.get("/admin/logout")
+def admin_logout():
+    resp = RedirectResponse(url="/admin/login", status_code=302)
+    resp.delete_cookie(_admin_auth.COOKIE_NAME)
+    return resp
+
 
 # Serve CSS, JS, and shared assets from /static/
 # Use the volume-mounted /static only if it actually has files; otherwise use the
@@ -1390,10 +1476,9 @@ async def api_tier_lists_save(request: Request):
     if not _user_is_allowed(username):
         raise HTTPException(status_code=403, detail="user not allowed")
 
-    stored_pin = store.get_pin(user_id)
-    if stored_pin is None:
+    if store.get_pin(user_id) is None:
         raise HTTPException(status_code=403, detail="PIN not set for this user.")
-    if stored_pin != raw_pin:
+    if not store.verify_pin(user_id, raw_pin):
         raise HTTPException(status_code=401, detail="Invalid PIN.")
 
     list_name = raw_name or f"{username}'s Tier List"
@@ -1425,10 +1510,9 @@ async def api_tier_lists_delete(user_id: str, request: Request):
         raise HTTPException(status_code=400, detail="pin is required")
 
     target_uid = str(user_id).strip()
-    stored_pin = store.get_pin(target_uid)
-    if stored_pin is None:
+    if store.get_pin(target_uid) is None:
         raise HTTPException(status_code=403, detail="PIN not set for this user.")
-    if stored_pin != raw_pin:
+    if not store.verify_pin(target_uid, raw_pin):
         raise HTTPException(status_code=401, detail="Invalid PIN.")
 
     store.delete_tier_list(target_uid)
@@ -1666,10 +1750,9 @@ async def api_spend_points(request: Request):
         raise HTTPException(status_code=400, detail="user_id, stats, and pin required")
         
     # Verify PIN
-    stored_pin = store.get_pin(user_id)
-    if stored_pin is None:
+    if store.get_pin(user_id) is None:
         raise HTTPException(status_code=403, detail="PIN not set for this user.")
-    if stored_pin != pin:
+    if not store.verify_pin(user_id, pin):
         raise HTTPException(status_code=401, detail="Invalid PIN.")
         
     success = store.spend_stat_points(user_id, stats)
@@ -1689,10 +1772,9 @@ async def api_allocate_points(request: Request):
     if not user_id or not pin:
         raise HTTPException(status_code=400, detail="user_id and pin required")
 
-    stored_pin = store.get_pin(user_id)
-    if stored_pin is None:
+    if store.get_pin(user_id) is None:
         raise HTTPException(status_code=403, detail="PIN not set for this user.")
-    if stored_pin != pin:
+    if not store.verify_pin(user_id, pin):
         raise HTTPException(status_code=401, detail="Invalid PIN.")
 
     # Accept either short keys (str/mag/def/hp) or spent_* keys.
@@ -1739,11 +1821,10 @@ async def api_equip(request: Request):
         raise HTTPException(status_code=400, detail="user_id, item_id, and pin required")
 
     # Verify PIN
-    stored_pin = store.get_pin(user_id)
-    if stored_pin is None:
+    if store.get_pin(user_id) is None:
         print(f"[EQUIP] 403 — no PIN set for {user_id}")
         raise HTTPException(status_code=403, detail="PIN not set for this user.")
-    if stored_pin != pin:
+    if not store.verify_pin(user_id, pin):
         print(f"[EQUIP] 401 — wrong PIN for {user_id}")
         raise HTTPException(status_code=401, detail="Invalid PIN.")
 
