@@ -265,15 +265,28 @@ def admin_login_page(next: str = "/admin"):
 
 @app.post("/admin/login")
 async def admin_login_submit(request: Request, next: str = "/admin"):
+    from urllib.parse import quote
+
+    remaining = _admin_auth.login_lockout_remaining(request)
+    if remaining > 0:
+        mins = max(1, remaining // 60)
+        body = _LOGIN_PAGE.format(
+            next_q=quote(next),
+            error_html=f'<div class="err">Too many failed attempts. Try again in ~{mins} min.</div>',
+        )
+        return HTMLResponse(body, status_code=429)
+
     form = await request.form()
     password = str(form.get("password", ""))
     if not _admin_auth.check_password(password):
-        from urllib.parse import quote
+        _admin_auth.record_login_failure(request)
         body = _LOGIN_PAGE.format(
             next_q=quote(next),
             error_html='<div class="err">Incorrect password.</div>',
         )
         return HTMLResponse(body, status_code=401)
+
+    _admin_auth.record_login_success(request)
     resp = RedirectResponse(url=next or "/admin", status_code=302)
     resp.set_cookie(
         _admin_auth.COOKIE_NAME,
@@ -281,6 +294,7 @@ async def admin_login_submit(request: Request, next: str = "/admin"):
         max_age=_admin_auth.SESSION_TTL_SECONDS,
         httponly=True,
         samesite="lax",
+        secure=True,
     )
     return resp
 
