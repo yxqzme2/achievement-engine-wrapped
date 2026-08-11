@@ -358,6 +358,24 @@
             <button class="btn-run" onclick="triggerPoll(this)">TRIGGER POLL</button>
         </div>
 
+        <!-- Recommendations: Tag Backfill (Audible only) -->
+        <div class="admin-card">
+            <div>
+                <h3>Recommendation Tags (Audible)</h3>
+                <p>Pulls category tags, keyword-extracted tropes, and book-1 descriptions from Audible for every tracked series. Takes a few minutes.</p>
+            </div>
+            <button class="btn-run" onclick="runTagBackfill(false, this)">RUN AUDIBLE BACKFILL</button>
+        </div>
+
+        <!-- Recommendations: Tag Backfill (+ Royal Road) -->
+        <div class="admin-card">
+            <div>
+                <h3>Recommendation Tags (+ Royal Road)</h3>
+                <p>Same as above, plus a strict author-verified Royal Road enrichment pass for richer LitRPG/progression-fantasy tags. Takes 10-20 minutes — don't close this tab while it runs.</p>
+            </div>
+            <button class="btn-run" onclick="runTagBackfill(true, this)">RUN FULL BACKFILL</button>
+        </div>
+
         <!-- Terminal Console — full width -->
         <div class="console-card">
             <div class="console-header">
@@ -433,6 +451,37 @@
             } finally {
                 btn.disabled = false;
                 btn.textContent = originalText;
+            }
+        }
+
+        async function runTagBackfill(royalroad, btn) {
+            const label = royalroad ? "full backfill (Audible + Royal Road, ~10-20 min)" : "Audible backfill (~2-3 min)";
+            if (!confirm(`Run the ${label}? This hits external sites once per tracked series — don't run it repeatedly.`)) return;
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "RUNNING...";
+            statusEl.textContent = "EXECUTING PROTOCOL...";
+            statusEl.classList.add('status-running');
+            log(`Starting recommendation tag backfill (royalroad=${royalroad})...`);
+
+            try {
+                const resp = await fetch(`/awards/api/admin/tags/backfill?royalroad=${royalroad}`, {
+                    method: 'POST'
+                });
+                const data = await resp.json();
+                log(`Series checked: ${data.series_checked}. Audible tags: +${data.audible_tags_added}. Keyword tags: +${data.keyword_tags_added}. Descriptions: ${data.descriptions_stored}.`);
+                if (royalroad) {
+                    log(`Royal Road: ${data.royalroad_matched}/${data.royalroad_checked} series matched, +${data.royalroad_tags_added} tags.`);
+                }
+                log(`Total tags by source: ${JSON.stringify(data.source_counts)}`);
+            } catch (e) {
+                log(`Backfill failed: ${e.message}`, true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                statusEl.textContent = "READY";
+                statusEl.classList.remove('status-running');
             }
         }
     </script>
