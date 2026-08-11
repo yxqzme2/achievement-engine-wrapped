@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations — The Listener's Sanctum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/recommendations.css?v=1">
+</head>
+<body>
+
+<nav class="nav-bar">
+    <a href="/" class="nav-title">The Listener's Sanctum</a>
+    <div>
+        <a href="/journal">Journal</a>
+        <a href="/champions">Leaderboard</a>
+        <a href="/roster">Roster</a>
+        <a href="/timeline">Timeline</a>
+        <a href="/chronicle">Chronicle</a>
+        <a href="/archives">Stats</a>
+        <a href="/playlist">Playlist</a>
+        <a href="/tier">Tier List</a>
+        <a href="/recommendations" class="active">Recommendations</a>
+        <a href="/review">Review</a>
+        <a href="/loot">Loot</a>
+        <a href="/quests">Quests</a>
+        <a href="/radar">Radar</a>
+        <a href="/request">Request</a>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="rec-header">
+        <h1 class="rec-title">WHAT TO LISTEN TO NEXT</h1>
+        <div class="rec-subtitle">Recommendations built from your Tier List</div>
+    </div>
+
+    <div class="user-picker" id="user-picker">
+        <span class="picker-label">Viewing as:</span>
+        <select id="user-select"><option value="">Loading users&hellip;</option></select>
+    </div>
+
+    <div class="rec-layout">
+        <div class="rec-main">
+            <div id="rec-status" class="rec-status"></div>
+            <div id="rec-list" class="rec-list"></div>
+        </div>
+        <aside class="tag-sidebar">
+            <div class="tag-sidebar-header">
+                <span>Boost by tag</span>
+                <button id="tag-clear-btn" class="tag-clear-btn">Clear</button>
+            </div>
+            <div class="tag-sidebar-hint">Check a tag to boost series that have it, even ones your Tier List has no history with. Hover a tag to see what it means.</div>
+            <label class="fresh-toggle">
+                <input type="checkbox" id="fresh-toggle-input">
+                <span>Start from scratch — ignore my Tier List, just match checked tags</span>
+            </label>
+            <div id="tag-checklist" class="tag-checklist"></div>
+        </aside>
+    </div>
+
+    <div id="tag-popover" class="tag-popover" style="display:none">
+        <div id="tag-popover-title" class="tag-popover-title"></div>
+        <div id="tag-popover-desc"></div>
+    </div>
+
+    <div id="cover-popover" class="cover-popover" style="display:none">
+        <img id="cover-popover-img" class="cover-popover-img" src="" alt="">
+        <div class="cover-popover-body">
+            <div id="cover-popover-title" class="cover-popover-title"></div>
+            <div id="cover-popover-desc" class="cover-popover-desc"></div>
+        </div>
+    </div>
+
+    <div class="tag-panel" id="tag-panel" style="display:none">
+        <h2 class="tag-panel-title">Add a tag to a series you've read</h2>
+        <div class="tag-panel-hint">You can only tag a series after finishing at least its first book.</div>
+        <div class="tag-form">
+            <input type="text" id="tag-series-input" placeholder="Series name" list="series-datalist">
+            <datalist id="series-datalist"></datalist>
+            <input type="text" id="tag-value-input" placeholder="Tag (e.g. cultivation, dungeon core)">
+            <button id="tag-submit-btn">Add Tag</button>
+        </div>
+        <div id="tag-form-status"></div>
+    </div>
+</div>
+
+<script src="/static/recommendations.js?v=1"></script>
+</body>
+</html>

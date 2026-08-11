@@ -1077,6 +1077,10 @@ def read_character_sheet_root():
 def read_roster_root():
     return FileResponse(_get_static_path("roster.html"))
 
+@app.get("/recommendations")
+def read_recommendations_root():
+    return FileResponse(_get_static_path("recommendations.html"))
+
 @app.get("/loot")
 def read_loot_compendium_root():
     return FileResponse(_get_static_path("loot.html"))
@@ -1537,6 +1541,143 @@ async def api_tier_lists_delete(user_id: str, request: Request):
 @app.post("/api/tier-lists/{user_id}/delete")
 async def api_tier_lists_delete_root(user_id: str, request: Request):
     return await api_tier_lists_delete(user_id=user_id, request=request)
+
+
+# -----------------------------------------
+# Recommendations engine (series_recs.py)
+# -----------------------------------------
+
+def _get_finished_ids_for_user(user_id: str) -> set:
+    """Same /api/completed fetch-and-match pattern used throughout main.py
+    for other per-user routes."""
+    import urllib.request, json as _json
+    base = cfg.absstats_base_url.rstrip("/")
+    try:
+        req = urllib.request.Request(base + cfg.completed_endpoint, headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            data = _json.loads(r.read())
+        for u in (data.get("users") or []):
+            uid = str(u.get("userId") or u.get("id") or "")
+            if uid == user_id:
+                return set(str(k) for k, v in (u.get("finishedDates") or {}).items() if v)
+    except Exception as e:
+        print(f"[recs] finished_ids fetch failed for {user_id}: {e}")
+    return set()
+
+
+def _first_book_id_in_series(series_key: str, series_index: List[Dict]) -> Optional[str]:
+    """Lowest seriesSequence book's libraryItemId, for the tag-submission gate."""
+    from .series_recs import normalize_series_key
+    best_id, best_seq = None, None
+    for s in series_index or []:
+        if normalize_series_key(s.get("seriesName") or "") != series_key:
+            continue
+        for b in (s.get("books") or []):
+            bid = b.get("libraryItemId")
+            if not bid:
+                continue
+            try:
+                seq = float(b.get("seriesSequence") or 9999)
+            except Exception:
+                seq = 9999.0
+            if best_seq is None or seq < best_seq:
+                best_seq, best_id = seq, bid
+    return best_id
+
+
+@app.get("/awards/api/series-names")
+def api_series_names():
+    """Plain list of known series names, for the tag-submission autocomplete."""
+    series_index = _fetch_abs_series_index()
+    names = sorted({(s.get("seriesName") or "").strip() for s in series_index if s.get("seriesName")})
+    return JSONResponse({"series": names})
+
+
+@app.get("/awards/api/recommendations/{user_id}")
+def api_recommendations(user_id: str, boost: str = "", fresh: bool = False):
+    from .series_recs import score_recommendations
+    tl = store.get_tier_list(user_id)
+    boost_tags = [t.strip() for t in boost.split(",") if t.strip()] if boost else None
+
+    # "Start from scratch" mode doesn't need tier-list history at all — it
+    # ranks purely by checked tags. Only the normal personalized mode
+    # requires a saved tier list to build an affinity profile from.
+    if not fresh and (not tl or not tl.get("query")):
+        return JSONResponse({"user_id": user_id, "recommendations": [], "reason": "no_tier_list"})
+
+    series_index = _fetch_abs_series_index()
+    tier_query = (tl or {}).get("query", "")
+    results = score_recommendations(store, tier_query, series_index, boost_tags=boost_tags, fresh=fresh)
+    return JSONResponse({"user_id": user_id, "recommendations": results, "fresh": fresh})
+
+
+@app.get("/awards/api/tags/all")
+def api_all_tags():
+    from .series_recs import all_distinct_tags
+    return JSONResponse({"tags": all_distinct_tags(store)})
+
+
+@app.get("/awards/api/series-tags/{series_key}")
+def api_get_series_tags(series_key: str):
+    return JSONResponse({"series_key": series_key, "tags": store.get_series_tags(series_key)})
+
+
+@app.post("/awards/api/series-tags")
+async def api_add_series_tag(request: Request):
+    from .series_recs import normalize_series_key, normalize_tag
+    data = await request.json()
+    user_id = str(data.get("user_id") or "").strip()
+    series_name = str(data.get("series_name") or "").strip()
+    tag = normalize_tag(str(data.get("tag") or ""))
+    if not user_id or not series_name or not tag:
+        raise HTTPException(status_code=400, detail="user_id, series_name, and tag are required")
+
+    series_key = normalize_series_key(series_name)
+    series_index = _fetch_abs_series_index()
+    first_book_id = _first_book_id_in_series(series_key, series_index)
+    if not first_book_id:
+        raise HTTPException(status_code=404, detail="Series not found in library.")
+
+    finished_ids = _get_finished_ids_for_user(user_id)
+    if first_book_id not in finished_ids:
+        raise HTTPException(
+            status_code=403,
+            detail="Finish at least the first book in this series before tagging it.",
+        )
+
+    added = store.add_series_tag(series_key, tag, source="user", user_id=user_id)
+    return JSONResponse({"ok": True, "already_existed": not added})
+
+
+@app.delete("/awards/api/series-tags")
+async def api_delete_series_tag(request: Request):
+    from .series_recs import normalize_series_key, normalize_tag
+    data = await request.json()
+    user_id = str(data.get("user_id") or "").strip()
+    series_name = str(data.get("series_name") or "").strip()
+    tag = normalize_tag(str(data.get("tag") or ""))
+    if not user_id or not series_name or not tag:
+        raise HTTPException(status_code=400, detail="user_id, series_name, and tag are required")
+    series_key = normalize_series_key(series_name)
+    removed = store.delete_user_series_tag(series_key, tag, user_id)
+    return JSONResponse({"ok": True, "removed": removed})
+
+
+@app.post("/awards/api/admin/tags/backfill")
+def api_admin_tags_backfill(royalroad: bool = False):
+    """Runs the combined Audible category+keyword backfill against every
+    series Release Radar has already matched an ASIN for. Synchronous —
+    one request per tracked series with a small delay between, so this can
+    take a while for a large tracked-series list; that's expected.
+
+    royalroad=true additionally attempts a strict, owner-triggered Royal
+    Road enrichment pass (see series_recs.py) — off by default, only runs
+    when explicitly requested, never automatically."""
+    from .series_recs import backfill_tags_from_audible
+    rows = store.get_tracked_series()
+    result = backfill_tags_from_audible(store, rows, include_royalroad=royalroad)
+    result["source_counts"] = store.series_tag_source_counts()
+    return JSONResponse(result)
 
 
 @app.post("/awards/api/tier-lists/import-json")

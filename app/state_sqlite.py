@@ -110,6 +110,28 @@ CREATE TABLE IF NOT EXISTS requests (
   created_at    INTEGER NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS series_tags (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  series_key  TEXT NOT NULL,
+  tag         TEXT NOT NULL,
+  source      TEXT NOT NULL,
+  user_id     TEXT NOT NULL DEFAULT '',  -- '' for audible/keyword/royalroad; a real user_id for source='user'.
+                                          -- Never NULL: SQLite treats NULL as distinct from itself in
+                                          -- UNIQUE constraints, which would let re-running the backfill
+                                          -- insert duplicate rows every time.
+  created_at  INTEGER NOT NULL,
+  confidence  REAL NOT NULL DEFAULT 1.0,
+  UNIQUE(series_key, tag, source, user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_series_tags_series ON series_tags(series_key);
+
+CREATE TABLE IF NOT EXISTS series_descriptions (
+  series_key  TEXT PRIMARY KEY,
+  description TEXT NOT NULL,
+  book_one_asin TEXT,
+  updated_at  INTEGER NOT NULL
+);
+
 """
 
 class StateStore:
@@ -120,8 +142,24 @@ class StateStore:
     def _conn(self):
         return sqlite3.connect(self.db_path)
 
+    def _column_names(self, c, table: str):
+        return {row[1] for row in c.execute(f"PRAGMA table_info({table})").fetchall()}
+
+    def _migrate_series_tags_confidence(self, c):
+        """Additive migration: a series_tags table created before the
+        confidence column existed needs it added. No-op on a fresh DB
+        (SCHEMA already creates it with the column) or one that already has it."""
+        existing = c.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='series_tags'"
+        ).fetchone()
+        if not existing:
+            return
+        if "confidence" not in self._column_names(c, "series_tags"):
+            c.execute("ALTER TABLE series_tags ADD COLUMN confidence REAL NOT NULL DEFAULT 1.0")
+
     def _init_db(self):
         with self._conn() as c:
+            self._migrate_series_tags_confidence(c)
             c.executescript(SCHEMA)
 
     # -----------------------------------------
@@ -386,6 +424,79 @@ class StateStore:
         self.set_grandfather_done(user_id)
 
     # -----------------------------------------
+    # Series Tags (recommendations engine)
+    # -----------------------------------------
+
+    def add_series_tag(self, series_key: str, tag: str, source: str, user_id: str = "", confidence: float = 1.0) -> bool:
+        """Idempotent insert. Returns True if a new row was actually added."""
+        with self._conn() as c:
+            cur = c.execute(
+                "INSERT OR IGNORE INTO series_tags (series_key, tag, source, user_id, created_at, confidence) "
+                "VALUES (?, ?, ?, ?, ?, ?)",
+                (series_key, tag, source, user_id or "", int(time.time()), confidence),
+            )
+            return cur.rowcount > 0
+
+    def get_series_tags(self, series_key: str) -> List[Dict]:
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            rows = c.execute(
+                "SELECT tag, source, user_id, created_at, confidence FROM series_tags WHERE series_key=?",
+                (series_key,),
+            ).fetchall()
+            return [dict(r) for r in rows]
+
+    def get_all_series_tags(self) -> Dict[str, List[Dict]]:
+        """series_key -> list of {tag, source, user_id, confidence} rows, for bulk scoring."""
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            rows = c.execute("SELECT series_key, tag, source, user_id, confidence FROM series_tags").fetchall()
+        out: Dict[str, List[Dict]] = {}
+        for r in rows:
+            out.setdefault(r["series_key"], []).append(
+                {"tag": r["tag"], "source": r["source"], "user_id": r["user_id"], "confidence": r["confidence"]}
+            )
+        return out
+
+    def delete_user_series_tag(self, series_key: str, tag: str, user_id: str) -> bool:
+        with self._conn() as c:
+            cur = c.execute(
+                "DELETE FROM series_tags WHERE series_key=? AND tag=? AND source='user' AND user_id=?",
+                (series_key, tag, user_id),
+            )
+            return cur.rowcount > 0
+
+    def series_tag_source_counts(self) -> Dict[str, int]:
+        """Diagnostic: how many rows exist per source. Used by the admin backfill routes."""
+        with self._conn() as c:
+            rows = c.execute("SELECT source, COUNT(*) FROM series_tags GROUP BY source").fetchall()
+            return {r[0]: r[1] for r in rows}
+
+    def upsert_series_description(self, series_key: str, description: str, book_one_asin: str = "") -> None:
+        if not description:
+            return
+        with self._conn() as c:
+            c.execute(
+                "INSERT INTO series_descriptions (series_key, description, book_one_asin, updated_at) "
+                "VALUES (?, ?, ?, ?) "
+                "ON CONFLICT(series_key) DO UPDATE SET description=excluded.description, "
+                "book_one_asin=excluded.book_one_asin, updated_at=excluded.updated_at",
+                (series_key, description, book_one_asin, int(time.time())),
+            )
+
+    def get_series_description(self, series_key: str) -> Optional[str]:
+        with self._conn() as c:
+            row = c.execute(
+                "SELECT description FROM series_descriptions WHERE series_key=?", (series_key,)
+            ).fetchone()
+            return row[0] if row else None
+
+    def get_all_series_descriptions(self) -> Dict[str, str]:
+        with self._conn() as c:
+            rows = c.execute("SELECT series_key, description FROM series_descriptions").fetchall()
+            return {r[0]: r[1] for r in rows}
+
+    # -----------------------------------------
     # Tier Lists
     # -----------------------------------------
 
@@ -398,6 +509,15 @@ class StateStore:
                 "ON CONFLICT(user_id) DO UPDATE SET username=excluded.username, list_name=excluded.list_name, query=excluded.query, updated_at=excluded.updated_at",
                 (user_id, username, list_name, query, int(updated_at)),
             )
+
+    def get_tier_list(self, user_id: str) -> Optional[Dict]:
+        with self._conn() as c:
+            c.row_factory = sqlite3.Row
+            row = c.execute(
+                "SELECT user_id, username, list_name, query, updated_at FROM tier_lists WHERE user_id=?",
+                (user_id,),
+            ).fetchone()
+            return dict(row) if row else None
 
     def get_tier_lists(self) -> List[Dict]:
         with self._conn() as c:
